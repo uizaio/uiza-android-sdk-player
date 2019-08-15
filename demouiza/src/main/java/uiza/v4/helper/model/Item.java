@@ -2,8 +2,8 @@ package uiza.v4.helper.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
-import vn.uiza.core.common.Constants;
 
 public class Item {
 

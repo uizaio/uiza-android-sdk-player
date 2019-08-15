@@ -11,13 +11,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.LToast;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.views.LToast;
 
 public class FrmUTHome extends Fragment implements IOnBackPressed {
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
@@ -88,9 +87,9 @@ public class FrmUTHome extends Fragment implements IOnBackPressed {
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
-            boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
+            boolean isLandscapeScreen = UzDisplayUtil.isFullScreen(getActivity());
             if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOrientation(getActivity());
+                UzDisplayUtil.toggleScreenOrientation(getActivity());
             } else {
                 if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                     if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {

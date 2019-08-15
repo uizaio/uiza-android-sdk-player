@@ -9,17 +9,17 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.google.android.exoplayer2.audio.AudioListener;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.seekbar.UzVerticalSeekBar;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -29,8 +29,8 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     private Activity activity;
     private UZVideo uzVideo;
     private SeekBar sb;
-    private UZVerticalSeekBar sb1;
-    private UZVerticalSeekBar sb2;
+    private UzVerticalSeekBar sb1;
+    private UzVerticalSeekBar sb2;
     private TextView tv;
 
     @Override
@@ -42,8 +42,8 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
         setContentView(R.layout.activity_volume);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         sb = (SeekBar) findViewById(R.id.sb);
-        sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);
-        sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
+        sb1 = (UzVerticalSeekBar) findViewById(R.id.sb_1);
+        sb2 = (UzVerticalSeekBar) findViewById(R.id.sb_2);
         tv = (TextView) findViewById(R.id.tv);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
@@ -135,7 +135,7 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         if (isInitSuccess) {
             sb.setProgress((int) (uzVideo.getVolume() * 100));
             sb1.setProgress((int) (uzVideo.getVolume() * 100));
@@ -171,12 +171,12 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

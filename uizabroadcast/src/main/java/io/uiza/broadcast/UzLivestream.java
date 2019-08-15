@@ -43,6 +43,24 @@ import io.uiza.broadcast.config.LiveConfig;
 import io.uiza.broadcast.config.PresetLiveFeed;
 import io.uiza.broadcast.util.UzLiveVideoMode;
 import io.uiza.broadcast.util.UzLivestreamError;
+import io.uiza.core.api.CallbackGetDetailEntity;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.UzUtilBase;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.request.streaming.StartALiveFeedRequest;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.connection.UzConnectivityUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,25 +70,6 @@ import java.util.Locale;
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.utils.CallbackGetDetailEntity;
-import vn.uiza.utils.UZUtilBase;
-import vn.uiza.utils.util.AppUtils;
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.views.LToast;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
@@ -82,7 +81,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
     private final File folder = new File(
-            Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppUtils
+            Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + UzCommonUtil
                     .getAppName());
     private final SpriteGestureController spriteGestureController = new SpriteGestureController();
     private String currentDateAndTime = "";
@@ -162,7 +161,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         inflate(getContext(), R.layout.layout_uz_livestream, this);
         tvLiveStatus = findViewById(R.id.tv_live_status);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
+        UzDisplayUtil.setColorProgressBar(progressBar, Color.WHITE);
         openGlView = findViewById(R.id.surfaceView);
         RtmpCamera1 rtmpCamera = new RtmpCamera1(openGlView, this);
         cameraHelper = new UzLiveCameraHelper(rtmpCamera);
@@ -217,7 +216,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         isBroadcastingBeforeGoingBackground = false;
         // We delay a second because the surface need to be resumed before we can prepare something
         // Improve this method whenever you can
-        LUIUtil.setDelay((int) SECOND, new LUIUtil.DelayCallback() {
+        UzDisplayUtil.setDelay((int) SECOND, new UzDisplayUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 try {
@@ -283,9 +282,9 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
 
     private void showShouldAcceptPermission() {
         AlertDialog alertDialog =
-                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                UzDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
                         getString(R.string.this_app_needs_permission), getString(R.string.okay),
-                        getString(R.string.cancel), new LDialogUtil.Callback2() {
+                        getString(R.string.cancel), new UzDialogUtil.Callback2() {
                             @Override
                             public void onClick1() {
                                 checkPermission();
@@ -303,17 +302,17 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
 
     private void showSettingsDialog() {
         AlertDialog alertDialog =
-                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                UzDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
                         getString(R.string.this_app_needs_permission_grant_it),
                         getString(R.string.goto_settings), getString(R.string.cancel),
-                        new LDialogUtil.Callback2() {
+                        new UzDialogUtil.Callback2() {
                             @Override
                             public void onClick1() {
                                 isShowDialogCheck = false;
                                 Intent intent =
                                         new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                 Uri uri = Uri.fromParts(Constants.PACKAGE,
-                                        AppUtils.getAppPackageName(), null);
+                                        UzCommonUtil.getAppPackageName(), null);
                                 intent.setData(uri);
                                 ((Activity) getContext()).startActivityForResult(intent,
                                         LIVESTREAM_PERMISSION_RC);
@@ -333,7 +332,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         if (openGlView == null) {
             return;
         }
-        int screenWidth = LScreenUtil.getScreenWidth();
+        int screenWidth = UzDisplayUtil.getScreenWidth();
         openGlView.getLayoutParams().width = screenWidth;
         openGlView.getLayoutParams().height = width * screenWidth / height;
         openGlView.requestLayout();
@@ -349,7 +348,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
             @Override
             public void run() {
                 showLiveText();
-                LUIUtil.goneViews(progressBar);
+                UzDisplayUtil.goneViews(progressBar);
             }
         });
         if (uzLivestreamCallback != null) {
@@ -379,7 +378,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
             @Override
             public void run() {
                 hideLiveText();
-                LUIUtil.goneViews(progressBar);
+                UzDisplayUtil.goneViews(progressBar);
             }
         });
         if (uzLivestreamCallback != null) {
@@ -398,7 +397,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     public void onAuthSuccessRtmp() {
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onAuthSuccessRtmp();
-            LUIUtil.goneViews(progressBar);
+            UzDisplayUtil.goneViews(progressBar);
         }
     }
 
@@ -478,7 +477,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
             return;
         }
         LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
-        LUIUtil.visibleViews(progressBar);
+        UzDisplayUtil.visibleViews(progressBar);
         cameraHelper.startStream(streamUrl);
         this.isSavedToDevice = isSavedToDevice;
         if (isSavedToDevice) {
@@ -626,7 +625,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         } catch (IOException e) {
             LLog.e(TAG, "Error startRecord " + e.toString());
             stopRecord();
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
     }
 
@@ -699,7 +698,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
             return true;
         } catch (IOException e) {
             LLog.e(TAG, "Error setGifToStream " + e.toString());
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
             return false;
         }
     }
@@ -715,7 +714,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
      */
     public void setId(final String entityLiveId) {
         if (entityLiveId == null || entityLiveId.isEmpty()) {
-            throw new NullPointerException(UZException.ERR_5);
+            throw new NullPointerException(UzException.ERR_5);
         }
         startLivestream(entityLiveId);
     }
@@ -723,13 +722,13 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     // Just call, don't care about the result
     // Call the gets detail of entity to get stream Url
     private void startLivestream(final String entityLiveId) {
-        LUIUtil.visibleViews(progressBar);
-        UZService service = UZRestClient.createService(UZService.class);
-        BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
+        UzDisplayUtil.visibleViews(progressBar);
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
+        StartALiveFeedRequest bodyStartALiveFeed = new StartALiveFeedRequest();
         bodyStartALiveFeed.setId(entityLiveId);
 
         String apiVersion = LiveConfig.getConfig().getApiVersion();
-        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(apiVersion, bodyStartALiveFeed),
+        UzApiMaster.getInstance().subscribe(service.startALiveEvent(apiVersion, bodyStartALiveFeed),
                 new ApiSubscriber<Object>() {
                     @Override
                     public void onSuccess(Object result) {
@@ -740,7 +739,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
                     public void onFail(Throwable e) {
                         LLog.e(TAG, ">>>>>>startLivestream onFail " + e.getMessage());
                         getDetailEntity(entityLiveId, true);
-                        SentryUtils.captureException(e);
+                        SentryUtil.captureException(e);
                         if (!(e instanceof HttpException)) {
                             return;
                         }
@@ -759,10 +758,10 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive) {
         String appId = LiveConfig.getConfig().getAppId();
         String apiVersion = LiveConfig.getConfig().getApiVersion();
-        UZUtilBase.getDataFromEntityIdLive(getContext(), apiVersion, appId, entityLiveId,
+        UzUtilBase.getDataFromEntityIdLive(getContext(), apiVersion, appId, entityLiveId,
                 new CallbackGetDetailEntity() {
                     @Override
-                    public void onSuccess(Data d) {
+                    public void onSuccess(VideoData d) {
                         if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo()
                                 .isEmpty() || d.getLastPushInfo().get(0) == null) {
                             throw new NullPointerException("Data is null");
@@ -772,13 +771,13 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
 
                     @Override
                     public void onError(Throwable e) {
-                        LUIUtil.goneViews(progressBar);
+                        UzDisplayUtil.goneViews(progressBar);
                         notifyError(UzLivestreamError.CAN_NOT_GET_INFO);
                     }
                 });
     }
 
-    private void processLiveData(Data data, boolean isErrorStartLive) {
+    private void processLiveData(VideoData data, boolean isErrorStartLive) {
         String streamKey = data.getLastPushInfo().get(0).getStreamKey();
         String streamUrl = data.getLastPushInfo().get(0).getStreamUrl();
         mainStreamUrl = streamUrl + "/" + streamKey;
@@ -788,13 +787,13 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         boolean isTranscode = data.getEncode() == 1;
         LLog.d(TAG, "isTranscode " + isTranscode);
 
-        boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
+        boolean isConnectedFast = UzConnectivityUtil.isConnectedFast(getContext());
         presetLiveFeed = new PresetLiveFeed();
         presetLiveFeed.setTranscode(isTranscode);
         presetLiveFeed.setVideoBitRates(isConnectedFast);
 
         LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
-        LUIUtil.goneViews(progressBar);
+        UzDisplayUtil.goneViews(progressBar);
         if (!isErrorStartLive && uzLivestreamCallback != null) {
             LLog.d(TAG, "onGetDataSuccess");
             uzLivestreamCallback.onGetDataSuccess(data, mainStreamUrl, isTranscode, presetLiveFeed);
@@ -887,7 +886,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         if (!visibleLiveText || tvLiveStatus == null) {
             return;
         }
-        LUIUtil.goneViews(tvLiveStatus);
+        UzDisplayUtil.goneViews(tvLiveStatus);
         tvLiveStatus.clearAnimation();
     }
 
@@ -895,8 +894,8 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         if (!visibleLiveText || tvLiveStatus == null) {
             return;
         }
-        LUIUtil.visibleViews(tvLiveStatus);
-        LAnimationUtil.blinking(tvLiveStatus);
+        UzDisplayUtil.visibleViews(tvLiveStatus);
+        UzAnimationUtil.blinking(tvLiveStatus);
     }
 
     private void notifyError(UzLivestreamError error) {

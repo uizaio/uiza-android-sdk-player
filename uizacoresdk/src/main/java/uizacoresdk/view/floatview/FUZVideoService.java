@@ -21,6 +21,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.Player;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.connection.UzConnectivityUtil;
+import io.uiza.core.util.constant.Constants;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,16 +38,6 @@ import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by loitp on 1/28/2019.
@@ -80,7 +79,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginR;
     private int marginB;
     private int progressBarColor;
-    private ResultGetLinkPlay mResultGetLinkPlay;
+    private LinkPlay liveLinkPlay;
     private int positionBeforeDisappearX = Constants.UNKNOWN;
     private int positionBeforeDisappearY = Constants.UNKNOWN;
     private CountDownTimer countDownTimer;
@@ -113,10 +112,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
 
         try {
-            cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
+            cdnHost = liveLinkPlay.getCdn().get(0).getHost();
         } catch (NullPointerException e) {
             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (!isInitCustomLinkplay) {
@@ -139,11 +138,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         controlStub = mFloatingView.findViewById(R.id.control_stub);
 
         tvMsg = mFloatingView.findViewById(R.id.tv_msg);
-        LUIUtil.setTextShadow(tvMsg);
+        UzDisplayUtil.setTextShadow(tvMsg);
         tvMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+                UzAnimationUtil.play(v, Techniques.Pulse, new UzAnimationUtil.Callback() {
                     @Override
                     public void onCancel() {
                     }
@@ -194,14 +193,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        mResultGetLinkPlay = UZData.getInstance().getResultGetLinkPlay();
-        if (mResultGetLinkPlay == null) {
+        liveLinkPlay = UZData.getInstance().getLinkPlay();
+        if (liveLinkPlay == null) {
             stopSelf();
         }
         videoW = UZUtil.getVideoWidth(getBaseContext());
         videoH = UZUtil.getVideoHeight(getBaseContext());
-        screenWidth = LScreenUtil.getScreenWidth();
-        screenHeight = LScreenUtil.getScreenHeight();
+        screenWidth = UzDisplayUtil.getScreenWidth();
+        screenHeight = UzDisplayUtil.getScreenHeight();
         pipTopPosition = UZUtil.getStablePipTopPosition(getBaseContext());
         marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
@@ -210,24 +209,24 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
         findViews();
         //Add the view to the window.
-        int LAYOUT_FLAG;
+        int layoutFlag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            layoutFlag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutFlag = WindowManager.LayoutParams.TYPE_PHONE;
         }
         //OPTION 1: floatview se neo vao 1 goc cua device
         /*params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG,
+                layoutFlag,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);*/
         //OPTION 2: floatview se ko neo vao 1 goc cua device
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                layoutFlag, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
@@ -578,7 +577,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     case CENTER_TOP:
                     case CENTER_BOTTOM:
                         if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
+                            UzCommonUtil.vibrate(getBaseContext());
                         }
                         viewDestroy.setVisibility(View.VISIBLE);
                         break;
@@ -595,7 +594,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     case BOTTOM_LEFT:
                     case BOTTOM_RIGHT:
                         if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
+                            UzCommonUtil.vibrate(getBaseContext());
                         }
                         viewDestroy.setVisibility(View.VISIBLE);
                         break;
@@ -882,7 +881,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     @Override
-    public void onPlayerError(UZException error) {
+    public void onPlayerError(UzException error) {
         LLog.e(TAG, "onPlayerError " + error.getMessage());
         stopSelf();
     }
@@ -896,7 +895,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
-        if (LConnectivityUtil.isConnected(this)) {
+        if (UzConnectivityUtil.isConnected(this)) {
             fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, progressBarColor, this);
             tvMsg.setVisibility(View.GONE);
         } else {

@@ -67,7 +67,7 @@ vn.uiza.restapi.dummy
 vn.uiza.restapi.restclient
 vn.uiza.restapi.uiza
 vn.uiza.restapi.uiza.model
-vn.uiza.restapi.uiza.model.tracking
+io.uiza.core.api.request.tracking
 vn.uiza.restapi.uiza.model.v2.auth
 vn.uiza.restapi.uiza.model.v2.getdetailentity
 vn.uiza.restapi.uiza.model.v2.getlinkdownload

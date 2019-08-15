@@ -49,13 +49,13 @@ import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import io.uiza.broadcast.UzLivestream;
 import io.uiza.broadcast.UzLivestreamCallback;
-import io.uiza.broadcast.util.UzLivestreamError;
 import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.util.UzLivestreamError;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import uiza.R;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 public class LivestreamBroadcasterActivity extends AppCompatActivity implements View.OnClickListener,
         UzLivestreamCallback {
@@ -236,7 +236,7 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
                     if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl());
                     } else {
-                        LDialogUtil.showDialog1(activity, "Error preparing stream, This device cant do it", new LDialogUtil.Callback1() {
+                        UzDialogUtil.showDialog1(activity, "Error preparing stream, This device cant do it", new UzDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
                             }
@@ -323,8 +323,8 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
 
     @Override
     public void onError(UzLivestreamError error) {
-        runOnUiThread(() -> LDialogUtil
-                .showDialog1(activity, error.getReason(), new LDialogUtil.Callback1() {
+        runOnUiThread(() -> UzDialogUtil
+                .showDialog1(activity, error.getReason(), new UzDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
                         onBackPressed();
@@ -338,7 +338,7 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
+    public void onGetDataSuccess(VideoData d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
         bStartStop.setVisibility(View.VISIBLE);
         bStartStopStore.setVisibility(View.VISIBLE);
         btSwitchCamera.show();

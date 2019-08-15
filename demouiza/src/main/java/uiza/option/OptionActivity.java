@@ -14,16 +14,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v4.SplashActivity;
-import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 
 public class OptionActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -82,8 +79,6 @@ public class OptionActivity extends AppCompatActivity {
                 goToSplashScreen();
             }
         });
-        //set auth null every run this app
-        UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
         findViews();
         setupSkin();
         setupDebugMode();
@@ -92,7 +87,7 @@ public class OptionActivity extends AppCompatActivity {
     private void findViews() {
         //setting theme
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
+        viewPager.getLayoutParams().height = UzDisplayUtil.getScreenWidth() * 9 / 16;
         viewPager.invalidate();
         //setting debug mode
         radioDebugMode = (RadioGroup) findViewById(R.id.radio_debug_mode);
@@ -162,7 +157,7 @@ public class OptionActivity extends AppCompatActivity {
 
             TextView tv = (TextView) layout.findViewById(R.id.tv);
             tv.setText(skinObject.getSkinName());
-            LUIUtil.setTextShadow(tv);
+            UzDisplayUtil.setTextShadow(tv);
 
             collection.addView(layout);
             return layout;

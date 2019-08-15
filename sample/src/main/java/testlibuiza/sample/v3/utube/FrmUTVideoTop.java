@@ -18,6 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.video.VideoListener;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import testlibuiza.R;
 import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.UZCallback;
@@ -25,12 +30,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
@@ -144,8 +143,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
+        ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isInitResult(isGetDataSuccess, linkPlay, data);
         if (isInitSuccess) {
             ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);
             setAutoHideController();
@@ -168,7 +167,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().closeToRight();
@@ -193,12 +192,12 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     public void initEntity(String entityId) {
         showController();
-        int w = LScreenUtil.getScreenWidth();
+        int w = UzDisplayUtil.getScreenWidth();
         int h = (int) (w * Constants.RATIO_9_16);
         resizeView(w, h);
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
@@ -206,7 +205,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     public void initPlaylistFolder(String metadataId) {
         showController();
-        int w = LScreenUtil.getScreenWidth();
+        int w = UzDisplayUtil.getScreenWidth();
         int h = (int) (w * Constants.RATIO_9_16);
         resizeView(w, h);
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
@@ -214,11 +213,11 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     private void calSize(int width, int height) {
         if (width >= height) {
-            int screenW = LScreenUtil.getScreenWidth();
+            int screenW = UzDisplayUtil.getScreenWidth();
             int screenH = height * screenW / width;
             resizeView(screenW, screenH);
         } else {
-            int screenW = LScreenUtil.getScreenWidth();
+            int screenW = UzDisplayUtil.getScreenWidth();
             int screenH = screenW;
             resizeView(screenW, screenH);
         }

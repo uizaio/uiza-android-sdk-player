@@ -8,16 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by loitp on 27/2/2019.
@@ -40,7 +40,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_uiza_custom_skin_code_uz_timebar);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         ll = (LinearLayout) findViewById(R.id.ll);
-        LUIUtil.setMarginDimen(ll, 0, -uzVideo.getPixelAdded() / 2, 0, 0);
+        UzDisplayUtil.setMarginDimen(ll, 0, -uzVideo.getPixelAdded() / 2, 0, 0);
         pb = (ProgressBar) findViewById(R.id.p);
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
@@ -76,7 +76,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         if (isInitSuccess) {
             pb.setVisibility(View.GONE);
         }
@@ -108,7 +108,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override

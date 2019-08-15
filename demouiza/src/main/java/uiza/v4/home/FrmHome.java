@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import io.uiza.core.util.UzImageUtil;
+import io.uiza.core.util.constant.Constants;
 import uiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LImageUtil;
 
 public class FrmHome extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -24,7 +24,7 @@ public class FrmHome extends Fragment implements IOnBackPressed {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImageView iv = (ImageView) view.findViewById(R.id.iv);
-        LImageUtil.load(getActivity(), Constants.URL_IMG_THUMBNAIL_2, iv);
+        UzImageUtil.load(getActivity(), Constants.URL_IMG_THUMBNAIL_2, iv);
     }
 
     @Nullable

@@ -77,7 +77,7 @@
             android:layout_below="@+id/ll_action_bar"
             android:paddingTop="@dimen/padding_5" />
 
-        <vn.uiza.views.draggablepanel.DraggablePanel
+        <io.uiza.core.view.draggablepanel.DraggablePanel
             android:id="@+id/draggable_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

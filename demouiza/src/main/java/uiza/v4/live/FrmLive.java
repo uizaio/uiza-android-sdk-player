@@ -17,6 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.response.BasePaginationResponse;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
@@ -25,17 +36,6 @@ import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.views.LToast;
 
 public class FrmLive extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -46,7 +46,7 @@ public class FrmLive extends Fragment implements IOnBackPressed {
     private RecyclerView recyclerView;
     private LiveAdapter mAdapter;
     private TextView tvMsg;
-    private List<Data> dataList = new ArrayList<>();
+    private List<VideoData> dataList = new ArrayList<>();
     private int page = 1;
     private int totalPage = Integer.MAX_VALUE;
     private ProgressBar pb;
@@ -72,16 +72,17 @@ public class FrmLive extends Fragment implements IOnBackPressed {
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv);
         pb = (ProgressBar) view.findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(pb, Color.WHITE);
-        LDialogUtil.hide(pb);
+        UzDisplayUtil.setColorProgressBar(pb, Color.WHITE);
+        UzDialogUtil.hide(pb);
 
         mAdapter = new LiveAdapter(getActivity(), dataList, new LiveAdapter.Callback() {
             @Override
-            public void onClick(Data data, int position) {
+            public void onClick(VideoData data, int position) {
                 if (data != null && data.getLastProcess() != null && data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
                 } else {
-                    LDialogUtil.showDialog1(getActivity(), "This content is not streaming now", new LDialogUtil.Callback1() {
+                    UzDialogUtil
+                            .showDialog1(getActivity(), "This content is not streaming now", new UzDialogUtil.Callback1() {
                         @Override
                         public void onClick1() {
                             onBackPressed();
@@ -96,14 +97,14 @@ public class FrmLive extends Fragment implements IOnBackPressed {
             }
 
             @Override
-            public void onClickLivestream(Data data, int position) {
+            public void onClickLivestream(VideoData data, int position) {
                 Intent intent = new Intent(getActivity(), LivestreamBroadcasterActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClick(Data data, int position) {
+            public void onLongClick(VideoData data, int position) {
             }
 
             @Override
@@ -135,43 +136,49 @@ public class FrmLive extends Fragment implements IOnBackPressed {
             LToast.show(getActivity(), getString(R.string.load_page) + page);
         }
         LLog.d(TAG, "getListAllEntities " + page + "/" + totalPage);
-        LDialogUtil.show(pb);
+        UzDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
-        UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page, orderBy, orderType, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveALiveEvent>() {
-            @Override
-            public void onSuccess(ResultRetrieveALiveEvent result) {
-                LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    tvMsg.setText(getString(R.string.empty_list));
-                    return;
-                }
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
+        UzApiMaster.getInstance().subscribe(
+                service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page,
+                        orderBy, orderType, UZData.getInstance().getAppId()),
+                new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
+                    @Override
+                    public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
+                        LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson()
+                                .toJson(response));
+                        if (response == null || response.getMetadata() == null || response.getData()
+                                .isEmpty()) {
+                            tvMsg.setVisibility(View.VISIBLE);
+                            tvMsg.setText(getString(R.string.empty_list));
+                            return;
+                        }
+                        if (totalPage == Integer.MAX_VALUE) {
+                            int totalItem = (int) response.getMetadata().getTotal();
+                            float ratio = (float) (totalItem / limit);
+                            if (ratio == 0) {
+                                totalPage = (int) ratio;
+                            } else if (ratio > 0) {
+                                totalPage = (int) ratio + 1;
+                            } else {
+                                totalPage = (int) ratio;
+                            }
+                        }
+                        LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + response.getData()
+                                .size());
+                        dataList.addAll(response.getData());
+                        mAdapter.notifyDataSetChanged();
+                        UzDialogUtil.hide(pb);
                     }
-                }
-                LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + result.getData().size());
-                dataList.addAll(result.getData());
-                mAdapter.notifyDataSetChanged();
-                LDialogUtil.hide(pb);
-            }
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
-                tvMsg.setVisibility(View.VISIBLE);
-                tvMsg.setText("onFail: " + e.getMessage());
-                LDialogUtil.hide(pb);
-            }
-        });
+                    @Override
+                    public void onFail(Throwable e) {
+                        LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                        tvMsg.setVisibility(View.VISIBLE);
+                        tvMsg.setText("onFail: " + e.getMessage());
+                        UzDialogUtil.hide(pb);
+                    }
+                });
     }
 
     private void loadMore() {

@@ -30,13 +30,13 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+import io.uiza.core.api.response.subtitle.Subtitle;
+import io.uiza.core.exception.UzExceptionUtil;
+import io.uiza.core.util.constant.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZExceptionUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 abstract class FUZPlayerManagerAbs {
     protected final String TAG = getClass().getSimpleName();
@@ -246,7 +246,7 @@ abstract class FUZPlayerManagerAbs {
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
+                fuzVideo.onPlayerError(UzExceptionUtil.getExceptionPlayback());
             }
         }
 

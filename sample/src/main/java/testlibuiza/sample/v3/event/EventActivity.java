@@ -20,6 +20,10 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoListener;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
 import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -31,10 +35,6 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZAdPlayerCallback;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by loitp on 1/9/2019.
@@ -80,7 +80,7 @@ public class EventActivity extends AppCompatActivity {
 
         uzVideo.addUZCallback(new UZCallback() {
             @Override
-            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
                 tvUzCallback.setText("isInitResult " + isInitSuccess);
             }
 
@@ -102,7 +102,7 @@ public class EventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(UZException e) {
+            public void onError(UzException e) {
                 tvUzCallback.setText("onError");
             }
         });
@@ -376,7 +376,7 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

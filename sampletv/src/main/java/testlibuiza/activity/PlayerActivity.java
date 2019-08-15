@@ -12,6 +12,14 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.autosize.UzImageButton;
 import java.util.List;
 import testlibuiza.app.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -21,21 +29,13 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.autosize.UZImageButton;
 
 public class PlayerActivity extends AppCompatActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
-    private UZImageButton uzibCustomHq;
-    private UZImageButton uzibCustomAudio;
+    private UzImageButton uzibCustomHq;
+    private UzImageButton uzibCustomAudio;
     private ScrollView sv;
     private LinearLayout llListHq;
 
@@ -57,8 +57,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
         sv = (ScrollView) findViewById(R.id.sv);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
+        uzibCustomHq = (UzImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = (UzImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
 
         uzibCustomHq.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -101,7 +101,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         /*if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }*/
@@ -131,7 +131,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override
@@ -277,9 +277,9 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LAnimationUtil.play(view, Techniques.Pulse);
+                    UzAnimationUtil.play(view, Techniques.Pulse);
                     c.performClick();
-                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                    UzDisplayUtil.setDelay(300, new UzDisplayUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
                             llListHq.removeAllViews();

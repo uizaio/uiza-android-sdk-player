@@ -9,12 +9,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LUIUtil;
 
 public class SetEntityIdActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -55,14 +55,14 @@ public class SetEntityIdActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        LDialogUtil.clearAll();
+        UzDialogUtil.clearAll();
         super.onDestroy();
     }
 
     private void initUIEntity() {
         //set default value entity id
         etInputEntityId.setText(LSApplication.entityIdDefaultVOD);
-        LUIUtil.setLastCursorEditText(etInputEntityId);
+        UzDisplayUtil.setLastCursorEditText(etInputEntityId);
         etInputEntityId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,7 +95,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 etInputEntityId.setText(LSApplication.entityIdDefaultVOD);
-                LUIUtil.setLastCursorEditText(etInputEntityId);
+                UzDisplayUtil.setLastCursorEditText(etInputEntityId);
                 isLive = false;
             }
         });
@@ -103,7 +103,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 etInputEntityId.setText(LSApplication.entityIdDefaultLIVE);
-                LUIUtil.setLastCursorEditText(etInputEntityId);
+                UzDisplayUtil.setLastCursorEditText(etInputEntityId);
                 isLive = true;
             }
         });
@@ -118,7 +118,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
 
     private void initUIPlaylistFolder() {
         etInputMetadataId.setText(LSApplication.metadataDefault0);
-        LUIUtil.setLastCursorEditText(etInputEntityId);
+        UzDisplayUtil.setLastCursorEditText(etInputEntityId);
         etInputMetadataId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -150,7 +150,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 etInputMetadataId.setText(LSApplication.metadataDefault0);
-                LUIUtil.setLastCursorEditText(etInputMetadataId);
+                UzDisplayUtil.setLastCursorEditText(etInputMetadataId);
             }
         });
         findViewById(R.id.bt_clear_pf).setOnClickListener(new View.OnClickListener() {

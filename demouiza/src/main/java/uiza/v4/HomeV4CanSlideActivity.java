@@ -17,6 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.LToast;
+import io.uiza.core.view.draggablepanel.DraggableListener;
+import io.uiza.core.view.draggablepanel.DraggablePanel;
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
@@ -26,16 +34,6 @@ import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.utils.util.AppUtils;
-import vn.uiza.views.LToast;
-import vn.uiza.views.draggablepanel.DraggableListener;
-import vn.uiza.views.draggablepanel.DraggablePanel;
 
 public class HomeV4CanSlideActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -84,13 +82,13 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.ll_browser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtils.openUrlInBrowser(activity, "https://uiza.io/");
+                UzCommonUtil.openUrlInBrowser(activity, "https://uiza.io/");
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
 
         TextView tvCopyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
-        tvCopyright.setText("© 2018 Uiza. All rights reserved.\nVersion " + AppUtils.getAppVersionCode() + "\nContact: Loitp@uiza.io");
+        tvCopyright.setText("© 2018 Uiza. All rights reserved.\nVersion " + UzCommonUtil.getAppVersionCode() + "\nContact: Loitp@uiza.io");
         TextView tvLogin = (TextView) navigationView.findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,9 +270,9 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
 
     private void setSizeFrmTop() {
         if (isLandscape) {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
+            draggablePanel.setTopViewHeightApllyNow(UzDisplayUtil.getScreenHeight());
         } else {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
+            draggablePanel.setTopViewHeightApllyNow(UzDisplayUtil.getScreenWidth() * 9 / 16);
         }
     }
 
@@ -315,9 +313,9 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             return;
         }
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
+            boolean isLandscapeScreen = UzDisplayUtil.isFullScreen(activity);
             if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOrientation(activity);
+                UzDisplayUtil.toggleScreenOrientation(activity);
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
@@ -346,7 +344,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -369,7 +367,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -384,10 +382,10 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
     }
 
     //this method will be called when entity is ready to play
-    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
         if (frmVideoBottom != null && isGetDataSuccess) {
-            frmVideoBottom.updateUI(resultGetLinkPlay, data);
+            frmVideoBottom.updateUI(linkPlay, data);
         }
     }
 

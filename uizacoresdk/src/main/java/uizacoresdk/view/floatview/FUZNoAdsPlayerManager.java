@@ -8,10 +8,10 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import io.uiza.core.api.response.subtitle.Subtitle;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
 

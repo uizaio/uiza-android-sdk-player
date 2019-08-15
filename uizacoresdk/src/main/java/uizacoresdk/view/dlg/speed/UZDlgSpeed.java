@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckedTextView;
 import android.widget.ScrollView;
+import io.uiza.core.util.UzDisplayUtil;
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LUIUtil;
 
 /**
  * Created by loitp on 13/11/2018.
@@ -138,7 +138,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
                 callback.onSelectItem((Speed) view.getTag());
             }
         }
-        LUIUtil.setDelay(200, new LUIUtil.DelayCallback() {
+        UzDisplayUtil.setDelay(200, new UzDisplayUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 cancel();

@@ -1,8 +1,8 @@
 package uizacoresdk.util;
 
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.streaming.StreamingToken;
+import io.uiza.core.api.response.video.VideoData;
 
 /**
  * Created by loitp on 18/1/2019.
@@ -11,9 +11,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 public class UZInput {
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
-    private Data data;
-    private ResultGetTokenStreaming resultGetTokenStreaming;
-    private ResultGetLinkPlay resultGetLinkPlay;
+    private VideoData data;
+    private StreamingToken streamingToken;
+    private LinkPlay linkPlay;
 
     public String getUrlIMAAd() {
         return urlIMAAd;
@@ -31,11 +31,11 @@ public class UZInput {
         this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
     }
 
-    public Data getData() {
+    public VideoData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(VideoData data) {
         this.data = data;
     }
 
@@ -43,19 +43,19 @@ public class UZInput {
         return data != null && data.getLastFeedId() != null && !data.getLastFeedId().isEmpty();
     }
 
-    public ResultGetTokenStreaming getResultGetTokenStreaming() {
-        return resultGetTokenStreaming;
+    public StreamingToken getStreamingToken() {
+        return streamingToken;
     }
 
-    public void setResultGetTokenStreaming(ResultGetTokenStreaming resultGetTokenStreaming) {
-        this.resultGetTokenStreaming = resultGetTokenStreaming;
+    public void setStreamingToken(StreamingToken streamingToken) {
+        this.streamingToken = streamingToken;
     }
 
-    public ResultGetLinkPlay getResultGetLinkPlay() {
-        return resultGetLinkPlay;
+    public LinkPlay getLinkPlay() {
+        return linkPlay;
     }
 
-    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-        this.resultGetLinkPlay = resultGetLinkPlay;
+    public void setLinkPlay(LinkPlay linkPlay) {
+        this.linkPlay = linkPlay;
     }
 }

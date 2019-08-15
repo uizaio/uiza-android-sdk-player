@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import io.uiza.core.util.UzImageUtil;
 import java.util.List;
 import testlibuiza.app.R;
-import vn.uiza.core.utilities.LImageUtil;
 
 public class AdapterDummy extends RecyclerView.Adapter<AdapterDummy.DummyHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -59,7 +59,7 @@ public class AdapterDummy extends RecyclerView.Adapter<AdapterDummy.DummyHolder>
         final Dummy dummy = dummyList.get(position);
         playListHolder.tvName.setText(dummy.getName());
         //LLog.d(TAG, "dummy.getUrl() position " + position + " -> " + dummy.getUrl());
-        LImageUtil.load((Activity) context, dummy.getUrl(), playListHolder.ivCover, R.drawable.uiza_logo_mini);
+        UzImageUtil.load((Activity) context, dummy.getUrl(), playListHolder.ivCover, R.drawable.uiza_logo_mini);
 
         playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -135,27 +135,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Guide Call API"
-                    android:textSize="@dimen/txt_30" />
-
-                <Button
-                    android:id="@+id/bt_guide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="14. Guide" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_5">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="Demo Livestream"
                     android:textSize="@dimen/txt_30" />
 
@@ -185,11 +164,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Error" />
-                <Button
-                    android:id="@+id/bt_dummy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dummy" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

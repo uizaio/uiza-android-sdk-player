@@ -14,17 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzImageUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzAnimationUtil;
 import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int currentPositionOfDataList;
     private Context context;
     private CallbackPlaylistFolder callbackPlaylistFolder;
@@ -54,7 +54,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         }
     }
 
-    public AdapterPlaylistFolder(Context context, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public AdapterPlaylistFolder(Context context, List<VideoData> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         this.context = context;
         this.dataList = dataList;
         this.currentPositionOfDataList = currentPositionOfDataList;
@@ -70,7 +70,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public void onBindViewHolder(@NonNull final PlayListHolder playListHolder, final int position) {
-        final Data data = dataList.get(position);
+        final VideoData data = dataList.get(position);
         UZUtil.setTextDuration(playListHolder.tvDuration, data.getDuration());
         playListHolder.tvName.setText(data.getName());
 
@@ -90,12 +90,12 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         } else {
             playListHolder.tvDescription.setText(data.getShortDescription());
         }
-        LImageUtil.load(context, data.getThumbnail(), playListHolder.ivCover);
+        UzImageUtil.load(context, data.getThumbnail(), playListHolder.ivCover);
 
         playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+                UzAnimationUtil.play(v, Techniques.Pulse, new UzAnimationUtil.Callback() {
                     @Override
                     public void onCancel() {
                         //do nothing

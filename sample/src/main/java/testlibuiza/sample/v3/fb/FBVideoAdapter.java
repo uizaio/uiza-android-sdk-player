@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzImageUtil;
 import java.util.List;
 import testlibuiza.R;
-import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FBVideoAdapter extends RecyclerView.Adapter<FBVideoAdapter.MovieViewHolder> {
     public interface Callback {
-        public void onClick(Data data, int position);
+        public void onClick(VideoData data, int position);
     }
 
     private Context context;
     private Callback callback;
-    private List<Data> dataList;
+    private List<VideoData> dataList;
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout ll;
@@ -39,7 +39,7 @@ public class FBVideoAdapter extends RecyclerView.Adapter<FBVideoAdapter.MovieVie
         }
     }
 
-    public FBVideoAdapter(Context context, List<Data> dataList, Callback callback) {
+    public FBVideoAdapter(Context context, List<VideoData> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
@@ -53,9 +53,9 @@ public class FBVideoAdapter extends RecyclerView.Adapter<FBVideoAdapter.MovieVie
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Data data = dataList.get(position);
+        VideoData data = dataList.get(position);
         holder.tv.setText(data.getName());
-        LImageUtil.load(context, data.getThumbnail(), holder.iv);
+        UzImageUtil.load(context, data.getThumbnail(), holder.iv);
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

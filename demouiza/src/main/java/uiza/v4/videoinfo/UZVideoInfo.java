@@ -14,17 +14,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzDateTimeUtil;
+import io.uiza.core.util.UzDisplayUtil;
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by www.muathu@gmail.com on 18/1/2019.
@@ -44,20 +40,10 @@ public class UZVideoInfo extends RelativeLayout {
     private TextView tvDebug;
     private TextView tvMoreLikeThisMsg;
     private NestedScrollView nestedScrollView;
-    private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ItemAdapterV1 mAdapter;
-    private ItemAdapterV1.Callback callback;
-
-    public void init(ItemAdapterV1.Callback callback) {
-        this.callback = callback;
-        clearAllViews();
-    }
 
     public void clearAllViews() {
-        itemList.clear();
-        notifyViews();
-        LUIUtil.showProgressBar(progressBar);
+        UzDisplayUtil.showProgressBar(progressBar);
 
         String s = "...";
         tvVideoName.setText(s);
@@ -100,7 +86,7 @@ public class UZVideoInfo extends RelativeLayout {
         nestedScrollView = findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        UzDisplayUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         recyclerView = findViewById(R.id.rv);
         tvVideoName = findViewById(R.id.tv_video_name);
         tvVideoTime = findViewById(R.id.tv_video_time);
@@ -112,38 +98,16 @@ public class UZVideoInfo extends RelativeLayout {
         tvDebug = findViewById(R.id.tv_debug);
         tvMoreLikeThisMsg = findViewById(R.id.tv_more_like_this_msg);
 
-        int sizeW = LScreenUtil.getScreenWidth() / 2;
+        int sizeW = UzDisplayUtil.getScreenWidth() / 2;
         int sizeH = sizeW * 9 / 16;
-        mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
-            @Override
-            public void onClickItemBottom(Item item, int position) {
-                if (UZData.getInstance().isSettingPlayer()) {
-                    return;
-                }
-                itemList.clear();
-                notifyViews();
-                if (callback != null) {
-                    callback.onClickItemBottom(item, position);
-                }
-            }
-
-            @Override
-            public void onLoadMore() {
-                loadMore();
-                if (callback != null) {
-                    callback.onLoadMore();
-                }
-            }
-        });
 
         recyclerView.setNestedScrollingEnabled(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
     }
 
-    public void setup(Data data) {
+    public void setup(VideoData data) {
         if (data == null) {
             LLog.e(TAG, "setup resultRetrieveAnEntity == null");
             return;
@@ -156,15 +120,15 @@ public class UZVideoInfo extends RelativeLayout {
 
     public void updateUI() {
         final String emptyS = "Empty string";
-        final String nullS = "Data is null";
+        final String nullS = "LinkPlay is null";
         try {
             tvVideoName.setText(UZData.getInstance().getData().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
         if (UZData.getInstance().getData().getCreatedAt() != null && !UZData.getInstance().getData().getCreatedAt().isEmpty()) {
-            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt()));
+            tvVideoTime.setText(UzDateTimeUtil.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt()));
         } else {
             tvVideoTime.setText(nullS);
         }
@@ -174,7 +138,7 @@ public class UZVideoInfo extends RelativeLayout {
             tvVideoDescription.setText(UZData.getInstance().getData().getDescription().isEmpty() ? UZData.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UZData.getInstance().getData().getShortDescription() : UZData.getInstance().getData().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
 
         //TODO
@@ -194,22 +158,7 @@ public class UZVideoInfo extends RelativeLayout {
         //TODO
         tvMoreLikeThisMsg.setText(R.string.no_data);
         tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
-        LUIUtil.hideProgressBar(progressBar);
+        UzDisplayUtil.hideProgressBar(progressBar);
     }
 
-    private void setupUIMoreLikeThis(List<Item> itemList) {
-        //LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
-        this.itemList.addAll(itemList);
-        notifyViews();
-    }
-
-    private void notifyViews() {
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void loadMore() {
-        //do nothing
-    }
 }

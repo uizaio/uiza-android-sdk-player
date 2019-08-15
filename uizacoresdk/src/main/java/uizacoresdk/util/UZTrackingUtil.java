@@ -2,7 +2,7 @@ package uizacoresdk.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import vn.uiza.utils.util.SharedPreferenceUtil;
+import io.uiza.core.util.SharedPreferenceUtil;
 
 /**
  * Created by loitp on 7/19/2018.

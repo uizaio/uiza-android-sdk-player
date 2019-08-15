@@ -41,22 +41,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <!-- Clock wise - 90 -->
-                <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
+                <io.uiza.core.view.seekbar.UzVerticalSeekBarWrapper
                     android:id="@+id/seekBarContainer3"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1">
 
-                    <vn.uiza.views.seekbar.UZVerticalSeekBar
+                    <io.uiza.core.view.seekbar.UzVerticalSeekBar
                         android:id="@+id/sb_1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:splitTrack="false"
                         app:seekBarRotation="CW90" />
-                </vn.uiza.views.seekbar.UZVerticalSeekBarWrapper>
+                </io.uiza.core.view.seekbar.UzVerticalSeekBarWrapper>
 
                 <!-- Clock wise - 270 -->
-                <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
+                <io.uiza.core.view.seekbar.UzVerticalSeekBarWrapper
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_marginStart="50dp"
@@ -65,13 +65,13 @@
                     android:layout_toRightOf="@+id/seekBarContainer3"
                     android:layout_weight="1">
 
-                    <vn.uiza.views.seekbar.UZVerticalSeekBar
+                    <io.uiza.core.view.seekbar.UzVerticalSeekBar
                         android:id="@+id/sb_2"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:splitTrack="false"
                         app:seekBarRotation="CW270" />
-                </vn.uiza.views.seekbar.UZVerticalSeekBarWrapper>
+                </io.uiza.core.view.seekbar.UzVerticalSeekBarWrapper>
             </LinearLayout>
 
             <TextView

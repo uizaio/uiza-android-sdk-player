@@ -1,15 +1,15 @@
 package uizacoresdk.view.dlg.playlistfolder;
 
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import io.uiza.core.api.response.video.VideoData;
 
 /**
  * Created by loitp on 3/30/2018.
  */
 
 public interface CallbackPlaylistFolder {
-    void onClickItem(Data data, int position);
+    void onClickItem(VideoData data, int position);
 
-    void onFocusChange(Data data, int position);
+    void onFocusChange(VideoData data, int position);
 
     void onDismiss();
 }

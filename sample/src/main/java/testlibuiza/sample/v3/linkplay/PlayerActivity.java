@@ -10,6 +10,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.LToast;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -17,11 +22,6 @@ import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -90,7 +90,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay0);
                 etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
-                LUIUtil.setLastCursorEditText(etLinkPlay);
+                UzDisplayUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay1);
                 etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
-                LUIUtil.setLastCursorEditText(etLinkPlay);
+                UzDisplayUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_2).setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay2);
                 etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
-                LUIUtil.setLastCursorEditText(etLinkPlay);
+                UzDisplayUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_3).setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay3);
                 etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
-                LUIUtil.setLastCursorEditText(etLinkPlay);
+                UzDisplayUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         btPlay.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +140,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
     }
 
     @Override
@@ -170,7 +170,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override

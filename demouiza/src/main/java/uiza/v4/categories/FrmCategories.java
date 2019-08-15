@@ -16,6 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.response.BasePaginationResponse;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
@@ -23,16 +33,6 @@ import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.views.LToast;
 
 public class FrmCategories extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -40,7 +40,7 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
     private TextView tvMsg;
     private ProgressBar pb;
     private CategoriesAdapter mAdapter;
-    private List<Data> dataList = new ArrayList<>();
+    private List<VideoData> dataList = new ArrayList<>();
     private int currentPage = 1;
     private int totalPage = Integer.MAX_VALUE;
     private final int limit = 100;
@@ -62,10 +62,10 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
         recyclerView = (RecyclerView) view.findViewById(R.id.rv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         pb = (ProgressBar) view.findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(pb, Color.WHITE);
+        UzDisplayUtil.setColorProgressBar(pb, Color.WHITE);
         mAdapter = new CategoriesAdapter(getActivity(), dataList, new CategoriesAdapter.Callback() {
             @Override
-            public void onClick(Data data, int position) {
+            public void onClick(VideoData data, int position) {
                 FrmEntitiesOfCategory frmEntitiesOfCategory = new FrmEntitiesOfCategory();
                 frmEntitiesOfCategory.setTag(data.getName());
                 frmEntitiesOfCategory.setMetadataId(data.getId());
@@ -73,12 +73,12 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
             }
 
             @Override
-            public void onClickPlaylistFolder(Data data, int position) {
+            public void onClickPlaylistFolder(VideoData data, int position) {
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(data.getId());
             }
 
             @Override
-            public void onLongClick(Data data, int position) {
+            public void onLongClick(VideoData data, int position) {
             }
 
             @Override
@@ -98,24 +98,24 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
             if (Constants.IS_DEBUG) {
                 LToast.show(getActivity(), "This is the last page");
             }
-            LUIUtil.hideProgressBar(pb);
+            UzDisplayUtil.hideProgressBar(pb);
             return;
         }
         LLog.d(TAG, "getListMetadata " + currentPage + "/" + totalPage);
         tvMsg.setVisibility(View.GONE);
-        LUIUtil.showProgressBar(pb);
-        UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion(), limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
+        UzDisplayUtil.showProgressBar(pb);
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
+        UzApiMaster.getInstance().subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion(), limit, currentPage), new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
             @Override
-            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty() || resultGetListMetadata.getMetadata() == null) {
+            public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
+                if (response == null || response.getData() == null || response.getData().isEmpty() || response.getMetadata() == null) {
                     tvMsg.setText("Error ResultGetListMetadata is null or empty");
-                    LUIUtil.hideProgressBar(pb);
+                    UzDisplayUtil.hideProgressBar(pb);
                     return;
                 }
-                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(response));
 
-                int total = (int) resultGetListMetadata.getMetadata().getTotal();
+                int total = (int) response.getMetadata().getTotal();
                 if (total / limit == 0) {
                     totalPage = total / limit;
                 } else {
@@ -123,16 +123,16 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
                 }
                 LLog.d(TAG, "totalPage " + totalPage);
 
-                dataList.addAll(resultGetListMetadata.getData());
+                dataList.addAll(response.getData());
                 mAdapter.notifyDataSetChanged();
-                LUIUtil.hideProgressBar(pb);
+                UzDisplayUtil.hideProgressBar(pb);
             }
 
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
                 tvMsg.setText("Error ResultGetListMetadata: " + e.getMessage());
-                LUIUtil.hideProgressBar(pb);
+                UzDisplayUtil.hideProgressBar(pb);
             }
         });
     }

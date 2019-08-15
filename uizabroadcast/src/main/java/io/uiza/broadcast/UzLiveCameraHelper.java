@@ -11,14 +11,14 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import io.uiza.broadcast.config.PresetLiveFeed;
 import io.uiza.broadcast.util.UzLiveVideoMode;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.connection.UzConnectivityUtil;
 import io.uiza.core.util.UzCoreUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.utils.util.SentryUtils;
 
 final class UzLiveCameraHelper {
 
@@ -78,7 +78,7 @@ final class UzLiveCameraHelper {
         try {
             rtmpCamera1.enableLantern();
         } catch (Exception e) {
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
     }
 
@@ -122,8 +122,8 @@ final class UzLiveCameraHelper {
         List<Camera.Size> sizeList = getBestResolutionList();
         int[] result = new int[2];
         if (sizeList == null || sizeList.isEmpty()) {
-            result[0] = LScreenUtil.getScreenWidth();
-            result[1] = LScreenUtil.getScreenHeight();
+            result[0] = UzDisplayUtil.getScreenWidth();
+            result[1] = UzDisplayUtil.getScreenHeight();
         } else {
             result[0] = sizeList.get(0).width;
             result[1] = sizeList.get(0).height;
@@ -276,12 +276,12 @@ final class UzLiveCameraHelper {
      */
     private int getBestBitrate(Context context, PresetLiveFeed presetLiveFeed) {
         int bestBitrate;
-        if (LConnectivityUtil.isConnectedFast(context)
-                && LConnectivityUtil.isConnectedWifi(context)) {
+        if (UzConnectivityUtil.isConnectedFast(context)
+                && UzConnectivityUtil.isConnectedWifi(context)) {
 
             bestBitrate = presetLiveFeed.getS1080p();
-        } else if (LConnectivityUtil.isConnectedFast(context)
-                && LConnectivityUtil.isConnectedMobile(context)) {
+        } else if (UzConnectivityUtil.isConnectedFast(context)
+                && UzConnectivityUtil.isConnectedMobile(context)) {
 
             bestBitrate = presetLiveFeed.getS720p();
         } else {
@@ -304,11 +304,11 @@ final class UzLiveCameraHelper {
         }
         int sizeList = bestResolutionList.size();
         int index;
-        if (LConnectivityUtil.isConnectedFast(context)
-                && LConnectivityUtil.isConnectedWifi(context)) {
+        if (UzConnectivityUtil.isConnectedFast(context)
+                && UzConnectivityUtil.isConnectedWifi(context)) {
             index = 0;
-        } else if (LConnectivityUtil.isConnectedFast(context)
-                && LConnectivityUtil.isConnectedMobile(context)) {
+        } else if (UzConnectivityUtil.isConnectedFast(context)
+                && UzConnectivityUtil.isConnectedMobile(context)) {
             if (sizeList > 2) {
                 index = sizeList / 2;
             } else if (sizeList == 2) {

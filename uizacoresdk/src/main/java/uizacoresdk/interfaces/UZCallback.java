@@ -1,14 +1,14 @@
 package uizacoresdk.interfaces;
 
-import vn.uiza.core.exception.UZException;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
 
 public interface UZCallback {
     //when video init done with result
     //isInitSuccess onStateReadyFirst
-    //isGetDataSuccess da co data ResultGetLinkPlay va Data
-    void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
+    //isGetDataSuccess da co data ResultGetLinkPlay va LinkPlay
+    void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data);
 
     //when pip video is init success
     void onStateMiniPlayer(boolean isInitMiniPlayerSuccess);
@@ -20,6 +20,6 @@ public interface UZCallback {
     void onScreenRotate(boolean isLandscape);
 
     //when uiimavideo had an error
-    void onError(UZException e);
+    void onError(UzException e);
 
 }

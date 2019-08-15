@@ -8,20 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -113,7 +112,7 @@ public class CustomSkinXMLActivity extends AppCompatActivity implements UZCallba
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
     }
 
     @Override
@@ -144,11 +143,11 @@ public class CustomSkinXMLActivity extends AppCompatActivity implements UZCallba
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
         if (e == null) {
             return;
         }
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+        UzDialogUtil.showDialog1(activity, e.getMessage(), new UzDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();
@@ -163,7 +162,7 @@ public class CustomSkinXMLActivity extends AppCompatActivity implements UZCallba
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();
@@ -174,11 +173,11 @@ public class CustomSkinXMLActivity extends AppCompatActivity implements UZCallba
         TextView tvSample = uzVideo.findViewById(R.id.tv_sample);
         if (tvSample != null) {
             tvSample.setText("This is a view from custom skin.\nTry to tap me.");
-            LUIUtil.setTextShadow(tvSample);
+            UzDisplayUtil.setTextShadow(tvSample);
             tvSample.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LAnimationUtil.play(v, Techniques.Pulse);
+                    UzAnimationUtil.play(v, Techniques.Pulse);
                     LToast.show(activity, "Click!");
                 }
             });

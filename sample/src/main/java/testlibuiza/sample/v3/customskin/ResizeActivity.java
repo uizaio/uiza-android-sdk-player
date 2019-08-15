@@ -8,6 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
 import java.util.Random;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -15,10 +19,6 @@ import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by loitp on 5/3/2019.
@@ -99,7 +99,7 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
                 if (uzVideo == null) {
                     return;
                 }
-                int w = LScreenUtil.getScreenWidth();
+                int w = UzDisplayUtil.getScreenWidth();
                 int h = w * 9 / 16;
                 uzVideo.setFreeSize(false);
                 uzVideo.setSize(w, h);
@@ -137,7 +137,7 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
     }
 
     @Override
@@ -167,7 +167,7 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override

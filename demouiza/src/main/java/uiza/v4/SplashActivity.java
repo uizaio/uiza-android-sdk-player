@@ -14,13 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.views.LToast;
 
 public class SplashActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         llInputInfo = (LinearLayout) findViewById(R.id.ll_input_info);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         progressBar.setVisibility(View.GONE);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        UzDisplayUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
         etKey.setText(LSApplication.DF_TOKEN);
         etAppId.setText(LSApplication.DF_APP_ID);
         environment = LSApplication.ENVIRONMENT;
-        LUIUtil.setLastCursorEditText(etApiDomain);
+        UzDisplayUtil.setLastCursorEditText(etApiDomain);
 
         if (environment == Constants.ENVIRONMENT_DEV) {
             ((RadioButton) findViewById(R.id.rd_env_dev)).setChecked(true);
@@ -143,7 +143,7 @@ public class SplashActivity extends AppCompatActivity {
                 llInputInfo.setVisibility(View.GONE);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
                 if (intent != null) {
-                    LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
+                    UzDisplayUtil.setDelay(3000, new UzDisplayUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
                             startActivity(intent);

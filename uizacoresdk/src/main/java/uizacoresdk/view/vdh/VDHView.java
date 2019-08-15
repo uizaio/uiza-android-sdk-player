@@ -13,10 +13,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzDisplayUtil;
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.utils.util.SentryUtils;
 
 public class VDHView extends LinearLayout {
     private final String TAG = getClass().getSimpleName();
@@ -98,8 +98,8 @@ public class VDHView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        screenW = LScreenUtil.getScreenWidth();
-        screenH = LScreenUtil.getScreenHeight();
+        screenW = UzDisplayUtil.getScreenWidth();
+        screenH = UzDisplayUtil.getScreenHeight();
         headerView = findViewById(R.id.header_view);
         bodyView = findViewById(R.id.body_view);
         headerView.post(new Runnable() {
@@ -634,7 +634,7 @@ public class VDHView extends LinearLayout {
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
-                SentryUtils.captureException(exception);
+                SentryUtil.captureException(exception);
             }
             return true;
         }

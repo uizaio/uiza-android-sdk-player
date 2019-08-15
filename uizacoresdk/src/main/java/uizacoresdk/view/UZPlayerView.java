@@ -7,8 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import io.uiza.core.util.SentryUtil;
 import uizacoresdk.util.UZData;
-import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -195,7 +195,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
-                SentryUtils.captureException(exception);
+                SentryUtil.captureException(exception);
             }
             return true;
         }

@@ -32,7 +32,6 @@
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity android:name=".sample.guidecallapi.TestAPI" />
         <activity
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -78,10 +77,6 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.fb.MiniPlayerSettingActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".sample.v3.dummy.DummyActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:windowSoftInputMode="stateHidden" />
         <activity

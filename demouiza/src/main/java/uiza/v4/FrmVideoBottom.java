@@ -11,10 +11,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
 import uiza.R;
 import uiza.v4.videoinfo.UZVideoInfo;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoBottom extends Fragment {
     private final String TAG = getClass().getSimpleName();
@@ -32,7 +32,7 @@ public class FrmVideoBottom extends Fragment {
         uizaIMAVideoInfo = view.findViewById(R.id.uiza_video_info);
     }
 
-    public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void updateUI(LinkPlay linkPlay, VideoData data) {
         uizaIMAVideoInfo.setup(data);
     }
 

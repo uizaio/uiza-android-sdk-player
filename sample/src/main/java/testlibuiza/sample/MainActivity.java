@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import io.uiza.core.util.constant.Constants;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customhq.CustomHQActivity;
@@ -17,7 +17,6 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
-import testlibuiza.sample.v3.dummy.DummyActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.fb.FBListVideoActivity;
@@ -28,7 +27,6 @@ import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
-import vn.uiza.core.common.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,13 +53,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, SetEntityIdActivity.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.bt_guide).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, TestAPI.class);
                 startActivity(intent);
             }
         });
@@ -172,14 +163,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBListVideoActivity.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.bt_dummy).setVisibility(View.GONE);
-        findViewById(R.id.bt_dummy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, DummyActivity.class);
                 startActivity(intent);
             }
         });

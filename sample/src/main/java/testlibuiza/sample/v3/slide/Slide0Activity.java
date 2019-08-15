@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -14,11 +19,6 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -161,7 +161,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         vdhv.setInitResult(isInitSuccess);
     }
 
@@ -190,7 +190,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onScreenRotate(boolean isLandscape) {
         if (!isLandscape) {
-            int w = LScreenUtil.getScreenWidth();
+            int w = UzDisplayUtil.getScreenWidth();
             int h = w * 9 / 16;
             uzVideo.setFreeSize(false);
             uzVideo.setSize(w, h);
@@ -199,7 +199,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override

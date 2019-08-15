@@ -10,6 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
@@ -18,17 +22,14 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by loitp on 27/2/2019.
  */
 
-public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements UZCallback,
+        UZItemClick {
+
     private UZVideo uzVideo;
     private SeekBar seekBar;
     private final String TAG = getClass().getSimpleName();
@@ -85,7 +86,8 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
             }
 
             @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage,
+                    long duration) {
             }
         });
         uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
@@ -98,7 +100,8 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay,
+            VideoData data) {
         if (isInitSuccess) {
             seekBar.setMax((int) uzVideo.getDuration());
             updateUISeekbarPosition(false);
@@ -109,12 +112,12 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                int huzVideo = LUIUtil.getHeightOfView(uzVideo);
-                int hSeekbar = LUIUtil.getHeightOfView(seekBar);
+                int huzVideo = UzDisplayUtil.getHeightOfView(uzVideo);
+                int hSeekbar = UzDisplayUtil.getHeightOfView(seekBar);
                 if (isLandscape) {
-                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar, 0, 0);
+                    UzDisplayUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar, 0, 0);
                 } else {
-                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
+                    UzDisplayUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
                 }
             }
         });
@@ -144,7 +147,7 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
         if (e == null) {
             return;
         }
@@ -186,7 +189,7 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzDisplayUtil;
 import testlibuiza.R;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoBottom extends Fragment {
     private TextView tvJsonData;
@@ -30,12 +30,12 @@ public class FrmVideoBottom extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvJsonData = (TextView) view.findViewById(R.id.tv_json_data);
-        tvJsonLinkplay = (TextView) view.findViewById(R.id.tv_json_linkplay);
+        tvJsonData = view.findViewById(R.id.tv_json_data);
+        tvJsonLinkplay = view.findViewById(R.id.tv_json_linkplay);
     }
 
-    public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        LUIUtil.printBeautyJson(data, tvJsonData);
-        LUIUtil.printBeautyJson(resultGetLinkPlay, tvJsonLinkplay);
+    public void updateUI(LinkPlay linkPlay, VideoData data) {
+        UzDisplayUtil.printBeautyJson(data, tvJsonData);
+        UzDisplayUtil.printBeautyJson(linkPlay, tvJsonLinkplay);
     }
 }

@@ -3,11 +3,11 @@ package uizacoresdk.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.constant.Constants;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import vn.uiza.core.common.Constants;
-import vn.uiza.utils.util.SentryUtils;
 
 public class UZOsUtil {
     @SuppressLint("HardwareIds")
@@ -28,7 +28,7 @@ public class UZOsUtil {
             localBufferedReader.close();
             return isArm64 ? 64 : 32;
         } catch (IOException e) {
-            SentryUtils.captureException(e);
+            SentryUtil.captureException(e);
         }
         return 0;
     }

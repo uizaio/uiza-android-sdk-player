@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.util.UzAnimationUtil;
 import uiza.R;
-import vn.uiza.core.utilities.LAnimationUtil;
 
 /**
  * Created by www.muathu@gmail.com on 5/13/2017.
@@ -55,7 +55,7 @@ public class UizaActionBar extends RelativeLayout {
         ivIconLeft.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse);
+                UzAnimationUtil.play(v, Techniques.Pulse);
                 if (callback != null) {
                     callback.onClickLeft();
                 }
@@ -64,7 +64,7 @@ public class UizaActionBar extends RelativeLayout {
         ivIconRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse);
+                UzAnimationUtil.play(v, Techniques.Pulse);
                 if (callback != null) {
                     callback.onClickRight();
                 }

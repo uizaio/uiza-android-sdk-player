@@ -11,6 +11,14 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.view.snappysmoothscroller.SnapType;
+import io.uiza.core.view.snappysmoothscroller.SnappyLinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 import testlibuiza.app.LSApplication;
@@ -21,14 +29,6 @@ import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
-import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
 public class PlayerCustomActivity extends AppCompatActivity implements UZCallback, UZTVCallback, UZItemClick {
     private final String TAG = getClass().getSimpleName();
@@ -77,7 +77,7 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
 
             @Override
             public void onSwipeBottom() {
-                LAnimationUtil.play(rl, Techniques.SlideOutDown, new LAnimationUtil.Callback() {
+                UzAnimationUtil.play(rl, Techniques.SlideOutDown, new UzAnimationUtil.Callback() {
                     @Override
                     public void onCancel() {
                     }
@@ -100,7 +100,7 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
             @Override
             public void onSwipeTop() {
                 rl.setVisibility(View.VISIBLE);
-                LAnimationUtil.play(rl, Techniques.SlideInUp);
+                UzAnimationUtil.play(rl, Techniques.SlideInUp);
                 recyclerView.requestFocus();
             }
         });
@@ -110,7 +110,7 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
     }
 
     @Override
@@ -137,9 +137,9 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
         e.printStackTrace();
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+        UzDialogUtil.showDialog1(activity, e.getMessage(), new UzDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();

@@ -8,15 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.draggablepanel.DraggableListener;
+import io.uiza.core.view.draggablepanel.DraggablePanel;
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.draggablepanel.DraggableListener;
-import vn.uiza.views.draggablepanel.DraggablePanel;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -147,9 +146,9 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
 
     private void setSizeFrmTop() {
         if (isLandscape) {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
+            draggablePanel.setTopViewHeightApllyNow(UzDisplayUtil.getScreenHeight());
         } else {
-            draggablePanel.setTopViewHeightApllyNow(topFragmentHeight == 0 ? LScreenUtil.getScreenWidth() * 9 / 16 : topFragmentHeight);
+            draggablePanel.setTopViewHeightApllyNow(topFragmentHeight == 0 ? UzDisplayUtil.getScreenWidth() * 9 / 16 : topFragmentHeight);
         }
     }
 
@@ -167,7 +166,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -187,7 +186,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -201,9 +200,9 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
     }
 
-    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         if (frmUTVideoBottom != null && isGetDataSuccess) {
-            frmUTVideoBottom.updateUI(resultGetLinkPlay, data);
+            frmUTVideoBottom.updateUI(linkPlay, data);
         }
     }
 }

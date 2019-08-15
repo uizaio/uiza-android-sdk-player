@@ -19,6 +19,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.response.BasePaginationResponse;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
@@ -27,15 +36,6 @@ import uiza.v4.entities.EntitiesAdapter;
 import uiza.v4.helper.utils.KeyboardUtils;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.views.LToast;
 
 public class FrmSearch extends Fragment implements View.OnClickListener, IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -50,7 +50,7 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
     private RecyclerView recyclerView;
     private EntitiesAdapter mAdapter;
     private TextView tvMsg;
-    private List<Data> dataList = new ArrayList<>();
+    private List<VideoData> dataList = new ArrayList<>();
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
 
@@ -74,12 +74,12 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         ivClearText.setOnClickListener(this);
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
-            public void onClick(Data data, int position) {
+            public void onClick(VideoData data, int position) {
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
             }
 
             @Override
-            public void onLongClick(Data data, int position) {
+            public void onLongClick(VideoData data, int position) {
             }
 
             @Override
@@ -157,43 +157,41 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
             LToast.show(getActivity(), getString(R.string.load_page) + page);
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
-        UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                if (result == null || result.getData().isEmpty()) {
-                    tv.setText(getString(R.string.empty_list));
-                    tv.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    tvMsg.setText(getString(R.string.empty_list));
-                    return;
-                }
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                }
-                LLog.d(TAG, "-> totalPage: " + totalPage);
-                dataList.addAll(result.getData());
-                mAdapter.notifyDataSetChanged();
-            }
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
+        UzApiMaster.getInstance()
+                .subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword),
+                        new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
+                            @Override
+                            public void onSuccess(BasePaginationResponse<List<VideoData>> reponse) {
+                                if (reponse == null || reponse.getMetadata() == null || reponse
+                                        .getData().isEmpty()) {
+                                    tvMsg.setVisibility(View.VISIBLE);
+                                    tvMsg.setText(getString(R.string.empty_list));
+                                    return;
+                                }
+                                if (totalPage == Integer.MAX_VALUE) {
+                                    int totalItem = (int) reponse.getMetadata().getTotal();
+                                    float ratio = (float) (totalItem / limit);
+                                    if (ratio == 0) {
+                                        totalPage = (int) ratio;
+                                    } else if (ratio > 0) {
+                                        totalPage = (int) ratio + 1;
+                                    } else {
+                                        totalPage = (int) ratio;
+                                    }
+                                }
+                                LLog.d(TAG, "-> totalPage: " + totalPage);
+                                dataList.addAll(reponse.getData());
+                                mAdapter.notifyDataSetChanged();
+                            }
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "search onFail " + e.toString());
-                tv.setText("Error search " + e.getMessage());
-                tv.setVisibility(View.VISIBLE);
-            }
-        });
+                            @Override
+                            public void onFail(Throwable e) {
+                                LLog.e(TAG, "search onFail " + e.toString());
+                                tv.setText("Error search " + e.getMessage());
+                                tv.setVisibility(View.VISIBLE);
+                            }
+                        });
     }
 
     @Override

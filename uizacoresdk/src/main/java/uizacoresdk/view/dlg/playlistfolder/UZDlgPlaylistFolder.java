@@ -12,13 +12,13 @@ import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import com.daimajia.androidanimations.library.Techniques;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.view.snappysmoothscroller.SnapType;
+import io.uiza.core.view.snappysmoothscroller.SnappyLinearLayoutManager;
 import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
-import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
 /**
  * Created by loitp on 16/10/2018.
@@ -31,11 +31,11 @@ public class UZDlgPlaylistFolder extends Dialog {
     private boolean isLandscape;
     private RecyclerView recyclerView;
     private AdapterPlaylistFolder adapterPlaylistFolder;
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int currentPositionOfDataList;
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
-    public UZDlgPlaylistFolder(Context context, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public UZDlgPlaylistFolder(Context context, boolean isLandscape, List<VideoData> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;
@@ -61,7 +61,7 @@ public class UZDlgPlaylistFolder extends Dialog {
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus) {
-                    LAnimationUtil.play(view, Techniques.Pulse);
+                    UzAnimationUtil.play(view, Techniques.Pulse);
                     btExit.setColorFilter(Color.WHITE);
                     btExit.setBackgroundColor(Color.BLACK);
                 } else {
@@ -80,7 +80,7 @@ public class UZDlgPlaylistFolder extends Dialog {
         recyclerView.setLayoutManager(layoutManager);
         adapterPlaylistFolder = new AdapterPlaylistFolder(context, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
             @Override
-            public void onClickItem(Data data, int position) {
+            public void onClickItem(VideoData data, int position) {
                 if (UZData.getInstance().isSettingPlayer()) {
                     return;
                 }
@@ -91,7 +91,7 @@ public class UZDlgPlaylistFolder extends Dialog {
             }
 
             @Override
-            public void onFocusChange(Data data, int position) {
+            public void onFocusChange(VideoData data, int position) {
                 if (recyclerView != null) {
                     recyclerView.smoothScrollToPosition(position);
                 }

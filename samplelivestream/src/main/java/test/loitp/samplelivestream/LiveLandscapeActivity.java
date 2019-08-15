@@ -50,10 +50,10 @@ import com.pedro.encoder.utils.gl.TranslateTo;
 import io.uiza.broadcast.UzLiveCameraCallback;
 import io.uiza.broadcast.UzLivestream;
 import io.uiza.broadcast.UzLivestreamCallback;
-import io.uiza.broadcast.util.UzLivestreamError;
 import io.uiza.broadcast.config.PresetLiveFeed;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
+import io.uiza.broadcast.util.UzLivestreamError;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.view.LToast;
 
 public class LiveLandscapeActivity extends AppCompatActivity implements View.OnClickListener,
         UzLivestreamCallback, UzLiveCameraCallback {
@@ -396,7 +396,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
+    public void onGetDataSuccess(VideoData d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);

@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.views.LToast;
 
 public class MiniPlayerSettingActivity extends AppCompatActivity implements View.OnClickListener {
     private Activity activity;

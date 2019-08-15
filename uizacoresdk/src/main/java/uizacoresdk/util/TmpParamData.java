@@ -1,6 +1,6 @@
 package uizacoresdk.util;
 
-import vn.uiza.core.common.Constants;
+import io.uiza.core.util.constant.Constants;
 
 public class TmpParamData {
     private final String TAG = getClass().getSimpleName();

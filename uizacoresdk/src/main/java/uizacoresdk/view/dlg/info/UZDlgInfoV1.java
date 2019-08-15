@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import io.uiza.core.util.UzDisplayUtil;
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LUIUtil;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -37,13 +37,13 @@ public class UZDlgInfoV1 extends Dialog {
         setContentView(R.layout.dlg_info);
 
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(context, R.color.colorPrimary));
+        UzDisplayUtil.setColorProgressBar(progressBar, ContextCompat.getColor(context, R.color.colorPrimary));
 
         tvTitle = findViewById(R.id.tv_title);
         final TextView tvContent = findViewById(R.id.tv_content);
 
         tvTitle.setText(title);
-        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+        UzDisplayUtil.setDelay(1000, new UzDisplayUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 tvContent.setText(msg);

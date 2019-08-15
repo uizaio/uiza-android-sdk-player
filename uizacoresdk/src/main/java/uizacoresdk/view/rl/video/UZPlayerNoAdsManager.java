@@ -4,9 +4,9 @@ import android.os.Handler;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.source.MediaSource;
+import io.uiza.core.api.response.subtitle.Subtitle;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
-import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 public final class UZPlayerNoAdsManager extends IUZPlayerManager {
 

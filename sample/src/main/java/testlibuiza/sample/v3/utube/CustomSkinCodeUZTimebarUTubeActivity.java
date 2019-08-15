@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.github.rubensousa.previewseekbar.PreviewView;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.CallbackUZTimebar;
@@ -19,10 +23,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -213,7 +213,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
         if (isInitSuccess) {
             setAutoHideController();
         }
@@ -246,7 +246,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
     }
 
     @Override
@@ -281,7 +281,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

@@ -57,6 +57,15 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+import io.uiza.core.api.response.subtitle.Subtitle;
+import io.uiza.core.exception.UzExceptionUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzDateTimeUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.connection.UzConnectivityUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.autosize.UzImageButton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -66,15 +75,6 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZExceptionUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.views.autosize.UZImageButton;
 
 abstract class IUZPlayerManager implements PreviewLoader {
     protected final String TAG = "TAG" + getClass().getSimpleName();
@@ -246,11 +246,11 @@ abstract class IUZPlayerManager implements PreviewLoader {
         if (uzVideo.isCastingChromecast()) {
             return;
         }
-        LUIUtil.hideProgressBar(uzVideo.getProgressBar());
+        UzDisplayUtil.hideProgressBar(uzVideo.getProgressBar());
     }
 
     protected void showProgress() {
-        LUIUtil.showProgressBar(uzVideo.getProgressBar());
+        UzDisplayUtil.showProgressBar(uzVideo.getProgressBar());
     }
 
     protected SimpleExoPlayer getPlayer() {
@@ -273,7 +273,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         return videoH;
     }
 
-    protected void toggleVolumeMute(UZImageButton exoVolume) {
+    protected void toggleVolumeMute(UzImageButton exoVolume) {
         if (!isPlayerValid() || exoVolume == null) {
             return;
         }
@@ -467,7 +467,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
                                     multiSession);
                 } catch (UnsupportedDrmException e) {
                     LLog.e(TAG, "UnsupportedDrmException " + e.toString());
-                    SentryUtils.captureException(e);
+                    SentryUtil.captureException(e);
                 }
             }
             if (drmSessionManager == null) {
@@ -731,7 +731,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
                 return INVALID_PROGRAM_DATE_TIME;
             }
             // int list of frame, we get the EXT_X_PROGRAM_DATE_TIME of current playing frame
-            return LDateUtils.convertUTCMs(playingDateTime);
+            return UzDateTimeUtil.convertUtcMs(playingDateTime);
         }
 
         //This is called when the available or selected tracks change
@@ -843,9 +843,9 @@ abstract class IUZPlayerManager implements PreviewLoader {
             if (uzVideo == null) {
                 return;
             }
-            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
-            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
-            if (LConnectivityUtil.isConnected(context)) {
+            uzVideo.handleError(UzExceptionUtil.getExceptionPlayback());
+            //LLog.d(TAG, "onPlayerError isConnected: " + UzConnectivityUtil.isConnected(context));
+            if (UzConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
                 uzVideo.pauseVideo();

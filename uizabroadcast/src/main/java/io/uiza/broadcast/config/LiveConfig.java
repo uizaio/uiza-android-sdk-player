@@ -1,9 +1,9 @@
 package io.uiza.broadcast.config;
 
 import android.content.Context;
-import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.utils.util.Utils;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.util.UzCoreUtil;
+import io.uiza.core.util.constant.Constants;
 
 public final class LiveConfig {
 
@@ -66,8 +66,8 @@ public final class LiveConfig {
         if (appId == null || appId.isEmpty()) {
             throw new NullPointerException("App id be null or empty");
         }
-        Utils.init(context.getApplicationContext());
-        UZRestClient.init(Constants.PREFIXS + domainApi, token);
+        UzCoreUtil.init(context.getApplicationContext());
+        UzRestClient.init(Constants.PREFIXS + domainApi, token);
         liveConfig.setAppId(appId);
         liveConfig.setApiVersion(apiVersion);
     }

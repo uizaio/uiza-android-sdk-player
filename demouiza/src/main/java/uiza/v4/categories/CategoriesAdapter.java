@@ -12,25 +12,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzImageUtil;
+import io.uiza.core.util.UzDisplayUtil;
 import java.util.List;
 import uiza.R;
-import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.DataHolder> {
     private int lastPosition = -1;
     private Context context;
     private Callback callback;
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int sizeH;
 
-    public CategoriesAdapter(Context context, List<Data> dataList, Callback callback) {
+    public CategoriesAdapter(Context context, List<VideoData> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
-        this.sizeH = LScreenUtil.getScreenWidth() / 3;
+        this.sizeH = UzDisplayUtil.getScreenWidth() / 3;
     }
 
     @Override
@@ -41,14 +40,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
 
     @Override
     public void onBindViewHolder(final DataHolder holder, final int position) {
-        final Data data = dataList.get(position);
+        final VideoData data = dataList.get(position);
 
         holder.cardView.getLayoutParams().height = sizeH;
         holder.cardView.requestLayout();
 
         holder.tvTitle.setText(data.getName());
-        LUIUtil.setTextShadow(holder.tvTitle);
-        LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
+        UzDisplayUtil.setTextShadow(holder.tvTitle);
+        UzImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
         holder.ivPlaylistFolder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,11 +88,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
     }
 
     public interface Callback {
-        public void onClick(Data data, int position);
+        public void onClick(VideoData data, int position);
 
-        public void onClickPlaylistFolder(Data data, int position);
+        public void onClickPlaylistFolder(VideoData data, int position);
 
-        public void onLongClick(Data data, int position);
+        public void onLongClick(VideoData data, int position);
 
         public void onLoadMore();
     }

@@ -12,6 +12,14 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.video.VideoListener;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDialogUtil;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzAnimationUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.view.autosize.UzImageButton;
 import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -20,15 +28,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.autosize.UZImageButton;
 
 /**
  * Created by loitp on 12/10/2018.
@@ -38,7 +37,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     private Activity activity;
     private UZVideo uzVideo;
     private Button btCustomHq;
-    private UZImageButton uzibCustomAudio;
+    private UzImageButton uzibCustomAudio;
     private LinearLayout llListHq;
     private final String TAG = getClass().getSimpleName();
 
@@ -51,7 +50,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
         setContentView(R.layout.activity_uiza_custom_hq);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         btCustomHq = (Button) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
+        uzibCustomAudio = (UzImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
@@ -106,9 +105,9 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LAnimationUtil.play(view, Techniques.Pulse);
+                    UzAnimationUtil.play(view, Techniques.Pulse);
                     c.performClick();
-                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                    UzDisplayUtil.setDelay(300, new UzDisplayUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
                             llListHq.removeAllViews();
@@ -147,7 +146,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
     }
 
     @Override
@@ -166,11 +165,11 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
         if (e == null) {
             return;
         }
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+        UzDialogUtil.showDialog1(activity, e.getMessage(), new UzDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();
@@ -185,7 +184,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (UzDisplayUtil.isFullScreen(activity)) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

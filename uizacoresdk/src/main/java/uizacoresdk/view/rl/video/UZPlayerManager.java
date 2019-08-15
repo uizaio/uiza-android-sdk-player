@@ -11,11 +11,11 @@ import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
+import io.uiza.core.api.response.subtitle.Subtitle;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.

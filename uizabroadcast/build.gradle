@@ -24,7 +24,7 @@ android {
 
 dependencies {
 
-    api project(':uizabase')
+    api project(':uizacore')
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.2'
     api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
 

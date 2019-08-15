@@ -4,28 +4,28 @@ import android.content.Context;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.client.UzRestClientGetLinkPlay;
+import io.uiza.core.api.client.UzRestClientHeartBeat;
+import io.uiza.core.api.client.UzRestClientTracking;
+import io.uiza.core.api.request.tracking.UizaTracking;
+import io.uiza.core.api.request.tracking.muiza.Muiza;
+import io.uiza.core.api.response.UtcTime;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.streaming.StreamingToken;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzCoreUtil;
+import io.uiza.core.util.UzDateTimeUtil;
+import io.uiza.core.util.constant.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
-import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
-import vn.uiza.restapi.restclient.UZRestClientTracking;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.UTCTime;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
-import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.utils.util.Utils;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -105,20 +105,20 @@ public class UZData {
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
-        UZRestClient.init(Constants.PREFIXS + domainAPI, token);
-        UZUtil.setToken(Utils.getContext(), token);
+        UzRestClient.init(Constants.PREFIXS + domainAPI, token);
+        UZUtil.setToken(UzCoreUtil.getContext(), token);
         syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT_DEV) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
+            UzRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
+            UzRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
             initTracking(Constants.URL_TRACKING_DEV, Constants.TRACKING_ACCESS_TOKEN_DEV);
         } else if (environment == Constants.ENVIRONMENT_STAG) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_STAG);
+            UzRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+            UzRestClientHeartBeat.init(Constants.URL_HEART_BEAT_STAG);
             initTracking(Constants.URL_TRACKING_STAG, Constants.TRACKING_ACCESS_TOKEN_STAG);
         } else if (environment == Constants.ENVIRONMENT_PROD) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
+            UzRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
+            UzRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
             initTracking(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD);
         } else {
             return false;
@@ -131,23 +131,23 @@ public class UZData {
      * <a href=http://worldtimeapi.org/api/timezone/Etc/UTC>this free api</a>
      */
     private void syncCurrentUTCTime() {
-        UZService service = UZRestClient.createService(UZService.class);
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         final long startAPICallTime = System.currentTimeMillis();
-        UZAPIMaster.getInstance().subscribe(service.getCurrentUTCTime(), new ApiSubscriber<UTCTime>() {
+        UzApiMaster.getInstance().subscribe(service.getCurrentUTCTime(), new ApiSubscriber<UtcTime>() {
             @Override
-            public void onSuccess(UTCTime result) {
+            public void onSuccess(UtcTime result) {
                 long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;
                 long currentTime = result.getCurrentDateTimeMs() + apiTime;
                 Log.i(TAG, "sync server time success " + currentTime);
-                UZUtil.saveLastServerTime(Utils.getContext(), currentTime);
-                UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+                UZUtil.saveLastServerTime(UzCoreUtil.getContext(), currentTime);
+                UZUtil.saveLastElapsedTime(UzCoreUtil.getContext(), SystemClock.elapsedRealtime());
             }
 
             @Override
             public void onFail(Throwable e) {
                 Log.e(TAG, "sync server time failed");
-                UZUtil.saveLastServerTime(Utils.getContext(), System.currentTimeMillis());
-                UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+                UZUtil.saveLastServerTime(UzCoreUtil.getContext(), System.currentTimeMillis());
+                UZUtil.saveLastElapsedTime(UzCoreUtil.getContext(), SystemClock.elapsedRealtime());
             }
         });
     }
@@ -174,9 +174,9 @@ public class UZData {
 
     private void initTracking(String domainAPITracking, String accessToken) {
         mDomainAPITracking = domainAPITracking;
-        UZRestClientTracking.init(domainAPITracking);
-        UZRestClientTracking.addAccessToken(accessToken);
-        UZUtil.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
+        UzRestClientTracking.init(domainAPITracking);
+        UzRestClientTracking.addAccessToken(accessToken);
+        UZUtil.setApiTrackEndPoint(UzCoreUtil.getContext(), domainAPITracking);
     }
 
     private UZInput uzInput;
@@ -252,22 +252,25 @@ public class UZData {
         return uzInput.getData().getLastFeedId();
     }
 
-    public ResultGetTokenStreaming getResultGetTokenStreaming() {
+    public StreamingToken getStreamingToken() {
         if (uzInput == null) {
             return null;
         }
-        return uzInput.getResultGetTokenStreaming();
+        return uzInput.getStreamingToken();
     }
 
-    public ResultGetLinkPlay getResultGetLinkPlay() {
+    public LinkPlay getLinkPlay() {
         if (uzInput == null) {
             return null;
         }
-        return uzInput.getResultGetLinkPlay();
+        return uzInput.getLinkPlay();
     }
 
-    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-        uzInput.setResultGetLinkPlay(resultGetLinkPlay);
+    public void setLinkPlay(LinkPlay linkPlay) {
+        if (uzInput == null) {
+            return;
+        }
+        uzInput.setLinkPlay(linkPlay);
     }
 
     //==================================================================================================================START TRACKING
@@ -279,40 +282,32 @@ public class UZData {
         if (context == null) {
             return null;
         }
-        UizaTracking uizaTracking = new UizaTracking();
-        uizaTracking.setAppId(getAppId());
-        uizaTracking.setPageType(PAGE_TYPE);
-        uizaTracking.setViewerUserId(UZOsUtil.getDeviceId(context));
-        uizaTracking.setUserAgent(Constants.USER_AGENT);
-        uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
-        uizaTracking.setDeviceId(UZOsUtil.getDeviceId(context));
-        //timestamp
-        uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
-        //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
-        uizaTracking.setPlayerId(currentPlayerId + "");
-        uizaTracking.setPlayerName(Constants.PLAYER_NAME);
-        uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
-        //entity_id, entity_name
+        UizaTracking.Builder builder = new UizaTracking.Builder();
+        builder.appId(getAppId()).pageType(PAGE_TYPE)
+                .viewerUserId(UZOsUtil.getDeviceId(context)).userAgent(Constants.USER_AGENT)
+                .referrer(TmpParamData.getInstance().getReferrer())
+                .deviceId(UZOsUtil.getDeviceId(context))
+                .timestamp(UzDateTimeUtil.getCurrent(UzDateTimeUtil.FORMAT_1))
+                .playerId(currentPlayerId + "").playerName(Constants.PLAYER_NAME)
+                .playerVersion(Constants.PLAYER_SDK_VERSION);
         if (uzInput == null || uzInput.getData() == null) {
-            uizaTracking.setEntityId(NULL);
-            uizaTracking.setEntityName(NULL);
+            builder.entityId(NULL).entityName(NULL);
         } else {
-            uizaTracking.setEntityId(uzInput.getData().getId());
-            uizaTracking.setEntityName(uzInput.getData().getName());
+            builder.entityId(uzInput.getData().getId())
+                    .entityName(uzInput.getData().getName());
         }
-        uizaTracking.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
-        uizaTracking.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
-        uizaTracking.setEntityContentType(TmpParamData.getInstance().getEntityContentType());
-        uizaTracking.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
-        uizaTracking.setEntityVariantName(TmpParamData.getInstance().getEntityVariantName());
-        uizaTracking.setEntityVariantId(TmpParamData.getInstance().getEntityVariantId());
-        uizaTracking.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
-        uizaTracking.setEntityStreamType(TmpParamData.getInstance().getEntityStreamType());
-        uizaTracking.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
-        uizaTracking.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
-        uizaTracking.setPlayThrough(playThrough);
-        uizaTracking.setEventType(eventType);
-        return uizaTracking;
+        builder.entitySeries(TmpParamData.getInstance().getEntitySeries())
+                .entityProducer(TmpParamData.getInstance().getEntityProducer())
+                .entityContentType(TmpParamData.getInstance().getEntityContentType())
+                .entityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode())
+                .entityVariantName(TmpParamData.getInstance().getEntityVariantName())
+                .entityVariantId(TmpParamData.getInstance().getEntityVariantId())
+                .entityDuration(TmpParamData.getInstance().getEntityDuration())
+                .entityStreamType(TmpParamData.getInstance().getEntityStreamType())
+                .entityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant())
+                .entityCdn(TmpParamData.getInstance().getEntityCnd()).playThrough(playThrough)
+                .eventType(eventType);
+        return builder.build();
     }
 
     private List<Muiza> muizaList = new ArrayList<>();
@@ -337,112 +332,117 @@ public class UZData {
         addTrackingMuiza(context, event, null);
     }
 
-    public void addTrackingMuiza(Context context, String event, UZException e) {
+    public void addTrackingMuiza(Context context, String event, UzException e) {
         if (context == null || event == null || event.isEmpty()) {
             return;
         }
         TmpParamData.getInstance().addPlayerSequenceNumber();
         TmpParamData.getInstance().addViewSequenceNumber();
-        Muiza muiza = new Muiza();
-        muiza.setBeaconDomain(mDomainAPITracking);
-        muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
-        muiza.setEntityContentType(TmpParamData.getInstance().getEntityContentType());
-        muiza.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
-        muiza.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
-        muiza.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
+        Muiza.Builder muizaBuilder = new Muiza.Builder();
+        muizaBuilder.beaconDomain(mDomainAPITracking)
+                .entityCdn(TmpParamData.getInstance().getEntityCnd())
+                .entityContentType(TmpParamData.getInstance().getEntityContentType())
+                .entityDuration(TmpParamData.getInstance().getEntityDuration())
+                .entityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant())
+                .entityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
         if (uzInput == null || uzInput.getData() == null) {
-            muiza.setEntityId(NULL);
-            muiza.setEntityName(NULL);
+            muizaBuilder.entityId(NULL).entityName(NULL);
         } else {
-            muiza.setEntityId(uzInput.getData().getId());
-            muiza.setEntityName(uzInput.getData().getName());
+            muizaBuilder.entityId(uzInput.getData().getId())
+                    .entityName(uzInput.getData().getName());
         }
-        muiza.setEntityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl());
-        muiza.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
-        muiza.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
-        muiza.setEntitySourceDomain(TmpParamData.getInstance().getEntitySourceDomain());
-        muiza.setEntitySourceDuration(TmpParamData.getInstance().getEntitySourceDuration());
-        muiza.setEntitySourceHeight(TmpParamData.getInstance().getEntitySourceHeight());
-        muiza.setEntitySourceHostname(TmpParamData.getInstance().getEntitySourceHostname());
-        muiza.setEntitySourceIsLive(isLivestream());
-        muiza.setEntitySourceMimeType(TmpParamData.getInstance().getEntitySourceMimeType());
-        muiza.setEntitySourceUrl(TmpParamData.getInstance().getEntitySourceUrl());
-        muiza.setEntitySourceWidth(TmpParamData.getInstance().getEntitySourceWidth());
-        muiza.setEntityStreamType(TmpParamData.getInstance().getEntityStreamType());
-        muiza.setEntityVariantId(TmpParamData.getInstance().getEntityVariantId());
-        muiza.setEntityVariantName(TmpParamData.getInstance().getEntityVariantName());
-        muiza.setPageType(PAGE_TYPE);
-        muiza.setPageUrl(TmpParamData.getInstance().getPageUrl());
-        muiza.setPlayerAutoplayOn(TmpParamData.getInstance().isPlayerAutoplayOn());
-        muiza.setPlayerHeight(TmpParamData.getInstance().getPlayerHeight());
-        muiza.setPlayerIsFullscreen(TmpParamData.getInstance().isPlayerIsFullscreen());
-        muiza.setPlayerIsPaused(TmpParamData.getInstance().isPlayerIsPaused());
-        muiza.setPlayerLanguageCode(TmpParamData.getInstance().getPlayerLanguageCode());
-        muiza.setPlayerName(Constants.PLAYER_NAME);
-        muiza.setPlayerPlayheadTime(TmpParamData.getInstance().getPlayerPlayheadTime());
-        muiza.setPlayerPreloadOn(TmpParamData.getInstance().getPlayerPreloadOn());
-        muiza.setPlayerSequenceNumber(TmpParamData.getInstance().getPlayerSequenceNumber());
-        muiza.setPlayerSoftwareName(TmpParamData.getInstance().getPlayerSoftwareName());
-        muiza.setPlayerSoftwareVersion(TmpParamData.getInstance().getPlayerSoftwareVersion());
-        muiza.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
-        muiza.setPlayerWidth(TmpParamData.getInstance().getPlayerWidth());
-        muiza.setSessionExpires(System.currentTimeMillis() + 5 * 60 * 1000);
-        muiza.setSessionId(TmpParamData.getInstance().getSessionId());
-        muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
-        //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
-        muiza.setViewId(UZOsUtil.getDeviceId(context));
-        muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
-        muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
-        muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
-        muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
-        muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
-        muiza.setViewerDeviceName(android.os.Build.MODEL);
-        muiza.setViewerOsArchitecture(UZOsUtil.getViewerOsArchitecture());
-        muiza.setViewerOsFamily(ANDROID + Build.VERSION.RELEASE);
-        muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
-        muiza.setViewerTime(System.currentTimeMillis());
-        muiza.setViewerUserId(UZOsUtil.getDeviceId(context));
-        muiza.setAppId(getAppId());
-        muiza.setReferrer(TmpParamData.getInstance().getReferrer());
-        muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
-        muiza.setPlayerId(String.valueOf(currentPlayerId));
-        muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
-        muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
-        muiza.setSessionStart(TmpParamData.getInstance().getSessionStart());
-        muiza.setPlayerViewCount(TmpParamData.getInstance().getPlayerViewCount());
-        muiza.setViewStart(TmpParamData.getInstance().getViewStart());
-        muiza.setViewWatchTime(TmpParamData.getInstance().getViewWatchTime());
-        muiza.setViewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame());
-        muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewStart() + TmpParamData.getInstance().getViewWatchTime());
-        muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewTimeToFirstFrame() + (TmpParamData.getInstance().getPlayerInitTime() - TmpParamData.getInstance().getTimeFromInitEntityIdToAllApiCalledSuccess()));
-        muiza.setEvent(event);
+        muizaBuilder.entityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl())
+                .entityProducer(TmpParamData.getInstance().getEntityProducer())
+                .entitySeries(TmpParamData.getInstance().getEntitySeries())
+                .entitySourceDomain(TmpParamData.getInstance().getEntitySourceDomain())
+                .entitySourceDuration(TmpParamData.getInstance().getEntitySourceDuration())
+                .entitySourceHeight(TmpParamData.getInstance().getEntitySourceHeight())
+                .entitySourceHostname(TmpParamData.getInstance().getEntitySourceHostname())
+                .entitySourceIsLive(isLivestream())
+                .entitySourceMimeType(TmpParamData.getInstance().getEntitySourceMimeType())
+                .entitySourceUrl(TmpParamData.getInstance().getEntitySourceUrl())
+                .entitySourceWidth(TmpParamData.getInstance().getEntitySourceWidth())
+                .entityStreamType(TmpParamData.getInstance().getEntityStreamType())
+                .entityVariantId(TmpParamData.getInstance().getEntityVariantId())
+                .entityVariantName(TmpParamData.getInstance().getEntityVariantName())
+                .pageType(PAGE_TYPE)
+                .pageUrl(TmpParamData.getInstance().getPageUrl())
+                .playerAutoplayOn(TmpParamData.getInstance().isPlayerAutoplayOn())
+                .playerHeight(TmpParamData.getInstance().getPlayerHeight())
+                .playerIsFullscreen(TmpParamData.getInstance().isPlayerIsFullscreen())
+                .playerIsPaused(TmpParamData.getInstance().isPlayerIsPaused())
+                .playerLanguageCode(TmpParamData.getInstance().getPlayerLanguageCode())
+                .playerName(Constants.PLAYER_NAME)
+                .playerPlayheadTime(TmpParamData.getInstance().getPlayerPlayheadTime())
+                .playerPreloadOn(TmpParamData.getInstance().getPlayerPreloadOn())
+                .playerSequenceNumber(TmpParamData.getInstance().getPlayerSequenceNumber())
+                .playerSoftwareName(TmpParamData.getInstance().getPlayerSoftwareName())
+                .playerSoftwareVersion(TmpParamData.getInstance().getPlayerSoftwareVersion())
+                .playerVersion(Constants.PLAYER_SDK_VERSION)
+                .playerWidth(TmpParamData.getInstance().getPlayerWidth())
+                .sessionExpires(System.currentTimeMillis() + 5 * 60 * 1000)
+                .sessionId(TmpParamData.getInstance().getSessionId())
+                .timestamp(UzDateTimeUtil.getCurrent(UzDateTimeUtil.FORMAT_1))
+                .viewId(UZOsUtil.getDeviceId(context))
+                .viewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber())
+                .viewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine())
+                .viewerApplicationName(TmpParamData.getInstance().getViewerApplicationName())
+                .viewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion())
+                .viewerDeviceManufacturer(android.os.Build.MANUFACTURER)
+                .viewerDeviceName(android.os.Build.MODEL)
+                .viewerOsArchitecture(UZOsUtil.getViewerOsArchitecture())
+                .viewerOsFamily(ANDROID + Build.VERSION.RELEASE)
+                .viewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT)
+                .viewerTime(System.currentTimeMillis())
+                .viewerUserId(UZOsUtil.getDeviceId(context))
+                .appId(getAppId())
+                .referrer(TmpParamData.getInstance().getReferrer())
+                .pageLoadTime(TmpParamData.getInstance().getPageLoadTime())
+                .playerId(String.valueOf(currentPlayerId))
+                .playerInitTime(TmpParamData.getInstance().getPlayerInitTime())
+                .playerStartupTime(TmpParamData.getInstance().getPlayerStartupTime())
+                .sessionStart(TmpParamData.getInstance().getSessionStart())
+                .playerViewCount(TmpParamData.getInstance().getPlayerViewCount())
+                .viewStart(TmpParamData.getInstance().getViewStart())
+                .viewWatchTime(TmpParamData.getInstance().getViewWatchTime())
+                .viewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame())
+                .viewAggregateStartupTime(TmpParamData.getInstance().getViewStart()
+                        + TmpParamData.getInstance().getViewWatchTime())
+                .viewAggregateStartupTotalTime(TmpParamData.getInstance().getViewTimeToFirstFrame()
+                        + (TmpParamData.getInstance().getPlayerInitTime()
+                        - TmpParamData.getInstance().getTimeFromInitEntityIdToAllApiCalledSuccess()))
+                .event(event);
         switch (event) {
             case Constants.MUIZA_EVENT_ERROR:
                 if (e != null) {
-                    muiza.setPlayerErrorCode(e.getErrorCode());
-                    muiza.setPlayerErrorMessage(e.getMessage());
+                    muizaBuilder.playerErrorCode(e.getErrorCode())
+                            .playerErrorMessage(e.getMessage());
                 }
                 break;
             case Constants.MUIZA_EVENT_SEEKING:
             case Constants.MUIZA_EVENT_SEEKED:
-                muiza.setViewSeekCount(TmpParamData.getInstance().getViewSeekCount());
-                muiza.setViewSeekDuration(TmpParamData.getInstance().getViewSeekDuration());
-                muiza.setViewMaxSeekTime(TmpParamData.getInstance().getViewMaxSeekTime());
+                muizaBuilder.viewSeekCount(TmpParamData.getInstance().getViewSeekCount())
+                        .viewSeekDuration(TmpParamData.getInstance().getViewSeekDuration())
+                        .viewMaxSeekTime(TmpParamData.getInstance().getViewMaxSeekTime());
                 break;
             case Constants.MUIZA_EVENT_REBUFFERSTART:
             case Constants.MUIZA_EVENT_REBUFFEREND:
-                muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
-                muiza.setViewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
+                muizaBuilder.viewRebufferCount(TmpParamData.getInstance().getViewRebufferCount())
+                        .viewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
                 if (TmpParamData.getInstance().getViewWatchTime() == 0) {
-                    muiza.setViewRebufferFrequency(0);
-                    muiza.setViewRebufferPercentage(0);
+                    muizaBuilder.viewRebufferFrequency(0f).viewRebufferPercentage(0f);
                 } else {
-                    muiza.setViewRebufferFrequency(((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
-                    muiza.setViewRebufferPercentage(((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                    muizaBuilder.viewRebufferFrequency(
+                            ((float) TmpParamData.getInstance().getViewRebufferCount()
+                                    / (float) TmpParamData.getInstance().getViewWatchTime()))
+                            .viewRebufferPercentage(
+                                    ((float) TmpParamData.getInstance().getViewRebufferDuration()
+                                            / (float) TmpParamData.getInstance()
+                                            .getViewWatchTime()));
                 }
                 break;
         }
-        muizaList.add(muiza);
+        muizaList.add(muizaBuilder.build());
     }
     //==================================================================================================================END TRACKING
 
@@ -457,7 +457,7 @@ public class UZData {
     }
 
     //start singleton data if play playlist folder
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int currentPositionOfDataList = 0;
 
     /**
@@ -468,11 +468,11 @@ public class UZData {
         return dataList != null;
     }
 
-    public void setDataList(List<Data> dataList) {
+    public void setDataList(List<VideoData> dataList) {
         this.dataList = dataList;
     }
 
-    public List<Data> getDataList() {
+    public List<VideoData> getDataList() {
         return dataList;
     }
 
@@ -484,7 +484,7 @@ public class UZData {
         this.currentPositionOfDataList = currentPositionOfDataList;
     }
 
-    public Data getDataWithPositionOfDataList(int position) {
+    public VideoData getDataWithPositionOfDataList(int position) {
         if (dataList == null || dataList.isEmpty() || dataList.get(position) == null) {
             return null;
         }
@@ -497,7 +497,7 @@ public class UZData {
     }
     //end singleton data if play playlist folder
 
-    public Data getData() {
+    public VideoData getData() {
         if (uzInput == null) {
             return null;
         }

@@ -15,13 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
+import io.uiza.core.view.LToast;
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.helper.utils.KeyboardUtils;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.views.LToast;
 
 public class FrmLogin extends Fragment implements View.OnClickListener, IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -50,8 +50,8 @@ public class FrmLogin extends Fragment implements View.OnClickListener, IOnBackP
         tvDontHaveAcc.setOnClickListener(this);
         tvLogin.setOnClickListener(this);
 
-        LUIUtil.setTextViewUnderLine(tvForgotPw);
-        LUIUtil.setTextViewUnderLine(tvDontHaveAcc);
+        UzDisplayUtil.setTextViewUnderLine(tvForgotPw);
+        UzDisplayUtil.setTextViewUnderLine(tvDontHaveAcc);
 
         //view.findViewById(R.id.iv_close_activity).setOnClickListener(this);
 

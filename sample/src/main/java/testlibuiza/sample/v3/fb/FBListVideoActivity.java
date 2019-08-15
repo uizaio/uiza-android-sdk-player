@@ -9,24 +9,24 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import io.uiza.core.api.UzApiMaster;
+import io.uiza.core.api.UzServiceApi;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.api.response.BasePaginationResponse;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.api.util.ApiSubscriber;
+import io.uiza.core.util.constant.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FBListVideoActivity extends AppCompatActivity {
     private Activity activity;
     private final String TAG = getClass().getSimpleName();
-    private List<Data> dataList = new ArrayList<>();
+    private List<VideoData> dataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;
     private CardView cvPlaylistFolder;
@@ -58,7 +58,7 @@ public class FBListVideoActivity extends AppCompatActivity {
         });
         fbVideoAdapter = new FBVideoAdapter(activity, dataList, new FBVideoAdapter.Callback() {
             @Override
-            public void onClick(Data data, int position) {
+            public void onClick(VideoData data, int position) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
@@ -107,25 +107,28 @@ public class FBListVideoActivity extends AppCompatActivity {
     }
 
     private void listAllEntity() {
-        UZService service = UZRestClient.createService(UZService.class);
+        UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         String metadataId = "";
         int limit = 50;
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                dataList.addAll(result.getData());
-                cvPlaylistFolder.setVisibility(View.VISIBLE);
-                fbVideoAdapter.notifyDataSetChanged();
-                findViewById(R.id.pb).setVisibility(View.GONE);
-            }
+        UzApiMaster.getInstance().subscribe(
+                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
+                        page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
+                    @Override
+                    public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
+                        dataList.addAll(response.getData());
+                        cvPlaylistFolder.setVisibility(View.VISIBLE);
+                        fbVideoAdapter.notifyDataSetChanged();
+                        findViewById(R.id.pb).setVisibility(View.GONE);
+                    }
 
-            @Override
-            public void onFail(Throwable e) {
-            }
-        });
+                    @Override
+                    public void onFail(Throwable e) {
+                    }
+                });
     }
 
     @Override

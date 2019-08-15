@@ -4,8 +4,8 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
+import io.uiza.core.util.constant.Constants;
 import java.util.Locale;
-import vn.uiza.core.common.Constants;
 
 final class UZPlayerHelper {
     private static final String PLAYER_STATE_FORMAT = "playWhenReady:%s playbackState:%s window:%s";

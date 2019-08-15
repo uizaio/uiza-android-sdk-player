@@ -13,16 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import io.uiza.core.api.response.linkplay.LinkPlay;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.exception.UzException;
+import io.uiza.core.util.UzDisplayUtil;
 import uiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     private final String TAG = getClass().getSimpleName();
@@ -94,8 +94,8 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
+        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, linkPlay, data);
         if (isInitSuccess) {
             setListener();
             //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
@@ -118,7 +118,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
@@ -137,7 +137,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UzException e) {
         if (e == null) {
             return;
         }

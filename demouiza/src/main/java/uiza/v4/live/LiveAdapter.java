@@ -12,26 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzImageUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
 import uiza.R;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
     private int lastPosition = -1;
     private Context context;
     private Callback callback;
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int sizeH;
 
-    public LiveAdapter(Context context, List<Data> dataList, Callback callback) {
+    public LiveAdapter(Context context, List<VideoData> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
-        this.sizeH = LScreenUtil.getScreenWidth() * 9 / 16;
+        this.sizeH = UzDisplayUtil.getScreenWidth() * 9 / 16;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
 
     @Override
     public void onBindViewHolder(final DataHolder holder, final int position) {
-        final Data data = dataList.get(position);
+        final VideoData data = dataList.get(position);
 
         holder.cardView.getLayoutParams().height = sizeH;
         holder.cardView.requestLayout();
@@ -60,8 +59,8 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
         }
 
         holder.tvTitle.setText(data.getName());
-        LUIUtil.setTextShadow(holder.tvTitle);
-        LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
+        UzDisplayUtil.setTextShadow(holder.tvTitle);
+        UzImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
         if (data.getMode() == null) {
             holder.ivLivestream.setVisibility(View.GONE);
         } else {
@@ -109,11 +108,11 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
     }
 
     public interface Callback {
-        public void onClick(Data data, int position);
+        public void onClick(VideoData data, int position);
 
-        public void onClickLivestream(Data data, int position);
+        public void onClickLivestream(VideoData data, int position);
 
-        public void onLongClick(Data data, int position);
+        public void onLongClick(VideoData data, int position);
 
         public void onLoadMore();
     }

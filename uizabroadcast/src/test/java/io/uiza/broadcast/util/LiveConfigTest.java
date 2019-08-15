@@ -4,6 +4,8 @@ import static org.mockito.Mockito.times;
 
 import android.content.Context;
 import io.uiza.broadcast.config.LiveConfig;
+import io.uiza.core.api.client.UzRestClient;
+import io.uiza.core.util.UzCoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +13,10 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.utils.util.Utils;
+import io.uiza.core.util.constant.Constants;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({UZRestClient.class, Utils.class})
+@PrepareForTest({UzRestClient.class, UzCoreUtil.class})
 public class LiveConfigTest {
 
     private static final int API_VERSION_4 = 4;
@@ -27,7 +27,7 @@ public class LiveConfigTest {
     @Before
     public void setup() {
         // Mock the static instances
-        PowerMockito.mockStatic(UZRestClient.class, Utils.class);
+        PowerMockito.mockStatic(UzRestClient.class, UzCoreUtil.class);
     }
 
     @Test
@@ -40,10 +40,10 @@ public class LiveConfigTest {
         LiveConfig.initWorkspace(context, API_VERSION_4, domainApi, token, appId);
 
         // To verify these below static methods are called if all params are correct
-        PowerMockito.verifyStatic(Utils.class, times(1));
-        Utils.init(context);
-        PowerMockito.verifyStatic(UZRestClient.class, times(1));
-        UZRestClient.init(Constants.PREFIXS + domainApi, token);
+        PowerMockito.verifyStatic(UzCoreUtil.class, times(1));
+        UzCoreUtil.init(context);
+        PowerMockito.verifyStatic(UzRestClient.class, times(1));
+        UzRestClient.init(Constants.PREFIXS + domainApi, token);
     }
 
     @Test(expected = NullPointerException.class)

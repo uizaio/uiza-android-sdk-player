@@ -13,26 +13,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzImageUtil;
+import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.constant.Constants;
 import java.util.List;
 import uiza.R;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHolder> {
     private int lastPosition = -1;
     private Context context;
     private Callback callback;
-    private List<Data> dataList;
+    private List<VideoData> dataList;
     private int sizeH;
 
-    public EntitiesAdapter(Context context, List<Data> dataList, Callback callback) {
+    public EntitiesAdapter(Context context, List<VideoData> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
-        this.sizeH = LScreenUtil.getScreenWidth() * 9 / 16;
+        this.sizeH = UzDisplayUtil.getScreenWidth() * 9 / 16;
     }
 
     @Override
@@ -43,16 +42,16 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
 
     @Override
     public void onBindViewHolder(final DataHolder holder, final int position) {
-        final Data data = dataList.get(position);
+        final VideoData data = dataList.get(position);
 
         holder.cardView.getLayoutParams().height = sizeH;
         holder.cardView.requestLayout();
 
         holder.tvTitle.setText(data.getName());
-        LUIUtil.setTextShadow(holder.tvTitle);
+        UzDisplayUtil.setTextShadow(holder.tvTitle);
         String stt = data.getPublishToCdn() + "";
         holder.tvStatus.setText(stt);
-        LUIUtil.setTextShadow(holder.tvStatus);
+        UzDisplayUtil.setTextShadow(holder.tvStatus);
         if (stt.equals(Constants.SUCCESS)) {
             holder.tvStatus.setTextColor(Color.GREEN);
         } else if (stt.equals(Constants.NOT_READY)) {
@@ -61,7 +60,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
             holder.tvStatus.setTextColor(Color.RED);
         }
 
-        LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
+        UzImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +92,9 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
     }
 
     public interface Callback {
-        public void onClick(Data data, int position);
+        public void onClick(VideoData data, int position);
 
-        public void onLongClick(Data data, int position);
+        public void onLongClick(VideoData data, int position);
 
         public void onLoadMore();
     }

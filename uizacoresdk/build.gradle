@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    api project(':uizabase')
+    api project(':uizacore')
     //need for ima Ad https://stackoverflow.com/questions/31833479/didnt-find-class-com-google-android-gms-ads-identifier-advertisingidclient
     compileOnly 'com.google.android.gms:play-services-ads:17.1.3'
     compileOnly 'com.google.android.exoplayer:exoplayer:2.9.5'
