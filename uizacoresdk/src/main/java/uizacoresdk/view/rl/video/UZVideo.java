@@ -1732,6 +1732,10 @@ public class UZVideo extends RelativeLayout
         ibVolumeIcon = uzPlayerView.findViewById(R.id.exo_volume);
         ibSettingIcon = uzPlayerView.findViewById(R.id.exo_setting);
         ibCcIcon = uzPlayerView.findViewById(R.id.exo_cc);
+
+        //FIXME: currently, subtitle is not supported for v3
+        ViewUtils.goneViews(ibCcIcon);
+
         ibPlaylistFolderIcon = uzPlayerView.findViewById(R.id.exo_playlist_folder);
         ibHearingIcon = uzPlayerView.findViewById(R.id.exo_hearing);
         ibPictureInPictureIcon = uzPlayerView.findViewById(R.id.exo_picture_in_picture);
