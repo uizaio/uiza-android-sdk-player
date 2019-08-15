@@ -2934,6 +2934,12 @@ public class UZVideo extends RelativeLayout
     private long timestampInitDataSource;
 
     private void initDataSource(String linkPlay, String urlIMAAd, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAds) {
+
+        if (subtitleList == null || subtitleList.isEmpty()) {
+            // hide the cc (subtitle) button
+            ViewUtils.goneViews(ibCcIcon);
+        }
+
         timestampInitDataSource = System.currentTimeMillis();
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         TmpParamData.getInstance().setEntitySourceUrl(linkPlay);
