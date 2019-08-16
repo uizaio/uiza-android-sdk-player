@@ -254,7 +254,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
+                if (!frmVideoTop.getUZVideo().isCasting()) {
                     draggablePanel.setEnableSlide(true);
                 }
             }
@@ -280,8 +280,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
-                    } else {
+                    if (frmVideoTop.getUZVideo() == null || !frmVideoTop.getUZVideo().isCasting()) {
                         if (frmVideoTop.getUZVideo().isLandscape()) {
                             frmVideoTop.getUZVideo().toggleFullscreen();
                         } else {
@@ -312,14 +311,13 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
-                        } else {
-                            if (frmVideoTop.getUZVideo().isLandscape()) {
-                                frmVideoTop.getUZVideo().toggleFullscreen();
-                            } else {
-                                draggablePanel.minimize();
-                            }
-                        }
+                        if (frmVideoTop.getUZVideo() == null || !frmVideoTop.getUZVideo().isCasting()) {
+                                    if (frmVideoTop.getUZVideo().isLandscape()) {
+                                        frmVideoTop.getUZVideo().toggleFullscreen();
+                                    } else {
+                                        draggablePanel.minimize();
+                                    }
+                                }
                         return;
                     }
                 }

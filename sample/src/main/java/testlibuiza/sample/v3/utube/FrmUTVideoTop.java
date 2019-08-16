@@ -16,13 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.github.rubensousa.previewseekbar.PreviewView;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.CallbackUZTimebar;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZTimeBarChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -33,7 +32,8 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
+public class FrmUTVideoTop extends Fragment
+        implements UZItemClickListener, UZVideoStateChangedListener, UZPlayerStateChangedListener {
     private final String TAG = getClass().getSimpleName();
     private CustomSkinCodeUZTimebarUTubeWithSlideActivity activity;
     private UZVideo uzVideo;
@@ -46,9 +46,10 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.addUZCallback(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -79,13 +80,15 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
             public void onSwipeTop() {
             }
         });
-        uzVideo.addCallbackUZTimebar(new CallbackUZTimebar() {
+        uzVideo.setUzTimeBarChangedListener(new UZTimeBarChangedListener() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
+
             }
 
             @Override
             public void onStopPreview(PreviewView previewView, int progress) {
+
             }
 
             @Override
@@ -93,9 +96,9 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
                 setAutoHideController();
             }
         });
-        uzVideo.addItemClick(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.setPlayerControllerAlwayVisible();
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        shadow = uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
@@ -106,7 +109,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         activity = (CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity();
         return inflater.inflate(R.layout.ut_frm_top, container, false);
     }
@@ -142,7 +146,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         activity.isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setAutoHideController();
@@ -150,20 +155,43 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    activity.getDraggablePanel().minimize();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                activity.getDraggablePanel().minimize();
+            }
         }
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
-            uzVideo.pauseVideo();
+            uzVideo.pause();
             activity.getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -174,14 +202,10 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         }
     }
 
-    @Override
-    public void onSkinChange() {
-    }
-
     public boolean isLandscape;
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         this.isLandscape = isLandscape;
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
@@ -199,13 +223,13 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     public void initEntity(String entityId) {
         hideController();
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
         hideController();
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 

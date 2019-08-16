@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
@@ -65,7 +64,10 @@ import java.util.List;
 import java.util.UUID;
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
 import uizacoresdk.interfaces.UZBufferCallback;
+import uizacoresdk.interfaces.UZVideoBufferChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
@@ -115,7 +117,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private long timestampPlayed;
 
     private ProgressCallback progressCallback;
+    private UZAdStateChangedListener uzAdStateChangedListener;
+    private UZVideoStateChangedListener uzVideoStateChangedListener;
     private UZBufferCallback bufferCallback;
+    private UZVideoBufferChangedListener uzVideoBufferChangedListener;
     private long mls = 0;
     private long duration = 0;
     private int percent = 0;
@@ -130,12 +135,33 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private ExoPlaybackException exoPlaybackException;
     private boolean isOnAdEnded;
 
+    /**
+     * @deprecated use {@link UZPlayerManager#setUzVideoStateChangedListener(UZVideoStateChangedListener)} or
+     * {@link UZPlayerManager#setUzAdStateChangedListener(UZAdStateChangedListener)} instead
+     */
+    @Deprecated
     public void setProgressCallback(ProgressCallback progressCallback) {
         this.progressCallback = progressCallback;
     }
 
+    public void setUzAdStateChangedListener(UZAdStateChangedListener listener) {
+        this.uzAdStateChangedListener = listener;
+    }
+
+    public void setUzVideoStateChangedListener(UZVideoStateChangedListener listener) {
+        this.uzVideoStateChangedListener = listener;
+    }
+
+    /**
+     * @deprecated use {@link UZPlayerManager#setUzVideoBufferChangedListener(UZVideoBufferChangedListener)} instead
+     */
+    @Deprecated
     public void setBufferCallback(UZBufferCallback bufferCallback) {
         this.bufferCallback = bufferCallback;
+    }
+
+    public void setUzVideoBufferChangedListener(UZVideoBufferChangedListener listener) {
+        this.uzVideoBufferChangedListener = listener;
     }
 
     public void initUZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd,
@@ -202,6 +228,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (progressCallback != null) {
                 progressCallback.onAdEnded();
             }
+            if (uzAdStateChangedListener != null) {
+                uzAdStateChangedListener.onAdEnded();
+            }
         }
     }
 
@@ -226,17 +255,22 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 if (isPlayingAd()) {
                     hideProgress();
                     uzVideo.setUseController(false);
-                    if (progressCallback != null) {
+                    if (progressCallback != null || uzAdStateChangedListener != null) {
                         VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
                         duration = (int) videoProgressUpdate.getDuration();
                         s = (int) (videoProgressUpdate.getCurrentTime()) + 1;//add 1 second
                         if (duration != 0) {
                             percent = (int) (s * 100 / duration);
                         }
-                        progressCallback.onAdProgress(s, (int) duration, percent);
+                        if (progressCallback != null) {
+                            progressCallback.onAdProgress(s, (int) duration, percent);
+                        }
+                        if (uzAdStateChangedListener != null) {
+                            uzAdStateChangedListener.onAdProgress(s, (int) duration, percent);
+                        }
                     }
                 } else {
-                    if (progressCallback != null && isPlayerValid()) {
+                    if ((progressCallback != null || uzVideoStateChangedListener != null) && isPlayerValid()) {
                         mls = getCurrentPosition();
                         duration = getDuration();
                         if (mls >= duration) {
@@ -246,13 +280,23 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             percent = (int) (mls * 100 / duration);
                         }
                         s = Math.round(mls / 1000.0f);
-                        progressCallback.onVideoProgress(mls, s, duration, percent);
+                        if (progressCallback != null) {
+                            progressCallback.onVideoProgress(mls, s, duration, percent);
+                        }
+                        if (uzVideoStateChangedListener != null) {
+                            uzVideoStateChangedListener.onVideoProgress(mls, s, duration, percent);
+                        }
                         //buffer changing
                         if (bufferPosition != uzVideo.getBufferedPosition()
                                 || bufferPercentage != uzVideo.getBufferedPercentage()) {
                             bufferPosition = uzVideo.getBufferedPosition();
                             bufferPercentage = uzVideo.getBufferedPercentage();
-                            progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                            if (progressCallback != null) {
+                                progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                            }
+                            if (uzVideoStateChangedListener != null) {
+                                uzVideoStateChangedListener.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                            }
                         }
                     }
                 }
@@ -431,6 +475,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected void resumeVideo() {
+        if (!isPlayerValid()) return;
         setPlayWhenReady(true);
         timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
@@ -511,7 +556,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected void hideProgress() {
-        if (uzVideo.isCastingChromecast()) {
+        if (uzVideo.isCasting()) {
             return;
         }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());
@@ -617,6 +662,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (progressCallback != null) {
                 progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
             }
+            if (uzVideoStateChangedListener != null) {
+                uzVideoStateChangedListener.onPlayerStateChanged(playWhenReady, playbackState);
+            }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerStateChanged(playWhenReady, playbackState);
             }
@@ -664,7 +712,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
-                uzVideo.pauseVideo();
+                uzVideo.pause();
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerError(error);
@@ -717,14 +765,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 uzVideo.audioListener.onVolumeChanged(volume);
             }
         }
-    }
-
-    protected int getVideoW() {
-        return videoW;
-    }
-
-    protected int getVideoH() {
-        return videoH;
     }
 
     private class UZVideoEventListener implements VideoListener {
@@ -830,6 +870,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    protected int getVideoW() {
+        return videoW;
+    }
+
+    protected int getVideoH() {
+        return videoH;
+    }
 
     protected void toggleVolumeMute(UZImageButton exoVolume) {
         if (!isPlayerValid() || exoVolume == null) {
@@ -842,6 +889,19 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             volumeToggle = getVolume();
             setVolume(0f);
             exoVolume.setSrcDrawableDisabledCanTouch();
+        }
+    }
+
+    protected void setMuted(boolean mute) {
+        if (!isPlayerValid()) {
+            return;
+        }
+
+        if (mute) {
+            volumeToggle = getVolume();
+            setVolume(0f);
+        } else {
+            setVolume(volumeToggle);
         }
     }
 
@@ -879,12 +939,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return playerHelper.seekTo(positionMs);
     }
 
-    //forward  10000mls
     protected void seekToForward(long forward) {
         playerHelper.seekToForward(forward);
     }
 
-    //next 10000mls
     protected void seekToBackward(long backward) {
         playerHelper.seekToBackward(backward);
     }
