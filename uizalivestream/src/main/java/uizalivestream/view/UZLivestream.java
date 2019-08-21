@@ -105,6 +105,7 @@ public class UZLivestream extends RelativeLayout
     private boolean isFromBackgroundTooLong;
     private boolean isLandscape;
     private CountDownTimer backgroundTimer;
+    private UzLiveVideoMode liveVideoMode = UzLiveVideoMode.MODE_DEFAULT;
 
     public void setCameraCallback(CameraCallback cameraCallback) {
         if (cameraHelper != null) {
@@ -226,7 +227,24 @@ public class UZLivestream extends RelativeLayout
             public void doAfter(int mls) {
                 try {
                     stopStream(); // make sure stop stream and start it again
-                    if (prepareAudio() && prepareVideo(isLandscape)) {
+                    boolean prepareVideo;
+                    switch (liveVideoMode) {
+                        case MODE_FULL_HD:
+                            prepareVideo = prepareVideoFullHD(isLandscape);
+                            break;
+                        case MODE_HD:
+                            prepareVideo = prepareVideoHD(isLandscape);
+                            break;
+                        case MODE_SD:
+                            prepareVideo = prepareVideoSD(isLandscape);
+                            break;
+                        case MODE_DEFAULT:
+                        default:
+                            prepareVideo = prepareVideo(isLandscape);
+                            break;
+                    }
+
+                    if (prepareAudio() && prepareVideo) {
                         startStream(getMainStreamUrl(), isSavedToDevice());
                     }
                 } catch (Exception ignored) {
@@ -559,6 +577,7 @@ public class UZLivestream extends RelativeLayout
 
     private boolean prepareVideoFullHD(boolean isLandscape) {
         this.isLandscape = isLandscape;
+        this.liveVideoMode = UzLiveVideoMode.MODE_FULL_HD;
         return cameraHelper.prepareVideoFullHD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
@@ -572,6 +591,7 @@ public class UZLivestream extends RelativeLayout
 
     private boolean prepareVideoHD(boolean isLandscape) {
         this.isLandscape = isLandscape;
+        this.liveVideoMode = UzLiveVideoMode.MODE_HD;
         return cameraHelper.prepareVideoHD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
@@ -585,6 +605,7 @@ public class UZLivestream extends RelativeLayout
 
     private boolean prepareVideoSD(boolean isLandscape) {
         this.isLandscape = isLandscape;
+        this.liveVideoMode = UzLiveVideoMode.MODE_SD;
         return cameraHelper.prepareVideoSD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
@@ -844,5 +865,16 @@ public class UZLivestream extends RelativeLayout
 
     public interface StartPreview {
         void onSizeStartPreview(int width, int height);
+    }
+
+    private enum UzLiveVideoMode {
+        /** Live video Full HD. */
+        MODE_FULL_HD,
+        /** Live video HD. */
+        MODE_HD,
+        /** Live video SD. */
+        MODE_SD,
+        /** Live video default, bitrate depends on Network quality */
+        MODE_DEFAULT
     }
 }
