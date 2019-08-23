@@ -22,10 +22,10 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/
     }  
     dependencies {  
         // for playing VOD, LIVE video  
-        implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[latest-release-number]'        
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizaplayer:[latest-release-number]'        
         
         // for broadcasting / live streaming
-        implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[latest-release-number]'  
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizabroadcast:[latest-release-number]'  
     }
 
 Get latest release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
@@ -33,12 +33,12 @@ Get latest release number [HERE](https://github.com/uizaio/uiza-android-sdk-play
 If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will need to import dependencies:
 
     // for playing VOD, LIVE video
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:4.0.9'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizaplayer:4.0.9'
     implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.5'
 
-- Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
+- Additionally, if you want to use the ChromeCast feature, add the following dependencies to your project:
 
         // for ChromeCast
         implementation 'com.android.support:mediarouter-v7:28.0.0'
@@ -57,7 +57,7 @@ If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will nee
 If you are using uiza_android_sdk_player (Version < 4.0.9), you only need to import dependencies:
 
     // for playing video VOD, LIVE, ChromeCast and advertising support
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:X.X.X'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizaplayer:X.X.X'
 
 ***Please note if your project uses firebase***:
 **firebase-core** & **firebase-database** ... should be same version:
@@ -79,7 +79,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, Constants.API_VERSION_4, api, token, appId);
+                UzPlayerConfig.initWorkspace(this, Constants.API_VERSION_4, api, token, appId);
             }
      }
      ```
@@ -93,16 +93,19 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
 ## How to call API?:
 Call api by using this function
 
-    UZService service = UZRestClient.createService(UZService.class);
-    UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
-        @Override
-        public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-        }
+    UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
+    UzApiMaster.getInstance().subscribe(service.getLinkPlayLive(appId, streamName),
+                new ApiSubscriber<BaseResponse<LinkPlay>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<LinkPlay> response) {
+                        LinkPlay linkplay = response.getData();
+                    }
 
-        @Override
-        public void onFail(Throwable e) {
-        }
-    });
+                    @Override
+                    public void onFail(Throwable e) {
+                        showError(e.getMessage());
+                    }
+                });
   Other API can be used with the same function above.
 
 **API doc**
@@ -114,8 +117,8 @@ This class help you know how to use all Uiza API, please refer to
 ## How to play the video?:
 **XML**
 
-    <uizacoresdk.view.rl.video.UZVideo
-      android:id="@id/uiza_video"
+    <io.uiza.player.UzPlayer
+      android:id="@id/uiza_player"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
 
@@ -123,7 +126,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends AppCompatActivity implements UZCallback {
+    public class MainActivity extends AppCompatActivity implements UzPlayerEventListener {
        ...
     }
 Manifest
@@ -136,42 +139,42 @@ In your `activity` or `fragment`
 
 - Play with entity:
     ```
-    uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-    uzVideo.setUZCallback(this);
-    UZUtil.initEntity(activity, uzVideo, "put the entity id here");
+    uzPlayer = (UzPlayer) findViewById(R.id.uiza_player);
+    uzPlayer.setUzPlayerEventListener(this);
+    UzPlayerConfig.initVodEntity(uzPlayer, entityId /*put the entity id here*/);
     ```
 - Play with playlist/folder:
     ```
-    UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
+    UzPlayerConfig.initPlaylistFolder(uzPlayer, metadataId /*put the playlist metadata id here*/);
     ```
 - Play with livestream entity:
     ```
-    UZUtil.initLiveEntity(activity, uzVideo, "put the livestream entity id here");
+    UzPlayerConfig.initLiveEntity(uzPlayer, entityId /*put the entity id here*/);
     ```
 
 Don't forget to add in activity life cycle event:
 
     @Override
     public void onDestroy() {
-        uzVideo.onDestroy();
+        uzPlayer.onDestroy();
         super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        uzVideo.onResume();
+        uzPlayer.onResume();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        uzVideo.onPause();
+        uzPlayer.onPause();
         super.onPause();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -179,12 +182,26 @@ If you wanna listen all events of SDK, check the [sample here](https://github.co
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample)
 
+- Fullscreen Player support
+  
+  In `AndroidManifest.xml`
+  
+  ```xml
+  <activity android:name=".PortraitFullScreenActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+  ```
+  In your activity
+  ```
+  uzPlayer.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT); // optional
+  uzPlayer.init("78ded059-a268-44e8-8b39-115612c69187");
+  uzPlayer.setFreeSize(true); // must be set this line
+  ```
 **More information for AndroidTV, AndroidBox:**
 
 You can use this SDK for `AndroidTV`, `AndroidBox` as well, but limited some features.
 We also provide some functions for `AndroidTV` like:
 
-    uzVideo.addUZTVCallback(this); // listen event onFocusChange of components.
+    uzPlayer.setUzPlayerTvListener(this); // listen event onFocusChange of components.
 
 Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sampletv) for more details.
 
@@ -206,34 +223,34 @@ Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://g
 **Step 3:**
 On function `onCreate()` of `Activity`, put this code:
 
-    UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+    UzPlayerConfig.setCurrentSkinRes(R.layout.uiza_controller_skin_custom_main); 
 
 Ex:
 
     @Override  
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+        UzPlayerConfig.setCurrentSkinRes(R.layout.uiza_controller_skin_custom_main);  
         super.onCreate(savedInstanceState);
     }
 
-**Note:** If you are using Chromecast, please use UZUtil.setCasty(Activity activity) on function onCreate() of Activity
+**Note:** If you are using ChromeCast, please use UZUtil.setCasty(Activity activity) on function onCreate() of Activity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        UzPlayerConfig.setCasty(this);
+        UzPlayerConfig.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
     }
 
 Ex: findView from your custom layout:
 
-    TextView tvSample = uzVideo.findViewById(R.id.tv_sample);
+    TextView tvSample = uzPlayer.findViewById(R.id.tv_sample);
 
 That's enough! This code above will change the player's skin quickly. You can build and run your app now.
 
 But if you wanna change the player's skin when the player is playing, please you this function:
 
-    uzVideo.changeSkin(R.layout.uiza_controller_skin_custom_main);
+    uzPlayer.changeSkin(R.layout.uiza_controller_skin_custom_main);
 
 This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample/src/main/java/testlibuiza/sample/v3/customskin)
 
@@ -262,7 +279,7 @@ In `onCreate()`:
 
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-    uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);  
+    uzLivestream = (UzLivestream) findViewById(R.id.uiza_livestream);  
     uzLivestream.setUzLivestreamCallback(this);
     
 
@@ -274,7 +291,7 @@ In `onResume()`:
         super.onResume();  
     }
 
-Then put this line on `surfaceChanged(UZLivestream.StartPreview startPreview);`
+Then put this line on `surfaceChanged(UzLivestream.StartPreview startPreview);`
 
     int[] result = uzLivestream.getBestSizePreview();  
     int width = result[0];  
@@ -356,7 +373,7 @@ For a given use case, we aim to support UizaSDK on all Android devices that sati
 **Note:** Some Android emulators do not properly implement components of Android’s media stack, and as a result do not support UizaSDK. This is an issue with the emulator, not with UizaSDK. Android’s official emulator (“Virtual Devices” in Android Studio) supports UizaSDK provided the system image has an API level of at least 23. System images with earlier API levels do not support UizaSDK. The level of support provided by third party emulators varies. Issues running UizaSDK on third party emulators should be reported to the developer of the emulator rather than to the UizaSDK team. Where possible, we recommend testing media applications on physical devices rather than emulators.
 
 ## Error message
-Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/uizabase/src/main/java/vn/uiza/core/exception/UZException.java) you can know error code and error message when use UizaSDK.
+Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/uizabase/src/main/java/io/uiza/core/exception/UzException.java) you can know error code and error message when use UizaSDK.
 
 ## Support
 
