@@ -177,6 +177,19 @@
             android:textColor="@color/White"
             android:textSize="@dimen/txt_18" />
 
+        <TextView
+            android:id="@+id/tv_broadcast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/w_60"
+            android:paddingRight="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_5"
+            android:singleLine="true"
+            android:text="Broadcast"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/w_1"

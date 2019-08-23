@@ -146,12 +146,12 @@ public class UzPlayerConfig {
         UzPlayerData.setIsInitPlaylistFolder(context, false);
     }
 
-    private static void playCustomLinkPlay(final UzPlayer uzVideo, final CustomLinkPlay linkPlay) {
+    private static void playCustomLinkPlay(final UzPlayer uzPlayer, final CustomLinkPlay linkPlay) {
         UzPlayerData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
+        uzPlayer.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initCustomLinkPlay(linkPlay.getLinkPlay(), linkPlay.isLivestream());
+                uzPlayer.initCustomLinkPlay(linkPlay.getLinkPlay(), linkPlay.isLivestream());
             }
         });
     }
@@ -219,15 +219,15 @@ public class UzPlayerConfig {
         UzCustomLinkPlayData.getInstance().clearCustomLinkData();
     }
 
-    private static void play(final UzPlayer uzVideo, final String entityId, final boolean isLive) {
+    private static void play(final UzPlayer uzPlayer, final String entityId, final boolean isLive) {
         UzPlayerData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
+        uzPlayer.post(new Runnable() {
             @Override
             public void run() {
                 if (isLive) {
-                    uzVideo.initLiveEntity(entityId);
+                    uzPlayer.initLiveEntity(entityId);
                 } else {
-                    uzVideo.initVodEntity(entityId);
+                    uzPlayer.initVodEntity(entityId);
                 }
             }
         });
@@ -263,12 +263,12 @@ public class UzPlayerConfig {
         UzCustomLinkPlayData.getInstance().clearCustomLinkData();
     }
 
-    private static void playPlaylist(final UzPlayer uzVideo, final String metadataId) {
+    private static void playPlaylist(final UzPlayer uzPlayer, final String metadataId) {
         UzPlayerData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
+        uzPlayer.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initPlaylistFolder(metadataId);
+                uzPlayer.initPlaylistFolder(metadataId);
             }
         });
     }

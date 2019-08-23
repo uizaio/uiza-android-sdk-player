@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.uiza.moduledemouiza"
+        applicationId "com.uiza.demo"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 3

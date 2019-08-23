@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/WhiteSmoke"
     android:orientation="vertical"
-    tools:context="testlibuiza.sample.MainActivity">
+    tools:context=".uiza.sample.screen.MainActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll_view"

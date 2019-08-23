@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/LightGrey"
     android:orientation="vertical"
-    tools:context="testlibuiza.sample.MainActivity">
+    tools:context=".screen.MainActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll_view"
@@ -138,11 +138,6 @@
                     android:text="Demo Livestream"
                     android:textSize="@dimen/txt_30" />
 
-                <Button
-                    android:id="@+id/bt_livestream_broadcaster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Livestream (deprecated -  run module samplelivestream instead)" />
             </LinearLayout>
 
             <LinearLayout

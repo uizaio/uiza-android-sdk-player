@@ -46,7 +46,7 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
     }
 
     private void onAdEnded() {
-        if (!isOnAdEnded && uzVideo != null) {
+        if (!isOnAdEnded && uzPlayer != null) {
             isOnAdEnded = true;
             if (adEventListener != null) {
                 adEventListener.onAdEnded();
@@ -68,7 +68,7 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
+                if (uzPlayer == null || uzPlayer.getUzPlayerView() == null) {
                     return;
                 }
                 if (uzAdPlayerListener.isEnded()) {
@@ -79,8 +79,8 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
                 } else {
                     handleVideoProgress();
                 }
-                if (uzVideo.getDebugTextView() != null) {
-                    uzVideo.getDebugTextView().setText(getDebugString());
+                if (uzPlayer.getDebugTextView() != null) {
+                    uzPlayer.getDebugTextView().setText(getDebugString());
                 }
                 if (handler != null && runnable != null) {
                     handler.postDelayed(runnable, 1000);
@@ -93,7 +93,7 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
     private void handleAdProgress() {
         hideProgress();
         isOnAdEnded = false;
-        uzVideo.setUseController(false);
+        uzPlayer.setUseController(false);
         if (adEventListener != null) {
             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
             duration = (int) videoProgressUpdate.getDuration();
@@ -115,9 +115,9 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
             return;
         }
 
-        player = buildPlayer(drmSessionManager);
-        uzPlayerHelper = new UzPlayerHelper(player);
-        uzVideo.getUzPlayerView().setPlayer(player);
+        exoPlayer = buildPlayer(drmSessionManager);
+        uzPlayerHelper = new UzPlayerHelper(exoPlayer);
+        uzPlayer.getUzPlayerView().setPlayer(exoPlayer);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
         // merge title to media source video
@@ -131,9 +131,9 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
         if (adsLoader != null) {
             adsLoader.addCallback(uzAdPlayerListener);
         }
-        player.prepare(mediaSourceWithAds);
-        setPlayWhenReady(uzVideo.isAutoStart());
-        if (uzVideo.isLivestream()) {
+        exoPlayer.prepare(mediaSourceWithAds);
+        setPlayWhenReady(uzPlayer.isAutoStart());
+        if (uzPlayer.isLivestream()) {
             uzPlayerHelper.seekToDefaultPosition();
         } else {
             seekTo(contentPosition);
@@ -146,7 +146,7 @@ public final class UzPlayerManager extends UzPlayerManagerAbs implements
             return mediaSource;
         }
         return new AdsMediaSource(mediaSource, this, adsLoader,
-                uzVideo.getUzPlayerView().getOverlayFrameLayout(), null, null);
+                uzPlayer.getUzPlayerView().getOverlayFrameLayout(), null, null);
     }
 
     @Override

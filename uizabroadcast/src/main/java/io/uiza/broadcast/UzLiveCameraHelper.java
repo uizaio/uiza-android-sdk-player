@@ -13,9 +13,9 @@ import io.uiza.broadcast.config.UzPresetLiveFeed;
 import io.uiza.broadcast.util.UzLiveVideoMode;
 import io.uiza.core.util.LLog;
 import io.uiza.core.util.SentryUtil;
+import io.uiza.core.util.UzCoreUtil;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.connection.UzConnectivityUtil;
-import io.uiza.core.util.UzCoreUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -202,14 +202,21 @@ final class UzLiveCameraHelper {
         if (!isCameraValid()) {
             return false;
         }
-
+        if (width == -1 || height == -1) {
+            // just for testing purpose, calculate best width & height default
+            Camera.Size bestSize = getBestResolutionByNetwork(UzCoreUtil.getContext());
+            if (bestSize == null) {
+                return false;
+            }
+            width = bestSize.width;
+            height = bestSize.height;
+        }
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate
                 + ", fps: " + fps + ", frameInterval: " + frameInterval + ", rotation: " + rotation
                 + ", hardwareRotation: " + hardwareRotation);
         rtmpCamera1.startPreview(width, height);
-        return rtmpCamera1
-                .prepareVideo(width, height, fps, bitrate, hardwareRotation, frameInterval,
-                        rotation);
+        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation,
+                frameInterval, rotation);
     }
 
     void switchCamera() {

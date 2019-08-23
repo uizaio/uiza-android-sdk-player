@@ -601,9 +601,8 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
             LLog.e(TAG, "prepareVideo false because presetLiveFeed null");
             return false;
         }
-        return cameraHelper
-                .prepareVideo(width, height, fps, bitrate, hardwareRotation, frameInterval,
-                        rotation);
+        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation,
+                frameInterval, rotation);
     }
 
     private void startRecord() {

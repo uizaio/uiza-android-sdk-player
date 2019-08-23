@@ -104,11 +104,11 @@ import io.uiza.player.cast.UzChromeCast.CastListener;
 import io.uiza.player.interfaces.UzAdEventListener;
 import io.uiza.player.interfaces.UzItemClickListener;
 import io.uiza.player.interfaces.UzLiveInfoListener;
+import io.uiza.player.interfaces.UzPlayerBufferChangedListener;
 import io.uiza.player.interfaces.UzPlayerEventListener;
 import io.uiza.player.interfaces.UzPlayerTvListener;
 import io.uiza.player.interfaces.UzPlayerUiEventListener;
 import io.uiza.player.interfaces.UzTimeBarPreviewListener;
-import io.uiza.player.interfaces.UzPlayerBufferChangedListener;
 import io.uiza.player.mini.pip.PipHelper;
 import io.uiza.player.mini.pip.UzPipService;
 import io.uiza.player.util.ComunicateMsg;
@@ -2552,8 +2552,7 @@ public class UzPlayer extends RelativeLayout implements PreviewView.OnPreviewCha
         } else {
             if (isLivestream) {
                 UzUtilBase.getDataFromEntityIdLive(getContext(), getApiVersion(), getAppId(),
-                        entityId,
-                        new CallbackGetDetailEntity() {
+                        entityId, new CallbackGetDetailEntity() {
                             @Override
                             public void onSuccess(VideoData data) {
                                 handleDetailEntityResponse(data);
@@ -2640,32 +2639,32 @@ public class UzPlayer extends RelativeLayout implements PreviewView.OnPreviewCha
             handleDataCallApi();
         } else {
             UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
-            UzApiMaster.getInstance().subscribe(
-                    service.getCuePoint(getApiVersion(), entityId,
-                            getAppId()),
-                    new ApiSubscriber<BasePaginationResponse<List<Ad>>>() {
-                        @Override
-                        public void onSuccess(BasePaginationResponse<List<Ad>> response) {
-                            isCalledApiGetImaAdUrlTag = true;
-                            List<Ad> result = response.getData();
-                            if (result == null || result.isEmpty()) {
-                                imaAdsUrl = "";
-                            } else {
-                                //Hien tai chi co the play ima ad o item thu 0
-                                Ad ad = result.get(0);
-                                if (ad != null) {
-                                    imaAdsUrl = ad.getLink();
+            UzApiMaster.getInstance()
+                    .subscribe(service.getCuePoint(getApiVersion(), entityId, getAppId()),
+                            new ApiSubscriber<BasePaginationResponse<List<Ad>>>() {
+                                @Override
+                                public void onSuccess(BasePaginationResponse<List<Ad>> response) {
+                                    isCalledApiGetImaAdUrlTag = true;
+                                    List<Ad> result = response.getData();
+                                    if (result == null || result.isEmpty()) {
+                                        imaAdsUrl = "";
+                                    } else {
+                                        //Hien tai chi co the play ima ad o item thu 0
+                                        Ad ad = result.get(0);
+                                        if (ad != null) {
+                                            imaAdsUrl = ad.getLink();
+                                        }
+                                    }
+                                    handleDataCallApi();
                                 }
-                            }
-                            handleDataCallApi();
-                        }
 
-                        @Override
-                        public void onFail(Throwable e) {
-                            LLog.e(TAG, "callApiGetUrlImaAdTag onFail but ignored (dont care): "
-                                    + e.getMessage());
-                        }
-                    });
+                                @Override
+                                public void onFail(Throwable e) {
+                                    LLog.e(TAG,
+                                            "callApiGetUrlImaAdTag onFail but ignored (dont care): "
+                                                    + e.getMessage());
+                                }
+                            });
         }
     }
 
@@ -2790,22 +2789,21 @@ public class UzPlayer extends RelativeLayout implements PreviewView.OnPreviewCha
         }
 
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
-        UzApiMaster.getInstance()
-                .subscribe(service.getSubtitles(getApiVersion(),
-                        linkPlay.getEntityId(), linkPlay.getAppId()),
-                        new ApiSubscriber<BaseResponse<List<Subtitle>>>() {
-                            @Override
-                            public void onSuccess(BaseResponse<List<Subtitle>> response) {
-                                subtitleList.clear();
-                                subtitleList.addAll(response.getData());
-                                checkToSetUpResource();
-                            }
+        UzApiMaster.getInstance().subscribe(
+                service.getSubtitles(getApiVersion(), linkPlay.getEntityId(), linkPlay.getAppId()),
+                new ApiSubscriber<BaseResponse<List<Subtitle>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<Subtitle>> response) {
+                        subtitleList.clear();
+                        subtitleList.addAll(response.getData());
+                        checkToSetUpResource();
+                    }
 
-                            @Override
-                            public void onFail(Throwable e) {
-                                checkToSetUpResource();
-                            }
-                        });
+                    @Override
+                    public void onFail(Throwable e) {
+                        checkToSetUpResource();
+                    }
+                });
     }
 
     private void callApiUpdateLiveInfoCurrentView(final int durationDelay) {
@@ -2836,10 +2834,8 @@ public class UzPlayer extends RelativeLayout implements PreviewView.OnPreviewCha
                                                             response.getData().getWatchnow()));
                                                 }
                                                 if (uzLiveInfoListener != null) {
-                                                    uzLiveInfoListener
-                                                            .onCurrentViewUpdate(
-                                                                    response.getData()
-                                                                            .getWatchnow());
+                                                    uzLiveInfoListener.onCurrentViewUpdate(
+                                                            response.getData().getWatchnow());
                                                 }
                                             }
                                             callApiUpdateLiveInfoCurrentView(

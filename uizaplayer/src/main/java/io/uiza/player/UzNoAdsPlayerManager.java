@@ -10,9 +10,9 @@ import java.util.List;
 
 public final class UzNoAdsPlayerManager extends UzPlayerManagerAbs {
 
-    public UzNoAdsPlayerManager(final UzPlayer uzVideo, String linkPlay, String thumbnailsUrl,
+    public UzNoAdsPlayerManager(final UzPlayer uzPlayer, String linkPlay, String thumbnailsUrl,
             List<Subtitle> subtitleList) {
-        super(uzVideo, linkPlay, thumbnailsUrl, subtitleList);
+        super(uzPlayer, linkPlay, thumbnailsUrl, subtitleList);
         setRunnable();
     }
 
@@ -22,13 +22,13 @@ public final class UzNoAdsPlayerManager extends UzPlayerManagerAbs {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
+                if (uzPlayer == null || uzPlayer.getUzPlayerView() == null) {
                     return;
                 }
                 handleVideoProgress();
 
-                if (uzVideo.getDebugTextView() != null) {
-                    uzVideo.getDebugTextView().setText(getDebugString());
+                if (uzPlayer.getDebugTextView() != null) {
+                    uzPlayer.getDebugTextView().setText(getDebugString());
                 }
                 if (handler != null && runnable != null) {
                     handler.postDelayed(runnable, 1000);
@@ -43,13 +43,14 @@ public final class UzNoAdsPlayerManager extends UzPlayerManagerAbs {
         String drmScheme = Constants.DRM_SCHEME_NULL;
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager = buildDrmSessionManager(
                 drmScheme);
+        // TODO: currently, we still not support DRM
         if (drmScheme != Constants.DRM_SCHEME_NULL && drmSessionManager == null) {
             return;
         }
 
-        player = buildPlayer(drmSessionManager);
-        uzPlayerHelper = new UzPlayerHelper(player);
-        uzVideo.getUzPlayerView().setPlayer(player);
+        exoPlayer = buildPlayer(drmSessionManager);
+        uzPlayerHelper = new UzPlayerHelper(exoPlayer);
+        uzPlayer.getUzPlayerView().setPlayer(exoPlayer);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
         // merge title to media source video
@@ -57,9 +58,9 @@ public final class UzNoAdsPlayerManager extends UzPlayerManagerAbs {
         // Prepare the player with the source.
         addPlayerListener();
 
-        player.prepare(mediaSourceWithSubtitle);
-        setPlayWhenReady(uzVideo.isAutoStart());
-        if (uzVideo.isLivestream()) {
+        exoPlayer.prepare(mediaSourceWithSubtitle);
+        setPlayWhenReady(uzPlayer.isAutoStart());
+        if (uzPlayer.isLivestream()) {
             uzPlayerHelper.seekToDefaultPosition();
         } else {
             seekTo(contentPosition);

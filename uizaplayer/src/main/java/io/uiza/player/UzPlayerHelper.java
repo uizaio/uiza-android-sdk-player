@@ -15,45 +15,45 @@ final class UzPlayerHelper {
     private static final String IDLE = "idle";
     private static final String READY = "ready";
     private static final String UNKNOWN = "unknown";
-    private SimpleExoPlayer player;
+    private SimpleExoPlayer exoPlayer;
 
-    UzPlayerHelper(SimpleExoPlayer player) {
-        this.player = player;
+    UzPlayerHelper(SimpleExoPlayer exoPlayer) {
+        this.exoPlayer = exoPlayer;
     }
 
     boolean isPlayerValid() {
-        return player != null;
+        return exoPlayer != null;
     }
 
     void setPlayWhenReady(boolean ready) {
         if (isPlayerValid()) {
-            player.setPlayWhenReady(ready);
+            exoPlayer.setPlayWhenReady(ready);
         }
     }
 
     void release() {
         if (isPlayerValid()) {
-            player.release();
-            player = null;
+            exoPlayer.release();
+            exoPlayer = null;
         }
     }
 
     float getVolume() {
         if (isPlayerValid()) {
-            return player.getVolume();
+            return exoPlayer.getVolume();
         }
         return Constants.NOT_FOUND;
     }
 
     void setVolume(float value) {
         if (isPlayerValid()) {
-            player.setVolume(value);
+            exoPlayer.setVolume(value);
         }
     }
 
     boolean seekTo(long positionMs) {
         if (isPlayerValid()) {
-            player.seekTo(positionMs);
+            exoPlayer.seekTo(positionMs);
             return true;
         }
         return false;
@@ -61,7 +61,7 @@ final class UzPlayerHelper {
 
     void seekToDefaultPosition() {
         if (isPlayerValid()) {
-            player.seekToDefaultPosition();
+            exoPlayer.seekToDefaultPosition();
         }
     }
 
@@ -69,10 +69,10 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return;
         }
-        if (player.getCurrentPosition() + forward > player.getDuration()) {
-            player.seekTo(player.getDuration());
+        if (exoPlayer.getCurrentPosition() + forward > exoPlayer.getDuration()) {
+            exoPlayer.seekTo(exoPlayer.getDuration());
         } else {
-            player.seekTo(player.getCurrentPosition() + forward);
+            exoPlayer.seekTo(exoPlayer.getCurrentPosition() + forward);
         }
     }
 
@@ -80,10 +80,10 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return;
         }
-        if (player.getCurrentPosition() - backward > 0) {
-            player.seekTo(player.getCurrentPosition() - backward);
+        if (exoPlayer.getCurrentPosition() - backward > 0) {
+            exoPlayer.seekTo(exoPlayer.getCurrentPosition() - backward);
         } else {
-            player.seekTo(0);
+            exoPlayer.seekTo(0);
         }
     }
 
@@ -91,28 +91,28 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return 0;
         }
-        return player.getCurrentPosition();
+        return exoPlayer.getCurrentPosition();
     }
 
     long getDuration() {
         if (!isPlayerValid()) {
             return 0;
         }
-        return player.getDuration();
+        return exoPlayer.getDuration();
     }
 
     boolean isVod() {
         if (!isPlayerValid()) {
             return false;
         }
-        return !player.isCurrentWindowDynamic();
+        return !exoPlayer.isCurrentWindowDynamic();
     }
 
     boolean isLive() {
         if (!isPlayerValid()) {
             return false;
         }
-        return player.isCurrentWindowDynamic();
+        return exoPlayer.isCurrentWindowDynamic();
     }
 
     /**
@@ -123,7 +123,7 @@ final class UzPlayerHelper {
             return null;
         }
         String playbackStateString;
-        switch (player.getPlaybackState()) {
+        switch (exoPlayer.getPlaybackState()) {
             case Player.STATE_BUFFERING:
                 playbackStateString = BUFFERING;
                 break;
@@ -140,8 +140,8 @@ final class UzPlayerHelper {
                 playbackStateString = UNKNOWN;
                 break;
         }
-        return String.format(PLAYER_STATE_FORMAT, player.getPlayWhenReady(), playbackStateString,
-                player.getCurrentWindowIndex());
+        return String.format(PLAYER_STATE_FORMAT, exoPlayer.getPlayWhenReady(), playbackStateString,
+                exoPlayer.getCurrentWindowIndex());
     }
 
     /**
@@ -151,13 +151,13 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return null;
         }
-        Format format = player.getVideoFormat();
+        Format format = exoPlayer.getVideoFormat();
         if (format == null) {
             return "";
         }
         return "\n" + format.sampleMimeType + "(id:" + format.id + " r:" + format.width + "x"
                 + format.height + getPixelAspectRatioString(format.pixelWidthHeightRatio)
-                + getDecoderCountersBufferCountString(player.getVideoDecoderCounters()) + ")";
+                + getDecoderCountersBufferCountString(exoPlayer.getVideoDecoderCounters()) + ")";
     }
 
     String getDecoderCountersBufferCountString(DecoderCounters counters) {
@@ -182,7 +182,7 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return Constants.UNKNOWN;
         }
-        Format format = player.getVideoFormat();
+        Format format = exoPlayer.getVideoFormat();
         if (format == null) {
             return Constants.UNKNOWN;
         }
@@ -193,7 +193,7 @@ final class UzPlayerHelper {
         if (!isPlayerValid()) {
             return Constants.UNKNOWN;
         }
-        Format format = player.getVideoFormat();
+        Format format = exoPlayer.getVideoFormat();
         if (format == null) {
             return Constants.UNKNOWN;
         }
@@ -204,10 +204,10 @@ final class UzPlayerHelper {
      * Returns a string containing audio debugging information.
      */
     String getAudioString() {
-        if (player == null) {
+        if (exoPlayer == null) {
             return null;
         }
-        Format format = player.getAudioFormat();
+        Format format = exoPlayer.getAudioFormat();
         if (format == null) {
             return "";
         }
@@ -215,17 +215,17 @@ final class UzPlayerHelper {
                 + "(id:" + format.id
                 + " hz:" + format.sampleRate
                 + " ch:" + format.channelCount
-                + getDecoderCountersBufferCountString(player.getAudioDecoderCounters()) + ")";
+                + getDecoderCountersBufferCountString(exoPlayer.getAudioDecoderCounters()) + ")";
     }
 
     long getContentPosition() {
         if (!isPlayerValid()) {
             return 0;
         }
-        return player.getContentPosition();
+        return exoPlayer.getContentPosition();
     }
 
     SimpleExoPlayer getExoPlayer() {
-        return player;
+        return exoPlayer;
     }
 }

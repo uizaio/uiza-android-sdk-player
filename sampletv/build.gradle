@@ -3,7 +3,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "testlibuiza.uiza.com.sampletv"
+        applicationId "com.uiza.sampletv"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 5
