@@ -239,7 +239,11 @@ public class UZVideo extends RelativeLayout
     }
 
     private void resizeContainerView() {
-        setSize(getVideoW(), getVideoH());
+        if (!isFreeSize) {
+            setSize(getVideoW(), getVideoH());
+        } else {
+            setSize(this.getWidth(), this.getHeight());
+        }
     }
 
     private void startConectifyService() {
@@ -1455,7 +1459,7 @@ public class UZVideo extends RelativeLayout
         handleClickSkipPrevious();
     }
 
-    protected PlayerView getUzPlayerView() {
+    public PlayerView getUzPlayerView() {
         return uzPlayerView;
     }
 
@@ -2226,12 +2230,12 @@ public class UZVideo extends RelativeLayout
         }
     }
 
-    protected void showLayoutMsg() {
+    public void showLayoutMsg() {
         hideController();
         ViewUtils.visibleViews(rlMsg);
     }
 
-    protected void hideLayoutMsg() {
+    public void hideLayoutMsg() {
         ViewUtils.goneViews(rlMsg);
     }
 
