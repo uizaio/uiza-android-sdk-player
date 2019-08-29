@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'io.uiza'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+    }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+    compileOptions {
+        // from 2.9.0 need turn on Java 8 support https://exoplayer.dev/hello-world.html#turn-on-java-8-support
+        // https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#290
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    api project(':uizacore')
+    api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.2'
+    api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
+
+    // if you want to modify the version of these dependencies, check this link below
+    // https://github.com/powermock/powermock/wiki/Mockito
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.8.9"
+    testImplementation "org.mockito:mockito-inline:2.8.9"
+    testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.4'
+}

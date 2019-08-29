@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="direction">
+        <enum name="up" value="0" />
+        <enum name="right" value="1" />
+        <enum name="down" value="2" />
+        <enum name="left" value="3" />
+    </attr>
+
+    <attr name="uiza_scaleType">
+        <enum name="matrix" value="0" />
+        <enum name="fitXy" value="1" />
+        <enum name="fitStart" value="2" />
+        <enum name="fitCenter" value="3" />
+        <enum name="fitEnd" value="4" />
+        <enum name="center" value="5" />
+        <enum name="centerCrop" value="6" />
+        <enum name="centerInside" value="7" />
+    </attr>
+
+    <declare-styleable name="draggable_panel">
+        <attr name="top_fragment_height" format="dimension" />
+        <attr name="x_scale_factor" format="float" />
+        <attr name="y_scale_factor" format="float" />
+        <attr name="top_fragment_margin_right" format="dimension" />
+        <attr name="top_fragment_margin_bottom" format="dimension" />
+        <attr name="enable_horizontal_alpha_effect" format="boolean" />
+        <attr name="enable_click_to_maximize_panel" format="boolean" />
+        <attr name="enable_click_to_minimize_panel" format="boolean" />
+        <attr name="enable_touch_listener_panel" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="draggable_view">
+        <attr name="top_view_id" format="reference" />
+        <attr name="bottom_view_id" format="reference" />
+        <attr name="top_view_height" format="dimension" />
+        <attr name="top_view_x_scale_factor" format="float" />
+        <attr name="top_view_y_scale_factor" format="float" />
+        <attr name="top_view_margin_right" format="dimension" />
+        <attr name="top_view_margin_bottom" format="dimension" />
+        <attr name="enable_minimized_horizontal_alpha_effect" format="boolean" />
+        <attr name="enable_click_to_maximize_view" format="boolean" />
+        <attr name="enable_click_to_minimize_view" format="boolean" />
+        <attr name="top_view_resize" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MovieView">
+        <attr name="android:src" />
+        <attr name="android:title" />
+        <attr name="android:adjustViewBounds" />
+    </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="flFlow" format="boolean" />
+        <attr name="flChildSpacing" format="enum|dimension">
+            <enum name="auto" value="-65536" />
+        </attr>
+        <attr name="flMinChildSpacing" format="dimension" />
+        <attr name="flChildSpacingForLastRow" format="enum|dimension">
+            <enum name="auto" value="-65536" />
+            <enum name="align" value="-65537" />
+        </attr>
+        <attr name="flRowSpacing" format="enum|dimension">
+            <enum name="auto" value="-65536" />
+        </attr>
+        <attr name="flRtl" format="boolean" />
+        <attr name="flMaxRows" format="integer" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="UzVerticalSeekBar">
+        <attr name="seekBarRotation">
+            <!-- Clock wise - 90 deg; top = min, bottom = max -->
+            <enum name="CW90" value="90" />
+            <!-- Clock wise - 270 deg; bottom = min, top = max -->
+            <enum name="CW270" value="270" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="UzImageButton">
+        <attr name="useDefaultIB" format="boolean" />
+        <attr name="srcDisabled" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="UzTextView">
+        <attr name="useDefaultTV" format="boolean" />
+    </declare-styleable>
+</resources>

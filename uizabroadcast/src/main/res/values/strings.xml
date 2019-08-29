@@ -1,0 +1,8 @@
+<resources>
+    <string name="need_permission">Need Permissions</string>
+    <string name="this_app_needs_permission">This app needs permission to use this feature.</string>
+    <string name="this_app_needs_permission_grant_it">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="goto_settings">GOTO SETTINGS</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+</resources>

@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_5">
 
-            <vn.uiza.views.autosize.UZImageButton
+            <io.uiza.core.view.autosize.UzImageButton
                 android:id="@id/exo_hearing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_audiotrack_white_48" />
 
-            <vn.uiza.views.autosize.UZImageButton
+            <io.uiza.core.view.autosize.UzImageButton
                 android:id="@+id/uzib_custom_audio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_width="@dimen/w_25"
                 android:layout_height="@dimen/w_1" />
 
-            <vn.uiza.views.autosize.UZImageButton
+            <io.uiza.core.view.autosize.UzImageButton
                 android:id="@id/exo_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:layout_width="@dimen/w_25"
                 android:layout_height="@dimen/w_1" />
 
-            <vn.uiza.views.autosize.UZImageButton
+            <io.uiza.core.view.autosize.UzImageButton
                 android:id="@id/exo_fullscreen_toggle_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

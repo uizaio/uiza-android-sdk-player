@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.uiza.module.sample"
+        applicationId "com.uiza.sample"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 1
@@ -35,8 +35,8 @@ android {
 }
 
 dependencies {
-    api project(':uizacoresdk')
-    api project(':uizalivestream')
+    api project(':uizaplayer')
+    api project(':uizabroadcast')
 
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.1'

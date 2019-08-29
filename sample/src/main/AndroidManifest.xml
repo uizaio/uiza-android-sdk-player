@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="testlibuiza">
+    package="com.uiza.sample">
 
     <application
-        android:name=".app.LSApplication"
+        android:name=".LSApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,80 +12,73 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".sample.MainActivity">
+        <activity android:name=".screen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.v3.api.UZTestAPIActivity" />
+        <activity android:name=".screen.api.UZTestAPIActivity" />
         <!-- This is important to give configChanges in case you want full screen mode -->
-        <activity android:name=".sample.v3.fullscreen.PortraitFullScreenActivity"
+        <activity
+            android:name=".screen.fullscreen.PortraitFullScreenActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.uzv3.SetEntityIdActivity"
+            android:name=".screen.uzv3.SetEntityIdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.uzv3.UZPlayerActivity"
+            android:name=".screen.uzv3.UzPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.demoui.HomeCanSlideActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity android:name=".sample.guidecallapi.TestAPI" />
-        <activity
-            android:name=".sample.livestream.LivestreamBroadcasterActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".sample.v3.customskin.CustomSkinXMLActivity"
+            android:name=".screen.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinCodeSeekbarActivity"
+            android:name=".screen.customskin.CustomSkinXMLActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customhq.CustomHQActivity"
+            android:name=".screen.customskin.CustomSkinCodeSeekbarActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.linkplay.PlayerActivity"
+            android:name=".screen.customhq.CustomHQActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinCodeUZTimebarActivity"
+            android:name=".screen.linkplay.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.error.ErrorActivity"
+            android:name=".screen.customskin.CustomSkinCodeUzTimebarActivityListener"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.volume.VolumeActivity"
+            android:name=".screen.error.ErrorActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity"
+            android:name=".screen.volume.VolumeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.event.EventActivity"
+            android:name=".screen.utube.CustomSkinCodeUzTimebarUTubeActivityListener"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.ResizeActivity"
+            android:name=".screen.event.EventActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity"
+            android:name=".screen.customskin.ResizeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.fb.FBListVideoActivity"
+            android:name=".screen.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name=".screen.fb.FBListVideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".sample.v3.fb.FBVideoActivity"
+            android:name=".screen.fb.FBVideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.fb.MiniPlayerSettingActivity"
+            android:name=".screen.fb.MiniPlayerSettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".sample.v3.dummy.DummyActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".sample.v3.slide.Slide0Activity"
+            android:name=".screen.slide.Slide0Activity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 

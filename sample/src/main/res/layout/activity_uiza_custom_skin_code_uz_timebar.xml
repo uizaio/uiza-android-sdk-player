@@ -38,7 +38,7 @@
         </ScrollView>
     </LinearLayout>
 
-    <uizacoresdk.view.rl.video.UZVideo
+    <io.uiza.player.UzPlayer
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

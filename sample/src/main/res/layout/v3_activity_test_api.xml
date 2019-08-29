@@ -20,58 +20,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="User management" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/bt_create_an_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Create an user" />
-
-                    <Button
-                        android:id="@+id/bt_retrieve_an_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Retrieve an user" />
-
-                    <Button
-                        android:id="@+id/bt_list_all_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="List all user" />
-
-                    <Button
-                        android:id="@+id/bt_update_an_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Update an user" />
-
-                    <Button
-                        android:id="@+id/bt_delete_an_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Delete an user" />
-
-                    <Button
-                        android:id="@+id/bt_update_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Update password" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Metadata" />
 
             <HorizontalScrollView
@@ -89,29 +37,6 @@
                         android:layout_height="wrap_content"
                         android:text="Get list metadata" />
 
-                    <Button
-                        android:id="@+id/bt_create_metadata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Create metadata" />
-
-                    <Button
-                        android:id="@+id/bt_get_detail_of_metadata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Get detail of metadata metadata" />
-
-                    <Button
-                        android:id="@+id/bt_update_metadata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Update metadata" />
-
-                    <Button
-                        android:id="@+id/bt_delete_an_metadata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Delete an metadata" />
                 </LinearLayout>
             </HorizontalScrollView>
 

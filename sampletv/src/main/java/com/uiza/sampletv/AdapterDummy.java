@@ -1,0 +1,86 @@
+package com.uiza.sampletv;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import io.uiza.core.util.UzImageUtil;
+import java.util.List;
+
+public class AdapterDummy extends RecyclerView.Adapter<AdapterDummy.DummyHolder> {
+
+    private final String TAG = getClass().getSimpleName();
+    private List<Dummy> dummyList;
+    private Context context;
+    private Callback callback;
+
+    public interface Callback {
+
+        void onClickItem(Dummy dummy, int position);
+
+        void onFocusChange(Dummy dummy, int position);
+    }
+
+    public class DummyHolder extends RecyclerView.ViewHolder {
+
+        private ImageView ivCover;
+        private TextView tvName;
+        private LinearLayout rootView;
+
+        public DummyHolder(View view) {
+            super(view);
+            rootView = view.findViewById(R.id.root_view);
+            tvName = view.findViewById(R.id.tv_name);
+            ivCover = view.findViewById(R.id.iv_cover);
+        }
+    }
+
+    public AdapterDummy(Context context, List<Dummy> dummyList, Callback callback) {
+        this.context = context;
+        this.dummyList = dummyList;
+        this.callback = callback;
+    }
+
+    @NonNull
+    @Override
+    public DummyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.view_item_dummy, parent, false);
+        return new DummyHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final DummyHolder playListHolder, final int position) {
+        final Dummy dummy = dummyList.get(position);
+        playListHolder.tvName.setText(dummy.getName());
+        UzImageUtil
+                .load(context, dummy.getUrl(), playListHolder.ivCover, R.drawable.uiza_logo_mini);
+
+        playListHolder.rootView.setOnClickListener(v -> {
+            if (callback != null) {
+                callback.onClickItem(dummy, position);
+            }
+        });
+
+        playListHolder.rootView.setOnFocusChangeListener((view, isFocus) -> {
+            if (isFocus) {
+                playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
+            } else {
+                playListHolder.rootView.setBackgroundResource(0);
+            }
+            if (callback != null) {
+                callback.onFocusChange(dummy, position);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return dummyList == null ? 0 : dummyList.size();
+    }
+}
