@@ -205,4 +205,8 @@ public class Constants {
     public static final String TYPE_VTT = ".VTT";
     public static final String TYPE_SRT = ".SRT";
 
+    // Limit broadcast to full HD
+    public static final int BROADCAST_LIMIT_WIDTH = 1920;
+    public static final int BROADCAST_LIMIT_HEIGHT = 1080;
+
 }

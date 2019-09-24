@@ -17,6 +17,7 @@ import java.util.List;
 
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -234,7 +235,15 @@ final class RtmpCameraHelper {
             Log.e(TAG, "prepareVideo false -> bestSize == null");
             return false;
         }
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
+        return prepareVideo(
+            Math.min(bestSize.width, Constants.BROADCAST_LIMIT_WIDTH),
+            Math.min(bestSize.height, Constants.BROADCAST_LIMIT_HEIGHT),
+            30,
+            bestBitrate,
+            false,
+            1,
+            isLandscape ? 0 : 90
+        );
     }
 
     void switchCamera() {
