@@ -2,7 +2,7 @@ package uizacoresdk.chromecast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.MediaRouteButton;
+import androidx.mediarouter.app.MediaRouteButton;
 import android.view.Menu;
 
 class CastyNoOp extends Casty {

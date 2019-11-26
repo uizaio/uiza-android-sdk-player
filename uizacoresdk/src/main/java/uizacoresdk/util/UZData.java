@@ -3,6 +3,8 @@ package uizacoresdk.util;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.LayoutRes;
+
 import com.google.android.gms.cast.MediaTrack;
 
 import java.util.ArrayList;
@@ -51,7 +53,8 @@ public class UZData {
 
     private int currentPlayerId = R.layout.uz_player_skin_1;
 
-    public int getCurrentPlayerId() {
+    public @LayoutRes
+    int getCurrentPlayerId() {
         return currentPlayerId;
     }
 

@@ -3,12 +3,13 @@ package testlibuiza.sample.v3.fb;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.widget.NestedScrollView;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,6 @@ import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FBListVideoActivity extends AppCompatActivity {
     private Activity activity;
@@ -114,18 +113,13 @@ public class FBListVideoActivity extends AppCompatActivity {
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                dataList.addAll(result.getData());
-                cvPlaylistFolder.setVisibility(View.VISIBLE);
-                fbVideoAdapter.notifyDataSetChanged();
-                findViewById(R.id.pb).setVisibility(View.GONE);
-            }
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), resultListEntity -> {
+            dataList.addAll(resultListEntity.getData());
+            cvPlaylistFolder.setVisibility(View.VISIBLE);
+            fbVideoAdapter.notifyDataSetChanged();
+            findViewById(R.id.pb).setVisibility(View.GONE);
+        }, throwable -> {
 
-            @Override
-            public void onFail(Throwable e) {
-            }
         });
     }
 

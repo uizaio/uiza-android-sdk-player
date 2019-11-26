@@ -7,10 +7,11 @@ package uizacoresdk.view.floatview;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -43,10 +44,8 @@ import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FUZVideo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -322,23 +321,19 @@ public class FUZVideo extends RelativeLayout {
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityId);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
-            @Override
-            public void onSuccess(ResultGetTokenStreaming result) {
-                if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
-                    callbackGetLinkPlay.onSuccess(null);
-                    return;
-                }
-                String tokenStreaming = result.getData().getToken();
-                LLog.d(TAG, "tokenStreaming " + tokenStreaming);
-                callAPIGetLinkPlay(entityId, tokenStreaming, callbackGetLinkPlay);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
+        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), resultGetTokenStreaming -> {
+            if (resultGetTokenStreaming == null
+                    || resultGetTokenStreaming.getData() == null
+                    || resultGetTokenStreaming.getData().getToken() == null
+                    || resultGetTokenStreaming.getData().getToken().isEmpty()) {
                 callbackGetLinkPlay.onSuccess(null);
+                return;
             }
-        });
+            String tokenStreaming = resultGetTokenStreaming.getData().getToken();
+            LLog.d(TAG, "tokenStreaming " + tokenStreaming);
+            callAPIGetLinkPlay(entityId, tokenStreaming, callbackGetLinkPlay);
+
+        }, throwable -> callbackGetLinkPlay.onSuccess(null));
     }
 
     private void callAPIGetLinkPlay(String entityId, String tokenStreaming, final CallbackGetLinkPlay callbackGetLinkPlay) {
@@ -350,18 +345,10 @@ public class FUZVideo extends RelativeLayout {
         UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
         String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
-        UZAPIMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
-            @Override
-            public void onSuccess(ResultGetLinkPlay result) {
-                LLog.d(TAG, "getLinkPlayVOD onSuccess");
-                checkToSetUpResouce(result, callbackGetLinkPlay);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                callbackGetLinkPlay.onSuccess(null);
-            }
-        });
+        UZAPIMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), resultGetLinkPlay -> {
+            LLog.d(TAG, "getLinkPlayVOD onSuccess");
+            checkToSetUpResouce(resultGetLinkPlay, callbackGetLinkPlay);
+        }, throwable -> callbackGetLinkPlay.onSuccess(null));
     }
 
     private void checkToSetUpResouce(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
@@ -504,18 +491,11 @@ public class FUZVideo extends RelativeLayout {
             UZRestClientTracking.init(currentApiTrackingEndPoint);
         }
         UZService service = UZRestClientTracking.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object tracking) {
-                if (uizaTrackingCallback != null) {
-                    uizaTrackingCallback.onTrackingSuccess();
-                }
+        UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), tracking -> {
+            if (uizaTrackingCallback != null) {
+                uizaTrackingCallback.onTrackingSuccess();
             }
-
-            @Override
-            public void onFail(Throwable e) {
-                //TODO iplm if track fail
-            }
+        }, throwable -> {
         });
     }
 
@@ -527,28 +507,12 @@ public class FUZVideo extends RelativeLayout {
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
         String cdnName = cdnHost;
         String session = uuid;
-        UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                LLog.d(TAG, "pingHeartBeat onSuccess " + UZData.getInstance().getEntityName());
-                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        pingHeartBeat();
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
-                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        pingHeartBeat();
-                    }
-                });
-            }
+        UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), result -> {
+            LLog.d(TAG, "pingHeartBeat onSuccess " + UZData.getInstance().getEntityName());
+            LUIUtil.setDelay(10000, mls -> pingHeartBeat());
+        }, throwable -> {
+            LLog.e(TAG, "pingHeartBeat onFail: " + throwable.toString());
+            LUIUtil.setDelay(10000, mls -> pingHeartBeat());
         });
     }
 
@@ -565,27 +529,12 @@ public class FUZVideo extends RelativeLayout {
         uizaTrackingCCU.setSn(UZData.getInstance().getEntityName());
         uizaTrackingCCU.setDi(UZOsUtil.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
-        UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                LLog.d(TAG, "trackCCU success: " + UZData.getInstance().getEntityName());
-                LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        trackUizaCCUForLivestream();
-                    }
-                });
-            }
+        UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), result -> {
+            LLog.d(TAG, "trackCCU success: " + UZData.getInstance().getEntityName());
+            LUIUtil.setDelay(INTERVAL_TRACK_CCU, mls -> trackUizaCCUForLivestream());
 
-            @Override
-            public void onFail(Throwable e) {
-                LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        trackUizaCCUForLivestream();
-                    }
-                });
-            }
+        }, throwable -> {
+            LUIUtil.setDelay(INTERVAL_TRACK_CCU, mls -> trackUizaCCUForLivestream());
         });
     }
 
@@ -620,17 +569,9 @@ public class FUZVideo extends RelativeLayout {
         final List<Muiza> muizaListToTracking = new ArrayList<>(UZData.getInstance().getMuizaList());
         UZData.getInstance().clearMuizaList();
         UZService service = UZRestClientTracking.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                isTrackingMuiza = false;
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                isTrackingMuiza = false;
-                UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
-            }
+        UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), result -> isTrackingMuiza = false, throwable -> {
+            isTrackingMuiza = false;
+            UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
         });
     }
 

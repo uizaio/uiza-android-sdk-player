@@ -330,8 +330,8 @@ public class UZUtil {
 
     //=============================================================================START FOR UIZA V3
 
-    public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(context, entityId, callback);
+    public static void getDetailEntity(final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDetailEntity(entityId, callback);
     }
 
     public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {

@@ -19,7 +19,7 @@
         app:realtimeBlurRadius="@dimen/round_55"
         app:realtimeOverlayColor="@color/black_65" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +40,7 @@
                 android:textSize="@dimen/txt_15"
                 android:textStyle="bold" />
 
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -91,7 +91,7 @@
                 android:layout_margin="@dimen/margin_30"
                 android:background="@color/White" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/bt_start"

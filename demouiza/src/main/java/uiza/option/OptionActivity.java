@@ -78,12 +78,7 @@ public class OptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.uiza_option_activity);
         genListSkin();
-        findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSplashScreen();
-            }
-        });
+        findViewById(R.id.bt_start).setOnClickListener(v -> goToSplashScreen());
         //set auth null every run this app
         UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
         findViews();

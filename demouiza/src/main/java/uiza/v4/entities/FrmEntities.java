@@ -6,16 +6,17 @@ package uiza.v4.entities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,6 @@ import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
 public class FrmEntities extends Fragment implements IOnBackPressed {
@@ -121,39 +120,36 @@ public class FrmEntities extends Fragment implements IOnBackPressed {
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    tvMsg.setText(getString(R.string.empty_list));
-                    return;
-                }
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                }
-                LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + result.getData().size());
-                dataList.addAll(result.getData());
-                mAdapter.notifyDataSetChanged();
-                LDialogUtil.hide(pb);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), resultListEntity -> {
+            if (resultListEntity == null
+                    || resultListEntity.getMetadata() == null
+                    || resultListEntity.getData().isEmpty()) {
                 tvMsg.setVisibility(View.VISIBLE);
-                tvMsg.setText("onFail: " + e.getMessage());
-                LDialogUtil.hide(pb);
+                tvMsg.setText(getString(R.string.empty_list));
+                return;
             }
+            LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(resultListEntity));
+            if (totalPage == Integer.MAX_VALUE) {
+                int totalItem = (int) resultListEntity.getMetadata().getTotal();
+                float ratio = (float) (totalItem / limit);
+                if (ratio == 0) {
+                    totalPage = (int) ratio;
+                } else if (ratio > 0) {
+                    totalPage = (int) ratio + 1;
+                } else {
+                    totalPage = (int) ratio;
+                }
+            }
+            LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + resultListEntity.getData().size());
+            dataList.addAll(resultListEntity.getData());
+            mAdapter.notifyDataSetChanged();
+            LDialogUtil.hide(pb);
+
+        }, throwable -> {
+            LLog.e(TAG, "getListAllEntity onFail " + throwable.getMessage());
+            tvMsg.setVisibility(View.VISIBLE);
+            tvMsg.setText("onFail: " + throwable.getMessage());
+            LDialogUtil.hide(pb);
         });
     }
 

@@ -5,11 +5,6 @@ package uiza.v4.search;
  */
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +13,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,6 @@ import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
@@ -147,41 +146,32 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                if (result == null || result.getData().isEmpty()) {
-                    tv.setText(getString(R.string.empty_list));
-                    tv.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    tvMsg.setText(getString(R.string.empty_list));
-                    return;
-                }
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                }
-                LLog.d(TAG, "-> totalPage: " + totalPage);
-                dataList.addAll(result.getData());
-                mAdapter.notifyDataSetChanged();
+        UZAPIMaster.getInstance().subscribe(service.searchEntity(keyword), resultListEntity -> {
+            if (resultListEntity == null
+                    || resultListEntity.getMetadata() == null
+                    || resultListEntity.getData().isEmpty()) {
+                tvMsg.setVisibility(View.VISIBLE);
+                tvMsg.setText(getString(R.string.empty_list));
+                return;
             }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "search onFail " + e.toString());
-                tv.setText("Error search " + e.getMessage());
-                tv.setVisibility(View.VISIBLE);
+            if (totalPage == Integer.MAX_VALUE) {
+                int totalItem = (int) resultListEntity.getMetadata().getTotal();
+                float ratio = (float) (totalItem / limit);
+                if (ratio == 0) {
+                    totalPage = (int) ratio;
+                } else if (ratio > 0) {
+                    totalPage = (int) ratio + 1;
+                } else {
+                    totalPage = (int) ratio;
+                }
             }
+            LLog.d(TAG, "-> totalPage: " + totalPage);
+            dataList.addAll(resultListEntity.getData());
+            mAdapter.notifyDataSetChanged();
+        }, throwable -> {
+            LLog.e(TAG, "search onFail " + throwable.toString());
+            tv.setText("Error search " + throwable.getMessage());
+            tv.setVisibility(View.VISIBLE);
         });
     }
 

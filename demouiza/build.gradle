@@ -3,15 +3,14 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
     }
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
-        minSdkVersion 18
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 3
         versionName "1.0.3"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         renderscriptSupportModeEnabled true
         multiDexEnabled true
     }
@@ -50,7 +49,8 @@ android {
 dependencies {
     api project(':uizacoresdk')
     api project(':uizalivestream')
-
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.0.0'
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.4'
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.4'
 

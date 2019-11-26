@@ -73,7 +73,7 @@
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_live_time"
+            android:layout_toStartOf="@id/tv_live_time"
             android:background="@color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_timer_white_48" />
@@ -101,7 +101,7 @@
             android:id="@id/tv_live_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textColor="@color/White" />
     </RelativeLayout>

@@ -3,7 +3,7 @@ package uizacoresdk.view.rl.video;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.appcompat.app.MediaRouteButton;
+import androidx.mediarouter.app.MediaRouteButton;
 import android.util.AttributeSet;
 
 public class UZMediaRouteButton extends MediaRouteButton {

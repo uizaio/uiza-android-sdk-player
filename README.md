@@ -16,6 +16,8 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
 - [x] Using [androidx](https://developer.android.com/jetpack/androidx?gclid=Cj0KCQiAt_PuBRDcARIsAMNlBdq2Il2bTw2XtIrq_PWMWQY7SA3WQdaGTqod6HUvGE_eTJ0RiBVMnC4aAhFWEALw_wcB)
 - [x] Java 8
 
+> NineOldAndroids has been removed since v5.0. Thanks Jake Wharton.
+
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**
 

@@ -44,7 +44,7 @@
         android:textColor="@color/White"
         android:textSize="@dimen/txt_18" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_switch_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         app:elevation="@dimen/w_1"
         app:fabSize="mini" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

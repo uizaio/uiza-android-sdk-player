@@ -427,7 +427,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             return mediaSource;
         }
         return new AdsMediaSource(mediaSource, this, adsLoader,
-                uzVideo.getUzPlayerView().getOverlayFrameLayout(), null, null);
+                uzVideo.getUzPlayerView());
     }
 
     protected void resumeVideo() {

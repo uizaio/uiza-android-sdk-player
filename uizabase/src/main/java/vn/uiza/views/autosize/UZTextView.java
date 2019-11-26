@@ -3,9 +3,9 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.widget.TextView;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
@@ -15,7 +15,7 @@ import vn.uiza.core.utilities.LUIUtil;
  * Created by loitp on 4/19/2018.
  */
 
-public class UZTextView extends AppCompatTextView {
+public class UZTextView extends TextView {
     private final String TAG = getClass().getSimpleName();
     private boolean isUseDefault;
     private boolean isLandscape;

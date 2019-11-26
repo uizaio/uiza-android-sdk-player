@@ -1,1 +1,1 @@
-include ':uizabase', ':uizalivestream', ':samplelivestream'
+include ':uizabase', ':uizalivestream', ':uizacoresdk' , ':samplelivestream', ':demouiza', ':sample'

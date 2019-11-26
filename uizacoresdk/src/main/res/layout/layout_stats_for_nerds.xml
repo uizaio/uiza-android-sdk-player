@@ -12,7 +12,7 @@
         android:gravity="end"
         android:orientation="vertical"
         >
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/video_format"
@@ -20,7 +20,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Video Format"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/audio_format"
@@ -28,7 +28,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Audio Format"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_connection_speed"
@@ -36,7 +36,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Connection Speed"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_buffer_health"
@@ -44,7 +44,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Buffer Health"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_network_activity"
@@ -52,7 +52,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Network Activity"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_volume"
@@ -60,7 +60,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Volume"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_viewport_frames"
@@ -68,7 +68,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Viewport / Frames"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_current_optimal_res"
@@ -76,7 +76,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Current / Optimal Res"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_entity_id"
@@ -84,7 +84,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Video Entity ID"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_host"
@@ -92,7 +92,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="Host"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_sdk_player_api_version"
@@ -100,7 +100,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="SDK / Player / API Version"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stat_os_device_info"
@@ -117,7 +117,7 @@
         android:layout_toEndOf="@+id/ln_layout_title"
         android:orientation="vertical"
         >
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_video_format"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="video/avc 1280x720@30"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_audio_format"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="audio/mp4a-latm 48000Hz"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_connection_speed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="44420 Kbps"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_buffer_health"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="48.48 s"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_network_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="0 KB"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
             tools:text="50%"
             />
 
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_viewport_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="806x453*2.00 / 0 dropped of 184"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_current_optimal_res"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="806x453 / 1280x720"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_entity_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="c62a5409-0e8a-4b11-8e0d-c58c43d81b60"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_host"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="https://uiza.io"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_versions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
             android:textSize="@dimen/sp_12"
             tools:text="3.16.0 / 2.9.5 / 3.0"
             />
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:id="@+id/text_device_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

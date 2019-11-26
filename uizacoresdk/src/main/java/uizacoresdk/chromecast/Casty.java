@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
-import androidx.appcompat.app.MediaRouteButton;
+import androidx.mediarouter.app.MediaRouteButton;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;

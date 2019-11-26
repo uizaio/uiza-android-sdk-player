@@ -6,16 +6,17 @@ package uiza.v4.categories;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,6 @@ import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
 public class FrmCategories extends Fragment implements IOnBackPressed {
@@ -106,35 +105,33 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
         tvMsg.setVisibility(View.GONE);
         LUIUtil.showProgressBar(pb);
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
-            @Override
-            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty() || resultGetListMetadata.getMetadata() == null) {
-                    tvMsg.setText("Error ResultGetListMetadata is null or empty");
-                    LUIUtil.hideProgressBar(pb);
-                    return;
-                }
-                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
-
-                int total = (int) resultGetListMetadata.getMetadata().getTotal();
-                if (total / limit == 0) {
-                    totalPage = total / limit;
-                } else {
-                    totalPage = total / limit + 1;
-                }
-                LLog.d(TAG, "totalPage " + totalPage);
-
-                dataList.addAll(resultGetListMetadata.getData());
-                mAdapter.notifyDataSetChanged();
+        UZAPIMaster.getInstance().subscribe(service.getListMetadata(limit, currentPage), resultGetListMetadata -> {
+            if (resultGetListMetadata == null
+                    || resultGetListMetadata.getData() == null
+                    || resultGetListMetadata.getData().isEmpty()
+                    || resultGetListMetadata.getMetadata() == null) {
+                tvMsg.setText("Error ResultGetListMetadata is null or empty");
                 LUIUtil.hideProgressBar(pb);
+                return;
             }
+            LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                tvMsg.setText("Error ResultGetListMetadata: " + e.getMessage());
-                LUIUtil.hideProgressBar(pb);
+            int total = (int) resultGetListMetadata.getMetadata().getTotal();
+            if (total / limit == 0) {
+                totalPage = total / limit;
+            } else {
+                totalPage = total / limit + 1;
             }
+            LLog.d(TAG, "totalPage " + totalPage);
+
+            dataList.addAll(resultGetListMetadata.getData());
+            mAdapter.notifyDataSetChanged();
+            LUIUtil.hideProgressBar(pb);
+
+        }, throwable -> {
+            LLog.e(TAG, "getListAllMetadata onFail " + throwable.getMessage());
+            tvMsg.setText("Error ResultGetListMetadata: " + throwable.getMessage());
+            LUIUtil.hideProgressBar(pb);
         });
     }
 

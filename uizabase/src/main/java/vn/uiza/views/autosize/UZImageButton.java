@@ -5,8 +5,8 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.widget.AppCompatImageButton;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
@@ -18,7 +18,7 @@ import vn.uiza.utils.util.ConvertUtils;
  * Created by loitp on 2/27/2019.
  */
 
-public class UZImageButton extends AppCompatImageButton {
+public class UZImageButton extends ImageButton {
     private final String TAG = getClass().getSimpleName();
 
     public UZImageButton(Context context) {
