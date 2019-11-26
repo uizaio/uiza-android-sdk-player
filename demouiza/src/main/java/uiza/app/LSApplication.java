@@ -1,7 +1,7 @@
 package uiza.app;
 
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
 

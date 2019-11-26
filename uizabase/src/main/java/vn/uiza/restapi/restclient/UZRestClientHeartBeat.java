@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.DateTypeDeserializer;
@@ -37,7 +37,7 @@ public class UZRestClientHeartBeat {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.level(HttpLoggingInterceptor.Level.BODY);
 
         restRequestInterceptor = new RestRequestInterceptor();
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -54,7 +54,7 @@ public class UZRestClientHeartBeat {
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

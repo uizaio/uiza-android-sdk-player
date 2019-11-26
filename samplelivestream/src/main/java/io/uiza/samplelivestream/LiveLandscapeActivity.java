@@ -1,11 +1,11 @@
-package test.loitp.samplelivestream;
+package io.uiza.samplelivestream;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -69,8 +69,8 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_live_landscape);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        if (App.DF_DOMAIN_API.equals("input")) {
-            showToast("Please configure your workspace's information in App.java");
+        if (AppV5.DF_DOMAIN_API.equals("input")) {
+            showToast("Please configure your workspace's information in AppV5.java");
             return;
         }
         findViews();
@@ -351,7 +351,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
             bStartStopStore.setEnabled(true);
             btSwitchCamera.setEnabled(true);
             btFilter.setEnabled(true);
-            uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+            uzLivestream.setId(AppV5.entityIdDefaultLIVE_TRANSCODE);
         } else {
             showToast("Cannot use this feature because user does not allow our permissions");
             onBackPressed();

@@ -14,8 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -69,7 +69,6 @@ import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.AppUtils;
@@ -394,6 +393,11 @@ public class UZLivestream extends RelativeLayout
         stopPreview();
     }
 
+    @Override
+    public void onNewBitrateRtmp(long bitrate) {
+        Log.e("UZLivestream", "bitrate = " + bitrate);
+    }
+
     public void startStream(String streamUrl) {
         startStream(streamUrl, false);
     }
@@ -624,39 +628,33 @@ public class UZLivestream extends RelativeLayout
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                getDetailEntity(entityLiveId, false, null);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                Log.e(TAG, ">>>>>>startLivestream onFail " + e.toString() + ", " + e.getMessage());
+        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), object -> {
+            getDetailEntity(entityLiveId, false, null);
+        }, throwable -> {
+            Log.e(TAG, ">>>>>>startLivestream onFail " + throwable.toString() + ", " + throwable.getMessage());
+            try {
+                HttpException error = (HttpException) throwable;
+                String responseBody;
                 try {
-                    HttpException error = (HttpException) e;
-                    String responseBody;
-                    try {
-                        responseBody = error.response().errorBody().string();
-                        Log.e(TAG, "responseBody " + responseBody);
-                        ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                        getDetailEntity(entityLiveId, true, errorBody.getMessage());
-                    } catch (IOException e1) {
-                        Log.e(TAG, "startLivestream IOException catch " + e1.toString());
-                        getDetailEntity(entityLiveId, true, e1.getMessage());
-                        SentryUtils.captureException(e1);
-                    }
-                } catch (Exception ex) {
-                    Log.e(TAG, "startLivestream Exception catch " + ex.toString());
-                    getDetailEntity(entityLiveId, true, ex.getMessage());
-                    SentryUtils.captureException(ex);
+                    responseBody = error.response().errorBody().string();
+                    Log.e(TAG, "responseBody " + responseBody);
+                    ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
+                    getDetailEntity(entityLiveId, true, errorBody.getMessage());
+                } catch (IOException e1) {
+                    Log.e(TAG, "startLivestream IOException catch " + e1.toString());
+                    getDetailEntity(entityLiveId, true, e1.getMessage());
+                    SentryUtils.captureException(e1);
                 }
+            } catch (Exception ex) {
+                Log.e(TAG, "startLivestream Exception catch " + ex.toString());
+                getDetailEntity(entityLiveId, true, ex.getMessage());
+                SentryUtils.captureException(ex);
             }
         });
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
-        UZUtilBase.getDataFromEntityIdLIVE(getContext(), entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLIVE(entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {

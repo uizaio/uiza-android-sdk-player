@@ -19,7 +19,6 @@ import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 import static org.mockito.ArgumentMatchers.any;
 

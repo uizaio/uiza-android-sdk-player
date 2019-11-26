@@ -2,6 +2,7 @@ package vn.uiza.restapi.uiza;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -9,7 +10,6 @@ import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import rx.Observable;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;

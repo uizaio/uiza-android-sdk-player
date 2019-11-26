@@ -1,6 +1,6 @@
 package vn.uiza.utils.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.sentry.Sentry;
 import io.sentry.event.Event;
 import io.sentry.event.EventBuilder;

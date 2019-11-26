@@ -1,11 +1,11 @@
 package vn.uiza.restapi;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by loitp on 14/1/2019.
@@ -24,24 +24,20 @@ public class UZAPIMaster {
     private UZAPIMaster() {
     }
 
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public void destroy() {
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (!compositeDisposable.isDisposed() ) {
+            compositeDisposable.dispose();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void subscribe(Observable observable, Subscriber subscriber) {
+    public <T> void subscribe(Observable<T> observable, Consumer<? super T> onNext, Consumer<? super Throwable> onError) {
         //TODO maybe in some cases we don't need to check internet connection
-        /*if (!NetworkUtils.hasConnection(this)) {
-            subscriber.onError(new NoConnectionException());
-            return;
-        }*/
-        Subscription subscription = observable.subscribeOn(Schedulers.newThread())
+        Disposable disposable = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-        compositeSubscription.add(subscription);
+                .subscribe(onNext, onError);
+        compositeDisposable.add(disposable);
     }
 }

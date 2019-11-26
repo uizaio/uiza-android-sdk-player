@@ -3,12 +3,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.uizaio.uiza-android-sdk-player'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
 
@@ -33,12 +32,16 @@ android {
         //release & debug is in project animators
         //matchingFallbacks = ['release', 'debug']
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     api project(':uizabase')
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
-    api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
+    api "com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:$pedrosg94_version"
 
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito

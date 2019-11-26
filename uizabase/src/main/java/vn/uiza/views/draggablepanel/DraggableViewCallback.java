@@ -15,8 +15,8 @@
  */
 package vn.uiza.views.draggablepanel;
 
-import android.support.annotation.NonNull;
-import android.support.v4.widget.ViewDragHelper;
+import androidx.annotation.NonNull;
+import androidx.customview.widget.ViewDragHelper;
 import android.view.View;
 
 /**

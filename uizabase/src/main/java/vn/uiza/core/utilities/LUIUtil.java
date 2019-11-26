@@ -16,11 +16,11 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Handler;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.widget.SearchView;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -197,15 +197,15 @@ public class LUIUtil {
     }
 
     public static void removeUnderlineOfSearchView(SearchView searchView) {
-        View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        View v = searchView.findViewById(androidx.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
     public static SearchView customizeWhiteSearchView(SearchView searchView, Context context, String hintText) {
-        View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        View v = searchView.findViewById(androidx.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
 
-        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(Color.WHITE);
         searchEditText.setHintTextColor(ContextCompat.getColor(context, R.color.LightGrey));
 
@@ -222,7 +222,7 @@ public class LUIUtil {
         ssb.setSpan(new ImageSpan(searchIcon), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         searchEditText.setHint(ssb);
 
-        ImageView close = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        ImageView close = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         close.setImageResource(R.drawable.ic_close_black_48dp);
 
         return searchView;

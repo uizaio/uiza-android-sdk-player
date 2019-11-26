@@ -1,11 +1,15 @@
-package test.loitp.samplelivestream;
+package io.uiza.samplelivestream;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import uizalivestream.util.UZUtil;
 import vn.uiza.core.common.Constants;
 
-public class App extends MultiDexApplication {
+/**
+ * V5
+ */
+
+public class AppV5 extends MultiDexApplication {
     //TODO input information of your workspace
     public static final String DF_DOMAIN_API = "teamplayer-api.uiza.co";
     public static final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";

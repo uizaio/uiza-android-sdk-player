@@ -2,7 +2,7 @@ package vn.uiza.utils.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 import vn.uiza.BuildConfig;
