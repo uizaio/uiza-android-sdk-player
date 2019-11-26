@@ -10,6 +10,12 @@ Uiza is the complete toolkit for building a powerful video streaming application
 
 Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
 
+# Features:
+
+- [x] Android min API 21 (android 5.0).
+- [x] Using [androidx](https://developer.android.com/jetpack/androidx?gclid=Cj0KCQiAt_PuBRDcARIsAMNlBdq2Il2bTw2XtIrq_PWMWQY7SA3WQdaGTqod6HUvGE_eTJ0RiBVMnC4aAhFWEALw_wcB)
+- [x] Java 8
+
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**
 
@@ -297,7 +303,7 @@ If you are using proguard for your builds, please ensure these lines are in your
 
 ## Supported devices
 
-Support all devices which have ***Android 4.4 (API level 19) above.***
+Support all devices which have ***Android 5.0 (API level 21) above.***
 For a given use case, we aim to support UizaSDK on all Android devices that satisfy the minimum version requirement. 
 
 **Note:** Some Android emulators do not properly implement components of Android’s media stack, and as a result do not support UizaSDK. This is an issue with the emulator, not with UizaSDK. Android’s official emulator (“Virtual Devices” in Android Studio) supports UizaSDK provided the system image has an API level of at least 23. System images with earlier API levels do not support UizaSDK. The level of support provided by third party emulators varies. Issues running UizaSDK on third party emulators should be reported to the developer of the emulator rather than to the UizaSDK team. Where possible, we recommend testing media applications on physical devices rather than emulators.
