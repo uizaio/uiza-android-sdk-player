@@ -1,7 +1,5 @@
 package vn.uiza.restapi;
 
-import android.util.Log;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -13,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * @author hoangphu
@@ -33,7 +33,7 @@ public class DateTypeDeserializer implements JsonDeserializer<Date> {
             try {
                 return new SimpleDateFormat(format, Locale.getDefault()).parse(jsonElement.getAsString());
             } catch (ParseException e) {
-                Log.v(TAG, "Error when deserialize date");
+                Timber.v(e, "Error when deserialize date");
             }
         }
         throw new JsonParseException("Cant parse date: \"" + jsonElement.getAsString()

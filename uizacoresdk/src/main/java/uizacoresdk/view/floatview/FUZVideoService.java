@@ -144,29 +144,24 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
         tvMsg = mFloatingView.findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
-        tvMsg.setOnClickListener(new View.OnClickListener() {
+        tvMsg.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
-            public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
-                    @Override
-                    public void onCancel() {
-                    }
-
-                    @Override
-                    public void onEnd() {
-                        setupVideo();
-                    }
-
-                    @Override
-                    public void onRepeat() {
-                    }
-
-                    @Override
-                    public void onStart() {
-                    }
-                });
+            public void onCancel() {
             }
-        });
+
+            @Override
+            public void onEnd() {
+                setupVideo();
+            }
+
+            @Override
+            public void onRepeat() {
+            }
+
+            @Override
+            public void onStart() {
+            }
+        }));
 
         viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
         int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
@@ -258,7 +253,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);*/
         //OPTION 4
         //float view o ben ngoai screen cua device
-        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.gravity = Gravity.TOP | Gravity.START;
         params.x = screenWidth - 1;
         params.y = screenHeight - 1;
 
@@ -270,28 +265,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void setControlsClickListener() {
         if (btExit != null) {
-            btExit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    stopSelf();
-                }
-            });
+            btExit.setOnClickListener(v -> stopSelf());
         }
         if (btFullScreen != null) {
-            btFullScreen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openApp();
-                }
-            });
+            btFullScreen.setOnClickListener(v -> openApp());
         }
         if (btPlayPause != null) {
-            btPlayPause.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleResumePause();
-                }
-            });
+            btPlayPause.setOnClickListener(v -> toggleResumePause());
         }
 
     }
@@ -864,16 +844,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 return;
             }
             //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
-            fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
-                @Override
-                public void onSuccess(String lp) {
-                    linkPlay = lp;
-                    if (linkPlay == null) {
-                        stopSelf();
-                    }
-                    contentPosition = 0;
-                    setupVideo();
+            fuzVideo.getLinkPlayOfNextItem(lp -> {
+                linkPlay = lp;
+                if (linkPlay == null) {
+                    stopSelf();
                 }
+                contentPosition = 0;
+                setupVideo();
             });
         } else {
             //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");

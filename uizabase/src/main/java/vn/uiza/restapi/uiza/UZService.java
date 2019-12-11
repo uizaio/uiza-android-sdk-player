@@ -110,7 +110,7 @@ public interface UZService {
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/{api_version}/media/entity")
     Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
-                                                  @Query("metadataId") String metadataid,
+                                                  @Query("metadataId") String metadataId,
                                                   @Query("limit") int limit,
                                                   @Query("page") int page,
                                                   @Query("orderBy") String orderBy,
@@ -121,14 +121,14 @@ public interface UZService {
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/{api_version}/media/entity")
     Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
-                                                  @Query("metadataId") String metadataid,
+                                                  @Query("metadataId") String metadataId,
                                                   @Query("limit") int limit,
                                                   @Query("page") int page);
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/{api_version}/media/entity")
     Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
-                                                  @Query("metadataId") String metadataid);
+                                                  @Query("metadataId") String metadataId);
 
     //http://dev-docs.uizadev.io/#retrieve-an-entity
     @GET("/api/public/{api_version}/media/entity")

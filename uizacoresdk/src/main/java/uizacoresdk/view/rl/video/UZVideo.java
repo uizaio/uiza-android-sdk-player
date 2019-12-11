@@ -58,7 +58,6 @@ import com.google.android.exoplayer2.video.VideoListener;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
-import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
 
 import org.greenrobot.eventbus.EventBus;
@@ -1430,14 +1429,12 @@ public class UZVideo extends RelativeLayout
         if (getPlayer() == null) {
             return;
         }
-        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(getContext(), getPlayer().getPlaybackParameters().speed, new UZDlgSpeed.Callback() {
-            @Override
-            public void onSelectItem(UZDlgSpeed.Speed speed) {
-                if (speed != null) {
-                    setSpeed(speed.getValue());
-                }
-            }
-        });
+        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(getContext(), getPlayer().getPlaybackParameters().speed,
+                speed -> {
+                    if (speed != null) {
+                        setSpeed(speed.getValue());
+                    }
+                });
         UZUtil.showUizaDialog(getContext(), uzDlgSpeed);
     }
 
@@ -1911,13 +1908,10 @@ public class UZVideo extends RelativeLayout
         if (uzPlayerView == null || progressBar == null) {
             return;
         }
-        uzPlayerView.post(new Runnable() {
-            @Override
-            public void run() {
-                int marginL = uzPlayerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
-                int marginT = uzPlayerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
-            }
+        uzPlayerView.post(() -> {
+            int marginL = uzPlayerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
+            int marginT = uzPlayerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
+            LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
         });
     }
 
@@ -2305,20 +2299,12 @@ public class UZVideo extends RelativeLayout
             final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(getContext(), title, uzPlayerManager.getTrackSelector(), rendererIndex);
             dialogPair.second.setShowDisableOption(false);
             dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
-            dialogPair.second.setCallback(new UZTrackSelectionView.Callback() {
-                @Override
-                public void onClick() {
-                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            if (dialogPair == null || dialogPair.first == null) {
-                                return;
-                            }
-                            dialogPair.first.cancel();
-                        }
-                    });
+            dialogPair.second.setCallback(() -> LUIUtil.setDelay(300, mls -> {
+                if (dialogPair == null || dialogPair.first == null) {
+                    return;
                 }
-            });
+                dialogPair.first.cancel();
+            }));
             if (showDialog) {
                 UZUtil.showUizaDialog(getContext(), dialogPair.first);
             }
@@ -3092,12 +3078,8 @@ public class UZVideo extends RelativeLayout
         //track event view (after video is played 5s)
         if (s == (isLivestream ? 3 : 5)) {
             if (!UZTrackingUtil.isTrackedEventTypeView(getContext())) {
-                callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
-                    }
-                });
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW),
+                        () -> UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true));
             }
         }
         //dont track play_throught if entity is live
@@ -3185,12 +3167,8 @@ public class UZVideo extends RelativeLayout
             return;
         }
         if (!UZTrackingUtil.isTrackedEventTypeVideoStarts(getContext())) {
-            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIDEO_STARTS), new UZTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UZTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(getContext(), true);
-                }
-            });
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIDEO_STARTS),
+                    () -> UZTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(getContext(), true));
         }
     }
 
@@ -3200,12 +3178,8 @@ public class UZVideo extends RelativeLayout
             return;
         }
         if (!UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
-            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
-                }
-            });
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY),
+                    () -> UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true));
         }
     }
 
@@ -3215,12 +3189,8 @@ public class UZVideo extends RelativeLayout
             return;
         }
         if (!UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
-            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
-                }
-            });
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED),
+                    () -> UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true));
         }
     }
 
@@ -3248,12 +3218,7 @@ public class UZVideo extends RelativeLayout
     }
 
     private void rePingHeartBeat() {
-        LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                pingHeartBeat();
-            }
-        });
+        LUIUtil.setDelay(INTERVAL_HEART_BEAT, mls -> pingHeartBeat());
     }
 
     private final int INTERVAL_TRACK_CCU = 3000;
@@ -3282,12 +3247,7 @@ public class UZVideo extends RelativeLayout
     }
 
     private void reTrackUizaCCUForLivestream() {
-        LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                trackUizaCCUForLivestream();
-            }
-        });
+        LUIUtil.setDelay(INTERVAL_TRACK_CCU, mls -> trackUizaCCUForLivestream());
     }
 
     protected void addTrackingMuizaError(String event, UZException e) {
@@ -3474,17 +3434,14 @@ public class UZVideo extends RelativeLayout
         //play chromecast without screen control
         UZData.getInstance().getCasty().getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
 
-        UZData.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
-            @Override
-            public void onProgressUpdated(long currentPosition, long duration) {
-                if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
-                    hideProgress();
-                    isCastPlayerPlayingFirst = true;
-                }
+        UZData.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener((currentPosition, duration1) -> {
+            if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
+                hideProgress();
+                isCastPlayerPlayingFirst = true;
+            }
 
-                if (currentPosition > 0) {
-                    uzPlayerManager.seekTo(currentPosition);
-                }
+            if (currentPosition > 0) {
+                uzPlayerManager.seekTo(currentPosition);
             }
         }, 1000);
 

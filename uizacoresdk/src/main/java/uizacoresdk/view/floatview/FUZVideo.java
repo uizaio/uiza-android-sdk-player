@@ -510,20 +510,10 @@ public class FUZVideo extends RelativeLayout {
         RxBinder.getInstance().bind(service.pingHeartBeat(cdnName, session),
                 result -> {
                     Timber.d("pingHeartBeat onSuccess %s", UZData.getInstance().getEntityName());
-                    LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            pingHeartBeat();
-                        }
-                    });
+                    LUIUtil.setDelay(10000, mls -> pingHeartBeat());
                 }, throwable -> {
                     Timber.e(throwable, "pingHeartBeat onFail:");
-                    LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            pingHeartBeat();
-                        }
-                    });
+                    LUIUtil.setDelay(10000, mls -> pingHeartBeat());
                 });
     }
 
