@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 
+import timber.log.Timber;
 import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.data.EventBusData;
 
 /**
@@ -47,7 +47,7 @@ public class LConectifyService extends JobService implements ConnectivityReceive
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        LLog.d(TAG, "onNetworkConnectionChanged isConnected: " + isConnected);
+        Timber.d("onNetworkConnectionChanged isConnected: %b", isConnected);
         if (isConnected) {
             boolean isConnectedMobile = false;
             boolean isConnectedWifi = false;

@@ -2,6 +2,7 @@ package vn.uiza.restapi.uiza;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -10,12 +11,10 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
 import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;

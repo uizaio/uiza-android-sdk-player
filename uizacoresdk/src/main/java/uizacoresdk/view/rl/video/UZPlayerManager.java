@@ -15,9 +15,9 @@ import com.google.android.exoplayer2.source.ads.AdsMediaSource;
 
 import java.util.List;
 
+import timber.log.Timber;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 /**
@@ -37,7 +37,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
 
         if (urlIMAAd != null && !urlIMAAd.isEmpty()) {
             if (UZUtil.getClickedPip(context)) {
-                LLog.e(TAG, "UZPlayerManager don't init urlIMAAd because called from PIP again");
+                Timber.e( "UZPlayerManager don't init urlIMAAd because called from PIP again");
             } else {
                 adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
             }

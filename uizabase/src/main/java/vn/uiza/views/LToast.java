@@ -11,8 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
 import vn.uiza.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.utils.util.SentryUtils;
 
 public class LToast {
@@ -49,7 +49,7 @@ public class LToast {
             toast.show();
             toastList.add(toast);
         } catch (Exception e) {
-            LLog.d(TAG, "LToast" + e.toString());
+            Timber.d(e, "LToast");
             SentryUtils.captureException(e);
         }
     }

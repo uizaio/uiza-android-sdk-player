@@ -6,6 +6,8 @@ import android.speech.tts.TextToSpeech;
 
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * Created by Loitp on 5/6/2017.
  */
@@ -31,10 +33,10 @@ public class LTextToSpeechUtil implements TextToSpeech.OnInitListener {
         if (status == TextToSpeech.SUCCESS) {
             int result = tts.setLanguage(Locale.US);
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                LLog.d(TAG, "This Language is not supported");
+                Timber.d("This Language is not supported");
             }
         } else {
-            LLog.d("TTS", "Initialization Failed!");
+            Timber.d("Initialization Failed!");
         }
     }
 

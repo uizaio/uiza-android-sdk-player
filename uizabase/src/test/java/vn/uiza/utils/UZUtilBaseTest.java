@@ -11,7 +11,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import rx.Observable;
-import vn.uiza.restapi.UZAPIMaster;
+import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
@@ -22,7 +22,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ UZRestClient.class, UZAPIMaster.class })
+@PrepareForTest({ UZRestClient.class, RxBinder.class })
 public class UZUtilBaseTest {
 
     @Mock
@@ -36,7 +36,7 @@ public class UZUtilBaseTest {
 
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(UZRestClient.class, UZAPIMaster.class);
+        PowerMockito.mockStatic(UZRestClient.class, RxBinder.class);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDetailEntity(context, API_VERSION_3, entityId, appId,
@@ -65,7 +65,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onSuccess(result);
         Mockito.verify(callbackGetDetailEntity).onSuccess(result.getData());
     }
@@ -82,7 +82,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDetailEntity(context, API_VERSION_3, entityId, appId,
@@ -92,7 +92,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onSuccess(result);
         Mockito.verify(callbackGetDetailEntity, Mockito.never()).onSuccess(result.getData());
 
@@ -112,7 +112,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDetailEntity(context, API_VERSION_3, entityId, appId,
@@ -122,7 +122,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onError(error);
         Mockito.verify(callbackGetDetailEntity).onError(error);
     }
@@ -143,7 +143,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
@@ -153,7 +153,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onSuccess(result);
         Mockito.verify(callbackGetDetailEntity).onSuccess(result.getData());
     }
@@ -170,7 +170,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
@@ -180,7 +180,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onSuccess(result);
         Mockito.verify(callbackGetDetailEntity).onError(any(Exception.class));
     }
@@ -196,7 +196,7 @@ public class UZUtilBaseTest {
         // When
         PowerMockito.when(UZRestClient.createService(UZService.class))
                 .thenReturn(Mockito.mock(UZService.class));
-        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
+        PowerMockito.when(RxBinder.getInstance()).thenReturn(Mockito.mock(RxBinder.class));
 
         // Given
         UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
@@ -206,7 +206,7 @@ public class UZUtilBaseTest {
         PowerMockito.verifyStatic(UZRestClient.class);
         UZRestClient.createService(UZService.class);
 
-        Mockito.verify(UZAPIMaster.getInstance()).subscribe(arg1.capture(), arg2.capture());
+        Mockito.verify(RxBinder.getInstance()).subscribe(arg1.capture(), arg2.capture());
         arg2.getValue().onError(error);
         Mockito.verify(callbackGetDetailEntity).onError(error);
     }

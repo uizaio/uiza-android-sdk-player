@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -46,12 +48,13 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import timber.log.Timber;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -319,7 +322,7 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
 
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
-        LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+        Timber.d("onGetDataSuccess %s", LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);

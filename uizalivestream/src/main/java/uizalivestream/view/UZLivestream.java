@@ -15,8 +15,6 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.Settings;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -25,6 +23,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -40,14 +42,18 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.OpenGlView;
+
+import net.ossrs.rtmp.ConnectCheckerRtmp;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import net.ossrs.rtmp.ConnectCheckerRtmp;
+
 import retrofit2.HttpException;
+import timber.log.Timber;
 import uizalivestream.R;
 import uizalivestream.data.UZLivestreamData;
 import uizalivestream.interfaces.CameraCallback;
@@ -58,16 +64,14 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.UZAPIMaster;
+import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.AppUtils;
@@ -256,6 +260,7 @@ public class UZLivestream extends RelativeLayout
 
     /**
      * Set duration which allows livestream to keep the info
+     *
      * @param duration the duration which allows livestream to keep the info
      */
     public void setBackgroundAllowedDuration(long duration) {
@@ -263,7 +268,7 @@ public class UZLivestream extends RelativeLayout
     }
 
     public void destroyApiMaster() {
-        UZAPIMaster.getInstance().destroy();
+        RxBinder.getInstance().dispose();
     }
 
     private void checkPermission() {
@@ -502,7 +507,7 @@ public class UZLivestream extends RelativeLayout
         if (!isCameraValid()) return;
         LDialogUtil.show(progressBar);
         cameraHelper.startStream(streamUrl);
-        LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
+        Timber.d("startStream streamUrl %s, isSavedToDevice: %b", streamUrl, isSavedToDevice);
         this.isSavedToDevice = isSavedToDevice;
         if (isSavedToDevice) {
             startRecord();
@@ -553,16 +558,16 @@ public class UZLivestream extends RelativeLayout
     }
 
     /**
-      * Call this method before use @startStream. If not you will do a stream without audio.
-      *
-      * @param sampleRate of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
-      * @param isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
-      * (1 audio channel).
-      * @param echoCanceler true enable echo canceler, false disable.
-      * @param noiseSuppressor true enable noise suppressor, false  disable.
-      * @return true if success, false if you get a error (Normally because the encoder selected
-      * doesn't support any configuration seated or your device hasn't a AAC encoder).
-      */
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     *
+     * @param sampleRate      of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
+     * @param isStereo        true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     *                        (1 audio channel).
+     * @param echoCanceler    true enable echo canceler, false disable.
+     * @param noiseSuppressor true enable noise suppressor, false  disable.
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
     public boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         return cameraHelper.prepareAudio(sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
@@ -633,7 +638,7 @@ public class UZLivestream extends RelativeLayout
     private void startRecord() {
         if (!isCameraValid()) return;
         if (!isStreaming()) {
-            LLog.e(TAG, "startRecord !isStreaming() -> return");
+            Timber.e("startRecord !isStreaming() -> return");
             return;
         }
         try {
@@ -643,10 +648,10 @@ public class UZLivestream extends RelativeLayout
             SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT, Locale.getDefault());
             currentDateAndTime = sdf.format(new Date());
             cameraHelper.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
-            LLog.d(TAG, "Recording...");
+            Timber.d("Recording...");
         } catch (IOException e) {
             stopRecord();
-            LLog.e(TAG, "Error startRecord " + e.toString());
+            Timber.e(e, "Error startRecord");
             SentryUtils.captureException(e);
         }
     }
@@ -689,7 +694,7 @@ public class UZLivestream extends RelativeLayout
             spriteGestureController.setBaseObjectFilterRender(gifObjectFilterRender); //Optional
             return true;
         } catch (IOException e) {
-            LLog.e(TAG, "Error setGifToStream " + e.toString());
+            Timber.e(e, "Error setGifToStream");
             SentryUtils.captureException(e);
             return false;
         }
@@ -713,40 +718,34 @@ public class UZLivestream extends RelativeLayout
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(UZLivestreamData.getInstance().getAPIVersion(), bodyStartALiveFeed), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                getDetailEntity(entityLiveId, false, null);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                Log.e(TAG, ">>>>>>startLivestream onFail " + e.toString() + ", " + e.getMessage());
+        RxBinder.getInstance().bind(service.startALiveEvent(UZLivestreamData.getInstance().getAPIVersion(), bodyStartALiveFeed), result -> {
+            getDetailEntity(entityLiveId, false, null);
+        }, throwable -> {
+            Log.e(TAG, ">>>>>>startLivestream onFail: " + throwable.getLocalizedMessage());
+            try {
+                HttpException error = (HttpException) throwable;
+                String responseBody;
                 try {
-                    HttpException error = (HttpException) e;
-                    String responseBody;
-                    try {
-                        responseBody = error.response().errorBody().string();
-                        Log.e(TAG, "responseBody " + responseBody);
-                        ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                        getDetailEntity(entityLiveId, true, errorBody.getMessage());
-                    } catch (IOException e1) {
-                        Log.e(TAG, "startLivestream IOException catch " + e1.toString());
-                        getDetailEntity(entityLiveId, true, e1.getMessage());
-                        SentryUtils.captureException(e1);
-                    }
-                } catch (Exception ex) {
-                    Log.e(TAG, "startLivestream Exception catch " + ex.toString());
-                    getDetailEntity(entityLiveId, true, ex.getMessage());
-                    SentryUtils.captureException(ex);
+                    responseBody = error.response().errorBody().string();
+                    Log.e(TAG, "responseBody " + responseBody);
+                    ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
+                    getDetailEntity(entityLiveId, true, errorBody.getMessage());
+                } catch (IOException e1) {
+                    Log.e(TAG, "startLivestream IOException catch " + e1.toString());
+                    getDetailEntity(entityLiveId, true, e1.getMessage());
+                    SentryUtils.captureException(e1);
                 }
+            } catch (Exception ex) {
+                Log.e(TAG, "startLivestream Exception catch " + ex.toString());
+                getDetailEntity(entityLiveId, true, ex.getMessage());
+                SentryUtils.captureException(ex);
             }
         });
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         String appId = UZLivestreamData.getInstance().getAppId();
-        UZUtilBase.getDataFromEntityIdLive(getContext(), UZLivestreamData.getInstance().getAPIVersion(), appId, entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLive(UZLivestreamData.getInstance().getAPIVersion(), appId, entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
@@ -755,16 +754,16 @@ public class UZLivestream extends RelativeLayout
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 mainStreamUrl = streamUrl + "/" + streamKey;
-                LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
+                Timber.d(">>>>mainStreamUrl: %s", mainStreamUrl);
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
-                LLog.d(TAG, "isTranscode " + isTranscode);
+                Timber.d("isTranscode %b", isTranscode);
                 boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
                 presetLiveStreamingFeed.setVideoBitRates(isConnectedFast);
-                
-                LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
+
+                Timber.d("isErrorStartLive %b", isErrorStartLive);
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
                         if (uzLivestreamCallback != null) {
@@ -772,12 +771,12 @@ public class UZLivestream extends RelativeLayout
                         }
                     } else {
                         if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
-                            LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
+                            Timber.d("Start live 400 but last process STOP -> cannot livestream");
                             if (uzLivestreamCallback != null) {
                                 uzLivestreamCallback.onError(errorMsg);
                             }
                         } else {
-                            LLog.d(TAG, "Start live 400 but last process START || INIT -> can livestream");
+                            Timber.d("Start live 400 but last process START || INIT -> can livestream");
                             if (uzLivestreamCallback != null) {
                                 uzLivestreamCallback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
                             }
@@ -785,7 +784,7 @@ public class UZLivestream extends RelativeLayout
                     }
                 } else {
                     if (uzLivestreamCallback != null) {
-                        LLog.d(TAG, "onGetDataSuccess");
+                        Timber.d("onGetDataSuccess");
                         uzLivestreamCallback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
                     }
                 }
@@ -868,13 +867,21 @@ public class UZLivestream extends RelativeLayout
     }
 
     private enum UzLiveVideoMode {
-        /** Live video Full HD. */
+        /**
+         * Live video Full HD.
+         */
         MODE_FULL_HD,
-        /** Live video HD. */
+        /**
+         * Live video HD.
+         */
         MODE_HD,
-        /** Live video SD. */
+        /**
+         * Live video SD.
+         */
         MODE_SD,
-        /** Live video default, bitrate depends on Network quality */
+        /**
+         * Live video default, bitrate depends on Network quality
+         */
         MODE_DEFAULT
     }
 }

@@ -36,14 +36,12 @@ public class UZMediaRouteButton extends MediaRouteButton {
 
     public void applyTint(int color) {
         Drawable wrapDrawable = DrawableCompat.wrap(mRemoteIndicatorDrawable);
-        if (wrapDrawable != null) {
-            DrawableCompat.setTint(wrapDrawable, color);
-        }
+        DrawableCompat.setTint(wrapDrawable, color);
     }
 
     private void checkChromeCastAvailable() {
         if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
     }

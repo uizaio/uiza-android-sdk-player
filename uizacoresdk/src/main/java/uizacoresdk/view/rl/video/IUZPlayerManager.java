@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
@@ -57,9 +58,12 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import timber.log.Timber;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
 import uizacoresdk.listerner.ProgressCallback;
@@ -70,7 +74,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.SentryUtils;
@@ -115,7 +118,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
     private DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 
     IUZPlayerManager(final UZVideo uzVideo, String linkPlay, String thumbnailsUrl,
-            List<Subtitle> subtitleList) {
+                     List<Subtitle> subtitleList) {
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
@@ -466,12 +469,12 @@ abstract class IUZPlayerManager implements PreviewLoader {
                             buildDrmSessionManagerV18(drmSchemeUuid, drmLicenseUrl, keyRequestPropertiesArray,
                                     multiSession);
                 } catch (UnsupportedDrmException e) {
-                    LLog.e(TAG, "UnsupportedDrmException " + e.toString());
+                    Timber.e(e, "UnsupportedDrmException");
                     SentryUtils.captureException(e);
                 }
             }
             if (drmSessionManager == null) {
-                LLog.e(TAG, "Error drmSessionManager: " + errorStringId);
+                Timber.e("Error drmSessionManager: %s", errorStringId);
             }
         }
         return drmSessionManager;
@@ -561,7 +564,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
     }
 
     private DefaultDrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManagerV18(UUID uuid,
-            String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
+                                                                                     String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
             throws UnsupportedDrmException {
 
         HttpDataSource.Factory licenseDataSourceFactory = buildHttpDataSourceFactory();
@@ -607,7 +610,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         //This is called when the video size changes
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
-                float pixelWidthHeightRatio) {
+                                       float pixelWidthHeightRatio) {
             videoW = width;
             videoH = height;
             TmpParamData.getInstance().setEntitySourceWidth(width);
@@ -829,13 +832,13 @@ abstract class IUZPlayerManager implements PreviewLoader {
             if (error == null) {
                 return;
             }
-            LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
+            Timber.e(error, "onPlayerError ");
             if (error.type == ExoPlaybackException.TYPE_SOURCE) {
-                LLog.e(TAG, "onPlayerError TYPE_SOURCE");
+                Timber.e("onPlayerError TYPE_SOURCE");
             } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
-                LLog.e(TAG, "onPlayerError TYPE_RENDERER");
+                Timber.e("onPlayerError TYPE_RENDERER");
             } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
-                LLog.e(TAG, "onPlayerError TYPE_UNEXPECTED");
+                Timber.e("onPlayerError TYPE_UNEXPECTED");
             }
             error.printStackTrace();
             exoPlaybackException = error;

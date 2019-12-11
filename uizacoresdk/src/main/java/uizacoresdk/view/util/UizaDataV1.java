@@ -8,12 +8,12 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 
@@ -147,7 +147,7 @@ public class UizaDataV1 {
         //event_type
         uizaTracking.setEventType(eventType);
         if (Constants.IS_DEBUG) {
-            LLog.d(TAG, "createTrackingInput " + gson.toJson(uizaTracking));
+            Timber.d("createTrackingInput %s", gson.toJson(uizaTracking));
         }
         return uizaTracking;
     }

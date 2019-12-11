@@ -12,8 +12,9 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 import vn.uiza.restapi.DateTypeDeserializer;
 
 public class UZRestClient {
@@ -31,7 +32,7 @@ public class UZRestClient {
             throw new InvalidParameterException("baseApiUrl cannot null or empty");
         }
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Timber.d(message));
         // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -50,7 +51,7 @@ public class UZRestClient {
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

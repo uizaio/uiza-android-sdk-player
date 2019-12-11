@@ -5,8 +5,6 @@ package uizacoresdk.view.dlg.playlistfolder;
  */
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +12,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.daimajia.androidanimations.library.Techniques;
 
 import java.util.List;
 
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
@@ -127,7 +128,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         playListHolder.rootView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean isFocus) {
-                LLog.d(TAG, "onFocusChange isFocus: " + isFocus);
+                Timber.d("onFocusChange isFocus: %b", isFocus);
                 if (isFocus) {
                     playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
                 } else {

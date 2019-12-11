@@ -1,6 +1,7 @@
 package uizacoresdk.view.floatview;
 
 import android.os.Handler;
+
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -8,15 +9,17 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+
 import java.util.List;
+
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
 
     public FUZNoAdsPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd,
-            String thumbnailsUrl, List<Subtitle> subtitleList) {
+                                 String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
         this.context = fuzVideo.getContext();
@@ -59,10 +62,7 @@ public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
 
     @Override
     public void init(boolean isLivestream, long contentPosition) {
-        LLog.d(TAG, "miniplayer STEP 1 FUZPLayerManager init isLivestream "
-                + isLivestream
-                + ", contentPosition "
-                + contentPosition);
+        Timber.d("miniplayer STEP 1 FUZPLayerManager init isLivestream: %b, contentPosition: %d ", isLivestream, contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);

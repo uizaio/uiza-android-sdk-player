@@ -1,28 +1,27 @@
 package testlibuiza.sample.guidecallapi;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import androidx.appcompat.app.AppCompatActivity;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import timber.log.Timber;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 public class TestAPI extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
-    protected CompositeSubscription compositeSubscription = new CompositeSubscription();
+    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String domainAPI = "https://loctbprod01.uiza.co";
     private String token = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private TextView tv;
@@ -33,14 +32,9 @@ public class TestAPI extends AppCompatActivity {
         setContentView(R.layout.activity_test_api);
         RestClientTestAPI.init(domainAPI, token);
 
-        tv = (TextView) findViewById(R.id.tv);
+        tv = findViewById(R.id.tv);
 
-        findViewById(R.id.bt_get_list_user).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getListAllUser();
-            }
-        });
+        findViewById(R.id.bt_get_list_user).setOnClickListener(view -> getListAllUser());
     }
 
     private void showTv(Object o) {
@@ -49,39 +43,38 @@ public class TestAPI extends AppCompatActivity {
 
     private void getListAllUser() {
         Service service = RestClientTestAPI.createService(Service.class);
-        subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object o) {
-                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
-                showTv(o);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "createAnUser onFail " + e.toString());
-                showTv(e.getMessage());
-            }
+        subscribe(service.listAllUser(), o -> {
+            Timber.d("createAnUser onSuccess: %s", LSApplication.getInstance().getGson().toJson(o));
+            showTv(o);
+        }, throwable -> {
+            Timber.e(throwable, "createAnUser onFail");
+            showTv(throwable.getLocalizedMessage());
         });
     }
 
     @Override
     protected void onDestroy() {
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
         }
         LDialogUtil.clearAll();
         super.onDestroy();
     }
 
     @SuppressWarnings("unchecked")
-    public void subscribe(Observable observable, Subscriber subscriber) {
+    public <T> void subscribe(Observable<T> observable, Consumer<T> onNext, Consumer<Throwable> onError) {
         if (!LConnectivityUtil.isConnected(this)) {
-            subscriber.onError(new Exception(UZException.ERR_0));
+            try {
+                onError.accept(new Throwable((UZException.ERR_0)));
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+
             return;
         }
-        Subscription subscription = observable.subscribeOn(Schedulers.newThread())
+        Disposable disposable = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-        compositeSubscription.add(subscription);
+                .subscribe(onNext, onError);
+        compositeDisposable.add(disposable);
     }
 }

@@ -2,6 +2,7 @@ package uizacoresdk.view.floatview;
 
 import android.net.Uri;
 import android.os.Handler;
+
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
@@ -14,9 +15,11 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+
 import java.util.List;
+
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMediaSource.MediaSourceFactory {
@@ -24,7 +27,7 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
     private FUZVideoAdPlayerListener fUZVideoAdPlayerListener = new FUZVideoAdPlayerListener();
 
     public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
-            List<Subtitle> subtitleList) {
+                            List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
         this.context = fuzVideo.getContext();
@@ -86,10 +89,7 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
     }
 
     public void init(boolean isLivestream, long contentPosition) {
-        LLog.d(TAG, "miniplayer STEP 1 FUZPLayerManager init isLivestream "
-                + isLivestream
-                + ", contentPosition "
-                + contentPosition);
+        Timber.d("miniplayer STEP 1 FUZPLayerManager init isLivestream %b , contentPosition: %d", isLivestream, contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -143,7 +143,7 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
     @Override
     public int[] getSupportedTypes() {
         // IMA does not support Smooth Streaming ads.
-        return new int[] { C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER };
+        return new int[]{C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER};
     }
 
     private static class FUZVideoAdPlayerListener implements VideoAdPlayer.VideoAdPlayerCallback {

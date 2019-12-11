@@ -10,10 +10,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyCharacterMap;
@@ -24,6 +20,12 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import timber.log.Timber;
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.util.SentryUtils;
@@ -192,7 +194,7 @@ public class LScreenUtil {
     }
 
     public static void hideDefaultControls(@NonNull final Context context) {
-        final Window window = ((Activity)context).getWindow();
+        final Window window = ((Activity) context).getWindow();
         if (window == null) {
             return;
         }
@@ -213,7 +215,7 @@ public class LScreenUtil {
     }
 
     public static void showDefaultControls(@NonNull final Context context) {
-        final Window window = ((Activity)context).getWindow();
+        final Window window = ((Activity) context).getWindow();
         if (window == null) {
             return;
         }
@@ -358,7 +360,7 @@ public class LScreenUtil {
         }
         ContentResolver cResolver = context.getApplicationContext().getContentResolver();
         Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, value);
-        LLog.d(TAG, "setBrightness: " + value);
+        Timber.d("setBrightness: %d", value);
     }
 
     //1<=getCurrentBrightness<=255
@@ -369,7 +371,7 @@ public class LScreenUtil {
         try {
             return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
-            LLog.e(TAG, "getCurrentBrightness" + e.toString());
+            Timber.e(e, "getCurrentBrightness");
             SentryUtils.captureException(e);
             return Constants.NOT_FOUND;
         }

@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.uiza.core.utilities.LLog;
+import timber.log.Timber;
 import vn.uiza.restapi.DateTypeDeserializer;
 
 public class UZRestClientGetLinkPlay {
@@ -29,12 +29,12 @@ public class UZRestClientGetLinkPlay {
     }
 
     public static void init(String baseApiUrl, String token) {
-        LLog.d(TAG, "init " + baseApiUrl + " - " + token);
+        Timber.d("init %s - %s", baseApiUrl, token);
         if (TextUtils.isEmpty(baseApiUrl)) {
             throw new InvalidParameterException("baseApiUrl cannot null or empty");
         }
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Timber.d(message));
         // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -53,7 +53,7 @@ public class UZRestClientGetLinkPlay {
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

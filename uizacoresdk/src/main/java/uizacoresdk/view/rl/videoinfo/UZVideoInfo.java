@@ -1,26 +1,29 @@
 package uizacoresdk.view.rl.videoinfo;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LDisplayUtils;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -84,6 +87,7 @@ public class UZVideoInfo extends RelativeLayout {
         onCreate();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public UZVideoInfo(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
@@ -144,11 +148,11 @@ public class UZVideoInfo extends RelativeLayout {
 
     public void setup(Data data) {
         if (data == null) {
-            LLog.e(TAG, "setup resultRetrieveAnEntity == null");
+            Timber.e("setup resultRetrieveAnEntity == null");
             return;
         }
         if (UZData.getInstance().getData() == null || UZData.getInstance().getData().getId() == null || UZData.getInstance().getData().getId() == null) {
-            LLog.e(TAG, "setup data is null");
+            Timber.e("setup data is null");
         }
         updateUI();
     }

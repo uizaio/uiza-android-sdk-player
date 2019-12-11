@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
-import androidx.mediarouter.app.MediaRouteButton;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.mediarouter.app.MediaRouteButton;
 
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.framework.CastButtonFactory;
@@ -30,8 +31,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.IOException;
 
+import timber.log.Timber;
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -219,53 +220,53 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         return new SessionManagerListener<CastSession>() {
             @Override
             public void onSessionStarted(CastSession castSession, String s) {
-                LLog.d(TAG, "onSessionStarted " + s);
+                Timber.d("onSessionStarted %s", s);
                 activity.invalidateOptionsMenu();
                 onConnected(castSession);
             }
 
             @Override
             public void onSessionEnded(CastSession castSession, int i) {
-                LLog.d(TAG, "onSessionEnded");
+                Timber.d("onSessionEnded");
                 activity.invalidateOptionsMenu();
                 onDisconnected();
             }
 
             @Override
             public void onSessionResumed(CastSession castSession, boolean b) {
-                LLog.d(TAG, "onSessionResumed");
+                Timber.d("onSessionResumed");
                 activity.invalidateOptionsMenu();
                 onConnected(castSession);
             }
 
             @Override
             public void onSessionStarting(CastSession castSession) {
-                LLog.d(TAG, "onSessionStarting");
+                Timber.d("onSessionStarting");
             }
 
             @Override
             public void onSessionStartFailed(CastSession castSession, int i) {
-                LLog.d(TAG, "onSessionStartFailed");
+                Timber.d("onSessionStartFailed");
             }
 
             @Override
             public void onSessionEnding(CastSession castSession) {
-                LLog.d(TAG, "onSessionEnding");
+                Timber.d("onSessionEnding");
             }
 
             @Override
             public void onSessionResuming(CastSession castSession, String s) {
-                LLog.d(TAG, "onSessionResuming");
+                Timber.d("onSessionResuming");
             }
 
             @Override
             public void onSessionResumeFailed(CastSession castSession, int i) {
-                LLog.d(TAG, "onSessionResumeFailed");
+                Timber.d("onSessionResumeFailed");
             }
 
             @Override
             public void onSessionSuspended(CastSession castSession, int i) {
-                LLog.d(TAG, "onSessionSuspended");
+                Timber.d("onSessionSuspended");
             }
         };
     }
@@ -370,11 +371,11 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         try {
             CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
             if (newCastSession.isMute()) {
-                LLog.d(TAG, "setVolume " + volume);
+                Timber.d("setVolume %d", volume);
                 newCastSession.setVolume(volume);
             }
         } catch (IOException e) {
-            LLog.e(TAG, "IOException setVolume " + e.toString());
+            Timber.e(e, "IOException setVolume");
             SentryUtils.captureException(e);
         }
     }
@@ -384,11 +385,11 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         try {
             CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
             if (newCastSession.isMute()) {
-                LLog.d(TAG, "turnOnVolume isMute -> setMute false");
+                Timber.d("turnOnVolume isMute -> setMute false");
                 newCastSession.setMute(false);
             }
         } catch (IOException e) {
-            LLog.e(TAG, "IOException turnOnVolume " + e.toString());
+            Timber.e(e, "IOException turnOnVolume");
             SentryUtils.captureException(e);
         }
     }
@@ -400,16 +401,16 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         try {
             CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
             if (newCastSession.isMute()) {
-                LLog.d(TAG, "toggleMuteVolume isMute -> setMute false");
+                Timber.d("toggleMuteVolume isMute -> setMute false");
                 newCastSession.setMute(false);
                 return false;
             } else {
-                LLog.d(TAG, "toggleMuteVolume !isMute -> setMute true");
+                Timber.d("toggleMuteVolume !isMute -> setMute true");
                 newCastSession.setMute(true);
                 return true;
             }
         } catch (IOException e) {
-            LLog.e(TAG, "IOException setMute " + e.toString());
+            Timber.e(e, "IOException setMute");
             SentryUtils.captureException(e);
             return false;
         }
@@ -435,7 +436,7 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         void onCastSessionUpdated(CastSession castSession);
     }
 
-    public void disconnectChromecast(){
+    public void disconnectChromecast() {
         castSession.getRemoteMediaClient().stop(); // stop remote media
         CastContext castContext = CastContext.getSharedInstance(activity);
         SessionManager mSessionManager = castContext.getSessionManager();

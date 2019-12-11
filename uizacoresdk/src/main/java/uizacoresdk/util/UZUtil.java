@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +21,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
@@ -38,7 +42,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -268,7 +271,7 @@ public class UZUtil {
             minutes = minutes.length() == 1 ? "0" + minutes : minutes;
             textView.setText((min / 60) + ":" + minutes);
         } catch (Exception e) {
-            LLog.e(TAG, "Error setTextDuration " + e.toString());
+            Timber.e(e, "Error setTextDuration");
             textView.setText(" - ");
             SentryUtils.captureException(e);
         }
@@ -327,12 +330,12 @@ public class UZUtil {
 
     //=============================================================================START FOR UIZA V3
 
-    public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(context, UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
+    public static void getDetailEntity(final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDetailEntity(UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
     }
 
-    public static void getDataFromEntityIdLive(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDataFromEntityIdLive(context, UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
+    public static void getDataFromEntityIdLive(final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDataFromEntityIdLive(UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
     }
 
     public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
@@ -343,15 +346,15 @@ public class UZUtil {
             throw new NullPointerException(UZException.ERR_13);
         }
         if (UZDataCLP.getInstance().getUzCustomLinkPlay() == null) {
-            LLog.e(TAG, UZException.ERR_14);
+            Timber.e(UZException.ERR_14);
             return false;
         }
         if (!LConnectivityUtil.isConnected(context)) {
-            LLog.e(TAG, UZException.ERR_0);
+            Timber.e(UZException.ERR_0);
             return false;
         }
         if (UZUtil.getClickedPip(context)) {
-            LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
+            Timber.d("miniplayer STEP 6 initLinkPlay");
             UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
             UZUtil.stopMiniPlayer(context);
@@ -380,11 +383,11 @@ public class UZUtil {
             UZUtil.setClickedPip(activity, false);
         }
         if (!LConnectivityUtil.isConnected(activity)) {
-            LLog.e(TAG, UZException.ERR_0);
+            Timber.e(UZException.ERR_0);
             return;
         }
         if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "miniplayer STEP 6 initEntity");
+            Timber.d("miniplayer STEP 6 initEntity");
             UZUtil.play(uzVideo, null, isLive);
         } else {
             //check if play entity
@@ -408,12 +411,12 @@ public class UZUtil {
             UZUtil.setClickedPip(activity, false);
         }
         if (!LConnectivityUtil.isConnected(activity)) {
-            LLog.e(TAG, UZException.ERR_0);
+            Timber.e(UZException.ERR_0);
             return;
         }
         if (UZUtil.getClickedPip(activity)) {
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "miniplayer STEP 6 initPlaylistFolder");
+                Timber.d("miniplayer STEP 6 initPlaylistFolder");
                 playPlaylist(uzVideo, null);
             }
         } else {
@@ -470,6 +473,7 @@ public class UZUtil {
         return false;
     }
 
+    // call initWorkspace in onCreate of Application
     public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
@@ -486,7 +490,9 @@ public class UZUtil {
         if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
             throw new NoClassDefFoundError(UZException.ERR_504);
         }
-
+//        if (Constants.IS_DEBUG) {
+//            Timber.plant(new Timber.DebugTree());
+//        }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);

@@ -8,7 +8,6 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import androidx.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,11 +18,17 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.Player;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
@@ -34,7 +39,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -45,7 +49,6 @@ import vn.uiza.utils.util.SentryUtils;
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
-    private final String TAG = "TAG" + getClass().getSimpleName();
     private WindowManager mWindowManager;
     private View mFloatingView;
     private View viewDestroy;
@@ -87,6 +90,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private GestureDetector mTapDetector;
 
     private enum POS {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER}
+
     private POS pos;
 
     public FUZVideoService() {
@@ -115,7 +119,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         try {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
-            LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+            Timber.e(e, "Error cannot find cdnHost");
             SentryUtils.captureException(e);
         }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
@@ -127,7 +131,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
-            LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition + ", cdnHost: " + cdnHost + ", linkPlay: " + linkPlay);
+            Timber.d("onStartCommand isInitCustomLinkplay %b, contentPosition: %d, cdnHost: %s, linkPlay: %s", isInitCustomLinkplay, contentPosition, cdnHost, linkPlay);
             setupVideo();
         }
         return START_NOT_STICKY;
@@ -352,7 +356,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (UZData.getInstance().getData() == null) {
             return;
         }
-        LLog.d(TAG, "miniplayer STEP 5 START OPEN APP, miniplayer content position " + fuzVideo.getCurrentPosition());
+        Timber.d("miniplayer STEP 5 START OPEN APP, miniplayer content position %d", fuzVideo.getCurrentPosition());
         ComunicateMng.MsgFromServiceOpenApp msgFromServiceOpenApp = new ComunicateMng.MsgFromServiceOpenApp(null);
         msgFromServiceOpenApp.setPositionMiniPlayer(fuzVideo.getCurrentPosition());
         ComunicateMng.postFromService(msgFromServiceOpenApp);
@@ -827,7 +831,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (mFloatingView == null) {
                 return;
             }
-            LLog.d(TAG, "miniplayer STEP 2 isInitResult true");
+            Timber.d("miniplayer STEP 2 isInitResult true");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
             updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
@@ -883,7 +887,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onPlayerError(UZException error) {
-        LLog.e(TAG, "onPlayerError " + error.getMessage());
+        Timber.e("onPlayerError: %s", error.getMessage());
         stopSelf();
     }
 
@@ -891,11 +895,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
-            LLog.e(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty() -> stopSelf");
+            Timber.e("setupVideo linkPlay == null || linkPlay.isEmpty() -> stopSelf");
             stopSelf();
             return;
         }
-        LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
+        Timber.d("setupVideo linkPlay: %s, isLivestream: %s", linkPlay, isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
             fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, progressBarColor, this);
             tvMsg.setVisibility(View.GONE);
@@ -972,11 +976,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //LLog.d(TAG, "Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
-                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true -> do nothing");
+                Timber.d("miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true -> do nothing");
             } else {
                 long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
-                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
+                Timber.d("miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition: %d, position: %d", contentBufferedPosition, contentPosition);
                 if (contentPosition >= contentBufferedPosition) {
                     fuzVideo.seekTo(contentBufferedPosition);
                 } else {
@@ -984,7 +988,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             }
         } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            LLog.d(TAG, "miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
+            Timber.d("miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: %b", ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             stopSelf();
         }
         if (msgFromActivity.getMsg() == null) {

@@ -3,9 +3,9 @@ package uizalivestream.view;
 import android.content.Context;
 import android.hardware.Camera;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import android.util.Log;
 
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
 import com.pedro.encoder.input.video.CameraHelper;
@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.utils.util.SentryUtils;
 
@@ -135,41 +135,41 @@ final class RtmpCameraHelper {
                          boolean hardwareRotation, int iFrameInterval, int rotation) {
         if (!isCameraValid()) return false;
 
-        LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
+        Timber.d("prepareVideo ===> %dx%d, bitrate: %d, fps: %d, rotation: %d, hardwareRotation: %b", width, height, bitrate, fps, rotation, hardwareRotation);
         rtmpCamera1.startPreview(width, height);
         return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
     }
 
     /**
-      * dynamic audio bitrate, detect via video
-      *
-      * @param sampleRate
-      * @param isStereo
-      * @param echoCanceler
-      * @param noiseSuppressor
-      * @return
-      */
+     * dynamic audio bitrate, detect via video
+     *
+     * @param sampleRate
+     * @param isStereo
+     * @param echoCanceler
+     * @param noiseSuppressor
+     * @return
+     */
     boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler,
-                          boolean noiseSuppressor) {
-        LLog.d(TAG, "prepareAudio ===> bitrate " + audioBitRate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
+                         boolean noiseSuppressor) {
+        Timber.d("prepareAudio ===> bitrate " + audioBitRate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
         return rtmpCamera1.prepareAudio(audioBitRate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
     boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler,
                          boolean noiseSuppressor) {
         if (!isCameraValid()) return false;
-        LLog.d(TAG, "prepareAudio ===> bitrate " + bitrate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
+        Timber.d("prepareAudio ===> bitrate: %d, sampleRate: %d, isStereo: %b, echoCanceler: %b, noiseSuppressor: %b ", bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
     boolean prepareVideoFullHD(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            Timber.e("prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
         List<Camera.Size> bestResolutionList = getBestResolutionList();
         if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoFullHD false -> bestResolutionList null or empty");
+            Timber.e("prepareVideoFullHD false -> bestResolutionList null or empty");
             return false;
         }
         Camera.Size bestSize = bestResolutionList.get(0);
@@ -180,12 +180,12 @@ final class RtmpCameraHelper {
 
     boolean prepareVideoHD(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoHD false with presetLiveStreamingFeed null");
+            Timber.e("prepareVideoHD false with presetLiveStreamingFeed null");
             return false;
         }
         List<Camera.Size> bestResolutionList = getBestResolutionList();
         if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoHD false -> bestResolutionList null or empty");
+            Timber.e("prepareVideoHD false -> bestResolutionList null or empty");
             return false;
         }
         int sizeList = bestResolutionList.size();
@@ -205,12 +205,12 @@ final class RtmpCameraHelper {
 
     boolean prepareVideoSD(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoSD false with presetLiveStreamingFeed null");
+            Timber.e("prepareVideoSD false with presetLiveStreamingFeed null");
             return false;
         }
         List<Camera.Size> bestResolutionList = getBestResolutionList();
         if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoSD false -> bestResolutionList null or empty");
+            Timber.e("prepareVideoSD false -> bestResolutionList null or empty");
             return false;
         }
         Camera.Size bestSize = bestResolutionList.get(bestResolutionList.size() - 1);
@@ -221,28 +221,28 @@ final class RtmpCameraHelper {
 
     boolean prepareVideo(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideo false with presetLiveStreamingFeed null");
+            Timber.e("prepareVideo false with presetLiveStreamingFeed null");
             return false;
         }
         if (!isCameraValid()) {
-            Log.e(TAG, "prepareVideo false -> rtmpCamera1 == null");
+            Timber.e("prepareVideo false -> rtmpCamera1 == null");
             return false;
         }
         Camera.Size bestSize = getBestResolution(context);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
         audioBitRate = presetLiveStreamingFeed.getAudioBitRate(bestBitrate);
         if (bestSize == null) {
-            Log.e(TAG, "prepareVideo false -> bestSize == null");
+            Timber.e("prepareVideo false -> bestSize == null");
             return false;
         }
         return prepareVideo(
-            Math.min(bestSize.width, Constants.BROADCAST_LIMIT_WIDTH),
-            Math.min(bestSize.height, Constants.BROADCAST_LIMIT_HEIGHT),
-            30,
-            bestBitrate,
-            false,
-            1,
-            isLandscape ? 0 : 90
+                Math.min(bestSize.width, Constants.BROADCAST_LIMIT_WIDTH),
+                Math.min(bestSize.height, Constants.BROADCAST_LIMIT_HEIGHT),
+                30,
+                bestBitrate,
+                false,
+                1,
+                isLandscape ? 0 : 90
         );
     }
 

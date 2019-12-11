@@ -22,7 +22,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import retrofit2.HttpException;
 import rx.observers.TestSubscriber;
 import vn.uiza.base.FakeData;
-import vn.uiza.restapi.restclient.RestClient;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;

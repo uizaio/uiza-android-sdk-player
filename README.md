@@ -68,6 +68,21 @@ See also:  [https://firebase.google.com/support/release-notes/android#20180523](
 
 Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/build.gradle).
 
+**Turn on Java 8 support**
+
+If not enabled already, you need to turn on Java 8 support in all `build.gradle` files depending on ExoPlayer, by adding the following to the `android` section:
+
+```gradle
+compileOptions {
+  targetCompatibility JavaVersion.VERSION_1_8
+}
+```
+> Node, Inside v5:
+> 
+> - Use [androidx](https://developer.android.com/jetpack/androidx)
+> - Use [rxjava2](https://github.com/ReactiveX/RxJava/tree/2.x)
+> - Use [Timber](https://github.com/JakeWharton/timber) for logger
+
 ## Init SDK
 
 1. appId : get in email at registration
@@ -83,8 +98,15 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
             }
      }
      ```
+4. If you want show log, install any `Tree` instances you want in the `onCreate` of your application class
+	
+```java
+	if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+```
 
-  Manifest
+### Manifest
 
     <application
       android:name=".App "  <!-- important -->
@@ -94,15 +116,10 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
 Call api by using this function
 
     UZService service = UZRestClient.createService(UZService.class);
-    UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
-        @Override
-        public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-        }
-
-        @Override
-        public void onFail(Throwable e) {
-        }
-    });
+    UZAPIMaster.getInstance().subscribe(service.getListMetadata(),
+    	resultGetListMetadata -> {},
+    	throwable -> {}
+    );
   Other API can be used with the same function above.
 
 **API doc**

@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.video.VideoListener;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import timber.log.Timber;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
@@ -26,7 +28,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -86,7 +87,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
         for (int i = 0; i < uzItemList.size(); i++) {
             UZItem uzItem = uzItemList.get(i);
             final CheckedTextView c = uzItem.getCheckedTextView();
-            LLog.d(TAG, i + ", getDescription: " + uzItem.getDescription() + ", isChecked: " + c.isChecked() + ", getFormat: " + uzItem.getFormat());
+            Timber.d("%d, getDescription: %s, isChecked: %b, getFormat: %s", i, uzItem.getDescription(), c.isChecked(), uzItem.getFormat());
 
             //add space
             View view = new View(activity);

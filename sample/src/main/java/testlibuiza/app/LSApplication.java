@@ -1,8 +1,13 @@
 package testlibuiza.app;
 
 import android.content.Context;
+
 import androidx.multidex.MultiDexApplication;
+
 import com.google.gson.Gson;
+
+import testlibuiza.BuildConfig;
+import timber.log.Timber;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 
@@ -60,6 +65,9 @@ public class LSApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         instance = this;
         if (gson == null) {
             gson = new Gson();

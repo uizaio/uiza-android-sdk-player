@@ -26,7 +26,7 @@ public class UZChromeCast {
 
     {
         if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
     }

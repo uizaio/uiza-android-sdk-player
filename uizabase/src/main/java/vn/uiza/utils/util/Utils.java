@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 import vn.uiza.BuildConfig;
+import vn.uiza.UizaBase;
 import vn.uiza.core.common.Constants;
 
 public final class Utils {
@@ -19,6 +20,7 @@ public final class Utils {
 
     public static void init(Context context) {
         Utils.context = context.getApplicationContext();
+//        UizaBase.getInstance().init();
         initSentry(context, BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE));
     }
 

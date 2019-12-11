@@ -3,13 +3,15 @@ package testlibuiza.sample.v3.fb;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -21,13 +23,11 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.UZAPIMaster;
+import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 /**
  * Created by loitp on 4/1/2019.
@@ -236,16 +236,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                LUIUtil.printBeautyJson(result, tv);
-                LImageUtil.load(activity, "https://motosaigon.vn/wp-content/uploads/2018/08/Kawasaki-Z1000-2019-Z1000R-2019-MotoSaigon.vn-2.jpg", iv);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-            }
-        });
+        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                result -> {
+                    LUIUtil.printBeautyJson(result, tv);
+                    LImageUtil.load(activity, "https://motosaigon.vn/wp-content/uploads/2018/08/Kawasaki-Z1000-2019-Z1000R-2019-MotoSaigon.vn-2.jpg", iv);
+                }, throwable -> {
+                });
     }
 }

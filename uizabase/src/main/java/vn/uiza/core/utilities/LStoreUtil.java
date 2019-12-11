@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StatFs;
-import androidx.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -19,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Random;
 
+import timber.log.Timber;
 import vn.uiza.utils.util.CloseUtils;
 import vn.uiza.utils.util.SentryUtils;
 
@@ -47,7 +47,7 @@ public class LStoreUtil {
                     folderPath = sdPath.getAbsolutePath();
                 }
             } catch (Exception e) {
-                LLog.d("TAG", "if getFolderPath: " + e.toString());
+                Timber.e(e, "if getFolderPath:");
                 SentryUtils.captureException(e);
             }
             folderPath = Environment.getExternalStorageDirectory().getPath() + SLASH + folderName + SLASH;
@@ -61,7 +61,7 @@ public class LStoreUtil {
                     folderPath = cacheDir.getAbsolutePath();
                 }
             } catch (Exception e) {
-                LLog.d("TAG", "else getFolderPath: " + e.toString());
+                Timber.e(e, "else getFolderPath:");
                 SentryUtils.captureException(e);
             }
         }
@@ -93,23 +93,23 @@ public class LStoreUtil {
                 //path = path + folder;
                 path = path + folder + SLASH;
             }
-            LLog.d(TAG, "path: " + path);
+            Timber.d("path: %s", path);
             final File dir = new File(path);
             if (!dir.exists()) {
                 if (!dir.mkdirs()) {
-                    LLog.d(TAG, "could not create the directories");
+                    Timber.d("could not create the directories");
                 }
             }
             final File myFile = new File(dir, fileName);
             if (!myFile.exists()) {
                 boolean isSuccess = myFile.createNewFile();
-                LLog.d(TAG, "isSuccess: " + isSuccess);
+                Timber.d("isSuccess: %b", isSuccess);
             }
             fos = new FileOutputStream(myFile);
             fos.write(body.getBytes());
             fos.close();
         } catch (IOException e) {
-            LLog.d(TAG, e.toString());
+            Timber.e(e);
             isComplete = false;
             SentryUtils.captureException(e);
         } finally {
@@ -143,7 +143,7 @@ public class LStoreUtil {
      */
     public static String readTxtFromFolder(Activity activity, String folderName, String fileName) {
         String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH : (folderName + SLASH)) + fileName;
-        LLog.d(TAG, "path: " + path);
+        Timber.d("path: %s", path);
         File txtFile = new File(path);
         StringBuilder text = new StringBuilder();
         BufferedReader reader = null;
@@ -155,7 +155,7 @@ public class LStoreUtil {
             }
             reader.close();
         } catch (IOException e) {
-            LLog.d(TAG, "readTxtFromFolder===" + e.toString());
+            Timber.d(e, "readTxtFromFolder===");
             SentryUtils.captureException(e);
         } finally {
             CloseUtils.closeIO(reader);
@@ -204,7 +204,7 @@ public class LStoreUtil {
             protected Void doInBackground(Void... params) {
                 String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH :
                         (folderName + SLASH)) + fileName;
-                LLog.d(TAG, "path: " + path);
+                Timber.d("path: %s", path);
                 File txtFile = new File(path);
                 text = new StringBuilder();
                 BufferedReader reader = null;
@@ -217,7 +217,7 @@ public class LStoreUtil {
                     reader.close();
                 } catch (IOException e) {
                     runTaskSuccess = false;
-                    LLog.d(TAG, "readTxtFromFolder===" + e.toString());
+                    Timber.d(e, "readTxtFromFolder===");
                     SentryUtils.captureException(e);
                 } finally {
                     CloseUtils.closeIO(reader);
@@ -252,7 +252,7 @@ public class LStoreUtil {
             }
             inputStream.close();
         } catch (Exception e) {
-            LLog.d(TAG, e.toString());
+            Timber.e(e);
             SentryUtils.captureException(e);
         } finally {
             CloseUtils.closeIO(inputStream);

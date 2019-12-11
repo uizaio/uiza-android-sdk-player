@@ -61,8 +61,8 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
         activity = this;
+        UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);

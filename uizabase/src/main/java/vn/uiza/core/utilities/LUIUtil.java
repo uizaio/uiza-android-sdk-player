@@ -16,11 +16,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Handler;
-import com.google.android.material.tabs.TabLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.widget.SearchView;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -37,6 +32,12 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -44,6 +45,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import timber.log.Timber;
 import vn.uiza.R;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
@@ -91,7 +93,7 @@ public class LUIUtil {
         try {
             view.setBackgroundDrawable(createGradientDrawableWithColor(colorMain, colorStroke));
         } catch (Exception e) {
-            LLog.d(TAG, "setCircleViewWithColor setBkgColor: " + e.toString());
+            Timber.d(e, "setCircleViewWithColor setBkgColor:");
             SentryUtils.captureException(e);
         }
     }
@@ -135,7 +137,7 @@ public class LUIUtil {
                     imageView.setImageDrawable(drawable);
                 }
             } catch (Exception e) {
-                LLog.d(TAG, "setImageFromAsset: " + e.toString());
+                Timber.d(e, "setImageFromAsset:");
                 SentryUtils.captureException(e);
             } finally {
                 try {
@@ -143,7 +145,7 @@ public class LUIUtil {
                         stream.close();
                     }
                 } catch (Exception e) {
-                    LLog.d(TAG, "setImageFromAsset: " + e.toString());
+                    Timber.d(e, "setImageFromAsset:");
                     SentryUtils.captureException(e);
                 }
             }
