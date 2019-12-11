@@ -52,6 +52,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
+        UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setUseWithVDHView(true);
         super.onCreate(savedInstanceState);

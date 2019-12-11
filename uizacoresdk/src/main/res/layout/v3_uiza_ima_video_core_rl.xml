@@ -22,7 +22,6 @@
                 android:background="@color/Black"
                 />
         </RelativeLayout>
-        <!--TODO Optimize the position of debugLayout-->
         <uizacoresdk.view.rl.videoinfo.StatsForNerdsView
             android:id="@id/stats_for_nerds"
             android:layout_width="wrap_content"
