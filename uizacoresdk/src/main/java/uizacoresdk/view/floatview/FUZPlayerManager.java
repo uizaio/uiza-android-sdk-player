@@ -124,7 +124,7 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
             return mediaSource;
         }
         return new AdsMediaSource(mediaSource, this, adsLoader,
-                fuzVideo.getPlayerView().getOverlayFrameLayout(), null, null);
+                fuzVideo.getPlayerView());
     }
 
     @Override

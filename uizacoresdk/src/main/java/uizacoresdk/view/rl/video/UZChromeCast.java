@@ -1,7 +1,7 @@
 package uizacoresdk.view.rl.video;
 
 import android.content.Context;
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 import android.util.Log;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;

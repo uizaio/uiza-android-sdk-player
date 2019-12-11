@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -508,7 +508,7 @@ public class UZUtil {
             return;
         }
         if (!isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
         UZData.getInstance().setCasty(Casty.create(activity));

@@ -2,6 +2,7 @@ package uizacoresdk.view.rl.video;
 
 import android.net.Uri;
 import android.os.Handler;
+
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
@@ -11,7 +12,9 @@ import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
+
 import java.util.List;
+
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
@@ -29,7 +32,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
     private UZVideoAdPlayerListener uzVideoAdPlayerListener = new UZVideoAdPlayerListener();
 
     public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
-            List<Subtitle> subtitleList) {
+                           List<Subtitle> subtitleList) {
         super(uzVideo, linkPlay, thumbnailsUrl, subtitleList);
 
         if (urlIMAAd != null && !urlIMAAd.isEmpty()) {
@@ -112,6 +115,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
 
         player = buildPlayer(drmSessionManager);
         playerHelper = new UZPlayerHelper(player);
+
         uzVideo.getUzPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
@@ -141,7 +145,15 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
             return mediaSource;
         }
         return new AdsMediaSource(mediaSource, this, adsLoader,
-                uzVideo.getUzPlayerView().getOverlayFrameLayout(), null, null);
+                uzVideo.getUzPlayerView());
+    }
+
+    public void reset() {
+        if (player != null) {
+            contentPosition = player.getContentPosition();
+            player.release();
+            player = null;
+        }
     }
 
     @Override
@@ -160,7 +172,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
     @Override
     public int[] getSupportedTypes() {
         // IMA does not support Smooth Streaming ads.
-        return new int[] { C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER };
+        return new int[]{C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER};
     }
 
     private class UZVideoAdPlayerListener implements VideoAdPlayer.VideoAdPlayerCallback {

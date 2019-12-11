@@ -1,7 +1,7 @@
 package testlibuiza.sample.v3.fullscreen;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
