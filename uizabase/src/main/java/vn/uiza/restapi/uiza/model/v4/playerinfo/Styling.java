@@ -1,25 +1,19 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Styling {
 
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("icons")
-    @Expose
+    @Json(name = "icons")
     private String icons;
-    @SerializedName("progress")
-    @Expose
+    @Json(name = "progress")
     private String progress;
-    @SerializedName("background")
-    @Expose
+    @Json(name = "background")
     private String background;
-    @SerializedName("buffer")
-    @Expose
+    @Json(name = "buffer")
     private String buffer;
 
     public String getName() {

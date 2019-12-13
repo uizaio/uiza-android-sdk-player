@@ -4,22 +4,18 @@ package vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming;
  * Created by LENOVO on 7/2/2018.
  */
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class SendGetTokenStreaming {
     public final static String STREAM = "stream";
     public final static String STATIC = "static";
     public final static String CATCHUP = "catchup";
     public final static String LIVE = "live";
-    @SerializedName("entity_id")
-    @Expose
+    @Json(name = "entity_id")
     private String entityId;
-    @SerializedName("app_id")
-    @Expose
+    @Json(name = "app_id")
     private String appId;
-    @SerializedName("content_type")
-    @Expose
+    @Json(name = "content_type")
     private String contentType;
 
     public String getEntityId() {

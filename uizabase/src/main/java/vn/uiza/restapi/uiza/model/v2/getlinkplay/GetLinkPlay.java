@@ -1,7 +1,6 @@
 package vn.uiza.restapi.uiza.model.v2.getlinkplay;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
@@ -15,35 +14,25 @@ import vn.uiza.restapi.uiza.model.v2.getlinkdownload.Mpd;
 
 public class GetLinkPlay {
 
-    @SerializedName("message")
-    @Expose
+    @Json(name = "message")
     private String message;
-    @SerializedName("hls")
-    @Expose
+    @Json(name = "hls")
     private List<Hl> hls = null;
-    @SerializedName("hls_ts")
-    @Expose
+    @Json(name = "hls_ts")
     private List<HlsT> hlsTs = null;
-    @SerializedName("hevc")
-    @Expose
+    @Json(name = "hevc")
     private List<Object> hevc = null;
-    @SerializedName("mpd")
-    @Expose
+    @Json(name = "mpd")
     private List<Mpd> mpd = null;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private int version;
-    @SerializedName("datetime")
-    @Expose
+    @Json(name = "datetime")
     private String datetime;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("code")
-    @Expose
+    @Json(name = "code")
     private int code;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public String getMessage() {

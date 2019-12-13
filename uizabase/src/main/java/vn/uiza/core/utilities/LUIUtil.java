@@ -38,8 +38,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,6 +45,7 @@ import java.util.Random;
 
 import timber.log.Timber;
 import vn.uiza.R;
+import vn.uiza.utils.StringUtil;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
 
@@ -261,12 +260,6 @@ public class LUIUtil {
 
     public static void setTextBold(TextView textBold) {
         textBold.setTypeface(null, Typeface.BOLD);
-    }
-
-    public static void printBeautyJson(Object o, TextView textView) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(o);
-        textView.setText(json);
     }
 
     private static int[] colors = {

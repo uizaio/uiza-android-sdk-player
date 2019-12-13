@@ -1,69 +1,49 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
 public class Item {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("referenceId")
-    @Expose
+    @Json(name = "referenceId")
     private String referenceId;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     private String description;
-    @SerializedName("shortDescription")
-    @Expose
+    @Json(name = "shortDescription")
     private String shortDescription;
-    @SerializedName("ingestMetadataId")
-    @Expose
+    @Json(name = "ingestMetadataId")
     private String ingestMetadataId;
-    @SerializedName("adminUserId")
-    @Expose
+    @Json(name = "adminUserId")
     private String adminUserId;
-    @SerializedName("poster")
-    @Expose
+    @Json(name = "poster")
     private String poster;
-    @SerializedName("view")
-    @Expose
+    @Json(name = "view")
     private int view;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private int status;
-    @SerializedName("thumbnail")
-    @Expose
+    @Json(name = "thumbnail")
     private String thumbnail;
-    @SerializedName("duration")
-    @Expose
+    @Json(name = "duration")
     private String duration;
-    @SerializedName("extendData")
-    @Expose
+    @Json(name = "extendData")
     private ExtendData extendData;
-    @SerializedName("ownerName")
-    @Expose
+    @Json(name = "ownerName")
     private String ownerName;
-    @SerializedName("ownerEmail")
-    @Expose
+    @Json(name = "ownerEmail")
     private String ownerEmail;
-    @SerializedName("ownerAvatar")
-    @Expose
+    @Json(name = "ownerAvatar")
     private String ownerAvatar;
-    @SerializedName("ownerFullName")
-    @Expose
+    @Json(name = "ownerFullName")
     private String ownerFullName;
-    @SerializedName("metadata")
-    @Expose
+    @Json(name = "metadata")
     private List<Metadatum> metadata = null;
-    @SerializedName("subtitle")
-    @Expose
+    @Json(name = "subtitle")
     private List<Subtitle> subtitle = null;
 
     public String getId() {

@@ -1,36 +1,27 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
 public class Data {
 
-    @SerializedName("cdn")
-    @Expose
+    @Json(name = "cdn")
     private List<Cdn> cdn = null;
-    @SerializedName("cdn_fallback")
-    @Expose
+    @Json(name = "cdn_fallback")
     private List<Object> cdnFallback = null;
-    @SerializedName("appId")
-    @Expose
+    @Json(name = "appId")
     private String appId;
-    @SerializedName("entityId")
-    @Expose
+    @Json(name = "entityId")
     private String entityId;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("fileName")
-    @Expose
+    @Json(name = "fileName")
     private List<FileName> fileName = null;
-    @SerializedName("urls")
-    @Expose
+    @Json(name = "urls")
     private List<Url> urls = null;
-    @SerializedName("allRecord")
-    @Expose
+    @Json(name = "allRecord")
     private List<AllRecord> allRecord = null;
 
     public List<Cdn> getCdn() {

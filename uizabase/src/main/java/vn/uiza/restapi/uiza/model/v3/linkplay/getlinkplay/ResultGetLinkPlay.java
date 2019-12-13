@@ -1,40 +1,29 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class ResultGetLinkPlay {
 
-    @SerializedName("data")
-    @Expose
+    @Json(name = "data")
     private Data data;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private Integer version;
-    @SerializedName("datetime")
-    @Expose
+    @Json(name = "datetime")
     private String datetime;
-    @SerializedName("policy")
-    @Expose
+    @Json(name = "policy")
     private String policy;
-    @SerializedName("serviceName")
-    @Expose
+    @Json(name = "serviceName")
     private String serviceName;
-    @SerializedName("requestId")
-    @Expose
+    @Json(name = "requestId")
     private String requestId;
-    @SerializedName("env")
-    @Expose
+    @Json(name = "env")
     private String env;
-    @SerializedName("message")
-    @Expose
+    @Json(name = "message")
     private String message;
-    @SerializedName("code")
-    @Expose
+    @Json(name = "code")
     private Integer code;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public Data getData() {

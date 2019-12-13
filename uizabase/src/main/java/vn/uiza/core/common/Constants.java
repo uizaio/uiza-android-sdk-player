@@ -13,9 +13,19 @@ public class Constants {
     public static final String PLAYER_SDK_VERSION = "3.1.9";
     public static final int API_VERSION_3 = 3;
     public static final int API_VERSION_4 = 4;
+    public static final int API_VERSION_5 = 5;
+    public static int apiVersion = API_VERSION_3;
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;
+    }
+
+    public static void setApiVersion(int version) {
+        apiVersion = version;
+    }
+
+    public static boolean isV5AndAbove() {
+        return apiVersion >= API_VERSION_5;
     }
 
     public static final int NOT_FOUND = -404;

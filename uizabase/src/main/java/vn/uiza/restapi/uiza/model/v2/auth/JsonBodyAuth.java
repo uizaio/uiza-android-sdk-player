@@ -4,6 +4,7 @@ package vn.uiza.restapi.uiza.model.v2.auth;
  * Created by LENOVO on 3/23/2018.
  */
 
+
 public class JsonBodyAuth {
     private String accessKeyId;
     private String secretKeyId;

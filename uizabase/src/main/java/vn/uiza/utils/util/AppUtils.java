@@ -10,10 +10,17 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+
 import androidx.annotation.NonNull;
+
 import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public final class AppUtils {
 
@@ -81,6 +88,7 @@ public final class AppUtils {
     public static String getAppPackageName() {
         return Utils.getContext().getPackageName();
     }
+
     public static void getAppDetailsSettings() {
         getAppDetailsSettings(Utils.getContext().getPackageName());
     }
@@ -157,6 +165,7 @@ public final class AppUtils {
             return null;
         }
     }
+
     public static int getAppVersionCode() {
         return getAppVersionCode(Utils.getContext().getPackageName());
     }
@@ -252,13 +261,13 @@ public final class AppUtils {
 
     public static class AppInfo {
 
-        private String   name;
+        private String name;
         private Drawable icon;
-        private String   packageName;
-        private String   packagePath;
-        private String   versionName;
-        private int      versionCode;
-        private boolean  isSystem;
+        private String packageName;
+        private String packagePath;
+        private String versionName;
+        private int versionCode;
+        private boolean isSystem;
 
         public Drawable getIcon() {
             return icon;
@@ -388,4 +397,7 @@ public final class AppUtils {
         }
         return true;
     }
+
+
+
 }

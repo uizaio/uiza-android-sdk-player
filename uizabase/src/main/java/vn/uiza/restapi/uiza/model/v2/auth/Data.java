@@ -1,19 +1,16 @@
 
 package vn.uiza.restapi.uiza.model.v2.auth;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
+
 
 public class Data {
 
-    @SerializedName("token")
-    @Expose
+    @Json(name = "token")
     private String token;
-    @SerializedName("expired")
-    @Expose
+    @Json(name = "expired")
     private String expired;
-    @SerializedName("appId")
-    @Expose
+    @Json(name = "appId")
     private String appId;
 
     public String getToken() {

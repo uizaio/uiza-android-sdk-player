@@ -28,6 +28,8 @@ import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.utils.StringUtil;
 
 /**
  * Created by loitp on 4/1/2019.
@@ -238,7 +240,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         String orderType = "DESC";
         RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
                 result -> {
-                    LUIUtil.printBeautyJson(result, tv);
+                    tv.setText(StringUtil.toJson(result, ResultListEntity.class));
                     LImageUtil.load(activity, "https://motosaigon.vn/wp-content/uploads/2018/08/Kawasaki-Z1000-2019-Z1000R-2019-MotoSaigon.vn-2.jpg", iv);
                 }, throwable -> {
                 });

@@ -5,18 +5,19 @@ package testlibuiza.sample.v3.utube;
  */
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import testlibuiza.R;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.utils.StringUtil;
 
 public class FrmUTVideoBottom extends Fragment {
     private TextView tvJsonData;
@@ -36,7 +37,7 @@ public class FrmUTVideoBottom extends Fragment {
     }
 
     public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        LUIUtil.printBeautyJson(data, tvJsonData);
-        LUIUtil.printBeautyJson(resultGetLinkPlay, tvJsonLinkplay);
+        tvJsonData.setText(StringUtil.toBeautyJson(data, Data.class));
+        tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay, ResultGetLinkPlay.class));
     }
 }

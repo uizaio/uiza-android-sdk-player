@@ -11,15 +11,20 @@ import testlibuiza.R;
 import timber.log.Timber;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.UizaService;
+import vn.uiza.restapi.uiza.model.ListWrap;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
+import vn.uiza.restapi.uiza.model.v5.CreateLiveEntityBody;
+import vn.uiza.restapi.uiza.model.v5.LiveEntity;
+import vn.uiza.utils.StringUtil;
 import vn.uiza.views.LToast;
 
 public class UZTestAPIActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,14 +34,15 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
     private final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
     private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+    UizaService v5Service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v3_activity_test_api);
-        tv = (TextView) findViewById(R.id.tv);
-
+        tv = findViewById(R.id.tv);
+        v5Service = UZRestClient.createService(UizaService.class);
         findViewById(R.id.bt_create_an_user).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
         findViewById(R.id.bt_list_all_user).setOnClickListener(this);
@@ -51,9 +57,9 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
 
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
-        findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
-        findViewById(R.id.bt_search_entity).setOnClickListener(this);
+        findViewById(R.id.bt_create_entity).setOnClickListener(this);
+        findViewById(R.id.bt_update_entity).setOnClickListener(this);
 
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
@@ -108,14 +114,14 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
             case R.id.bt_list_all_entity:
                 listAllEntity();
                 break;
-            case R.id.bt_list_all_entity_metadata:
-                listAllEntityMetadata();
+            case R.id.bt_create_entity:
+                createAnEntity();
                 break;
             case R.id.bt_retrieve_an_entity:
                 retrieveAnEntity();
                 break;
-            case R.id.bt_search_entity:
-                searchAnEntity();
+            case R.id.bt_update_entity:
+                updateAnEntity();
                 break;
             case R.id.bt_get_token_streaming:
                 getTokenStreaming();
@@ -151,7 +157,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void showTv(Object o) {
-        LUIUtil.printBeautyJson(o, tv);
+        tv.setText(StringUtil.toBeautyJson(o, Object.class));
     }
 
     private void createAnUser() {
@@ -234,7 +240,9 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getListMetadata() {
         UZService service = UZRestClient.createService(UZService.class);
         RxBinder.getInstance().bind(service.getListMetadata(UZData.getInstance().getAPIVersion()),
-                this::showTv, throwable -> {
+                o -> {
+                    tv.setText(StringUtil.toBeautyJson(o, ResultGetListMetadata.class));
+                }, throwable -> {
                     Timber.e(throwable, "getListMetadata onFail");
                     showTv(throwable.getMessage());
                 });
@@ -293,50 +301,37 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
 
     private void listAllEntity() {
-        UZService service = UZRestClient.createService(UZService.class);
-        String metadataId = "";
-        int limit = 50;
-        int page = 0;
-        String orderBy = "createdAt";
-        String orderType = "DESC";
-        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
-                this::showTv, throwable -> {
-                    Timber.e(throwable, "getListAllEntity onFail");
-                    showTv(throwable.getMessage());
+        RxBinder.getInstance().bind(v5Service.getEntities().map(ListWrap::getData),
+                o -> tv.setText(StringUtil.toBeautyJson(o, LiveEntity.class)), throwable -> {
+                    Timber.e(throwable, "listAllEntity onFail");
+                    tv.setText(throwable.getLocalizedMessage());
                 });
     }
 
-    private void listAllEntityMetadata() {
-        UZService service = UZRestClient.createService(UZService.class);
-        String metadataId = "74cac724-968c-4e6d-a6e1-6c2365e41d9d";
-        int limit = 50;
-        int page = 0;
-        String orderBy = "createdAt";
-        String orderType = "DESC";
-        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
-                this::showTv, throwable -> {
-                    Timber.e(throwable, "getListAllEntity onFail");
-                    showTv(throwable.getMessage());
+    private void createAnEntity() {
+        CreateLiveEntityBody body = new CreateLiveEntityBody("sample test", "sample descript", UZData.getInstance().getAppId(), UZData.getInstance().getAppId(), "");
+        RxBinder.getInstance().bind(v5Service.createEntity(body),
+                o -> tv.setText(StringUtil.toBeautyJson(o, LiveEntity.class)), throwable -> {
+                    Timber.e(throwable, "createAnEntity onFail");
+                    tv.setText(throwable.getLocalizedMessage());
                 });
     }
 
     private void retrieveAnEntity() {
-        UZService service = UZRestClient.createService(UZService.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
-        RxBinder.getInstance().bind(service.retrieveAnEntity(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
-                this::showTv, throwable -> {
+        RxBinder.getInstance().bind(v5Service.getEntity(id),
+                o -> tv.setText(StringUtil.toBeautyJson(o, LiveEntity.class)), throwable -> {
                     Timber.e(throwable, "retrieveAnEntity onFail");
-                    showTv(throwable.getMessage());
+                    tv.setText(throwable.getLocalizedMessage());
                 });
     }
 
-    private void searchAnEntity() {
-        UZService service = UZRestClient.createService(UZService.class);
-        String keyword = "a";
-        RxBinder.getInstance().bind(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword),
-                this::showTv, throwable -> {
+    private void updateAnEntity() {
+        String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
+        RxBinder.getInstance().bind(v5Service.updateEntity(id, "new sample name"),
+                o -> tv.setText(StringUtil.toBeautyJson(o, LiveEntity.class)), throwable -> {
                     Timber.e(throwable, "searchEntity onFail");
-                    showTv(throwable.getMessage());
+                    tv.setText(throwable.getLocalizedMessage());
                 });
     }
 

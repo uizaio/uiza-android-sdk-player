@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
@@ -46,6 +43,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
+import vn.uiza.utils.StringUtil;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
@@ -185,7 +183,7 @@ public class UZUtil {
         return null;
     }
 
-    public static List<Subtitle> createDummySubtitle(Gson gson) {
+    public static List<Subtitle> createDummySubtitle() {
         String json = "[\n" +
                 "                {\n" +
                 "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
@@ -206,9 +204,7 @@ public class UZUtil {
                 "                    \"isDefault\": \"0\"\n" +
                 "                }\n" +
                 "            ]";
-        Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        return Arrays.asList(subtitles);
+        return StringUtil.toList(json, Subtitle.class);
     }
 
     public static void showUizaDialog(Context context, Dialog dialog) {
@@ -505,6 +501,7 @@ public class UZUtil {
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
         initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
     }
+
 
     public static void setCasty(Activity activity) {
         if (activity == null) {
@@ -921,14 +918,16 @@ public class UZUtil {
     }
 
     /////////////////////////////////OBJECT
-    public static Auth getAuth(Context context, Gson gson) {
+    public static Auth getAuth(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(AUTH, null);
-        return gson.fromJson(json, Auth.class);
+        if (!TextUtils.isEmpty(json))
+            return StringUtil.toObject(json, Auth.class);
+        return null;
     }
 
-    public static void setAuth(Context context, Auth auth, Gson gson) {
-        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, gson.toJson(auth));
+    public static void setAuth(Context context, Auth auth) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, StringUtil.toJson(auth, Auth.class));
     }
 
     //=============================================================================END PREF

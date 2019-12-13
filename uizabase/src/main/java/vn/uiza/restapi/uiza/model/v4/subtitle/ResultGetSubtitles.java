@@ -1,44 +1,33 @@
 
 package vn.uiza.restapi.uiza.model.v4.subtitle;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
+
 import java.util.List;
+
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultGetSubtitles {
-
-    @SerializedName("data")
-    @Expose
+    @Json(name = "data")
     private List<Subtitle> data = null;
-    @SerializedName("metadata")
-    @Expose
+    @Json(name = "metadata")
     private Metadata metadata;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private Integer version;
-    @SerializedName("datetime")
-    @Expose
+    @Json(name = "datetime")
     private String datetime;
-    @SerializedName("policy")
-    @Expose
+    @Json(name = "policy")
     private String policy;
-    @SerializedName("requestId")
-    @Expose
+    @Json(name = "requestId")
     private String requestId;
-    @SerializedName("serviceName")
-    @Expose
+    @Json(name = "serviceName")
     private String serviceName;
-    @SerializedName("message")
-    @Expose
+    @Json(name = "message")
     private String message;
-    @SerializedName("code")
-    @Expose
+    @Json(name = "code")
     private Integer code;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public List<Subtitle> getData() {

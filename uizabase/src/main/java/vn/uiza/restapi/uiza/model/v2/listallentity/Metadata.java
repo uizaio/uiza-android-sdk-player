@@ -1,22 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Metadata {
 
-    @SerializedName("total")
-    @Expose
+    @Json(name = "total")
     private double total;
-    @SerializedName("result")
-    @Expose
+    @Json(name = "result")
     private double result;
-    @SerializedName("page")
-    @Expose
+    @Json(name = "page")
     private double page;
-    @SerializedName("limit")
-    @Expose
+    @Json(name = "limit")
     private double limit;
 
     public double getTotal() {

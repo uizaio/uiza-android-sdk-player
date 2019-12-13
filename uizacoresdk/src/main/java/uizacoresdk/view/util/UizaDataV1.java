@@ -3,8 +3,6 @@ package uizacoresdk.view.util;
 import android.content.Context;
 import android.content.pm.ResolveInfo;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
+import vn.uiza.utils.StringUtil;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -107,8 +106,7 @@ public class UizaDataV1 {
     public UizaTracking createTrackingInput(Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
-        Gson gson = new Gson();
-        Auth auth = UZUtil.getAuth(context, gson);
+        Auth auth = UZUtil.getAuth(context);
         if (auth != null) {
             uizaTracking.setAppId(auth.getData().getAppId());
         }
@@ -147,7 +145,7 @@ public class UizaDataV1 {
         //event_type
         uizaTracking.setEventType(eventType);
         if (Constants.IS_DEBUG) {
-            Timber.d("createTrackingInput %s", gson.toJson(uizaTracking));
+            Timber.d("createTrackingInput %s", StringUtil.toJson(uizaTracking, UizaTracking.class));
         }
         return uizaTracking;
     }

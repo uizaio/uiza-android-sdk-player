@@ -1,46 +1,33 @@
 
 package vn.uiza.restapi.uiza.model.v3.ad;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Ad {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private long status;
-    @SerializedName("adminUserId")
-    @Expose
+    @Json(name = "adminUserId")
     private String adminUserId;
-    @SerializedName("isDeleted")
-    @Expose
+    @Json(name = "isDeleted")
     private long isDeleted;
-    @SerializedName("entityId")
-    @Expose
+    @Json(name = "entityId")
     private String entityId;
-    @SerializedName("campaignId")
-    @Expose
+    @Json(name = "campaignId")
     private String campaignId;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("time")
-    @Expose
+    @Json(name = "time")
     private long time;
-    @SerializedName("link")
-    @Expose
+    @Json(name = "link")
     private String link;
-    @SerializedName("createdAt")
-    @Expose
+    @Json(name = "createdAt")
     private String createdAt;
-    @SerializedName("updatedAt")
-    @Expose
+    @Json(name = "updatedAt")
     private String updatedAt;
 
     public String getId() {

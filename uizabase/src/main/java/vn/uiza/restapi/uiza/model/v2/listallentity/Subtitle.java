@@ -5,42 +5,34 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
  */
 
 import androidx.annotation.IntDef;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+
+import com.squareup.moshi.Json;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class Subtitle {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("url")
-    @Expose
+    @Json(name = "url")
     private String url;
-    @SerializedName("mine")
-    @Expose
+    @Json(name = "mine")
     private String mine;
-    @SerializedName("language")
-    @Expose
+    @Json(name = "language")
     private String language;
-    @SerializedName("isDefault")
-    @Expose
+    @Json(name = "isDefault")
     private int isDefault;
-    @SerializedName("status")
-    @Expose
-    private @Status int status;
-    @SerializedName("createAt")
-    @Expose
+    @Json(name = "status")
+    private @Status
+    int status;
+    @Json(name = "createAt")
     private String createdAt;
-    @SerializedName("updateAt")
-    @Expose
+    @Json(name = "updateAt")
     private String updatedAt;
 
     public String getId() {
@@ -125,9 +117,10 @@ public class Subtitle {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ Status.DISABLE, Status.ENABLE })
+    @IntDef({Status.DISABLE, Status.ENABLE})
     public @interface Status {
         int DISABLE = 0;
         int ENABLE = 1;
     }
+
 }

@@ -1,22 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallmetadata;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Datum {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private int status;
 
     public String getId() {

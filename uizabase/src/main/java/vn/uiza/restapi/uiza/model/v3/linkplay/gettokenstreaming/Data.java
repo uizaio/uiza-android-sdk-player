@@ -1,13 +1,11 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Data {
 
-    @SerializedName("token")
-    @Expose
+    @Json(name = "token")
     private String token;
 
     public String getToken() {

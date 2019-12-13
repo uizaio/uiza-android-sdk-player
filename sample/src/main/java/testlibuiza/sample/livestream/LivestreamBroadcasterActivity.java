@@ -57,6 +57,7 @@ import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.utils.StringUtil;
 import vn.uiza.views.LToast;
 
 public class LivestreamBroadcasterActivity extends AppCompatActivity implements View.OnClickListener, UZLivestreamCallback {
@@ -76,13 +77,13 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         setContentView(R.layout.activity_livestream_video_broadcaster);
-        uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
+        uzLivestream = findViewById(R.id.uiza_livestream);
         uzLivestream.setUzLivestreamCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
-        btFilter = (Button) findViewById(R.id.b_filter);
-        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
+        btFilter = findViewById(R.id.b_filter);
+        tvMainUrl = findViewById(R.id.tv_main_url);
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         btSwitchCamera.setEnabled(false);
@@ -322,7 +323,7 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
 
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
-        Timber.d("onGetDataSuccess %s", LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+        Timber.d("onGetDataSuccess %s", StringUtil.toJson(presetLiveStreamingFeed, PresetLiveStreamingFeed.class));
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);
@@ -340,14 +341,11 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
 
     @Override
     public void onDisconnectRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                bStartStop.setEnabled(true);
-                bStartStopStore.setEnabled(true);
-                btSwitchCamera.setEnabled(true);
-                btFilter.setEnabled(true);
-            }
+        runOnUiThread(() -> {
+            bStartStop.setEnabled(true);
+            bStartStopStore.setEnabled(true);
+            btSwitchCamera.setEnabled(true);
+            btFilter.setEnabled(true);
         });
     }
 

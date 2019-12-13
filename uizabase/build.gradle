@@ -40,11 +40,12 @@ android {
 dependencies {
     // Retrofit2 from 2.6.2 require minSDK 21
     api 'com.squareup.retrofit2:retrofit:2.6.1'
-    api 'com.squareup.retrofit2:converter-gson:2.6.1'
+//    api 'com.squareup.retrofit2:converter-gson:2.6.1'
+    api 'com.squareup.retrofit2:converter-moshi:2.6.1'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
     // OKHTTP from 3.13.x require minSDK 21
     api 'com.squareup.okhttp3:logging-interceptor:3.12.6'
-
+    implementation "joda-time:joda-time:2.10.5"
     // reactivex
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'io.reactivex.rxjava2:rxjava:2.2.15'

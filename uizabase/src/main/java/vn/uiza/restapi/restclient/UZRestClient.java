@@ -2,8 +2,7 @@ package vn.uiza.restapi.restclient;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.squareup.moshi.Moshi;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
@@ -13,9 +12,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 import timber.log.Timber;
-import vn.uiza.restapi.DateTypeDeserializer;
+import vn.uiza.helpers.DateTimeAdapter;
 
 public class UZRestClient {
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
@@ -45,14 +44,13 @@ public class UZRestClient {
                 .addInterceptor(logging)  // <-- this is the important line!
                 .build();
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateTypeDeserializer())
-                .create();
+        Moshi moshi = new Moshi.Builder().add(new DateTimeAdapter()).build();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
 
         if (!TextUtils.isEmpty(token)) {

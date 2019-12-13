@@ -5,11 +5,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customhq.CustomHQActivity;
@@ -44,13 +45,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(activity, PortraitFullScreenActivity.class);
             startActivity(intent);
         });
-        findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, UZTestAPIActivity.class);
-                startActivity(intent);
-            }
-        });
+
         findViewById(R.id.bt_sdk_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,70 +56,48 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_guide).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, TestAPI.class);
+                Intent intent = new Intent(activity, UZTestAPIActivity.class);
                 startActivity(intent);
             }
         });
-        findViewById(R.id.bt_livestream_broadcaster).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, LivestreamBroadcasterActivity.class);
-                startActivity(intent);
-            }
+        findViewById(R.id.bt_livestream_broadcaster).setOnClickListener(v -> {
+            Intent intent = new Intent(activity, LivestreamBroadcasterActivity.class);
+            startActivity(intent);
         });
-        findViewById(R.id.bt_uiza_custom_skin_xml).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
-                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
-                startActivity(intent);
-            }
+        findViewById(R.id.bt_uiza_custom_skin_xml).setOnClickListener(v -> {
+            Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
+            intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
+            startActivity(intent);
         });
         findViewById(R.id.bt_uiza_custom_skin_code_seekbar)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
-                        startActivity(intent);
-                    }
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
+                    startActivity(intent);
                 });
         findViewById(R.id.bt_uiza_custom_skin_code_uz_timebar)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity, CustomSkinCodeUZTimebarActivity.class);
-                        intent.putExtra(Constants.KEY_UIZA_ENTITY_ID,
-                                LSApplication.entityIdDefaultVOD);
-                        //intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, LSApplication.thumbEntityIdDefaultVOD);
-                        startActivity(intent);
-                    }
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, CustomSkinCodeUZTimebarActivity.class);
+                    intent.putExtra(Constants.KEY_UIZA_ENTITY_ID,
+                            LSApplication.entityIdDefaultVOD);
+                    startActivity(intent);
                 });
         findViewById(R.id.bt_uiza_custom_skin_u_tube)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity,
-                                CustomSkinCodeUZTimebarUTubeActivity.class);
-                        startActivity(intent);
-                    }
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(activity,
+                            CustomSkinCodeUZTimebarUTubeActivity.class);
+                    startActivity(intent);
                 });
         findViewById(R.id.bt_uiza_custom_skin_u_tube_with_slide)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity,
-                                CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
-                        startActivity(intent);
-                    }
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(activity,
+                            CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
+                    startActivity(intent);
                 });
-        findViewById(R.id.bt_slide_0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(activity, Slide0Activity.class);
-                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
-                //intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
-                startActivity(intent);
-            }
+        findViewById(R.id.bt_slide_0).setOnClickListener(v -> {
+            final Intent intent = new Intent(activity, Slide0Activity.class);
+            intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
+            //intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
+            startActivity(intent);
         });
         findViewById(R.id.bt_custom_hq).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,7 +24,8 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -77,7 +78,8 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -136,22 +138,22 @@
                         android:text="List all entity" />
 
                     <Button
-                        android:id="@+id/bt_list_all_entity_metadata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="List all entity of metadataid" />
-
-                    <Button
                         android:id="@+id/bt_retrieve_an_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Retrieve an entity" />
 
                     <Button
-                        android:id="@+id/bt_search_entity"
+                        android:id="@+id/bt_create_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Search entity" />
+                        android:text="Create an entity" />
+
+                    <Button
+                        android:id="@+id/bt_update_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update an entity" />
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -163,7 +165,8 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"

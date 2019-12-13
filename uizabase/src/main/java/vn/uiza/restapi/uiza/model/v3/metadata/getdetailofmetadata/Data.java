@@ -1,9 +1,9 @@
 
 package vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
+import java.util.Date;
 import java.util.List;
 
 import vn.uiza.core.common.Constants;
@@ -12,176 +12,134 @@ import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPushIn
 
 public class Data {
 
-    @SerializedName("entityId")
-    @Expose
+    @Json(name = "entityId")
     private String entityId;
 
-    @SerializedName("entityName")
-    @Expose
+    @Json(name = "entityName")
     private String entityName;
 
-    @SerializedName("feedId")
-    @Expose
+    @Json(name = "feedId")
     private String feedId;
 
-    @SerializedName("startTime")
-    @Expose
+    @Json(name = "startTime")
     private String startTime;
 
-    @SerializedName("endTime")
-    @Expose
+    @Json(name = "endTime")
     private Object endTime;
 
-    @SerializedName("length")
-    @Expose
+    @Json(name = "length")
     private Object length;
 
-    @SerializedName("process")
-    @Expose
+    @Json(name = "process")
     private String process;
 
-    @SerializedName("deletedEntity")
-    @Expose
+    @Json(name = "deletedEntity")
     private Object deletedEntity;
 
-    @SerializedName("pullInfo")
-    @Expose
+    @Json(name = "pullInfo")
     private String pullInfo;
 
-    @SerializedName("pushInfo")
-    @Expose
+    @Json(name = "pushInfo")
     private String pushInfo;
 
-    @SerializedName("mode")
-    @Expose
+    @Json(name = "mode")
     private String mode;
 
-    @SerializedName("resourceMode")
-    @Expose
+    @Json(name = "resourceMode")
     private String resourceMode;
 
-    @SerializedName("encode")
-    @Expose
+    @Json(name = "encode")
     private long encode;
 
-    @SerializedName("channelName")
-    @Expose
+    @Json(name = "channelName")
     private String channelName;
 
-    @SerializedName("lastPresetId")
-    @Expose
+    @Json(name = "lastPresetId")
     private Object lastPresetId;
 
-    @SerializedName("lastFeedId")
-    @Expose
+    @Json(name = "lastFeedId")
     private String lastFeedId;
 
-    @SerializedName("linkPublishSocial")
-    @Expose
+    @Json(name = "linkPublishSocial")
     private String linkPublishSocial;
 
-    @SerializedName("linkStream")
-    @Expose
+    @Json(name = "linkStream")
     private String linkStream;
 
-    @SerializedName("lastPullInfo")
-    @Expose
+    @Json(name = "lastPullInfo")
     private LastPullInfo lastPullInfo;
 
-    @SerializedName("lastPushInfo")
-    @Expose
+    @Json(name = "lastPushInfo")
     private List<LastPushInfo> lastPushInfo = null;
 
-    @SerializedName("lastProcess")
-    @Expose
+    @Json(name = "lastProcess")
     private String lastProcess;
 
-    @SerializedName("eventType")
-    @Expose
+    @Json(name = "eventType")
     private String eventType;
 
-    @SerializedName("slug")
-    @Expose
+    @Json(name = "slug")
     private String slug;
 
-    @SerializedName("orderNumber")
-    @Expose
+    @Json(name = "orderNumber")
     private Integer orderNumber;
 
-    @SerializedName("icon")
-    @Expose
+    @Json(name = "icon")
     private String icon;
 
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private int status;
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
 
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
 
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     private String description;
 
-    @SerializedName("shortDescription")
-    @Expose
+    @Json(name = "shortDescription")
     private String shortDescription;
 
-    @SerializedName("view")
-    @Expose
+    @Json(name = "view")
     private long view;
 
-    @SerializedName("poster")
-    @Expose
+    @Json(name = "poster")
     private String poster;
 
-    @SerializedName("thumbnail")
-    @Expose
+    @Json(name = "thumbnail")
     private String thumbnail;
 
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
-    @SerializedName("duration")
-    @Expose
+    @Json(name = "duration")
     private String duration;
 
-    @SerializedName("embedMetadata")
-    @Expose
+    @Json(name = "embedMetadata")
     private Object embedMetadata;
 
-    /*@SerializedName("extendMetadata")
+    /*@Json(name = "extendMetadata")
     @Expose
     private ExtendMetadata extendMetadata;*/
 
-    @SerializedName("createdAt")
-    @Expose
+    @Json(name = "createdAt")
     private String createdAt;
 
-    @SerializedName("updatedAt")
-    @Expose
+    @Json(name = "updatedAt")
     private String updatedAt;
 
-    @SerializedName("publishToCdn")
-    @Expose
+    @Json(name = "publishToCdn")
     private String publishToCdn;
 
-    @SerializedName("inputType")
-    @Expose
+    @Json(name = "inputType")
     private String inputType;
 
-    @SerializedName("url")
-    @Expose
+    @Json(name = "url")
     private String url;
 
-    @SerializedName("readyToPublish")
-    @Expose
+    @Json(name = "readyToPublish")
     private String readyToPublish;
 
     public String getName() {

@@ -1,23 +1,16 @@
 
 package vn.uiza.restapi.uiza.model.v2.getplayerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class PlayerConfig {
 
-    @SerializedName("setting")
-    @Expose
+    @Json(name = "setting")
     private Setting setting;
-    @SerializedName("styling")
-    @Expose
+    @Json(name = "styling")
     private Styling styling;
-    @SerializedName("socialSharing")
-    @Expose
+    @Json(name = "socialSharing")
     private SocialSharing socialSharing;
-    @SerializedName("endscreen")
-    @Expose
-    private Endscreen endscreen;
 
     public Setting getSetting() {
         return setting;
@@ -41,14 +34,6 @@ public class PlayerConfig {
 
     public void setSocialSharing(SocialSharing socialSharing) {
         this.socialSharing = socialSharing;
-    }
-
-    public Endscreen getEndscreen() {
-        return endscreen;
-    }
-
-    public void setEndscreen(Endscreen endscreen) {
-        this.endscreen = endscreen;
     }
 
 }

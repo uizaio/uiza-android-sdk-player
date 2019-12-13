@@ -4,8 +4,7 @@ package vn.uiza.restapi.uiza.model.v2.search;
  * Created by LENOVO on 3/7/2018.
  */
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
@@ -14,29 +13,21 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Metadata;
 
 public class Search {
 
-    @SerializedName("data")
-    @Expose
+    @Json(name = "data")
     private List<Item> itemList = null;
-    @SerializedName("metadata")
-    @Expose
+    @Json(name = "metadata")
     private Metadata metadata;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private int version;
-    @SerializedName("datetime")
-    @Expose
+    @Json(name = "datetime")
     private String datetime;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("message")
-    @Expose
+    @Json(name = "message")
     private String message;
-    @SerializedName("code")
-    @Expose
+    @Json(name = "code")
     private int code;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public List<Item> getItemList() {

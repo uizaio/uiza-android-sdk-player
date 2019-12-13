@@ -1,55 +1,39 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class VideoDetail {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("bitrate")
-    @Expose
+    @Json(name = "bitrate")
     private String bitrate;
-    @SerializedName("bufsize")
-    @Expose
+    @Json(name = "bufsize")
     private int bufsize;
-    @SerializedName("width")
-    @Expose
+    @Json(name = "width")
     private String width;
-    @SerializedName("height")
-    @Expose
+    @Json(name = "height")
     private String height;
-    @SerializedName("framerate")
-    @Expose
+    @Json(name = "framerate")
     private String framerate;
-    @SerializedName("keyint")
-    @Expose
+    @Json(name = "keyint")
     private String keyint;
-    @SerializedName("level")
-    @Expose
+    @Json(name = "level")
     private String level;
-    @SerializedName("maxrate")
-    @Expose
+    @Json(name = "maxrate")
     private int maxrate;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("preset")
-    @Expose
+    @Json(name = "preset")
     private String preset;
-    @SerializedName("template")
-    @Expose
+    @Json(name = "template")
     private String template;
-    @SerializedName("vprofile")
-    @Expose
+    @Json(name = "vprofile")
     private String vprofile;
-    @SerializedName("weight")
-    @Expose
+    @Json(name = "weight")
     private int weight;
-    @SerializedName("enable_hevc")
-    @Expose
+    @Json(name = "enable_hevc")
     private boolean enableHevc;
 
     public String getId() {

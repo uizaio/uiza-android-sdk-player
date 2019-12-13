@@ -1,16 +1,13 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Setting {
 
-    @SerializedName("autoStart")
-    @Expose
+    @Json(name = "autoStart")
     private boolean autoStart;
-    @SerializedName("showQuality")
-    @Expose
+    @Json(name = "showQuality")
     private boolean showQuality;
 
     public boolean isAutoStart() {

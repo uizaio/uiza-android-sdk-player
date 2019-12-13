@@ -1,37 +1,27 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class PlayerInfor {
 
-    @SerializedName("data")
-    @Expose
+    @Json(name = "data")
     private Data data;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private long version;
-    @SerializedName("datetime")
-    @Expose
+    @Json(name = "datetime")
     private String datetime;
-    @SerializedName("policy")
-    @Expose
+    @Json(name = "policy")
     private String policy;
-    @SerializedName("requestId")
-    @Expose
+    @Json(name = "requestId")
     private String requestId;
-    @SerializedName("serviceName")
-    @Expose
+    @Json(name = "serviceName")
     private String serviceName;
-    @SerializedName("message")
-    @Expose
+    @Json(name = "message")
     private String message;
-    @SerializedName("code")
-    @Expose
+    @Json(name = "code")
     private long code;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public Data getData() {

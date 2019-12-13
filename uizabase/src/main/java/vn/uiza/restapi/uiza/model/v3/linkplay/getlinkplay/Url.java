@@ -1,30 +1,23 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
 public class Url {
 
-    @SerializedName("url")
-    @Expose
+    @Json(name = "url")
     private String url;
-    @SerializedName("support")
-    @Expose
+    @Json(name = "support")
     private String support;
-    @SerializedName("codec")
-    @Expose
+    @Json(name = "codec")
     private List<String> codec = null;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("region")
-    @Expose
+    @Json(name = "region")
     private String region;
-    @SerializedName("priority")
-    @Expose
+    @Json(name = "priority")
     private Integer priority;
 
     public String getUrl() {

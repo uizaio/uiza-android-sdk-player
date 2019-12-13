@@ -1,38 +1,27 @@
 package vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class CreateUser {
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private long status;
-    @SerializedName("username")
-    @Expose
+    @Json(name = "username")
     private String username;
-    @SerializedName("email")
-    @Expose
+    @Json(name = "email")
     private String email;
-    @SerializedName("password")
-    @Expose
+    @Json(name = "password")
     private String password;
-    @SerializedName("avatar")
-    @Expose
+    @Json(name = "avatar")
     private String avatar;
-    @SerializedName("fullname")
-    @Expose
+    @Json(name = "fullname")
     private String fullname;
-    @SerializedName("dob")
-    @Expose
+    @Json(name = "dob")
     private String dob;
-    @SerializedName("gender")
-    @Expose
+    @Json(name = "gender")
     private long gender;
-    @SerializedName("isAdmin")
-    @Expose
+    @Json(name = "isAdmin")
     private long isAdmin;
 
     public long getStatus() {

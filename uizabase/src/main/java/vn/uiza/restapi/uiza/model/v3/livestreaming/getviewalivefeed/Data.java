@@ -1,13 +1,11 @@
 
 package vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Data {
 
-    @SerializedName("watchnow")
-    @Expose
+    @Json(name = "watchnow")
     private long watchnow;
 
     public long getWatchnow() {

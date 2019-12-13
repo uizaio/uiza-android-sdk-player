@@ -1,16 +1,13 @@
 
 package vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class LastPullInfo {
 
-    @SerializedName("primaryInputUri")
-    @Expose
+    @Json(name = "primaryInputUri")
     private String primaryInputUri;
-    @SerializedName("secondaryInputUri")
-    @Expose
+    @Json(name = "secondaryInputUri")
     private Object secondaryInputUri;
 
     public String getPrimaryInputUri() {

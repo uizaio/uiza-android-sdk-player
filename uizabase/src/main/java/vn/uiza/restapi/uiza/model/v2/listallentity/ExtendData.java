@@ -1,36 +1,25 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class ExtendData {
 
-    @SerializedName("price")
-    @Expose
+    @Json(name = "price")
     private Object price;
-    @SerializedName("genre")
-    @Expose
+    @Json(name = "genre")
     private Object genre;
-    @SerializedName("country")
-    @Expose
+    @Json(name = "country")
     private Object country;
-    @SerializedName("published-date")
-    @Expose
+    @Json(name = "published-date")
     private Object publishedDate;
-    @SerializedName("upload")
-    @Expose
+    @Json(name = "upload")
     private Object upload;
-    @SerializedName("artist")
-    @Expose
+    @Json(name = "artist")
     private String artist;
-
-    @SerializedName("director")
-    @Expose
+    @Json(name = "director")
     private String director;
-
-    @SerializedName("text")
-    @Expose
+    @Json(name = "text")
     private String text;
 
     public Object getPrice() {

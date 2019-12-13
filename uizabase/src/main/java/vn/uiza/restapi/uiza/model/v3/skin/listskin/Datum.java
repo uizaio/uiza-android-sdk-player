@@ -1,82 +1,57 @@
 
 package vn.uiza.restapi.uiza.model.v3.skin.listskin;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Datum {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private long status;
-    @SerializedName("adminUserId")
-    @Expose
+    @Json(name = "adminUserId")
     private String adminUserId;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("shortDescription")
-    @Expose
+    @Json(name = "shortDescription")
     private Object shortDescription;
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     private String description;
-    @SerializedName("preloadVideo")
-    @Expose
+    @Json(name = "preloadVideo")
     private String preloadVideo;
-    @SerializedName("autoStart")
-    @Expose
+    @Json(name = "autoStart")
     private long autoStart;
-    @SerializedName("allowedDomain")
-    @Expose
+    @Json(name = "allowedDomain")
     private Object allowedDomain;
-    @SerializedName("allowFullscreen")
-    @Expose
+    @Json(name = "allowFullscreen")
     private long allowFullscreen;
-    @SerializedName("endscreen")
-    @Expose
+    @Json(name = "endscreen")
     private Object endscreen;
-    @SerializedName("allowSharing")
-    @Expose
+    @Json(name = "allowSharing")
     private Object allowSharing;
-    @SerializedName("qualitySelector")
-    @Expose
+    @Json(name = "qualitySelector")
     private long qualitySelector;
-    @SerializedName("displayPlaylist")
-    @Expose
+    @Json(name = "displayPlaylist")
     private long displayPlaylist;
-    @SerializedName("sizing")
-    @Expose
+    @Json(name = "sizing")
     private String sizing;
-    @SerializedName("aspect")
-    @Expose
+    @Json(name = "aspect")
     private String aspect;
-    @SerializedName("customAspect")
-    @Expose
+    @Json(name = "customAspect")
     private Object customAspect;
-    @SerializedName("platform")
-    @Expose
+    @Json(name = "platform")
     private String platform;
-    @SerializedName("version")
-    @Expose
+    @Json(name = "version")
     private Object version;
-    @SerializedName("updateMode")
-    @Expose
+    @Json(name = "updateMode")
     private String updateMode;
-    @SerializedName("skinId")
-    @Expose
+    @Json(name = "skinId")
     private String skinId;
-    @SerializedName("plugin")
-    @Expose
+    @Json(name = "plugin")
     private Object plugin;
-    @SerializedName("createdAt")
-    @Expose
+    @Json(name = "createdAt")
     private String createdAt;
-    @SerializedName("updatedAt")
-    @Expose
+    @Json(name = "updatedAt")
     private String updatedAt;
 
     public String getId() {

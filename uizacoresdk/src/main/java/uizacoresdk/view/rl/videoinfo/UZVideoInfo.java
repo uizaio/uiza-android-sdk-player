@@ -166,8 +166,8 @@ public class UZVideoInfo extends RelativeLayout {
             tvVideoName.setText(nullS);
             SentryUtils.captureException(e);
         }
-        if (UZData.getInstance().getData().getCreatedAt() != null && !UZData.getInstance().getData().getCreatedAt().isEmpty()) {
-            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt()));
+        if (UZData.getInstance().getData().getCreatedAt() != null) {
+            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt().toString()));
         } else {
             tvVideoTime.setText(nullS);
         }

@@ -4,24 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Base64;
-import com.google.gson.Gson;
+
 import org.apache.commons.codec.DecoderException;
+
 import testlibuiza.R;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.utils.StringUtil;
 import vn.uiza.utils.util.Encryptor;
 
 public class DummyUtil {
-    public static LicenseAcquisitionUrl decrypt(Context context, String input) throws DecoderException {
-        return decrypt(context, input, new Gson());
-    }
 
-    public static LicenseAcquisitionUrl decrypt(Context context, String input, Gson gson) throws
+    public static LicenseAcquisitionUrl decrypt(Context context, String input) throws
             DecoderException {
         if (context == null || input == null || input.isEmpty() || input.length() <= 16) {
             return null;
-        }
-        if (gson == null) {
-            gson = new Gson();
         }
         String key = getKey(context.getString(R.string.loitp_best_dev_ever));
         input = input.trim();
@@ -30,7 +26,7 @@ public class DummyUtil {
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
         String base64 = Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
         String decrypt = Encryptor.decrypt(key, hexIv, base64);
-        return gson.fromJson(decrypt, LicenseAcquisitionUrl.class);
+        return StringUtil.toObject(decrypt, LicenseAcquisitionUrl.class);
     }
 
     private static String getKey(String str) {

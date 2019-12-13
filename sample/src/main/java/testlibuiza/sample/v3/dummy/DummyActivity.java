@@ -1,15 +1,14 @@
 package testlibuiza.sample.v3.dummy;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.commons.codec.DecoderException;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 
 public class DummyActivity extends AppCompatActivity {
@@ -23,21 +22,18 @@ public class DummyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dummy);
-        tvIn = (TextView) findViewById(R.id.tv_in);
-        tvOut = (TextView) findViewById(R.id.tv_out);
-        bt = (Button) findViewById(R.id.bt);
+        tvIn = findViewById(R.id.tv_in);
+        tvOut = findViewById(R.id.tv_out);
+        bt = findViewById(R.id.bt);
         tvIn.setText(strIn);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    LicenseAcquisitionUrl licenseAcquisitionUrl = DummyUtil.decrypt(DummyActivity.this, strIn, LSApplication.getInstance().getGson());
-                    if (licenseAcquisitionUrl != null) {
-                        tvOut.setText(licenseAcquisitionUrl.getLicenseAcquisitionUrl());
-                    }
-                } catch (DecoderException e) {
-                    e.printStackTrace();
+        bt.setOnClickListener( v -> {
+            try {
+                LicenseAcquisitionUrl licenseAcquisitionUrl = DummyUtil.decrypt(DummyActivity.this, strIn);
+                if (licenseAcquisitionUrl != null) {
+                    tvOut.setText(licenseAcquisitionUrl.getLicenseAcquisitionUrl());
                 }
+            } catch (DecoderException e) {
+                e.printStackTrace();
             }
         });
     }

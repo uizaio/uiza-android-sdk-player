@@ -1,19 +1,15 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Hl {
 
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     private String description;
-    @SerializedName("url")
-    @Expose
+    @Json(name = "url")
     private Object url;
 
     public String getName() {

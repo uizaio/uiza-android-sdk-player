@@ -1,16 +1,13 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Endscreen {
 
-    @SerializedName("display")
-    @Expose
+    @Json(name = "display")
     private String display;
-    @SerializedName("content")
-    @Expose
+    @Json(name = "content")
     private String content;
 
     public String getDisplay() {

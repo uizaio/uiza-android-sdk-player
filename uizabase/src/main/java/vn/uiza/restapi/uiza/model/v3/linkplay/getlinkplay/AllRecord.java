@@ -1,58 +1,41 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class AllRecord {
 
-    @SerializedName("processed_time")
-    @Expose
+    @Json(name = "processed_time")
     private Integer processedTime;
-    @SerializedName("action")
-    @Expose
+    @Json(name = "action")
     private String action;
-    @SerializedName("source_uri")
-    @Expose
+    @Json(name = "source_uri")
     private String sourceUri;
-    @SerializedName("region_type")
-    @Expose
+    @Json(name = "region_type")
     private String regionType;
-    @SerializedName("uploaded_size")
-    @Expose
+    @Json(name = "uploaded_size")
     private String uploadedSize;
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     private String status;
-    @SerializedName("createdAt")
-    @Expose
+    @Json(name = "createdAt")
     private String createdAt;
-    @SerializedName("app_id")
-    @Expose
+    @Json(name = "app_id")
     private String appId;
-    @SerializedName("destination_uri")
-    @Expose
+    @Json(name = "destination_uri")
     private String destinationUri;
-    @SerializedName("entity_id")
-    @Expose
+    @Json(name = "entity_id")
     private String entityId;
-    @SerializedName("task_id")
-    @Expose
+    @Json(name = "task_id")
     private String taskId;
-    @SerializedName("output_transcode_path")
-    @Expose
+    @Json(name = "output_transcode_path")
     private String outputTranscodePath;
-    @SerializedName("updatedAt")
-    @Expose
+    @Json(name = "updatedAt")
     private String updatedAt;
-    @SerializedName("progress")
-    @Expose
+    @Json(name = "progress")
     private Integer progress;
-    @SerializedName("type_content")
-    @Expose
+    @Json(name = "type_content")
     private String typeContent;
-    @SerializedName("publish_id")
-    @Expose
+    @Json(name = "publish_id")
     private String publishId;
 
     public Integer getProcessedTime() {

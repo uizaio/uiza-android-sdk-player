@@ -4,8 +4,7 @@ package vn.uiza.restapi.uiza.model.v3.metadata.createmetadata;
  * Created by LENOVO on 6/21/2018.
  */
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class CreateMetadata {
 
@@ -13,23 +12,17 @@ public class CreateMetadata {
     public final static String TYPE_PLAYLIST = "playlist";
     public final static String TYPE_TAG = "tag";
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     private String description;
-    @SerializedName("orderNumber")
-    @Expose
+    @Json(name = "orderNumber")
     private Integer orderNumber;
-    @SerializedName("icon")
-    @Expose
+    @Json(name = "icon")
     private String icon;
 
     public String getId() {

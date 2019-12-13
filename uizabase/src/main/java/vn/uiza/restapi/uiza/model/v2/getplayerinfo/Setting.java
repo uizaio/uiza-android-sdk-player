@@ -1,22 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v2.getplayerinfo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Setting {
 
-    @SerializedName("autoStart")
-    @Expose
+    @Json(name = "autoStart")
     private String autoStart;
-    @SerializedName("allowFullscreen")
-    @Expose
+    @Json(name = "allowFullscreen")
     private String allowFullscreen;
-    @SerializedName("showQuality")
-    @Expose
+    @Json(name = "showQuality")
     private String showQuality;
-    @SerializedName("displayPlaylist")
-    @Expose
+    @Json(name = "displayPlaylist")
     private String displayPlaylist;
 
     public String getAutoStart() {

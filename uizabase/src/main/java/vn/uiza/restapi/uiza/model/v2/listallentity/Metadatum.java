@@ -1,19 +1,15 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 public class Metadatum {
 
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     private String id;
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     private String name;
-    @SerializedName("type")
-    @Expose
+    @Json(name = "type")
     private String type;
 
     public String getId() {
