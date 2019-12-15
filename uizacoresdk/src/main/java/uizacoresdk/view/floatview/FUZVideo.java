@@ -33,10 +33,9 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
-import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
+import vn.uiza.restapi.restclient.ClientType;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
@@ -322,7 +321,7 @@ public class FUZVideo extends RelativeLayout {
     //=============================================================================================================END LIFE CIRCLE
     //=============================================================================================================START API
     private void callAPIGetTokenStreaming(final String entityId, final CallbackGetLinkPlay callbackGetLinkPlay) {
-        UZService service = UZRestClient.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityId);
@@ -344,8 +343,8 @@ public class FUZVideo extends RelativeLayout {
             callbackGetLinkPlay.onSuccess(null);
             return;
         }
-        UZRestClientGetLinkPlay.addAuthorization(tokenStreaming);
-        UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
+        UizaClientFactory.getClient(ClientType.LINKPLAY).addAuthorization(tokenStreaming);
+        UZService service = UizaClientFactory.createService(UZService.class, ClientType.LINKPLAY);
         String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
         RxBinder.getInstance().bind(service.getLinkPlay(appId, entityId, typeContent), result -> {
@@ -483,15 +482,15 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void trackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
-        if (UZRestClientTracking.getRetrofit() == null) {
+        if (UZRestClientTracking.getInstance().getRetrofit() == null) {
             String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getContext());
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 Timber.e("trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.iuizacoresdk/view/floatview/FUZVideo.java:419sEmpty()");
                 return;
             }
-            UZRestClientTracking.init(currentApiTrackingEndPoint);
+            UZRestClientTracking.getInstance().init(currentApiTrackingEndPoint, "");
         }
-        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
         RxBinder.getInstance().bind(service.track(uizaTracking), tracking -> {
             if (uizaTrackingCallback != null) {
                 uizaTrackingCallback.onTrackingSuccess();
@@ -504,7 +503,7 @@ public class FUZVideo extends RelativeLayout {
             Timber.e("Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
-        UZService service = UZRestClientHeartBeat.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class, ClientType.HEARTBEAT);
         String cdnName = cdnHost;
         String session = uuid;
         RxBinder.getInstance().bind(service.pingHeartBeat(cdnName, session),
@@ -522,7 +521,7 @@ public class FUZVideo extends RelativeLayout {
             Timber.e("Error cannot trackUizaCCUForLivestream() -> return %s", UZData.getInstance().getEntityName());
             return;
         }
-        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
         UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
         uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
@@ -578,7 +577,7 @@ public class FUZVideo extends RelativeLayout {
         isTrackingMuiza = true;
         final List<Muiza> muizaListToTracking = new ArrayList<>(UZData.getInstance().getMuizaList());
         UZData.getInstance().clearMuizaList();
-        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
         RxBinder.getInstance().bind(service.trackMuiza(muizaListToTracking),
                 result -> isTrackingMuiza = false,
                 throwable -> {

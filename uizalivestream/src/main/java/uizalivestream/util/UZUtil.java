@@ -4,7 +4,7 @@ import android.content.Context;
 
 import uizalivestream.data.UZLivestreamData;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.utils.util.Utils;
 
 /**
@@ -31,7 +31,7 @@ public class UZUtil {
         //UZUtil.setCurrentPlayerId(currentPlayerId);
 
         //UZData.getInstance().initSDK(domainApi, token, appId, env);
-        UZRestClient.init(Constants.PREFIXS + domainApi, token);
+        UizaClientFactory.setup(Constants.PREFIXS + domainApi, token, Constants.ENVIRONMENT.DEV);
         //UZUtil.setToken(Utils.getContext(), token);
         UZLivestreamData.getInstance().setAppId(appId);
         UZLivestreamData.getInstance().setAPIVersion(apiVersion);

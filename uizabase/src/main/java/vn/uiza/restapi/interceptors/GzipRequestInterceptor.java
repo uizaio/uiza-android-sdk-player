@@ -1,4 +1,4 @@
-package vn.uiza.restapi.restclient;
+package vn.uiza.restapi.interceptors;
 
 
 import java.io.IOException;

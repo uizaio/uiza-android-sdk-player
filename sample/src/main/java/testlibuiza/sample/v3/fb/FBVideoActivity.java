@@ -25,6 +25,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -232,7 +233,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     //only for testing
     private void getDummyData() {
-        UZService service = UZRestClient.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class);
         String metadataId = "";
         int limit = 50;
         int page = 0;

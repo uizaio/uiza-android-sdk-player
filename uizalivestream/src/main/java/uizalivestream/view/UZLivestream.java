@@ -67,7 +67,8 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.ClientType;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
@@ -715,7 +716,7 @@ public class UZLivestream extends RelativeLayout
     // Van tiep tuc goi detail entity de lay streamUrl
     private void startLivestream(final String entityLiveId) {
         LDialogUtil.show(progressBar);
-        UZService service = UZRestClient.createService(UZService.class);
+        UZService service = UizaClientFactory.getClient(ClientType.NORMAL).createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
         RxBinder.getInstance().bind(service.startALiveEvent(UZLivestreamData.getInstance().getAPIVersion(), bodyStartALiveFeed), result -> {

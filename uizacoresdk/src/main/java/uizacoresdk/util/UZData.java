@@ -16,10 +16,8 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.restclient.UZRestClient;
-import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
-import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
-import vn.uiza.restapi.restclient.UZRestClientTracking;
+import vn.uiza.restapi.restclient.ClientType;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
@@ -105,24 +103,19 @@ public class UZData {
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
-        UZRestClient.init(Constants.PREFIXS + domainAPI, token);
+        UizaClientFactory.setup(Constants.PREFIXS + domainAPI, token, environment);
         UZUtil.setToken(Utils.getContext(), token);
         syncCurrentUTCTime();// for synchronize server time
-        if (environment == Constants.ENVIRONMENT_DEV) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
-            initTracking(Constants.URL_TRACKING_DEV, Constants.TRACKING_ACCESS_TOKEN_DEV);
-        } else if (environment == Constants.ENVIRONMENT_STAG) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_STAG);
-            initTracking(Constants.URL_TRACKING_STAG, Constants.TRACKING_ACCESS_TOKEN_STAG);
-        } else if (environment == Constants.ENVIRONMENT_PROD) {
-            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
-            initTracking(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD);
+        if (environment == Constants.ENVIRONMENT.DEV) {
+            mDomainAPITracking = Constants.URL_TRACKING_DEV;
+        } else if (environment == Constants.ENVIRONMENT.STAG) {
+            mDomainAPITracking = Constants.URL_TRACKING_STAG;
+        } else if (environment == Constants.ENVIRONMENT.PROD) {
+            mDomainAPITracking = Constants.URL_TRACKING_PROD;
         } else {
             return false;
         }
+        UZUtil.setApiTrackEndPoint(Utils.getContext(), mDomainAPITracking);
         return true;
     }
 
@@ -131,7 +124,7 @@ public class UZData {
      * <a href=http://worldtimeapi.org/api/timezone/Etc/UTC>this free api</a>
      */
     private void syncCurrentUTCTime() {
-        UZService service = UZRestClient.createService(UZService.class);
+        UZService service = UizaClientFactory.getClient(ClientType.NORMAL).createService(UZService.class);
         final long startAPICallTime = System.currentTimeMillis();
         RxBinder.getInstance().bind(service.getCurrentUTCTime(), result -> {
             long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;
@@ -164,13 +157,6 @@ public class UZData {
 
     public String getAppId() {
         return mAppId;
-    }
-
-    private void initTracking(String domainAPITracking, String accessToken) {
-        mDomainAPITracking = domainAPITracking;
-        UZRestClientTracking.init(domainAPITracking);
-        UZRestClientTracking.addAccessToken(accessToken);
-        UZUtil.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
     }
 
     private UZInput uzInput;

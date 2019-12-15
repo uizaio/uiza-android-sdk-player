@@ -21,6 +21,7 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -108,7 +109,7 @@ public class FBListVideoActivity extends AppCompatActivity {
     }
 
     private void listAllEntity() {
-        UZService service = UZRestClient.createService(UZService.class);
+        UZService service = UizaClientFactory.createService(UZService.class);
         String metadataId = "";
         int limit = 50;
         int page = 0;

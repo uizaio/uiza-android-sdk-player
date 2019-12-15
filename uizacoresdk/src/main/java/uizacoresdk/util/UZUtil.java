@@ -495,11 +495,11 @@ public class UZUtil {
     }
 
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
+        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT.PROD, currentPlayerId);
     }
 
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
+        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
     }
 
 

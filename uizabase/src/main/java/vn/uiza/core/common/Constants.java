@@ -1,5 +1,10 @@
 package vn.uiza.core.common;
 
+import androidx.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Created by loitp
  */
@@ -115,10 +120,6 @@ public class Constants {
     public final static String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video
     public final static String MUIZA_EVENT_ERROR = "error";//là thời điểm player phải ngưng play hoàn toàn do lỗi
 
-    public final static int ENVIRONMENT_DEV = 1;
-    public final static int ENVIRONMENT_STAG = 2;
-    public final static int ENVIRONMENT_PROD = 3;
-
     public final static String T = "true";
     public final static String F = "false";
 
@@ -218,5 +219,13 @@ public class Constants {
     // Limit broadcast to full HD
     public static final int BROADCAST_LIMIT_WIDTH = 1920;
     public static final int BROADCAST_LIMIT_HEIGHT = 1080;
+
+    @IntDef({ENVIRONMENT.DEV, ENVIRONMENT.STAG, ENVIRONMENT.PROD})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ENVIRONMENT {
+        int DEV = 1;
+        int STAG = 2;
+        int PROD = 3;
+    }
 
 }
