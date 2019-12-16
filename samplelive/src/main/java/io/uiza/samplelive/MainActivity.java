@@ -1,6 +1,5 @@
 package io.uiza.samplelive;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.preference.PreferenceManager;
 
 import timber.log.Timber;
 
@@ -28,13 +28,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
         setContentView(R.layout.activity_main);
-        preferences = getSharedPreferences("SampleLive", Context.MODE_PRIVATE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         regions = getResources().getStringArray(R.array.region_arrays);
         spinner = findViewById(R.id.region_spinner);
         findViewById(R.id.live_btn).setOnClickListener(this);
         findViewById(R.id.force_live_btn).setOnClickListener(this);
         findViewById(R.id.setting_btn).setOnClickListener(this);
         spinner.setOnItemSelectedListener(this);
+        currentRegion = preferences.getString(CURRENT_REGION_KEY, regions[0]);
+        for (int i = 0; i < regions.length; i++) {
+            if (currentRegion.equalsIgnoreCase(regions[i])) {
+                spinner.setSelection(i);
+            }
+        }
     }
 
     @Override
@@ -75,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setView(root);
         final AppCompatEditText streamIp = root.findViewById(R.id.stream_name);
         streamIp.setHint("rtmp://your_endpoint");
-        streamIp.setText("rtmp://192.168.1.39/transcode/live_OqHu8SLArw");
+        streamIp.setText("rtmp://679b139b89-in.streamwiz.dev/transcode/live_ljNx4GLp3F");
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             String endpoint = streamIp.getText().toString();
             boolean isValid = true;

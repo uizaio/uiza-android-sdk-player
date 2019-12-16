@@ -62,8 +62,8 @@
     </string-array>
 
     <string-array name="region_arrays">
-        <item>asia-south-1</item>
-        <item>asia-southeast-1</item>
+        <item>asia-south1</item>
+        <item>asia-southeast1</item>
         <item>do-bangalore</item>
     </string-array>
 </resources>

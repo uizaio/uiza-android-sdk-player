@@ -52,7 +52,7 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
             content.setText(StringUtil.toBeautyJson(entity, LiveEntity.class));
         }
         if(TextUtils.isEmpty(region)){
-            region = "asia-south-1";
+            region = "asia-south1";
         }
         updateLiveStats();
     }

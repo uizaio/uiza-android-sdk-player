@@ -41,7 +41,7 @@ public class LiveListActivity extends AppCompatActivity
         findViewById(R.id.fb_btn).setOnClickListener(v -> showCreateLiveDialog());
         region = getIntent().getStringExtra(MainActivity.CURRENT_REGION_KEY);
         if (TextUtils.isEmpty(region)) {
-            region = "asia-south-1";
+            region = "asia-south1";
         }
         SampleUtils.setVertical(recyclerView);
         recyclerView.setAdapter(adapter);
