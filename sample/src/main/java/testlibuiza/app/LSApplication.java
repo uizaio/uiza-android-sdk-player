@@ -27,6 +27,10 @@ public class LSApplication extends MultiDexApplication {
     private static final String DEV_HOST = "development-api.uizadev.io";
     private static final String APP_SECRET = "uap-c1ffbff4db954ddcb050c6af0b43ba56-41193b64";
 
+
+//    private static final String NEW_APPID = "c2c2808817ca4fea82f5b325fe0e02b7";
+    private static final String DOMAIN_API = "api.uiza.io";
+    private static final String NEW_API_KEY = "uap-c2c2808817ca4fea82f5b325fe0e02b7-ef605d7d";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,10 +38,10 @@ public class LSApplication extends MultiDexApplication {
             Timber.plant(new Timber.DebugTree());
         }
         instance = this;
-        Constants.setApiVersion(5);
         Constants.setDebugMode(true);
-        int apiVersion = Constants.API_VERSION_5;
-        UZUtil.initWorkspace(this, apiVersion, DEV_HOST, APP_SECRET, DF_APP_ID);
+        int apiVersion = Constants.API_VERSION_4;
+        Constants.setApiVersion(apiVersion);
+        UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         //UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         //UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
         String s = EncryptUtil.getAppSigned(getApplicationContext());

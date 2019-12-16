@@ -109,7 +109,7 @@ public class FBListVideoActivity extends AppCompatActivity {
     }
 
     private void listAllEntity() {
-        UZService service = UizaClientFactory.createService(UZService.class);
+        UZService service = UizaClientFactory.getUizaService();
         String metadataId = "";
         int limit = 50;
         int page = 0;

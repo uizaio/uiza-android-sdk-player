@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".sample.MainActivity">
+        <activity android:name=".sample.v3.MainV3Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".sample.v3.api.UZTestAPIActivity" />
         <!-- This is important to give configChanges in case you want full screen mode -->
-        <activity android:name=".sample.v3.fullscreen.PortraitFullScreenActivity"
+        <activity
+            android:name=".sample.v3.fullscreen.PortraitFullScreenActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.uzv3.SetEntityIdActivity"
@@ -32,7 +33,6 @@
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity android:name=".sample.guidecallapi.TestAPI" />
         <activity
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
             android:windowSoftInputMode="stateHidden" />

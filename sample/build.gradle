@@ -35,10 +35,9 @@ android {
 }
 
 dependencies {
-    implementation project(':uizabase')
     implementation project(':uizacoresdk')
-    implementation project(':uizalivestream')
 
+    implementation 'androidx.multidex:multidex:2.0.1'
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.1'
     //FIREBASE CONFIG

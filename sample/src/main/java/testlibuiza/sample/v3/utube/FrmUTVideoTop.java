@@ -8,14 +8,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.video.VideoListener;
@@ -30,13 +32,13 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private View shadow;
+    private Handler handler = new Handler();
 
     public UZVideo getUZVideo() {
         return uzVideo;
@@ -170,12 +172,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-                }
-            });
+            handler.postDelayed(() -> ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().closeToRight(), 500);
         }
     }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UizaLiveView">
+        <attr name="viewType" format="enum">
+            <enum name="surfaceView" value="0" />
+            <enum name="textureView" value="1" />
+            <enum name="openGlView" value="2" />
+            <enum name="lightOpenGlView" value="3" />
+        </attr>
+        <attr name="useCamera2" format="boolean" />
+        <attr name="orientationMode" format="enum">
+            <enum name="ADAPTIVE" value="0" />
+            <enum name="FIXED_LANDSCAPE" value="1" />
+            <enum name="FIXED_PORTRAIT" value="2" />
+        </attr>
+        <attr name="videoSize" format="enum">
+            <enum name="p360" value="360" />
+            <enum name="p720" value="720" />
+            <enum name="p1080" value="1080" />
+        </attr>
+        <attr name="fps" format="integer" />
+        <attr name="adaptiveBitrate" format="boolean" />
+        <attr name="keyframe" format="integer" />
+        <attr name="audioStereo" format="boolean" />
+        <attr name="audioBitrate" format="integer" />
+        <attr name="audioSampleRate" format="integer" />
+    </declare-styleable>
+</resources>

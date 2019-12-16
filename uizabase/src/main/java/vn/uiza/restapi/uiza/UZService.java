@@ -147,14 +147,6 @@ public interface UZService {
     Observable<ResultGetTokenStreaming> getTokenStreaming(@Path(value = "api_version", encoded = true) String apiVersion,
                                                           @Body SendGetTokenStreaming sendGetTokenStreaming);
 
-    @GET("/api/public/v1/cdn/linkplay")
-    Observable<ResultGetLinkPlay> getLinkPlay(@Query("app_id") String appId,
-                                              @Query("entity_id") String entityId,
-                                              @Query("type_content") String typeContent);
-
-    @GET("/api/public/v1/cdn/live/linkplay")
-    Observable<ResultGetLinkPlay> getLinkPlayLive(@Query("app_id") String appId,
-                                                  @Query("stream_name") String streamName);
 
     @GET("/api/public/{api_version}/live/entity")
     Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
@@ -196,25 +188,7 @@ public interface UZService {
     Observable<PlayerInfor> getPlayerInfo(@Path(value = "api_version", encoded = true) String apiVersion,
                                           @Query("id") String id, @Query("appId") String appId);//id: player id
 
-    //=====================================================tracking
-    //@Headers("Content-Type: application/json")
-    @POST("/analytic-tracking/v1/tracking/mobile")
-    Observable<Object> track(@Body UizaTracking uizaTracking);
-
-    //@Headers("Content-Type: application/json")
-    @POST("/analytic-tracking/v1/ccu/mobile")
-    Observable<Object> trackCCU(@Body UizaTrackingCCU uizaTrackingCCU);
-
-    //@Headers("Content-Type: application/json")
-    @POST("/analytic-tracking/v2/muiza/eventbulk/mobile")
-    Observable<Object> trackMuiza(@Body List<Muiza> muizaList);
-    //end =====================================================tracking
-
-    //=====================================================heartbeat
-    @GET("/v1/cdn/ccu/ping")
-    Observable<Object> pingHeartBeat(@Query("cdn_name") String cdnName, @Query("session") String session);
-    //end =====================================================heartbeat
-
+    //
     // This free API does not need the base URL
     @GET("http://worldtimeapi.org/api/timezone/Etc/UTC")
     Observable<UTCTime> getCurrentUTCTime();

@@ -157,12 +157,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    draggablePanel.maximize();
-                }
-            });
+            draggablePanel.postDelayed(() -> draggablePanel.maximize(), 500);
         } else {
             draggablePanel.maximize();
         }
@@ -177,12 +172,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    draggablePanel.maximize();
-                }
-            });
+            draggablePanel.postDelayed(() -> draggablePanel.maximize(), 500);
         } else {
             draggablePanel.maximize();
         }

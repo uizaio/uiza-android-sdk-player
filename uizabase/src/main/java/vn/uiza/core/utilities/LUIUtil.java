@@ -168,22 +168,6 @@ public class LUIUtil {
         }
     }
 
-    public interface DelayCallback {
-        void doAfter(int mls);
-    }
-
-    public static void setDelay(final int mls, final DelayCallback delayCallback) {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (delayCallback != null) {
-                    delayCallback.doAfter(mls);
-                }
-            }
-        }, mls);
-    }
-
     public static void setSoftInputMode(Activity activity, int mode) {
         activity.getWindow().setSoftInputMode(mode);
     }

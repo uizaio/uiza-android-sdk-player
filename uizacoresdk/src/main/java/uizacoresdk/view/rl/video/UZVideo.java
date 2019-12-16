@@ -113,8 +113,10 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.core.utilities.connection.LConectifyService;
 import vn.uiza.data.EventBusData;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.restclient.ClientType;
+import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
+import vn.uiza.restapi.linkplay.UizaLinkPlayService;
 import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.tracking.UizaTrackingService;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
@@ -189,6 +191,8 @@ public class UZVideo extends RelativeLayout
     private boolean autoMoveToLiveEdge;
     private @LayoutRes
     int pipControlSkin;
+
+    Handler handler = new Handler();
 
     public UZVideo(Context context) {
         super(context);
@@ -1076,7 +1080,7 @@ public class UZVideo extends RelativeLayout
             playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
             hideProgress();
         } else {
-            UZService service = UizaClientFactory.createService(UZService.class);
+            UZService service = UizaClientFactory.getUizaService();
             RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn, UZData.getInstance().getAppId()),
                     result -> {
                         if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
@@ -2297,12 +2301,14 @@ public class UZVideo extends RelativeLayout
             final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(getContext(), title, uzPlayerManager.getTrackSelector(), rendererIndex);
             dialogPair.second.setShowDisableOption(false);
             dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
-            dialogPair.second.setCallback(() -> LUIUtil.setDelay(300, mls -> {
-                if (dialogPair == null || dialogPair.first == null) {
-                    return;
+            dialogPair.second.setCallback(() -> handler.postDelayed(() -> {
+                {
+                    if (dialogPair.first == null) {
+                        return;
+                    }
+                    dialogPair.first.cancel();
                 }
-                dialogPair.first.cancel();
-            }));
+            }, 300));
             if (showDialog) {
                 UZUtil.showUizaDialog(getContext(), dialogPair.first);
             }
@@ -2562,7 +2568,7 @@ public class UZVideo extends RelativeLayout
         if (resLayout != R.layout.uz_player_skin_0 && resLayout != R.layout.uz_player_skin_1 && resLayout != R.layout.uz_player_skin_2 && resLayout != R.layout.uz_player_skin_3) {
             return;
         }
-        UZService service = UizaClientFactory.createService(UZService.class);
+        UZService service = UizaClientFactory.getUizaService();
         String playerInforId = UZData.getInstance().getPlayerInforId();
         //LLog.d(TAG, "callAPIGetConfigSkin -> call api -> playerInforId: " + playerInforId);
         if (playerInforId == null || playerInforId.isEmpty()) {
@@ -2580,7 +2586,7 @@ public class UZVideo extends RelativeLayout
             urlIMAAd = UZData.getInstance().getUrlIMAAd();
             handleDataCallAPI();
         } else {
-            UZService service = UizaClientFactory.createService(UZService.class);
+            UZService service = UizaClientFactory.getUizaService();
             RxBinder.getInstance().bind(service.getCuePoint(UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId()), result -> {
                 isCalledAPIGetUrlIMAAdTag = true;
                 if (result == null || result.getData() == null || result.getData().isEmpty()) {
@@ -2604,7 +2610,7 @@ public class UZVideo extends RelativeLayout
             isCalledAPIGetTokenStreaming = true;
             handleDataCallAPI();
         } else {
-            UZService service = UizaClientFactory.createService(UZService.class);
+            UZService service = UizaClientFactory.getUizaService();
             SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
             sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
             sendGetTokenStreaming.setEntityId(entityId);
@@ -2645,8 +2651,8 @@ public class UZVideo extends RelativeLayout
             checkToSetUpResource();
         } else {
             String tokenStreaming = mResultGetTokenStreaming.getData().getToken();
-            UizaClientFactory.getClient(ClientType.LINKPLAY).addAuthorization(tokenStreaming);
-            UZService service = UizaClientFactory.createService(UZService.class, ClientType.LINKPLAY);
+            UizaClientFactory.getLinkPlayClient().addAuthorization(tokenStreaming);
+            UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
             if (isLivestream) {
                 String appId = UZData.getInstance().getAppId();
                 String channelName = UZData.getInstance().getChannelName();
@@ -2688,7 +2694,7 @@ public class UZVideo extends RelativeLayout
     private void callAPIGetSubtitles() {
         if (mResultGetLinkPlay.getData() == null) return;
 
-        UZService service = UizaClientFactory.createService(UZService.class);
+        UZService service = UizaClientFactory.getUizaService();
         RxBinder.getInstance()
                 .bind(service.getSubtitles(UZData.getInstance().getAPIVersion(),
                         mResultGetLinkPlay.getData().getEntityId(),
@@ -2704,70 +2710,58 @@ public class UZVideo extends RelativeLayout
         if (!isLivestream || getContext() == null || activityIsPausing) {
             return;
         }
-        LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                if (!isLivestream) {
-                    return;
-                }
-                if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    UZService service = UizaClientFactory.createService(UZService.class);
-                    String id = UZData.getInstance().getEntityId();
-                    RxBinder.getInstance().bind(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
-                            result -> {
-                                if (result != null && result.getData() != null) {
-                                    if (tvLiveView != null) {
-                                        tvLiveView.setText(String.valueOf(result.getData().getWatchnow()));
-                                    }
-                                    if (uzLiveContentCallback != null) {
-                                        uzLiveContentCallback.onUpdateLiveInfoCurrentView(result.getData().getWatchnow());
-                                    }
+        handler.postDelayed(() -> {
+            if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
+                UZService service = UizaClientFactory.getUizaService();
+                String id = UZData.getInstance().getEntityId();
+                RxBinder.getInstance().bind(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
+                        result -> {
+                            if (result != null && result.getData() != null) {
+                                if (tvLiveView != null) {
+                                    tvLiveView.setText(String.valueOf(result.getData().getWatchnow()));
                                 }
-                                callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
-                            }, throwable -> {
-                                Timber.e(throwable, "getViewALiveFeed onFail");
-                                callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
-                            });
-                } else {
-                    callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
-                }
+                                if (uzLiveContentCallback != null) {
+                                    uzLiveContentCallback.onUpdateLiveInfoCurrentView(result.getData().getWatchnow());
+                                }
+                            }
+                            callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
+                        }, throwable -> {
+                            Timber.e(throwable, "getViewALiveFeed onFail");
+                            callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
+                        });
+            } else {
+                callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
             }
-        });
+        }, durationDelay);
     }
 
     private void callAPIUpdateLiveInfoTimeStartLive(final int durationDelay) {
         if (!isLivestream || getContext() == null || activityIsPausing) {
             return;
         }
-        LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                if (!isLivestream || getContext() == null || activityIsPausing) {
-                    return;
-                }
-                if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    if (startTime == Constants.UNKNOW) {
-                        UZService service = UizaClientFactory.createService(UZService.class);
-                        String entityId = UZData.getInstance().getEntityId();
-                        String feedId = UZData.getInstance().getLastFeedId();
-                        RxBinder.getInstance().bind(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()),
-                                result -> {
-                                    if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
-                                        startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
-                                        updateLiveInfoTimeStartLive();
-                                    }
-                                }, throwable -> {
-                                    Timber.e(throwable, "getTimeStartLive onFail");
-                                    callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
-                                });
-                    } else {
-                        updateLiveInfoTimeStartLive();
-                    }
+        handler.postDelayed(() -> {
+            if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
+                if (startTime == Constants.UNKNOW) {
+                    UZService service = UizaClientFactory.getUizaService();
+                    String entityId = UZData.getInstance().getEntityId();
+                    String feedId = UZData.getInstance().getLastFeedId();
+                    RxBinder.getInstance().bind(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()),
+                            result -> {
+                                if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
+                                    startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
+                                    updateLiveInfoTimeStartLive();
+                                }
+                            }, throwable -> {
+                                Timber.e(throwable, "getTimeStartLive onFail");
+                                callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                            });
                 } else {
-                    callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                    updateLiveInfoTimeStartLive();
                 }
+            } else {
+                callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
             }
-        });
+        }, durationDelay);
     }
     //=============================================================================================END CALL API
 
@@ -3151,7 +3145,7 @@ public class UZVideo extends RelativeLayout
         if (getContext() == null || isInitCustomLinkPlay) {
             return;
         }
-        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
+        UizaTrackingService service = UizaClientFactory.getTrackingService();
         RxBinder.getInstance().bind(service.track(uizaTracking), tracking -> {
             if (uizaTrackingCallback != null) {
                 uizaTrackingCallback.onTrackingSuccess();
@@ -3204,7 +3198,7 @@ public class UZVideo extends RelativeLayout
             Timber.e("Error cannot call API pingHeartBeat() because activity is pausing %s", UZData.getInstance().getEntityName());
             return;
         }
-        UZService service = UizaClientFactory.createService(UZService.class, ClientType.HEARTBEAT);
+        UizaHeartBeatService service = UizaClientFactory.getHeartBeatService();
         String cdnName = cdnHost;
         String session = uuid.toString();
         RxBinder.getInstance().bind(service.pingHeartBeat(cdnName, session),
@@ -3216,7 +3210,7 @@ public class UZVideo extends RelativeLayout
     }
 
     private void rePingHeartBeat() {
-        LUIUtil.setDelay(INTERVAL_HEART_BEAT, mls -> pingHeartBeat());
+        handler.postDelayed(() -> pingHeartBeat(), INTERVAL_HEART_BEAT);
     }
 
     private final int INTERVAL_TRACK_CCU = 3000;
@@ -3231,7 +3225,7 @@ public class UZVideo extends RelativeLayout
             Timber.e("Error cannot trackUizaCCUForLivestream() because activity is pausing %s", UZData.getInstance().getEntityName());
             return;
         }
-        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
+        UizaTrackingService service = UizaClientFactory.getTrackingService();
         UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
         uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
@@ -3245,7 +3239,7 @@ public class UZVideo extends RelativeLayout
     }
 
     private void reTrackUizaCCUForLivestream() {
-        LUIUtil.setDelay(INTERVAL_TRACK_CCU, mls -> trackUizaCCUForLivestream());
+        handler.postDelayed(() -> trackUizaCCUForLivestream(), INTERVAL_TRACK_CCU);
     }
 
     protected void addTrackingMuizaError(String event, UZException e) {
@@ -3269,7 +3263,7 @@ public class UZVideo extends RelativeLayout
         isTrackingMuiza = true;
         final List<Muiza> muizaListToTracking = new ArrayList<>(UZData.getInstance().getMuizaList());
         UZData.getInstance().clearMuizaList();
-        UZService service = UizaClientFactory.createService(UZService.class, ClientType.TRACKING);
+        UizaTrackingService service = UizaClientFactory.getTrackingService();
         RxBinder.getInstance().bind(service.trackMuiza(muizaListToTracking),
                 result -> isTrackingMuiza = false,
                 throwable -> {

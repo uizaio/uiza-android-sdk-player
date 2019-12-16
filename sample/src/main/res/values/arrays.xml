@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="region_arrays">
+        <item>asia-south1</item>
+        <item>asia-southeast1</item>
+        <item>do-bangalore</item>
+    </string-array>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="UizaMediaLiveButton">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:layout_width">@dimen/uiza_media_button_width</item>
+        <item name="android:layout_height">@dimen/uiza_media_button_height</item>
+    </style>
+
+    <style name="UizaMediaLiveButton.Record">
+        <item name="android:src">@drawable/ic_record_white_24</item>
+        <item name="android:contentDescription">@string/live_controls_record_description</item>
+    </style>
+
+    <style name="UizaMediaLiveButton.SwitchCamera">
+        <item name="android:src">@drawable/ic_switch_camera_white_24</item>
+        <item name="android:contentDescription">@string/live_controls_switch_camera_description</item>
+    </style>
+
+    <style name="UizaMediaLiveButton.Start">
+        <item name="android:src">@drawable/ic_start_live</item>
+        <item name="android:contentDescription">@string/live_controls_start_live_description</item>
+    </style>
+
+    <style name="UizaMediaLiveButton.Stop">
+        <item name="android:src">@drawable/ic_stop_white_24</item>
+        <item name="android:contentDescription">@string/live_controls_stop_live_description</item>
+    </style>
+</resources>

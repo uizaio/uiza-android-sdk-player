@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 import vn.uiza.BuildConfig;
-import vn.uiza.UizaBase;
 import vn.uiza.core.common.Constants;
 
 public final class Utils {

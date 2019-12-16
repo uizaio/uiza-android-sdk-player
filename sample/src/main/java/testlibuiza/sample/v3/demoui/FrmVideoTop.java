@@ -6,12 +6,14 @@ package testlibuiza.sample.v3.demoui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -24,13 +26,13 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZPlayerView.ControllerStateCallback {
     private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
+    private Handler handler = new Handler();
 
     public UZVideo getUZVideo() {
         return uzVideo;
@@ -104,12 +106,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-                }
-            });
+            handler.postDelayed(() -> ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight(), 500);
         }
     }
 

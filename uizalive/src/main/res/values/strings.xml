@@ -1,0 +1,68 @@
+<resources>
+    <string name="lib_name">uiza-live</string>
+    <string name="live">• LIVE</string>
+    <string name="start_record">Start record</string>
+    <string name="stop_record">Stop record</string>
+    <string name="start_button">Start stream</string>
+    <string name="stop_button">Stop stream</string>
+    <string name="switch_camera_button">Switch camera</string>
+    <string name="hint_rtmp">rtmp://yourendpoint</string>
+
+    <string name="need_permission">Need Permissions</string>
+    <string name="this_app_needs_permission">This app needs permission to use this feature.</string>
+    <string name="this_app_needs_permission_grant_it">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="goto_settings">GOTO SETTINGS</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <!--gl menu-->
+    <string name="filters">Filters</string>
+    <string name="enable_disable_fxaa">enable/disable FXAA</string>
+    <string name="grey_scale">Grey scale</string>
+    <string name="negative">Negative</string>
+    <string name="sepia">Sepia</string>
+    <!--filters-->
+    <string name="no_filter">No filter</string>
+    <string name="analog_tv">Analog TV</string>
+    <string name="android_view">Android view</string>
+    <string name="basic_deformation">Basic deformation</string>
+    <string name="beauty">Beauty</string>
+    <string name="black">Black</string>
+    <string name="blur">Blur</string>
+    <string name="brightness">Brightness</string>
+    <string name="cartoon">Cartoon</string>
+    <string name="circle">Circle</string>
+    <string name="color">Color</string>
+    <string name="contrast">Contrast</string>
+    <string name="duotone">Duotone</string>
+    <string name="earlybird">EarlyBird</string>
+    <string name="edge_detection">Edge detection</string>
+    <string name="exposure">Exposure</string>
+    <string name="fire">Fire</string>
+    <string name="gamma">Gamma</string>
+    <string name="glitch">Glitch</string>
+    <string name="gif">Gif</string>
+    <string name="halftone_lines">Halftone lines</string>
+    <string name="image">Image</string>
+    <string name="image_70s">Image 70s</string>
+    <string name="lamoish">Lamoish</string>
+    <string name="money">Money</string>
+    <string name="pixelated">Pixelated</string>
+    <string name="polygonization">Polygonization</string>
+    <string name="rgb_saturate">RGB saturate</string>
+    <string name="ripple">Ripple</string>
+    <string name="rotation">Rotation</string>
+    <string name="saturation">Saturation</string>
+    <string name="surface_filter">Surface filter</string>
+    <string name="rainbow">Rainbow</string>
+    <string name="sharpness">Sharpness</string>
+    <string name="snow">Snow</string>
+    <string name="swirl">Swirl</string>
+    <string name="temperature">Temperature</string>
+    <string name="text">Text</string>
+    <string name="zebra">Zebra</string>
+
+    <string name="live_controls_record_description">Record</string>
+    <string name="live_controls_switch_camera_description">Switch Camera</string>
+    <string name="live_controls_start_live_description">Start Live</string>
+    <string name="live_controls_stop_live_description">Stop Live</string>
+</resources>

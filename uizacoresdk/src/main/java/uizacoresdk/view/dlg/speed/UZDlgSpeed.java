@@ -3,13 +3,13 @@ package uizacoresdk.view.dlg.speed;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckedTextView;
 import android.widget.ScrollView;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LUIUtil;
 
 /**
  * Created by loitp on 13/11/2018.
@@ -26,7 +26,6 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     private static final String SPEED_150 = "1.5";
     private static final String SPEED_200 = "2.0";
 
-    private Context context;
     private ScrollView sv;
     private CheckedTextView ct0;
     private CheckedTextView ct1;
@@ -38,10 +37,11 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
 
     private float currentSpeed;
 
+    Handler handler = new Handler();
+
     public UZDlgSpeed(Context context, float currentSpeed, Callback callback) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.context = context;
         this.currentSpeed = currentSpeed;
         this.callback = callback;
     }
@@ -110,12 +110,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
 
     private void scrollTo(final CheckedTextView checkedTextView) {
         checkedTextView.setChecked(true);
-        sv.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sv.scrollTo(0, checkedTextView.getTop());
-            }
-        }, 100);
+        handler.postDelayed(() -> sv.scrollTo(0, checkedTextView.getTop()), 100);
     }
 
     private void setEvent(CheckedTextView checkedTextView) {
@@ -139,12 +134,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
                 callback.onSelectItem((Speed) view.getTag());
             }
         }
-        LUIUtil.setDelay(200, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                cancel();
-            }
-        });
+        handler.postDelayed(this::cancel, 200);
     }
 
     public interface Callback {

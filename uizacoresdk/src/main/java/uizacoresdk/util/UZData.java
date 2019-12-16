@@ -16,7 +16,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.restclient.ClientType;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
@@ -124,7 +123,7 @@ public class UZData {
      * <a href=http://worldtimeapi.org/api/timezone/Etc/UTC>this free api</a>
      */
     private void syncCurrentUTCTime() {
-        UZService service = UizaClientFactory.getClient(ClientType.NORMAL).createService(UZService.class);
+        UZService service = UizaClientFactory.getUizaService();
         final long startAPICallTime = System.currentTimeMillis();
         RxBinder.getInstance().bind(service.getCurrentUTCTime(), result -> {
             long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;

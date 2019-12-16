@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class UZDligListEntityRelation extends Dialog {
     private AdapterPlayList adapterPlayList;
 
     private CallbackPlayList callbackPlayList;
+    private Handler handler = new Handler();
 
     public UZDligListEntityRelation(Activity activity, boolean isLandscape, CallbackPlayList callbackPlayList) {
         super(activity);
@@ -58,12 +61,7 @@ public class UZDligListEntityRelation extends Dialog {
         tvMsg = findViewById(R.id.tv_msg);
         recyclerView = findViewById(R.id.recycler_view);
 
-        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        findViewById(R.id.bt_exit).setOnClickListener(v -> dismiss());
 
         getListAllEntityRelation();
     }
@@ -73,12 +71,7 @@ public class UZDligListEntityRelation extends Dialog {
         LUIUtil.showProgressBar(progressBar);
 
         //TODO remove hardcode
-        LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                setupUI(null);
-            }
-        });
+        handler.postDelayed(() -> setupUI(null), 700);
     }
 
     private void setupUI(ListAllEntityRelation listAllEntityRelation) {

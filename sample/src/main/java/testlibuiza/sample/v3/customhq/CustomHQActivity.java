@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
@@ -29,7 +30,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.autosize.UZImageButton;
@@ -45,6 +45,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     private UZImageButton uzibCustomAudio;
     private LinearLayout llListHq;
     private final String TAG = getClass().getSimpleName();
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,13 +113,10 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
                 public void onClick(View view) {
                     LAnimationUtil.play(view, Techniques.Pulse);
                     c.performClick();
-                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            llListHq.removeAllViews();
-                            llListHq.invalidate();
-                        }
-                    });
+                    handler.postDelayed(() -> {
+                        llListHq.removeAllViews();
+                        llListHq.invalidate();
+                    }, 300);
                 }
             });
             llListHq.addView(bt);

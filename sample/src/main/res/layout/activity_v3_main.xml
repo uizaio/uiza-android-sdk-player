@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGrey"
+    android:orientation="vertical"
+    tools:context="testlibuiza.sample.v3.MainV3Activity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Uiza Video"
+                    android:textSize="@dimen/txt_30" />
+
+                <Button
+                    android:id="@+id/bt_test_full_screen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0. Test fullscreen player" />
+
+                <Button
+                    android:id="@+id/bt_sdk_v3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. Test UizaSDK V3" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_xml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3. Custom skin by xml" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_code_seekbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4. Custom skin by code (seekbar) - deprecated"
+                    android:textSize="@dimen/txt_10"
+                    android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_code_uz_timebar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5. Custom skin by code (UZTimebar)" />
+
+                <Button
+                    android:id="@+id/bt_mini_fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6. Mini player like Facebook" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_u_tube"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7. Custom skin like Youtube" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_u_tube_with_slide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8. Custom skin like Youtube With Slide" />
+                <Button
+                    android:id="@+id/bt_slide_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8.1 Slide" />
+                <Button
+                    android:id="@+id/bt_resize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9. Resize" />
+
+                <Button
+                    android:id="@+id/bt_custom_hq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10. Custom HQ" />
+
+                <Button
+                    android:id="@+id/bt_play_any_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11. Play any link" />
+
+                <Button
+                    android:id="@+id/bt_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12. Volume controller" />
+
+                <Button
+                    android:id="@+id/bt_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13. Event" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Guide Call API"
+                    android:textSize="@dimen/txt_30" />
+
+                <Button
+                    android:id="@+id/bt_guide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14. Guide" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="More"
+                    android:textSize="@dimen/txt_30" />
+
+                <Button
+                    android:id="@+id/bt_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Error" />
+                <Button
+                    android:id="@+id/bt_dummy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dummy" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

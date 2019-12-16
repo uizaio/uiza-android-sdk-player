@@ -2,15 +2,16 @@ package testlibuiza.sample.v3.demoui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Handler;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.draggablepanel.DraggableListener;
@@ -20,6 +21,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private DraggablePanel draggablePanel;
+    private Handler handler = new Handler();
 
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
@@ -135,12 +137,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    draggablePanel.maximize();
-                }
-            });
+            handler.postDelayed(() -> draggablePanel.maximize(), 500);
         } else {
             draggablePanel.maximize();
         }
@@ -155,12 +152,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    draggablePanel.maximize();
-                }
-            });
+            handler.postDelayed(() -> draggablePanel.maximize(), 500);
         } else {
             draggablePanel.maximize();
         }

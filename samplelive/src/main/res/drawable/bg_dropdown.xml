@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+
+
+        <layer-list>
+            <item>
+                <shape>
+                    <stroke
+                        android:width="1dip"
+                        android:color="@android:color/black" />
+
+                    <corners android:radius="3dp" />
+
+                    <solid android:color="@android:color/transparent" />
+
+                    <padding
+                        android:bottom="5.0dip"
+                        android:left="5.0dip"
+                        android:right="5.0dip"
+                        android:top="5.0dip" />
+                </shape>
+            </item>
+
+
+            <item>
+                <bitmap
+                    android:gravity="center_vertical|right"
+                    android:src="@drawable/baseline_keyboard_arrow_down_black_24" />
+
+            </item>
+
+
+        </layer-list>
+
+
+    </item>
+</layer-list>

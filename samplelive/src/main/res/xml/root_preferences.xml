@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="pref_video"
+        app:title="@string/video_title">
+
+        <ListPreference
+            app:defaultValue="360"
+            app:entries="@array/profile_entries"
+            app:entryValues="@array/profile_values"
+            app:iconSpaceReserved="false"
+            app:key="camera_key"
+            app:title="@string/profile_title"
+            app:useSimpleSummaryProvider="true" />
+
+
+        <ListPreference
+            app:defaultValue="24"
+            app:entries="@array/fps_entries"
+            app:entryValues="@array/fps_values"
+            app:iconSpaceReserved="false"
+            app:key="fps_key"
+            app:title="@string/fps_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:defaultValue="24"
+            app:iconSpaceReserved="false"
+            app:key="keyframe_key"
+            app:title="@string/keyframe_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:key="adaptive_bitrate_key"
+            app:summaryOff="Off adaptive video bitrate"
+            app:summaryOn="On adaptive video bitrate"
+            app:title="@string/adaptive_bitrate_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="pref_audio"
+        app:title="@string/audio_title">
+
+        <ListPreference
+            app:defaultValue="64"
+            app:entries="@array/bitrate_entries"
+            app:entryValues="@array/bitrate_entries"
+            app:iconSpaceReserved="false"
+            app:key="audio_bitrate_key"
+            app:title="@string/bitrate_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="32000"
+            app:entries="@array/sample_rates"
+            app:entryValues="@array/sample_rate_values"
+            app:iconSpaceReserved="false"
+            app:key="sample_rate_key"
+            app:title="@string/sample_rate_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="audio_stereo_key"
+            app:summaryOff="1 Channel"
+            app:summaryOn="2 Channel"
+            app:title="@string/stereo_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
