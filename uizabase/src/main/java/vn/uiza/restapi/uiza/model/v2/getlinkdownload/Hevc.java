@@ -1,15 +1,15 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Hevc {
 
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "description")
+    @SerializedName("description")
     private String description;
-    @Json(name = "url")
+    @SerializedName("url")
     private Object url;
 
     public String getName() {

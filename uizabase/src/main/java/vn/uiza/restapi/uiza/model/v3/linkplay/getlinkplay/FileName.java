@@ -1,17 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class FileName {
 
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
-    @Json(name = "support")
+    @SerializedName("support")
     private String support;
-    @Json(name = "codec")
+    @SerializedName("codec")
     private List<String> codec = null;
 
     public String getType() {

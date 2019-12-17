@@ -1,179 +1,179 @@
 
 package vn.uiza.restapi.uiza.model.tracking.muiza;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Muiza {
 
-    @Json(name = "beacon_domain")
+    @SerializedName("beacon_domain")
     private String beaconDomain;
-    @Json(name = "entity_cdn")
+    @SerializedName("entity_cdn")
     private String entityCdn;
-    @Json(name = "entity_content_type")
+    @SerializedName("entity_content_type")
     private String entityContentType;
-    @Json(name = "entity_duration")
+    @SerializedName("entity_duration")
     private String entityDuration;
-    @Json(name = "entity_encoding_variant")
+    @SerializedName("entity_encoding_variant")
     private String entityEncodingVariant;
-    @Json(name = "entity_id")
+    @SerializedName("entity_id")
     private String entityId;
-    @Json(name = "entity_language_code")
+    @SerializedName("entity_language_code")
     private String entityLanguageCode;
-    @Json(name = "entity_name")
+    @SerializedName("entity_name")
     private String entityName;
-    @Json(name = "entity_poster_url")
+    @SerializedName("entity_poster_url")
     private String entityPosterUrl;
-    @Json(name = "entity_producer")
+    @SerializedName("entity_producer")
     private String entityProducer;
-    @Json(name = "entity_series")
+    @SerializedName("entity_series")
     private String entitySeries;
-    @Json(name = "entity_source_domain")
+    @SerializedName("entity_source_domain")
     private String entitySourceDomain;
-    @Json(name = "entity_source_duration")
+    @SerializedName("entity_source_duration")
     private String entitySourceDuration;
-    @Json(name = "entity_source_height")
+    @SerializedName("entity_source_height")
     private int entitySourceHeight;
-    @Json(name = "entity_source_hostname")
+    @SerializedName("entity_source_hostname")
     private String entitySourceHostname;
-    @Json(name = "entity_source_is_live")
+    @SerializedName("entity_source_is_live")
     private boolean entitySourceIsLive;
-    @Json(name = "entity_source_mime_type")
+    @SerializedName("entity_source_mime_type")
     private String entitySourceMimeType;
-    @Json(name = "entity_source_width")
+    @SerializedName("entity_source_width")
     private int entitySourceWidth;
-    @Json(name = "entity_stream_type")
+    @SerializedName("entity_stream_type")
     private String entityStreamType;
-    @Json(name = "entity_variant_id")
+    @SerializedName("entity_variant_id")
     private String entityVariantId;
-    @Json(name = "entity_variant_name")
+    @SerializedName("entity_variant_name")
     private String entityVariantName;
-    @Json(name = "event")
+    @SerializedName("event")
     private String event;
-    @Json(name = "experiment_name")
+    @SerializedName("experiment_name")
     private String experimentName;
-    @Json(name = "page_type")
+    @SerializedName("page_type")
     private String pageType;
-    @Json(name = "page_url")
+    @SerializedName("page_url")
     private String pageUrl;
-    @Json(name = "player_autoplay_on")
+    @SerializedName("player_autoplay_on")
     private boolean playerAutoplayOn;
-    @Json(name = "player_height")
+    @SerializedName("player_height")
     private int playerHeight;
-    @Json(name = "player_is_fullscreen")
+    @SerializedName("player_is_fullscreen")
     private boolean playerIsFullscreen;
-    @Json(name = "player_is_paused")
+    @SerializedName("player_is_paused")
     private boolean playerIsPaused;
-    @Json(name = "player_language_code")
+    @SerializedName("player_language_code")
     private String playerLanguageCode;
-    @Json(name = "player_name")
+    @SerializedName("player_name")
     private String playerName;
-    @Json(name = "player_playhead_time")
+    @SerializedName("player_playhead_time")
     private long playerPlayheadTime;
-    @Json(name = "player_preload_on")
+    @SerializedName("player_preload_on")
     private String playerPreloadOn;
-    @Json(name = "player_sequence_number")
+    @SerializedName("player_sequence_number")
     private long playerSequenceNumber;
-    @Json(name = "player_software_name")
+    @SerializedName("player_software_name")
     private String playerSoftwareName;
-    @Json(name = "player_software_version")
+    @SerializedName("player_software_version")
     private String playerSoftwareVersion;
-    @Json(name = "player_version")
+    @SerializedName("player_version")
     private String playerVersion;
-    @Json(name = "player_width")
+    @SerializedName("player_width")
     private long playerWidth;
-    @Json(name = "session_expires")
+    @SerializedName("session_expires")
     private long sessionExpires;
-    @Json(name = "session_id")
+    @SerializedName("session_id")
     private String sessionId;
-    @Json(name = "sub_property_id")
+    @SerializedName("sub_property_id")
     private String subPropertyId;
-    @Json(name = "timestamp")
+    @SerializedName("timestamp")
     private String timestamp;
-    @Json(name = "view_id")
+    @SerializedName("view_id")
     private String viewId;
-    @Json(name = "view_sequence_number")
+    @SerializedName("view_sequence_number")
     private long viewSequenceNumber;
-    @Json(name = "viewer_application_engine")
+    @SerializedName("viewer_application_engine")
     private String viewerApplicationEngine;
-    @Json(name = "viewer_application_name")
+    @SerializedName("viewer_application_name")
     private String viewerApplicationName;
-    @Json(name = "viewer_application_version")
+    @SerializedName("viewer_application_version")
     private String viewerApplicationVersion;
-    @Json(name = "viewer_device_category")
+    @SerializedName("viewer_device_category")
     private String viewerDeviceCategory;
-    @Json(name = "viewer_device_manufacturer")
+    @SerializedName("viewer_device_manufacturer")
     private Object viewerDeviceManufacturer;
-    @Json(name = "viewer_device_name")
+    @SerializedName("viewer_device_name")
     private Object viewerDeviceName;
-    @Json(name = "viewer_os_architecture")
+    @SerializedName("viewer_os_architecture")
     private int viewerOsArchitecture;
-    @Json(name = "viewer_os_family")
+    @SerializedName("viewer_os_family")
     private String viewerOsFamily;
-    @Json(name = "viewer_os_version")
+    @SerializedName("viewer_os_version")
     private String viewerOsVersion;
-    @Json(name = "viewer_time")
+    @SerializedName("viewer_time")
     private long viewerTime;
-    @Json(name = "viewer_user_id")
+    @SerializedName("viewer_user_id")
     private String viewerUserId;
-    @Json(name = "app_id")
+    @SerializedName("app_id")
     private String appId;
-    @Json(name = "referrer")
+    @SerializedName("referrer")
     private String referrer;
-    @Json(name = "page_load_time")
+    @SerializedName("page_load_time")
     private long pageLoadTime;
-    @Json(name = "player_id")
+    @SerializedName("player_id")
     private String playerId;
-    @Json(name = "player_init_time")
+    @SerializedName("player_init_time")
     private long playerInitTime;
-    @Json(name = "player_startup_time")
+    @SerializedName("player_startup_time")
     private long playerStartupTime;
-    @Json(name = "session_start")
+    @SerializedName("session_start")
     private long sessionStart;
-    @Json(name = "view_watch_time")
+    @SerializedName("view_watch_time")
     private long viewWatchTime;
-    @Json(name = "entity_source_url")
+    @SerializedName("entity_source_url")
     private String entitySourceUrl;
 
-    @Json(name = "player_view_count")
+    @SerializedName("player_view_count")
     private int playerViewCount;
 
-    @Json(name = "view_start")
+    @SerializedName("view_start")
     private long viewStart;
 
-    @Json(name = "view_time_to_first_frame")
+    @SerializedName("view_time_to_first_frame")
     private long viewTimeToFirstFrame;
 
-    @Json(name = "view_aggregate_startup_time")
+    @SerializedName("view_aggregate_startup_time")
     private long viewAggregateStartupTime;
 
-    @Json(name = "view_aggregate_startup_total_time")
+    @SerializedName("view_aggregate_startup_total_time")
     private long viewAggregateStartupTotalTime;
 
-    @Json(name = "player_error_code")
+    @SerializedName("player_error_code")
     private Integer playerErrorCode;
 
-    @Json(name = "player_error_message")
+    @SerializedName("player_error_message")
     private String playerErrorMessage;
 
-    @Json(name = "view_seek_count")
+    @SerializedName("view_seek_count")
     private Integer viewSeekCount;
 
-    @Json(name = "view_seek_duration")
+    @SerializedName("view_seek_duration")
     private Long viewSeekDuration;
 
-    @Json(name = "view_max_seek_time")
+    @SerializedName("view_max_seek_time")
     private Long viewMaxSeekTime;
 
-    @Json(name = "view_rebuffer_count")
+    @SerializedName("view_rebuffer_count")
     private Integer viewRebufferCount;
 
-    @Json(name = "view_rebuffer_duration")
+    @SerializedName("view_rebuffer_duration")
     private Long viewRebufferDuration;
 
-    @Json(name = "view_rebuffer_frequency")
+    @SerializedName("view_rebuffer_frequency")
     private Float viewRebufferFrequency;
 
-    @Json(name = "view_rebuffer_percentage")
+    @SerializedName("view_rebuffer_percentage")
     private Float viewRebufferPercentage;
 
     public String getBeaconDomain() {

@@ -1,23 +1,23 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class AudioDetail {
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "audio_type")
+    @SerializedName("audio_type")
     private String audioType;
-    @Json(name = "bitrate")
+    @SerializedName("bitrate")
     private String bitrate;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "volume")
+    @SerializedName("volume")
     private String volume;
-    @Json(name = "template")
+    @SerializedName("template")
     private String template;
-    @Json(name = "enable_normalize_audio")
+    @SerializedName("enable_normalize_audio")
     private boolean enableNormalizeAudio;
 
     public String getId() {

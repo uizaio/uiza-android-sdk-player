@@ -29,6 +29,10 @@ public class UizaClientFactory {
         }
     }
 
+    public static void changeAPIToken(String token){
+        UZRestClient.getInstance().changeAuthorization(token);
+    }
+
     public static UZRestClient getUizaClient() {
         return UZRestClient.getInstance();
     }

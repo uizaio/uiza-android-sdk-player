@@ -1,20 +1,24 @@
 package io.uiza.samplelive;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
@@ -29,7 +33,7 @@ public class LiveListActivity extends AppCompatActivity
     RecyclerView recyclerView;
     String currentEntityId;
     LiveEntityAdapter adapter = new LiveEntityAdapter();
-
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     String region;
 
     @Override
@@ -39,10 +43,8 @@ public class LiveListActivity extends AppCompatActivity
         progressBar = findViewById(R.id.progress_bar);
         recyclerView = findViewById(R.id.contentList);
         findViewById(R.id.fb_btn).setOnClickListener(v -> showCreateLiveDialog());
-        region = getIntent().getStringExtra(MainActivity.CURRENT_REGION_KEY);
-        if (TextUtils.isEmpty(region)) {
-            region = "asia-south1";
-        }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        region = preferences.getString("region_key", "asia-south1");
         SampleUtils.setVertical(recyclerView);
         recyclerView.setAdapter(adapter);
         adapter.setListener(this);
@@ -74,14 +76,23 @@ public class LiveListActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBinder.getInstance().dispose();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
     }
 
     private void loadEntities() {
+        Timber.e("loadEntities");
         progressBar.setVisibility(View.VISIBLE);
-        RxBinder.getInstance().bind(
+        compositeDisposable.add(RxBinder.bind(
                 UizaClientFactory.getLiveService()
                         .getEntities()
                         .map(ListWrap::getData),
@@ -92,9 +103,10 @@ public class LiveListActivity extends AppCompatActivity
                     progressBar.setVisibility(View.GONE);
                 }, throwable -> {
                     progressBar.setVisibility(View.GONE);
+                    showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
                 }
-        );
+        ));
     }
 
     private void showPopup(View v) {
@@ -129,29 +141,38 @@ public class LiveListActivity extends AppCompatActivity
                 SampleLiveApplication.APP_ID,
                 SampleLiveApplication.USER_ID
         );
-        RxBinder.getInstance().bind(
+        compositeDisposable.add(RxBinder.bind(
                 UizaClientFactory.getLiveService().createEntity(body),
                 res -> {
                     Intent intent = new Intent(LiveListActivity.this, CheckLiveActivity.class);
-                    intent.putExtra(MainActivity.CURRENT_REGION_KEY, region);
                     intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, res);
                     startActivity(intent);
-                }, Timber::e
-        );
+                }, throwable -> {
+                    showMessage(throwable.getLocalizedMessage());
+                    Timber.e(throwable);
+                }
+        ));
+    }
+
+    private void showMessage(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void removeEntity() {
         if (currentEntityId != null) {
-            RxBinder.getInstance().bind(
+            compositeDisposable.add(RxBinder.bind(
                     UizaClientFactory.getLiveService()
                             .deleteEntity(currentEntityId),
                     res -> {
                         if (res != null && res.isDeleted()) {
                             adapter.removeItem(res.getId());
                         }
-                    }, Timber::e
+                    },  throwable -> {
+                        showMessage(throwable.getLocalizedMessage());
+                        Timber.e(throwable);
+                    }
 
-            );
+            ));
         }
     }
 }

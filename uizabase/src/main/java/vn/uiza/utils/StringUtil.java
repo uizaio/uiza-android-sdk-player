@@ -2,76 +2,64 @@ package vn.uiza.utils;
 
 import androidx.annotation.Nullable;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
-import com.squareup.moshi.Types;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import timber.log.Timber;
-import vn.uiza.core.common.Constants;
-import vn.uiza.helpers.DateTimeAdapter;
+import vn.uiza.helpers.DateTypeDeserializer;
+import vn.uiza.helpers.DateTypeSerializer;
 
 public class StringUtil {
     private StringUtil() {
     }
 
-    public static <T> String toJson(T value, Class<T> clazz) {
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
-        return builder.build()
-                .adapter(clazz)
-                .toJson(value);
+    public static <T> String toJson(T value) {
+        return (new Gson()).toJson(value);
     }
 
-    public static <T> String toJson(List<T> values, Class<T> clazz) {
-        ParameterizedType type = Types.newParameterizedType(List.class, clazz);
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
-        return builder.build()
-                .adapter(type)
-                .toJson(values);
+    public static <T> String toJson(List<T> values) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeSerializer())
+                .create();
+        Type listType = new TypeToken<List<T>>() {
+        }.getType();
+        return gson.toJson(values, listType);
     }
 
-    public static <T> String toBeautyJson(T value, Class<T> clazz) {
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
-        return builder.build().adapter(clazz)
-                .indent("    ")
-                .toJson(value);
+    public static <T> String toBeautyJson(T value) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeSerializer())
+                .setPrettyPrinting()
+                .create();
+        return gson.toJson(value);
     }
 
-    public static <T> String toBeautyJson(List<T> values, Class<T> clazz) {
-        ParameterizedType type = Types.newParameterizedType(List.class, clazz);
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
-        return builder.build()
-                .adapter(type)
-                .indent("    ")
-                .toJson(values);
+    public static <T> String toBeautyJson(List<T> values) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeSerializer())
+                .setPrettyPrinting()
+                .create();
+        Type listType = new TypeToken<List<T>>() {
+        }.getType();
+        return gson.toJson(values, listType);
     }
 
     @Nullable
-    public static <T> List<T> toList(String json, Class<T> clazz) {
-        ParameterizedType type = Types.newParameterizedType(List.class, clazz);
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
-        JsonAdapter<List<T>> adapter = builder.build().adapter(type);
+    public static <T> List<T> toList(String json) {
+        Type listType = new TypeToken<List<T>>() {
+        }.getType();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeDeserializer())
+                .create();
         try {
-            return adapter.fromJson(json);
-        } catch (IOException e) {
+            return gson.fromJson(json, listType);
+        } catch (JsonSyntaxException e) {
             Timber.e(e);
         }
         return null;
@@ -79,15 +67,12 @@ public class StringUtil {
 
     @Nullable
     public static <T> T toObject(String json, Class<T> clazz) {
-        Moshi.Builder builder = new Moshi.Builder();
-        if (Constants.isV5AndAbove()) {
-            builder.add(new DateTimeAdapter());
-        }
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeDeserializer())
+                .create();
         try {
-            return builder.build()
-                    .adapter(clazz)
-                    .fromJson(json);
-        } catch (IOException e) {
+            return gson.fromJson(json, clazz);
+        } catch (JsonSyntaxException e) {
             Timber.e(e);
         }
         return null;

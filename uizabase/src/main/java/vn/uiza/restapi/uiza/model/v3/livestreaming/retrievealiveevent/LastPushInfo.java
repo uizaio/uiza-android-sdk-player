@@ -1,13 +1,13 @@
 
 package vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class LastPushInfo {
 
-    @Json(name = "streamUrl")
+    @SerializedName("streamUrl")
     private String streamUrl;
-    @Json(name = "streamKey")
+    @SerializedName("streamKey")
     private String streamKey;
 
     public String getStreamUrl() {

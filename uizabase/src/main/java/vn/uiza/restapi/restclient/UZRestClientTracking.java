@@ -6,7 +6,7 @@ import java.security.InvalidParameterException;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 public class UZRestClientTracking extends RestClient {
@@ -34,7 +34,7 @@ public class UZRestClientTracking extends RestClient {
                 .baseUrl(baseApiUrl)
                 .client(provideHttpClient())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create(provideMoshi()))
+                .addConverterFactory(GsonConverterFactory.create(provideGson()))
                 .build();
 
         if (!TextUtils.isEmpty(token)) {

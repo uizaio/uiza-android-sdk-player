@@ -4,69 +4,69 @@ package vn.uiza.restapi.uiza.model.tracking;
  * Created by loitp on 18/1/2019.
  */
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class UizaTracking {
 
-    @Json(name = "hours_watched")
+    @SerializedName("hours_watched")
     private String hoursWatched;
-    @Json(name = "publisher_id")
+    @SerializedName("publisher_id")
     private String publisherId;
-    @Json(name = "player_init_time")
+    @SerializedName("player_init_time")
     private String playerInitTime;
-    @Json(name = "sub_property_id")
+    @SerializedName("sub_property_id")
     private String subPropertyId;
-    @Json(name = "property_key")
+    @SerializedName("property_key")
     private String propertyKey;
-    @Json(name = "experiment_name")
+    @SerializedName("experiment_name")
     private String experimentName;
-    @Json(name = "app_id")
+    @SerializedName("app_id")
     private String appId;
-    @Json(name = "page_type")
+    @SerializedName("page_type")
     private String pageType;
-    @Json(name = "viewer_user_id")
+    @SerializedName("viewer_user_id")
     private String viewerUserId;
-    @Json(name = "user_agent")
+    @SerializedName("user_agent")
     private String userAgent;
-    @Json(name = "referrer")
+    @SerializedName("referrer")
     private String referrer;
-    @Json(name = "device_id")
+    @SerializedName("device_id")
     private String deviceId;
-    @Json(name = "player_id")
+    @SerializedName("player_id")
     private String playerId;
-    @Json(name = "player_name")
+    @SerializedName("player_name")
     private String playerName;
-    @Json(name = "player_version")
+    @SerializedName("player_version")
     private String playerVersion;
-    @Json(name = "entity_id")
+    @SerializedName("entity_id")
     private String entityId;
-    @Json(name = "entity_name")
+    @SerializedName("entity_name")
     private String entityName;
-    @Json(name = "entity_series")
+    @SerializedName("entity_series")
     private String entitySeries;
-    @Json(name = "entity_producer")
+    @SerializedName("entity_producer")
     private String entityProducer;
-    @Json(name = "entity_content_type")
+    @SerializedName("entity_content_type")
     private String entityContentType;
-    @Json(name = "entity_language_code")
+    @SerializedName("entity_language_code")
     private String entityLanguageCode;
-    @Json(name = "entity_variant_name")
+    @SerializedName("entity_variant_name")
     private String entityVariantName;
-    @Json(name = "entity_variant_id")
+    @SerializedName("entity_variant_id")
     private String entityVariantId;
-    @Json(name = "entity_duration")
+    @SerializedName("entity_duration")
     private String entityDuration;
-    @Json(name = "entity_stream_type")
+    @SerializedName("entity_stream_type")
     private String entityStreamType;
-    @Json(name = "entity_encoding_variant")
+    @SerializedName("entity_encoding_variant")
     private String entityEncodingVariant;
-    @Json(name = "entity_cdn")
+    @SerializedName("entity_cdn")
     private String entityCdn;
-    @Json(name = "play_through")
+    @SerializedName("play_through")
     private String playThrough;
-    @Json(name = "event_type")
+    @SerializedName("event_type")
     private String eventType;
-    @Json(name = "timestamp")
+    @SerializedName("timestamp")
     private String timestamp;
 
     public String getAppId() {

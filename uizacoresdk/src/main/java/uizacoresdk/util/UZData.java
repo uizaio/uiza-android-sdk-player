@@ -125,7 +125,7 @@ public class UZData {
     private void syncCurrentUTCTime() {
         UZService service = UizaClientFactory.getUizaService();
         final long startAPICallTime = System.currentTimeMillis();
-        RxBinder.getInstance().bind(service.getCurrentUTCTime(), result -> {
+        RxBinder.bind(service.getCurrentUTCTime(), result -> {
             long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;
             long currentTime = result.getCurrentDateTimeMs() + apiTime;
             Timber.i("sync server time success :%d", currentTime);

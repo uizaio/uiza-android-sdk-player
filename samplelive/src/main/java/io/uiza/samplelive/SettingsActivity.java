@@ -4,7 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import timber.log.Timber;
+import vn.uiza.restapi.restclient.UizaClientFactory;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -19,11 +23,24 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
     }
 
-    class SettingsFragment extends PreferenceFragmentCompat {
+    public static class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            EditTextPreference apiTokenPref = findPreference("api_token_key");
+            if (apiTokenPref != null) {
+                apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    if (newValue instanceof String) {
+                        String value = (String) newValue;
+                        UizaClientFactory.changeAPIToken(value);
+                        Timber.e(value);
+
+                    }
+                    return true;
+                });
+            }
+
         }
     }
 }

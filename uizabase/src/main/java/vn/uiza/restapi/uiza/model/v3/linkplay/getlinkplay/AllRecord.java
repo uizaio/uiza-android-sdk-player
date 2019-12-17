@@ -1,41 +1,41 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class AllRecord {
 
-    @Json(name = "processed_time")
+    @SerializedName("processed_time")
     private Integer processedTime;
-    @Json(name = "action")
+    @SerializedName("action")
     private String action;
-    @Json(name = "source_uri")
+    @SerializedName("source_uri")
     private String sourceUri;
-    @Json(name = "region_type")
+    @SerializedName("region_type")
     private String regionType;
-    @Json(name = "uploaded_size")
+    @SerializedName("uploaded_size")
     private String uploadedSize;
-    @Json(name = "status")
+    @SerializedName("status")
     private String status;
-    @Json(name = "createdAt")
+    @SerializedName("createdAt")
     private String createdAt;
-    @Json(name = "app_id")
+    @SerializedName("app_id")
     private String appId;
-    @Json(name = "destination_uri")
+    @SerializedName("destination_uri")
     private String destinationUri;
-    @Json(name = "entity_id")
+    @SerializedName("entity_id")
     private String entityId;
-    @Json(name = "task_id")
+    @SerializedName("task_id")
     private String taskId;
-    @Json(name = "output_transcode_path")
+    @SerializedName("output_transcode_path")
     private String outputTranscodePath;
-    @Json(name = "updatedAt")
+    @SerializedName("updatedAt")
     private String updatedAt;
-    @Json(name = "progress")
+    @SerializedName("progress")
     private Integer progress;
-    @Json(name = "type_content")
+    @SerializedName("type_content")
     private String typeContent;
-    @Json(name = "publish_id")
+    @SerializedName("publish_id")
     private String publishId;
 
     public Integer getProcessedTime() {

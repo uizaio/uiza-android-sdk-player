@@ -4,21 +4,21 @@ package vn.uiza.restapi.uiza.model.tracking;
  * Created by loitp on 18/1/2019.
  */
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class UizaTrackingCCU {
 
-    @Json(name = "dt")
+    @SerializedName("dt")
     private String dt;
-    @Json(name = "ho")
+    @SerializedName("ho")
     private String ho;
-    @Json(name = "ai")
+    @SerializedName("ai")
     private String ai;
-    @Json(name = "sn")
+    @SerializedName("sn")
     private String sn;
-    @Json(name = "di")
+    @SerializedName("di")
     private String di;
-    @Json(name = "ua")
+    @SerializedName("ua")
     private String ua;
 
     public String getDt() {

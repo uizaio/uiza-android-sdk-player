@@ -1,39 +1,39 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class VideoDetail {
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "bitrate")
+    @SerializedName("bitrate")
     private String bitrate;
-    @Json(name = "bufsize")
+    @SerializedName("bufsize")
     private int bufsize;
-    @Json(name = "width")
+    @SerializedName("width")
     private String width;
-    @Json(name = "height")
+    @SerializedName("height")
     private String height;
-    @Json(name = "framerate")
+    @SerializedName("framerate")
     private String framerate;
-    @Json(name = "keyint")
+    @SerializedName("keyint")
     private String keyint;
-    @Json(name = "level")
+    @SerializedName("level")
     private String level;
-    @Json(name = "maxrate")
+    @SerializedName("maxrate")
     private int maxrate;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "preset")
+    @SerializedName("preset")
     private String preset;
-    @Json(name = "template")
+    @SerializedName("template")
     private String template;
-    @Json(name = "vprofile")
+    @SerializedName("vprofile")
     private String vprofile;
-    @Json(name = "weight")
+    @SerializedName("weight")
     private int weight;
-    @Json(name = "enable_hevc")
+    @SerializedName("enable_hevc")
     private boolean enableHevc;
 
     public String getId() {

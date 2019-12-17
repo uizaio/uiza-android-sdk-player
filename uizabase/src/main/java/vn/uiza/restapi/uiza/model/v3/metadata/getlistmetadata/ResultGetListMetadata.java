@@ -1,7 +1,7 @@
 
 package vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -10,25 +10,25 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultGetListMetadata {
 
-    @Json(name = "data")
+    @SerializedName("data")
     private List<Data> data = null;
-    @Json(name = "metadata")
+    @SerializedName("metadata")
     private Metadata metadata;
-    @Json(name = "version")
+    @SerializedName("version")
     private Integer version;
-    @Json(name = "datetime")
+    @SerializedName("datetime")
     private String datetime;
-    @Json(name = "policy")
+    @SerializedName("policy")
     private String policy;
-    @Json(name = "requestId")
+    @SerializedName("requestId")
     private String requestId;
-    @Json(name = "serviceName")
+    @SerializedName("serviceName")
     private String serviceName;
-    @Json(name = "message")
+    @SerializedName("message")
     private String message;
-    @Json(name = "code")
+    @SerializedName("code")
     private Integer code;
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
 
     public List<Data> getData() {

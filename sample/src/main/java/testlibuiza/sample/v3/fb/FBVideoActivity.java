@@ -239,9 +239,9 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+        RxBinder.bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
                 result -> {
-                    tv.setText(StringUtil.toJson(result, ResultListEntity.class));
+                    tv.setText(StringUtil.toJson(result));
                     LImageUtil.load(activity, "https://motosaigon.vn/wp-content/uploads/2018/08/Kawasaki-Z1000-2019-Z1000R-2019-MotoSaigon.vn-2.jpg", iv);
                 }, Timber::e);
     }

@@ -5,63 +5,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.preference.PreferenceManager;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-
-    public static final String CURRENT_REGION_KEY = "extra_region_key";
-    AppCompatSpinner spinner;
-    String currentRegion = "asia-south-1";
-    String[] regions;
-    SharedPreferences preferences;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
         setContentView(R.layout.activity_main);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        regions = getResources().getStringArray(R.array.region_arrays);
-        spinner = findViewById(R.id.region_spinner);
         findViewById(R.id.live_btn).setOnClickListener(this);
         findViewById(R.id.force_live_btn).setOnClickListener(this);
         findViewById(R.id.setting_btn).setOnClickListener(this);
-        spinner.setOnItemSelectedListener(this);
-        currentRegion = preferences.getString(CURRENT_REGION_KEY, regions[0]);
-        for (int i = 0; i < regions.length; i++) {
-            if (currentRegion.equalsIgnoreCase(regions[i])) {
-                spinner.setSelection(i);
-            }
-        }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        currentRegion = regions[position];
-        preferences.edit().putString(CURRENT_REGION_KEY, currentRegion).apply();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        currentRegion = regions[0];
-        preferences.edit().putString(CURRENT_REGION_KEY, currentRegion).apply();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.live_btn:
-                Intent intent = new Intent(MainActivity.this, LiveListActivity.class);
-                intent.putExtra(CURRENT_REGION_KEY, currentRegion);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, LiveListActivity.class));
                 break;
             case R.id.force_live_btn:
                 showCreateLiveDialog();

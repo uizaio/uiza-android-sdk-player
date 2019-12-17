@@ -13,47 +13,29 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxBinder {
-    private static class RxBinderHelper {
-        private static final RxBinder INSTANCE = new RxBinder();
-    }
 
-    public static RxBinder getInstance() {
-        return RxBinderHelper.INSTANCE;
-    }
+    private RxBinder() {}
 
-    private RxBinder() {
-    }
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    public void dispose() {
-        if (!compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
-        }
-    }
-
-    public <T> void bind(Observable<T> observable, Consumer<T> onNext, Consumer<Throwable> onError) {
+    public static <T> Disposable bind(Observable<T> observable, Consumer<T> onNext, Consumer<Throwable> onError) {
         //TODO maybe in some cases we don't need to check internet connection
         /*if (!NetworkUtils.hasConnection(this)) {
             subscriber.onError(new NoConnectionException());
             return;
         }*/
-        Disposable disposable = observable.subscribeOn(Schedulers.newThread())
+        return observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
-        compositeDisposable.add(disposable);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void bind(Observable<T> observable, Consumer<T> onNext, Consumer<Throwable> onError, Action onComplete) {
+    public static  <T> Disposable bind(Observable<T> observable, Consumer<T> onNext, Consumer<Throwable> onError, Action onComplete) {
         //TODO maybe in some cases we don't need to check internet connection
         /*if (!NetworkUtils.hasConnection(this)) {
             subscriber.onError(new NoConnectionException());
             return;
         }*/
-        Disposable disposable = observable.subscribeOn(Schedulers.newThread())
+        return observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError, onComplete);
-        compositeDisposable.add(disposable);
     }
 }

@@ -1,19 +1,19 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Data {
 
-    @Json(name = "setting")
+    @SerializedName("setting")
     private Setting setting;
-    @Json(name = "styling")
+    @SerializedName("styling")
     private Styling styling;
-    @Json(name = "endscreen")
+    @SerializedName("endscreen")
     private Endscreen endscreen;
-    @Json(name = "logo")
+    @SerializedName("logo")
     private Logo logo;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
 
     public Setting getSetting() {

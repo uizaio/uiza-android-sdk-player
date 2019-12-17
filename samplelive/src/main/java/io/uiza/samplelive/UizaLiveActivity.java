@@ -15,7 +15,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -76,6 +78,24 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
             liveStreamUrl = SampleLiveApplication.getLiveEndpoint();
         }
         Timber.e("liveStreamUrl = %s", liveStreamUrl);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showExitDialog();
+    }
+
+    private void showExitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Do you want exit?");
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                super.onBackPressed();
+                dialog.dismiss();
+                finish();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     @Override

@@ -25,19 +25,19 @@ public class FrmUTVideoBottom extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedState) {
         return inflater.inflate(R.layout.v4_frm_bottom, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        tvJsonData = (TextView) view.findViewById(R.id.tv_json_data);
-        tvJsonLinkplay = (TextView) view.findViewById(R.id.tv_json_linkplay);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedState) {
+        super.onViewCreated(view, savedState);
+        tvJsonData = view.findViewById(R.id.tv_json_data);
+        tvJsonLinkplay = view.findViewById(R.id.tv_json_linkplay);
     }
 
     public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        tvJsonData.setText(StringUtil.toBeautyJson(data, Data.class));
-        tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay, ResultGetLinkPlay.class));
+        tvJsonData.setText(StringUtil.toBeautyJson(data));
+        tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay));
     }
 }

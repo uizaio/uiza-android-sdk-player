@@ -1,17 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v4.playerinfo;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Logo {
 
-    @Json(name = "logo")
+    @SerializedName("logo")
     private String logo;
-    @Json(name = "position")
+    @SerializedName("position")
     private String position;
-    @Json(name = "display")
+    @SerializedName("display")
     private boolean display;
-    @Json(name = "url")
+    @SerializedName("url")
     private String url;
 
     public String getLogo() {

@@ -3,25 +3,25 @@ package vn.uiza.restapi.uiza.model.v5;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 public class LiveSession implements Parcelable {
 
-    @Json(name = "id")
+    @SerializedName("id")
     String id;
-    @Json(name = "entity_id")
+    @SerializedName("entity_id")
     String entityId;
-    @Json(name = "stream_key")
+    @SerializedName("stream_key")
     String streamKey;
-    @Json(name = "server")
+    @SerializedName("server")
     String server;
-    @Json(name = "duration")
+    @SerializedName("duration")
     float duration;
-    @Json(name = "created_at")
+    @SerializedName("created_at")
     Date createdAt;
-    @Json(name = "updated_at")
+    @SerializedName("updated_at")
     Date updateAt;
 
     //default constructor

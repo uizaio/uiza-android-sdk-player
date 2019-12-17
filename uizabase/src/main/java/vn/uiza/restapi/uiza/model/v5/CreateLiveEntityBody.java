@@ -1,18 +1,18 @@
 package vn.uiza.restapi.uiza.model.v5;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class CreateLiveEntityBody {
 
-    @Json(name = "name")
+    @SerializedName("name")
     String name;
-    @Json(name = "description")
+    @SerializedName("description")
     String description;
-    @Json(name = "region")
+    @SerializedName("region")
     String region;
-    @Json(name = "app_id")
+    @SerializedName("app_id")
     String appId;
-    @Json(name = "user_id")
+    @SerializedName("user_id")
     String userId;
 
     public CreateLiveEntityBody(String name, String description, String region, String appId, String userId) {

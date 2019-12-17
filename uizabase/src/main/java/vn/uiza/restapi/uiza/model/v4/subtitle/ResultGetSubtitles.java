@@ -1,7 +1,7 @@
 
 package vn.uiza.restapi.uiza.model.v4.subtitle;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -9,25 +9,25 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
 
 public class ResultGetSubtitles {
-    @Json(name = "data")
+    @SerializedName("data")
     private List<Subtitle> data = null;
-    @Json(name = "metadata")
+    @SerializedName("metadata")
     private Metadata metadata;
-    @Json(name = "version")
+    @SerializedName("version")
     private Integer version;
-    @Json(name = "datetime")
+    @SerializedName("datetime")
     private String datetime;
-    @Json(name = "policy")
+    @SerializedName("policy")
     private String policy;
-    @Json(name = "requestId")
+    @SerializedName("requestId")
     private String requestId;
-    @Json(name = "serviceName")
+    @SerializedName("serviceName")
     private String serviceName;
-    @Json(name = "message")
+    @SerializedName("message")
     private String message;
-    @Json(name = "code")
+    @SerializedName("code")
     private Integer code;
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
 
     public List<Subtitle> getData() {

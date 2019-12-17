@@ -4,21 +4,21 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
  * Created by LENOVO on 2/23/2018.
  */
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class JsonBodyListAllEntity {
 
-    @Json(name = "limit")
+    @SerializedName("limit")
     private int limit;
-    @Json(name = "orderBy")
+    @SerializedName("orderBy")
     private String orderBy;
-    @Json(name = "orderType")
+    @SerializedName("orderType")
     private String orderType;
-    @Json(name = "page")
+    @SerializedName("page")
     private int page;
-    @Json(name = "metadataId")
+    @SerializedName("metadataId")
     private List<String> metadataId = null;
 
     public int getLimit() {

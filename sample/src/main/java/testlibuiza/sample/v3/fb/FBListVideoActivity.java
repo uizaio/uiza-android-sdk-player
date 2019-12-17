@@ -115,7 +115,7 @@ public class FBListVideoActivity extends AppCompatActivity {
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+        RxBinder.bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
                 result -> {
                     dataList.addAll(result.getData());
                     cvPlaylistFolder.setVisibility(View.VISIBLE);

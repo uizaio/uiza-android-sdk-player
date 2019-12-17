@@ -204,7 +204,7 @@ public class UZUtil {
                 "                    \"isDefault\": \"0\"\n" +
                 "                }\n" +
                 "            ]";
-        return StringUtil.toList(json, Subtitle.class);
+        return StringUtil.toList(json);
     }
 
     public static void showUizaDialog(Context context, Dialog dialog) {
@@ -927,7 +927,7 @@ public class UZUtil {
     }
 
     public static void setAuth(Context context, Auth auth) {
-        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, StringUtil.toJson(auth, Auth.class));
+        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, StringUtil.toJson(auth));
     }
 
     //=============================================================================END PREF

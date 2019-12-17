@@ -4,13 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class LiveIngest implements Parcelable {
 
-    @Json(name = "stream_url")
+    @SerializedName("stream_url")
     String streamUrl;
-    @Json(name = "stream_key")
+    @SerializedName("stream_key")
     String streamKey;
 
     // default constructor

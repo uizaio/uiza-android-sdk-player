@@ -1,12 +1,12 @@
 package vn.uiza.restapi.uiza.model.v5;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class DeleteLiveEntityResponse {
 
-    @Json(name = "id")
+    @SerializedName("id")
     String id;
-    @Json(name = "deleted")
+    @SerializedName("deleted")
     boolean deleted;
 
     public String getId() {

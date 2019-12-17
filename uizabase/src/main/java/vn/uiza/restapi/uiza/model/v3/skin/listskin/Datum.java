@@ -1,57 +1,57 @@
 
 package vn.uiza.restapi.uiza.model.v3.skin.listskin;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Datum {
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "status")
+    @SerializedName("status")
     private long status;
-    @Json(name = "adminUserId")
+    @SerializedName("adminUserId")
     private String adminUserId;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "shortDescription")
+    @SerializedName("shortDescription")
     private Object shortDescription;
-    @Json(name = "description")
+    @SerializedName("description")
     private String description;
-    @Json(name = "preloadVideo")
+    @SerializedName("preloadVideo")
     private String preloadVideo;
-    @Json(name = "autoStart")
+    @SerializedName("autoStart")
     private long autoStart;
-    @Json(name = "allowedDomain")
+    @SerializedName("allowedDomain")
     private Object allowedDomain;
-    @Json(name = "allowFullscreen")
+    @SerializedName("allowFullscreen")
     private long allowFullscreen;
-    @Json(name = "endscreen")
+    @SerializedName("endscreen")
     private Object endscreen;
-    @Json(name = "allowSharing")
+    @SerializedName("allowSharing")
     private Object allowSharing;
-    @Json(name = "qualitySelector")
+    @SerializedName("qualitySelector")
     private long qualitySelector;
-    @Json(name = "displayPlaylist")
+    @SerializedName("displayPlaylist")
     private long displayPlaylist;
-    @Json(name = "sizing")
+    @SerializedName("sizing")
     private String sizing;
-    @Json(name = "aspect")
+    @SerializedName("aspect")
     private String aspect;
-    @Json(name = "customAspect")
+    @SerializedName("customAspect")
     private Object customAspect;
-    @Json(name = "platform")
+    @SerializedName("platform")
     private String platform;
-    @Json(name = "version")
+    @SerializedName("version")
     private Object version;
-    @Json(name = "updateMode")
+    @SerializedName("updateMode")
     private String updateMode;
-    @Json(name = "skinId")
+    @SerializedName("skinId")
     private String skinId;
-    @Json(name = "plugin")
+    @SerializedName("plugin")
     private Object plugin;
-    @Json(name = "createdAt")
+    @SerializedName("createdAt")
     private String createdAt;
-    @Json(name = "updatedAt")
+    @SerializedName("updatedAt")
     private String updatedAt;
 
     public String getId() {

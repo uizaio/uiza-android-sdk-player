@@ -145,7 +145,7 @@ public class UizaDataV1 {
         //event_type
         uizaTracking.setEventType(eventType);
         if (Constants.IS_DEBUG) {
-            Timber.d("createTrackingInput %s", StringUtil.toJson(uizaTracking, UizaTracking.class));
+            Timber.d("createTrackingInput %s", StringUtil.toJson(uizaTracking));
         }
         return uizaTracking;
     }

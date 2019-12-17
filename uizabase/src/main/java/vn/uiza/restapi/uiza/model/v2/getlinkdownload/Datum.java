@@ -1,23 +1,23 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Datum {
 
-    @Json(name = "hls")
+    @SerializedName("hls")
     private List<Hl> hls = null;
-    @Json(name = "hls_ts")
+    @SerializedName("hls_ts")
     private List<HlsT> hlsTs = null;
-    @Json(name = "hevc")
+    @SerializedName("hevc")
     private List<Hevc> hevc = null;
-    @Json(name = "mpd")
+    @SerializedName("mpd")
     private List<Mpd> mpd = null;
-    @Json(name = "entityInfo")
+    @SerializedName("entityInfo")
     private EntityInfo entityInfo;
-    @Json(name = "download")
+    @SerializedName("download")
     private List<Download> download = null;
 
     public List<Hl> getHls() {

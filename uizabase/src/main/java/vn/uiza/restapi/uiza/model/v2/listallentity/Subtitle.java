@@ -6,33 +6,34 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
 
 import androidx.annotation.IntDef;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class Subtitle {
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
-    @Json(name = "url")
+    @SerializedName("url")
     private String url;
-    @Json(name = "mine")
+    @SerializedName("mine")
     private String mine;
-    @Json(name = "language")
+    @SerializedName("language")
     private String language;
-    @Json(name = "isDefault")
+    @SerializedName("isDefault")
     private int isDefault;
-    @Json(name = "status")
+    @SerializedName("status")
     private @Status
     int status;
-    @Json(name = "createAt")
+    @SerializedName("createAt")
     private String createdAt;
-    @Json(name = "updateAt")
+    @SerializedName("updateAt")
     private String updatedAt;
 
     public String getId() {

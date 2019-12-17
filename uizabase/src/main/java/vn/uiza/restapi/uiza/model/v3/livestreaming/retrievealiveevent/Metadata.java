@@ -1,17 +1,17 @@
 
 package vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Metadata {
 
-    @Json(name = "total")
+    @SerializedName("total")
     private long total;
-    @Json(name = "result")
+    @SerializedName("result")
     private long result;
-    @Json(name = "page")
+    @SerializedName("page")
     private long page;
-    @Json(name = "limit")
+    @SerializedName("limit")
     private long limit;
 
     public long getTotal() {

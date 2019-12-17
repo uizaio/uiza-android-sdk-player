@@ -1,15 +1,16 @@
 
 package vn.uiza.restapi.uiza.model.v2.getplayerinfo;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 public class PlayerConfig {
 
-    @Json(name = "setting")
+    @SerializedName("setting")
     private Setting setting;
-    @Json(name = "styling")
+    @SerializedName("styling")
     private Styling styling;
-    @Json(name = "socialSharing")
+    @SerializedName("socialSharing")
     private SocialSharing socialSharing;
 
     public Setting getSetting() {

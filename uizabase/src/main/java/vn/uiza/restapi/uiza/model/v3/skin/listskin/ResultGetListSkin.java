@@ -1,7 +1,7 @@
 
 package vn.uiza.restapi.uiza.model.v3.skin.listskin;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -9,25 +9,25 @@ import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
 
 public class ResultGetListSkin {
 
-    @Json(name = "data")
+    @SerializedName("data")
     private List<Datum> data = null;
-    @Json(name = "metadata")
+    @SerializedName("metadata")
     private Metadata metadata;
-    @Json(name = "version")
+    @SerializedName("version")
     private long version;
-    @Json(name = "datetime")
+    @SerializedName("datetime")
     private String datetime;
-    @Json(name = "policy")
+    @SerializedName("policy")
     private String policy;
-    @Json(name = "requestId")
+    @SerializedName("requestId")
     private String requestId;
-    @Json(name = "serviceName")
+    @SerializedName("serviceName")
     private String serviceName;
-    @Json(name = "message")
+    @SerializedName("message")
     private String message;
-    @Json(name = "code")
+    @SerializedName("code")
     private long code;
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
 
     public List<Datum> getData() {

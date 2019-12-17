@@ -3,30 +3,30 @@ package vn.uiza.restapi.uiza.model.v5;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 public class LiveEntity implements Parcelable {
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "name")
+    @SerializedName("name")
     String name;
-    @Json(name = "description")
+    @SerializedName("description")
     String description;
-    @Json(name = "ingest")
+    @SerializedName("ingest")
     LiveIngest ingest;
-    @Json(name = "playback")
+    @SerializedName("playback")
     LivePlayback playback;
-    @Json(name = "region")
+    @SerializedName("region")
     String region;
-    @Json(name = "status")
+    @SerializedName("status")
     String status;
-    @Json(name = "broadcast")
+    @SerializedName("broadcast")
     String broadcast;
-    @Json(name = "created_at")
+    @SerializedName("created_at")
     Date createdAt;
-    @Json(name = "updated_at")
+    @SerializedName("updated_at")
     Date updatedAt;
 
     protected LiveEntity(Parcel in) {

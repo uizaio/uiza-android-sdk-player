@@ -37,7 +37,7 @@ public class FrmVideoBottom extends Fragment {
     }
 
     public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        tvJsonData.setText(StringUtil.toBeautyJson(data, Data.class));
-        tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay, ResultGetLinkPlay.class));
+        tvJsonData.setText(StringUtil.toBeautyJson(data));
+        tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay));
     }
 }

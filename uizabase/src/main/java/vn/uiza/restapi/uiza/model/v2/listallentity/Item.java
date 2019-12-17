@@ -1,49 +1,50 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Item {
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
-    @Json(name = "referenceId")
+    @SerializedName("referenceId")
     private String referenceId;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "description")
+    @SerializedName("description")
     private String description;
-    @Json(name = "shortDescription")
+    @SerializedName("shortDescription")
     private String shortDescription;
-    @Json(name = "ingestMetadataId")
+    @SerializedName("ingestMetadataId")
     private String ingestMetadataId;
-    @Json(name = "adminUserId")
+    @SerializedName("adminUserId")
     private String adminUserId;
-    @Json(name = "poster")
+    @SerializedName("poster")
     private String poster;
-    @Json(name = "view")
+    @SerializedName("view")
     private int view;
-    @Json(name = "status")
+    @SerializedName("status")
     private int status;
-    @Json(name = "thumbnail")
+    @SerializedName("thumbnail")
     private String thumbnail;
-    @Json(name = "duration")
+    @SerializedName("duration")
     private String duration;
-    @Json(name = "extendData")
+    @SerializedName("extendData")
     private ExtendData extendData;
-    @Json(name = "ownerName")
+    @SerializedName("ownerName")
     private String ownerName;
-    @Json(name = "ownerEmail")
+    @SerializedName("ownerEmail")
     private String ownerEmail;
-    @Json(name = "ownerAvatar")
+    @SerializedName("ownerAvatar")
     private String ownerAvatar;
-    @Json(name = "ownerFullName")
+    @SerializedName("ownerFullName")
     private String ownerFullName;
-    @Json(name = "metadata")
+    @SerializedName("metadata")
     private List<Metadatum> metadata = null;
-    @Json(name = "subtitle")
+    @SerializedName("subtitle")
     private List<Subtitle> subtitle = null;
 
     public String getId() {

@@ -1,27 +1,27 @@
 
 package vn.uiza.restapi.uiza.model.v2.listallentity;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ListAllEntity {
 
-    @Json(name = "data")
+    @SerializedName("data")
     private List<Item> data = null;
-    @Json(name = "metadata")
+    @SerializedName("metadata")
     private Metadata metadata;
-    @Json(name = "version")
+    @SerializedName("version")
     private double version;
-    @Json(name = "datetime")
+    @SerializedName("datetime")
     private String datetime;
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
-    @Json(name = "message")
+    @SerializedName("message")
     private String message;
-    @Json(name = "code")
+    @SerializedName("code")
     private double code;
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
 
     public List<Item> getData() {

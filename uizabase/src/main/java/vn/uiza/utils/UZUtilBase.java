@@ -9,7 +9,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 public class UZUtilBase {
     public static void getDetailEntity(final String apiVersion, final String entityId, final String appId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UizaClientFactory.getUizaService();
-        RxBinder.getInstance().bind(service.retrieveAnEntity(apiVersion, entityId, appId), result -> {
+        RxBinder.bind(service.retrieveAnEntity(apiVersion, entityId, appId), result -> {
             if (result == null
                     || result.getData() == null
                     || result.getData().getId() == null
@@ -30,7 +30,7 @@ public class UZUtilBase {
 
     public static void getDataFromEntityIdLive(final String apiVersion, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UizaClientFactory.getUizaService();
-        RxBinder.getInstance().bind(service.retrieveALiveEvent(apiVersion, entityId, appId), result -> {
+        RxBinder.bind(service.retrieveALiveEvent(apiVersion, entityId, appId), result -> {
             if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
                 if (callbackGetDetailEntity != null) {
                     callbackGetDetailEntity.onError(new Exception(UZException.ERR_21));

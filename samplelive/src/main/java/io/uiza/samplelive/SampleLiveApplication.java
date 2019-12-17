@@ -1,6 +1,9 @@
 package io.uiza.samplelive;
 
+import android.content.SharedPreferences;
+
 import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
 
 import timber.log.Timber;
 import vn.uiza.core.common.Constants;
@@ -16,10 +19,10 @@ public class SampleLiveApplication extends MultiDexApplication {
     public static final String LIVE_URL = "rtmp://679b139b89-in.streamwiz.dev/transcode";
     public static final String STREAM_KEY = "live_ljNx4GLp3F";
 
-    private static final String APP_SECRET = "uap-c1ffbff4db954ddcb050c6af0b43ba56-41193b64";
+    private static final String API_TOKEN = "uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15"; // dynamic
     public static final String APP_ID = "duyqt-app";
     public static final String USER_ID = "duyqt1";
-
+    SharedPreferences preferences;
 
     @Override
     public void onCreate() {
@@ -27,9 +30,11 @@ public class SampleLiveApplication extends MultiDexApplication {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Constants.setDebugMode(false);
         Constants.setApiVersion(Constants.API_VERSION_5);
-        UizaClientFactory.setup(DEV_HOST, APP_SECRET, Constants.ENVIRONMENT.DEV);
+        String apiToken = preferences.getString("api_token_key", API_TOKEN);
+        UizaClientFactory.setup(DEV_HOST, apiToken, Constants.ENVIRONMENT.DEV);
     }
 
     public static String getLiveEndpoint() {

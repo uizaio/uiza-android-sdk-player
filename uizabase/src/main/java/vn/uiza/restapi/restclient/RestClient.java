@@ -1,13 +1,15 @@
 package vn.uiza.restapi.restclient;
 
-import com.squareup.moshi.Moshi;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
-import vn.uiza.helpers.DateTimeAdapter;
+import vn.uiza.helpers.DateTypeDeserializer;
 import vn.uiza.restapi.interceptors.RestRequestInterceptor;
 
 public abstract class RestClient {
@@ -40,8 +42,10 @@ public abstract class RestClient {
         return restRequestInterceptor;
     }
 
-    Moshi provideMoshi() {
-        return new Moshi.Builder().add(new DateTimeAdapter()).build();
+    Gson provideGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeDeserializer())
+                .create();
     }
 
     public abstract void init(String baseApiUrl, String token);
@@ -62,6 +66,11 @@ public abstract class RestClient {
 
     public void addAuthorization(String token) {
         addHeader(AUTHORIZATION, token);
+    }
+
+    public void changeAuthorization(String token){
+        removeAuthorization();
+        addAuthorization(token);
     }
 
     public void removeAuthorization() {

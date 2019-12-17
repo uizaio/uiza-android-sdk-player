@@ -19,6 +19,26 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:key="pref_source"
+        app:title="@string/source_title">
+
+        <EditTextPreference
+            app:defaultValue="uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15"
+            app:iconSpaceReserved="false"
+            app:key="api_token_key"
+            app:title="@string/api_token_title"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="do-bangalore"
+            app:entries="@array/region_arrays"
+            app:entryValues="@array/region_arrays"
+            app:iconSpaceReserved="false"
+            app:key="region_key"
+            app:title="@string/region_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
         app:key="pref_video"
         app:title="@string/video_title">
 

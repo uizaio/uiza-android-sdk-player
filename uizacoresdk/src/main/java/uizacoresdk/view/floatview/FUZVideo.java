@@ -321,7 +321,7 @@ public class FUZVideo extends RelativeLayout {
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityId);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        RxBinder.getInstance().bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
+        RxBinder.bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
                 result -> {
                     if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
                         callbackGetLinkPlay.onSuccess(null);
@@ -342,7 +342,7 @@ public class FUZVideo extends RelativeLayout {
         UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
         String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
-        RxBinder.getInstance().bind(service.getLinkPlay(appId, entityId, typeContent), result -> {
+        RxBinder.bind(service.getLinkPlay(appId, entityId, typeContent), result -> {
             Timber.d("getLinkPlayVOD onSuccess");
             checkToSetUpResource(result, callbackGetLinkPlay);
         }, throwable -> callbackGetLinkPlay.onSuccess(null));
@@ -465,7 +465,7 @@ public class FUZVideo extends RelativeLayout {
             UZRestClientTracking.getInstance().init(currentApiTrackingEndPoint, "");
         }
         UizaTrackingService service = UizaClientFactory.getTrackingService();
-        RxBinder.getInstance().bind(service.track(uizaTracking), tracking -> {
+        RxBinder.bind(service.track(uizaTracking), tracking -> {
             if (uizaTrackingCallback != null) {
                 uizaTrackingCallback.onTrackingSuccess();
             }
@@ -480,7 +480,7 @@ public class FUZVideo extends RelativeLayout {
         UizaHeartBeatService service = UizaClientFactory.getHeartBeatService();
         String cdnName = cdnHost;
         String session = uuid;
-        RxBinder.getInstance().bind(service.pingHeartBeat(cdnName, session),
+        RxBinder.bind(service.pingHeartBeat(cdnName, session),
                 result -> {
                     Timber.d("pingHeartBeat onSuccess %s", UZData.getInstance().getEntityName());
                     handler.postDelayed(this::pingHeartBeat, 10000);
@@ -503,7 +503,7 @@ public class FUZVideo extends RelativeLayout {
         uizaTrackingCCU.setSn(UZData.getInstance().getChannelName()); // stream name
         uizaTrackingCCU.setDi(UZOsUtil.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
-        RxBinder.getInstance().bind(service.trackCCU(uizaTrackingCCU), result -> {
+        RxBinder.bind(service.trackCCU(uizaTrackingCCU), result -> {
             Timber.d("trackCCU success: %s", UZData.getInstance().getEntityName());
             handler.postDelayed(this::trackUizaCCUForLivestream, INTERVAL_TRACK_CCU);
         }, throwable -> handler.postDelayed(this::trackUizaCCUForLivestream, INTERVAL_TRACK_CCU));
@@ -540,7 +540,7 @@ public class FUZVideo extends RelativeLayout {
         final List<Muiza> muizaListToTracking = new ArrayList<>(UZData.getInstance().getMuizaList());
         UZData.getInstance().clearMuizaList();
         UizaTrackingService service = UizaClientFactory.getTrackingService();
-        RxBinder.getInstance().bind(service.trackMuiza(muizaListToTracking),
+        RxBinder.bind(service.trackMuiza(muizaListToTracking),
                 result -> isTrackingMuiza = false,
                 throwable -> {
                     isTrackingMuiza = false;

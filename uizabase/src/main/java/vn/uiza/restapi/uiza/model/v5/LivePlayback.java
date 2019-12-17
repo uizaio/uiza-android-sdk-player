@@ -3,11 +3,11 @@ package vn.uiza.restapi.uiza.model.v5;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class LivePlayback implements Parcelable {
 
-    @Json(name = "hls")
+    @SerializedName("hls")
     String hls;
 
     protected LivePlayback(Parcel in) {

@@ -1,14 +1,14 @@
 package vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class UpdatePassword {
 
-    @Json(name = "oldPassword")
+    @SerializedName("oldPassword")
     private String oldPassword;
-    @Json(name = "newPassword")
+    @SerializedName("newPassword")
     private String newPassword;
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
 
     public String getOldPassword() {

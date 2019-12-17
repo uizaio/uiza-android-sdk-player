@@ -1,19 +1,19 @@
 
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Cdn {
 
-    @Json(name = "host")
+    @SerializedName("host")
     private String host;
-    @Json(name = "priority")
+    @SerializedName("priority")
     private Integer priority;
-    @Json(name = "region")
+    @SerializedName("region")
     private String region;
-    @Json(name = "app_id")
+    @SerializedName("app_id")
     private String appId;
-    @Json(name = "entity_id")
+    @SerializedName("entity_id")
     private String entityId;
 
     public String getHost() {

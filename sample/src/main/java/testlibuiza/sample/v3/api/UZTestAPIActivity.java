@@ -155,7 +155,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void showTv(Object o) {
-        tv.setText(StringUtil.toBeautyJson(o, Object.class));
+        tv.setText(StringUtil.toBeautyJson(o));
     }
 
     private void createAnUser() {
@@ -168,7 +168,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createUser.setDob("11/11/1111");
         createUser.setFullname("fullname");
         createUser.setAvatar("path");
-        RxBinder.getInstance().bind(service.createAnUser(UZData.getInstance().getAPIVersion(), createUser),
+        RxBinder.bind(service.createAnUser(UZData.getInstance().getAPIVersion(), createUser),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "createAnUser onFail");
                     showTv(throwable.getMessage());
@@ -176,7 +176,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void retrieveAnUser() {
-        RxBinder.getInstance().bind(service.retrieveAnUser(UZData.getInstance().getAPIVersion(), "9fd8984b-497f-4f7c-85af-e6abfcd5c83e"),
+        RxBinder.bind(service.retrieveAnUser(UZData.getInstance().getAPIVersion(), "9fd8984b-497f-4f7c-85af-e6abfcd5c83e"),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "retrieveAnUser onFail");
                     showTv(throwable.getMessage());
@@ -184,7 +184,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void listAllUser() {
-        RxBinder.getInstance().bind(service.listAllUser(UZData.getInstance().getAPIVersion()),
+        RxBinder.bind(service.listAllUser(UZData.getInstance().getAPIVersion()),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "retrieveAnUser onFail");
                     showTv(throwable.getMessage());
@@ -201,7 +201,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         user.setDob("11/11/1111");
         user.setFullname("fullname");
         user.setAvatar("path");
-        RxBinder.getInstance().bind(service.updateAnUser(UZData.getInstance().getAPIVersion(), user),
+        RxBinder.bind(service.updateAnUser(UZData.getInstance().getAPIVersion(), user),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "updateAnUser onFail");
                     showTv(throwable.getMessage());
@@ -211,7 +211,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void deleteAnUser() {
         CreateUser user = new CreateUser();
         user.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
-        RxBinder.getInstance().bind(service.deleteAnUser(user),
+        RxBinder.bind(service.deleteAnUser(user),
                 this::showTv, throwable -> {
                     Timber.e(TAG, "deleteAnUser onFail");
                     showTv(throwable.getMessage());
@@ -223,7 +223,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         updatePassword.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
         updatePassword.setOldPassword("oldpassword");
         updatePassword.setNewPassword("newpassword");
-        RxBinder.getInstance().bind(service.updatePassword(UZData.getInstance().getAPIVersion(), updatePassword),
+        RxBinder.bind(service.updatePassword(UZData.getInstance().getAPIVersion(), updatePassword),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "updatePassword onFail");
                     showTv(throwable.getMessage());
@@ -231,9 +231,9 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getListMetadata() {
-        RxBinder.getInstance().bind(service.getListMetadata(UZData.getInstance().getAPIVersion()),
+        RxBinder.bind(service.getListMetadata(UZData.getInstance().getAPIVersion()),
                 o -> {
-                    tv.setText(StringUtil.toBeautyJson(o, ResultGetListMetadata.class));
+                    tv.setText(StringUtil.toBeautyJson(o));
                 }, throwable -> {
                     Timber.e(throwable, "getListMetadata onFail");
                     showTv(throwable.getMessage());
@@ -247,7 +247,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createMetadata.setDescription("This is a description sentences");
         createMetadata.setOrderNumber(1);
         createMetadata.setIcon("/exemple.com/icon.png");
-        RxBinder.getInstance().bind(service.createMetadata(UZData.getInstance().getAPIVersion(), createMetadata),
+        RxBinder.bind(service.createMetadata(UZData.getInstance().getAPIVersion(), createMetadata),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "createMetadata onFail");
                     showTv(throwable.getMessage());
@@ -256,7 +256,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getDetailOfMetadata() {
         String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
-        RxBinder.getInstance().bind(service.getDetailOfMetadata(UZData.getInstance().getAPIVersion(), metadataId),
+        RxBinder.bind(service.getDetailOfMetadata(UZData.getInstance().getAPIVersion(), metadataId),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getDetailOfMetadata onFail ");
                     showTv(throwable.getMessage());
@@ -271,7 +271,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createMetadata.setDescription("Update description");
         createMetadata.setOrderNumber(69);
         createMetadata.setIcon("/exemple.com/icon_002.png");
-        RxBinder.getInstance().bind(service.updateMetadata(UZData.getInstance().getAPIVersion(), createMetadata),
+        RxBinder.bind(service.updateMetadata(UZData.getInstance().getAPIVersion(), createMetadata),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "updateMetadata onFail");
                     showTv(throwable.getMessage());
@@ -280,7 +280,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void deleteAnMetadata() {
         String deleteMetadataId = "37b865b3-cf75-4faa-8507-180a9436d95d";
-        RxBinder.getInstance().bind(service.deleteAnMetadata(UZData.getInstance().getAPIVersion(), deleteMetadataId),
+        RxBinder.bind(service.deleteAnMetadata(UZData.getInstance().getAPIVersion(), deleteMetadataId),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "deleteAnMetadata onFail");
                     showTv(throwable.getMessage());
@@ -294,8 +294,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        RxBinder.getInstance().bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
-                o -> tv.setText(StringUtil.toBeautyJson(o, ResultListEntity.class)), throwable -> {
+        RxBinder.bind(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                o -> tv.setText(StringUtil.toBeautyJson(o)), throwable -> {
                     Timber.e(throwable, "listAllEntity onFail");
                     tv.setText(throwable.getLocalizedMessage());
                 });
@@ -303,8 +303,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void retrieveAnEntity() {
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
-        RxBinder.getInstance().bind(service.retrieveAnEntity(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
-                o -> tv.setText(StringUtil.toBeautyJson(o, ResultRetrieveAnEntity.class)), throwable -> {
+        RxBinder.bind(service.retrieveAnEntity(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
+                o -> tv.setText(StringUtil.toBeautyJson(o)), throwable -> {
                     Timber.e(throwable, "retrieveAnEntity onFail");
                     tv.setText(throwable.getLocalizedMessage());
                 });
@@ -315,7 +315,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultVOD);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        RxBinder.getInstance().bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
+        RxBinder.bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getTokenStreaming onFail ");
                     showTv(throwable.getMessage());
@@ -333,7 +333,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
         String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
-        RxBinder.getInstance().bind(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent),
+        RxBinder.bind(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getLinkPlay onFail");
                     showTv(throwable.getMessage());
@@ -345,7 +345,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        RxBinder.getInstance().bind(service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page, orderBy, orderType, UZData.getInstance().getAppId()),
+        RxBinder.bind(service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page, orderBy, orderType, UZData.getInstance().getAppId()),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "retrieveALiveEvent onFail");
                     showTv(throwable.getMessage());
@@ -359,7 +359,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultLIVE);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
-        RxBinder.getInstance().bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
+        RxBinder.bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getTokenStreaming onFail");
                     showTv(throwable.getMessage());
@@ -375,7 +375,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
         String appId = UZData.getInstance().getAppId();
         String streamName = "ffdfdfdfd";
-        RxBinder.getInstance().bind(service.getLinkPlayLive(appId, streamName),
+        RxBinder.bind(service.getLinkPlayLive(appId, streamName),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getLinkPlayLive onFail");
                     showTv(throwable.getMessage());
@@ -384,7 +384,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getViewALiveFeed() {
         String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
-        RxBinder.getInstance().bind(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
+        RxBinder.bind(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getViewALiveFeed onFail");
                     showTv(throwable.getMessage());
@@ -394,7 +394,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getTimeStartLive() {
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
-        RxBinder.getInstance().bind(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()),
+        RxBinder.bind(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getTimeStartLive onFail");
                     showTv(throwable.getMessage());
@@ -402,7 +402,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getListSkin() {
-        RxBinder.getInstance().bind(service.getListSkin(UZData.getInstance().getAPIVersion(), Constants.PLATFORM_ANDROID),
+        RxBinder.bind(service.getListSkin(UZData.getInstance().getAPIVersion(), Constants.PLATFORM_ANDROID),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getListSkin onFail");
                     showTv(throwable.getMessage());
@@ -410,7 +410,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getSkinConfig() {
-        RxBinder.getInstance().bind(service.getSkinConfig(UZData.getInstance().getAPIVersion(), "645cd2a2-9216-4f5d-a73b-37d3e3034798"),
+        RxBinder.bind(service.getSkinConfig(UZData.getInstance().getAPIVersion(), "645cd2a2-9216-4f5d-a73b-37d3e3034798"),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getSkinConfig onFail");
                     showTv(throwable.getMessage());
@@ -418,7 +418,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getIMAAd() {
-        RxBinder.getInstance().bind(service.getCuePoint(UZData.getInstance().getAPIVersion(), "0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()),
+        RxBinder.bind(service.getCuePoint(UZData.getInstance().getAPIVersion(), "0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()),
                 this::showTv, throwable -> {
                     Timber.e(throwable, "getCuePoint onFail");
                     showTv(throwable.getMessage());

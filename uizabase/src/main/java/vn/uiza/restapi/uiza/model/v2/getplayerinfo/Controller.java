@@ -1,19 +1,20 @@
 
 package vn.uiza.restapi.uiza.model.v2.getplayerinfo;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 public class Controller {
 
-    @Json(name = "facebook")
+    @SerializedName("facebook")
     private String facebook;
-    @Json(name = "twitter")
+    @SerializedName("twitter")
     private String twitter;
-    @Json(name = "pinterest")
+    @SerializedName("pinterest")
     private String pinterest;
-    @Json(name = "linkedin")
+    @SerializedName("linkedin")
     private String linkedin;
-    @Json(name = "tumblr")
+    @SerializedName("tumblr")
     private String tumblr;
 
     public String getFacebook() {

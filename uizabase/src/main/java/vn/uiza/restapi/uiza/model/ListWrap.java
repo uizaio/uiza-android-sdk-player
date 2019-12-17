@@ -1,14 +1,14 @@
 package vn.uiza.restapi.uiza.model;
 
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ListWrap<T> {
-    @Json(name = "data")
+    @SerializedName("data")
     List<T> data;
-    @Json(name = "next_page_token")
+    @SerializedName("next_page_token")
     String nextPageToken;
 
 

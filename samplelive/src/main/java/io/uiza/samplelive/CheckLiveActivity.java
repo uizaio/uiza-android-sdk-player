@@ -1,6 +1,7 @@
 package io.uiza.samplelive;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.widget.NestedScrollView;
+import androidx.preference.PreferenceManager;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UizaClientFactory;
@@ -36,6 +39,8 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
     private static final int MAX_RETRY = 10;
     int currentRetry = 0;
 
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +52,10 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
         progressBar = findViewById(R.id.progress_bar);
         liveBtn.setOnClickListener(this);
         entity = getIntent().getParcelableExtra(EXTRA_ENTITY);
-        region = getIntent().getStringExtra(MainActivity.CURRENT_REGION_KEY);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        region = preferences.getString("region_key", "asia-south1");
         if (entity != null) {
-            content.setText(StringUtil.toBeautyJson(entity, LiveEntity.class));
-        }
-        if(TextUtils.isEmpty(region)){
-            region = "asia-south1";
+            content.setText(StringUtil.toBeautyJson(entity));
         }
         updateLiveStats();
     }
@@ -66,7 +69,9 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBinder.getInstance().dispose();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
     }
 
     @Override
@@ -80,7 +85,6 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
                         Intent liveIntent = new Intent(CheckLiveActivity.this, UizaLiveActivity.class);
                         liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ENDPOINT, entity.getIngest().getStreamLink());
                         startActivity(liveIntent);
-                        finish();
                     } else {
                         currentRetry = 0;
                         liveBtn.setEnabled(false);
@@ -115,7 +119,7 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
         progressBar.setVisibility(View.VISIBLE);
         CreateLiveEntityBody body = new CreateLiveEntityBody(streamName, "Uiza Demo Live Stream", region, SampleLiveApplication.APP_ID, SampleLiveApplication.USER_ID);
         Observable<LiveEntity> obs = UizaClientFactory.getLiveService().createEntity(body);
-        RxBinder.getInstance().bind(obs, res -> {
+        compositeDisposable.add(RxBinder.bind(obs, res -> {
             entity = res;
             content.setText(res.toString());
             updateLiveStats();
@@ -124,15 +128,15 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             updateLiveStats();
-        });
+        }));
     }
 
     private void getEntity(String entityId) {
         progressBar.setVisibility(View.VISIBLE);
         Observable<LiveEntity> obs = UizaClientFactory.getLiveService().getEntity(entityId);
-        RxBinder.getInstance().bind(obs, ent -> {
+        compositeDisposable.add(RxBinder.bind(obs, ent -> {
             entity = ent;
-            content.setText(StringUtil.toBeautyJson(ent, LiveEntity.class));
+            content.setText(StringUtil.toBeautyJson(ent));
             if (!entity.canLive() && currentRetry < MAX_RETRY) {
                 Timber.e("currentRetry: %d", currentRetry);
                 currentRetry += 1;
@@ -147,7 +151,7 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
             liveBtn.setEnabled(true);
             Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             updateLiveStats();
-        });
+        }));
     }
 
 }

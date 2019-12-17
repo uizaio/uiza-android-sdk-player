@@ -1,19 +1,19 @@
 
 package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Download {
 
-    @Json(name = "linkDownload")
+    @SerializedName("linkDownload")
     private String linkDownload;
-    @Json(name = "profileName")
+    @SerializedName("profileName")
     private String profileName;
-    @Json(name = "videoDetail")
+    @SerializedName("videoDetail")
     private VideoDetail videoDetail;
-    @Json(name = "resolution")
+    @SerializedName("resolution")
     private String resolution;
-    @Json(name = "audioDetail")
+    @SerializedName("audioDetail")
     private AudioDetail audioDetail;
 
     public String getLinkDownload() {

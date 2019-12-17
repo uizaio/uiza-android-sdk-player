@@ -4,13 +4,13 @@ package vn.uiza.restapi.uiza.model.v2.getlinkdownload;
  * Created by LENOVO on 2/23/2018.
  */
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class JsonBodyGetLinkDownload {
 
-    @Json(name = "listEntityIds")
+    @SerializedName("listEntityIds")
     private List<String> listEntityIds = null;
 
     public List<String> getListEntityIds() {

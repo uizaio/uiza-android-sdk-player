@@ -1,13 +1,13 @@
 package vn.uiza.restapi.uiza.model;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class UTCTime {
-    @Json(name = "unixtime")
+    @SerializedName("unixtime")
     private long unixtime; // seconds format
-    @Json(name = "timezone")
+    @SerializedName("timezone")
     private String timezone;
-    @Json(name = "utc_datetime")
+    @SerializedName("utc_datetime")
     private String utcDatetime;
 
     public long getCurrentDateTimeMs() {

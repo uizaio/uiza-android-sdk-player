@@ -1,13 +1,14 @@
 
 package vn.uiza.restapi.uiza.model.v2.getplayerinfo;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 public class SocialSharing {
 
-    @Json(name = "allow")
+    @SerializedName("allow")
     private String allow;
-    @Json(name = "controller")
+    @SerializedName("controller")
     private Controller controller;
 
     public String getAllow() {

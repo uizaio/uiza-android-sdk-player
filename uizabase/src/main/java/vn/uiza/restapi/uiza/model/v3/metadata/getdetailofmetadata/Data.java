@@ -1,7 +1,8 @@
 
 package vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -12,134 +13,134 @@ import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPushIn
 
 public class Data {
 
-    @Json(name = "entityId")
+    @SerializedName("entityId")
     private String entityId;
 
-    @Json(name = "entityName")
+    @SerializedName("entityName")
     private String entityName;
 
-    @Json(name = "feedId")
+    @SerializedName("feedId")
     private String feedId;
 
-    @Json(name = "startTime")
+    @SerializedName("startTime")
     private String startTime;
 
-    @Json(name = "endTime")
+    @SerializedName("endTime")
     private Object endTime;
 
-    @Json(name = "length")
+    @SerializedName("length")
     private Object length;
 
-    @Json(name = "process")
+    @SerializedName("process")
     private String process;
 
-    @Json(name = "deletedEntity")
+    @SerializedName("deletedEntity")
     private Object deletedEntity;
 
-    @Json(name = "pullInfo")
+    @SerializedName("pullInfo")
     private String pullInfo;
 
-    @Json(name = "pushInfo")
+    @SerializedName("pushInfo")
     private String pushInfo;
 
-    @Json(name = "mode")
+    @SerializedName("mode")
     private String mode;
 
-    @Json(name = "resourceMode")
+    @SerializedName("resourceMode")
     private String resourceMode;
 
-    @Json(name = "encode")
+    @SerializedName("encode")
     private long encode;
 
-    @Json(name = "channelName")
+    @SerializedName("channelName")
     private String channelName;
 
-    @Json(name = "lastPresetId")
+    @SerializedName("lastPresetId")
     private Object lastPresetId;
 
-    @Json(name = "lastFeedId")
+    @SerializedName("lastFeedId")
     private String lastFeedId;
 
-    @Json(name = "linkPublishSocial")
+    @SerializedName("linkPublishSocial")
     private String linkPublishSocial;
 
-    @Json(name = "linkStream")
+    @SerializedName("linkStream")
     private String linkStream;
 
-    @Json(name = "lastPullInfo")
+    @SerializedName("lastPullInfo")
     private LastPullInfo lastPullInfo;
 
-    @Json(name = "lastPushInfo")
+    @SerializedName("lastPushInfo")
     private List<LastPushInfo> lastPushInfo = null;
 
-    @Json(name = "lastProcess")
+    @SerializedName("lastProcess")
     private String lastProcess;
 
-    @Json(name = "eventType")
+    @SerializedName("eventType")
     private String eventType;
 
-    @Json(name = "slug")
+    @SerializedName("slug")
     private String slug;
 
-    @Json(name = "orderNumber")
+    @SerializedName("orderNumber")
     private Integer orderNumber;
 
-    @Json(name = "icon")
+    @SerializedName("icon")
     private String icon;
 
-    @Json(name = "status")
+    @SerializedName("status")
     private int status;
 
-    @Json(name = "id")
+    @SerializedName("id")
     private String id;
 
-    @Json(name = "name")
+    @SerializedName("name")
     private String name;
 
-    @Json(name = "description")
+    @SerializedName("description")
     private String description;
 
-    @Json(name = "shortDescription")
+    @SerializedName("shortDescription")
     private String shortDescription;
 
-    @Json(name = "view")
+    @SerializedName("view")
     private long view;
 
-    @Json(name = "poster")
+    @SerializedName("poster")
     private String poster;
 
-    @Json(name = "thumbnail")
+    @SerializedName("thumbnail")
     private String thumbnail;
 
-    @Json(name = "type")
+    @SerializedName("type")
     private String type;
 
-    @Json(name = "duration")
+    @SerializedName("duration")
     private String duration;
 
-    @Json(name = "embedMetadata")
+    @SerializedName("embedMetadata")
     private Object embedMetadata;
 
-    /*@Json(name = "extendMetadata")
+    /*@SerializedName("extendMetadata")
     @Expose
     private ExtendMetadata extendMetadata;*/
 
-    @Json(name = "createdAt")
+    @SerializedName("createdAt")
     private String createdAt;
 
-    @Json(name = "updatedAt")
+    @SerializedName("updatedAt")
     private String updatedAt;
 
-    @Json(name = "publishToCdn")
+    @SerializedName("publishToCdn")
     private String publishToCdn;
 
-    @Json(name = "inputType")
+    @SerializedName("inputType")
     private String inputType;
 
-    @Json(name = "url")
+    @SerializedName("url")
     private String url;
 
-    @Json(name = "readyToPublish")
+    @SerializedName("readyToPublish")
     private String readyToPublish;
 
     public String getName() {

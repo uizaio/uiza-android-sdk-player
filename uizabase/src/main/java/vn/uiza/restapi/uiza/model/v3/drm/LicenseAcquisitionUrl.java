@@ -1,10 +1,10 @@
 package vn.uiza.restapi.uiza.model.v3.drm;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class LicenseAcquisitionUrl {
 
-    @Json(name = "licenseAcquisitionUrl")
+    @SerializedName("licenseAcquisitionUrl")
     private String licenseAcquisitionUrl;
 
     public String getLicenseAcquisitionUrl() {
