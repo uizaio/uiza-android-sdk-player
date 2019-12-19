@@ -13,7 +13,7 @@ import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.utils.util.Utils;
 
 import static org.junit.Assert.assertEquals;

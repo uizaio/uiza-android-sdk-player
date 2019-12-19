@@ -1,7 +1,5 @@
 package vn.uiza.restapi.uiza;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -11,34 +9,30 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import vn.uiza.restapi.uiza.model.UTCTime;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
-import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
-import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
-import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
-import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
-import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
-import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
-import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
-import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
-import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
+import vn.uiza.restapi.model.UTCTime;
+import vn.uiza.restapi.model.v3.UizaWorkspaceInfo;
+import vn.uiza.restapi.model.v3.ad.AdWrapper;
+import vn.uiza.restapi.model.v3.authentication.gettoken.ResultGetToken;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.uiza.restapi.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
+import vn.uiza.restapi.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.uiza.restapi.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
+import vn.uiza.restapi.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
+import vn.uiza.restapi.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
+import vn.uiza.restapi.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.uiza.restapi.model.v3.metadata.createmetadata.ResultCreateMetadata;
+import vn.uiza.restapi.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
+import vn.uiza.restapi.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.uiza.restapi.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.uiza.restapi.model.v3.skin.listskin.ResultGetListSkin;
+import vn.uiza.restapi.model.v3.usermanagement.createanuser.CreateUser;
+import vn.uiza.restapi.model.v3.usermanagement.updatepassword.UpdatePassword;
+import vn.uiza.restapi.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.restapi.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.model.v4.playerinfo.PlayerInfor;
+import vn.uiza.restapi.model.v4.subtitle.ResultGetSubtitles;
 
 /**
  * @author loitp

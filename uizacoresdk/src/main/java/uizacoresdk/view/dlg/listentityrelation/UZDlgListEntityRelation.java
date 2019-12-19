@@ -15,7 +15,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.model.v2.listallentity.Item;
 
 /**
  * Created by LENOVO on 5/2/2018.

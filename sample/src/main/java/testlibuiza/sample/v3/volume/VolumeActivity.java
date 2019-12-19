@@ -3,11 +3,12 @@ package testlibuiza.sample.v3.volume;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.exoplayer2.audio.AudioListener;
 
@@ -19,8 +20,8 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
@@ -137,7 +138,7 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (isInitSuccess) {
             sb.setProgress((int) (uzVideo.getVolume() * 100));
             sb1.setProgress((int) (uzVideo.getVolume() * 100));

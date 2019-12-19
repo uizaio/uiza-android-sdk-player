@@ -30,8 +30,9 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.views.autosize.UZImageButton;
 
 /**
@@ -149,7 +150,7 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
     }
 
     @Override

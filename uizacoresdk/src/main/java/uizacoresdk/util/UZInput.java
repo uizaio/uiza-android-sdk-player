@@ -1,8 +1,8 @@
 package uizacoresdk.util;
 
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 /**
  * Created by loitp on 18/1/2019.
@@ -11,7 +11,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 public class UZInput {
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
-    private Data data;
+    private UizaPlayback playback;
     private ResultGetTokenStreaming resultGetTokenStreaming;
     private ResultGetLinkPlay resultGetLinkPlay;
 
@@ -31,16 +31,16 @@ public class UZInput {
         this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
     }
 
-    public Data getData() {
-        return data;
+    public UizaPlayback getPlayback() {
+        return playback;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setPlayback(UizaPlayback playback) {
+        this.playback = playback;
     }
 
     public boolean isLivestream() {
-        return data != null && data.getLastFeedId() != null && !data.getLastFeedId().isEmpty();
+        return playback != null;
     }
 
     public ResultGetTokenStreaming getResultGetTokenStreaming() {

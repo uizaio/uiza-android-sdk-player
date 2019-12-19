@@ -32,8 +32,9 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
@@ -148,7 +149,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);

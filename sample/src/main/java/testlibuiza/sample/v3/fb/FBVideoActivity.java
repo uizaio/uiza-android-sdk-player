@@ -25,11 +25,10 @@ import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.utils.StringUtil;
 
 /**
@@ -144,7 +143,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (isInitSuccess) {
             initDone();
         } else {

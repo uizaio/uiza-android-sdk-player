@@ -26,8 +26,9 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZPlayerView.ControllerStateCallback {
     private final String TAG = getClass().getSimpleName();
@@ -86,7 +87,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
 
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
     }
 

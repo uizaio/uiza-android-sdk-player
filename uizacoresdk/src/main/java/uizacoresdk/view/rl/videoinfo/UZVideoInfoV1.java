@@ -26,8 +26,8 @@ import uizacoresdk.R;
 import uizacoresdk.view.util.UizaDataV1;
 import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.model.v2.getdetailentity.GetDetailEntity;
+import vn.uiza.restapi.model.v2.listallentity.Item;
 import vn.uiza.utils.util.SentryUtils;
 
 public class UZVideoInfoV1 extends RelativeLayout {

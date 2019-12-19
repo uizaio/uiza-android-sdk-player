@@ -3,9 +3,10 @@ package testlibuiza.sample.v3.slide;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -18,8 +19,9 @@ import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -29,12 +31,12 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private UZVideo uzVideo;
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        vdhv = (VDHView) findViewById(R.id.vdhv);
-        tv0 = (TextView) findViewById(R.id.tv_0);
-        tv1 = (TextView) findViewById(R.id.tv_1);
-        tv2 = (TextView) findViewById(R.id.tv_2);
-        tv3 = (TextView) findViewById(R.id.tv_3);
+        uzVideo = findViewById(R.id.uiza_video);
+        vdhv = findViewById(R.id.vdhv);
+        tv0 = findViewById(R.id.tv_0);
+        tv1 = findViewById(R.id.tv_1);
+        tv2 = findViewById(R.id.tv_2);
+        tv3 = findViewById(R.id.tv_3);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
@@ -53,7 +55,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setUseWithVDHView(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_0);
@@ -163,7 +164,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         vdhv.setInitResult(isInitSuccess);
     }
 

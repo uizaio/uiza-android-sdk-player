@@ -1,8 +1,9 @@
 package testlibuiza.app;
 
-import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
 
 import testlibuiza.BuildConfig;
 import timber.log.Timber;
@@ -11,7 +12,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.utils.EncryptUtil;
 
 public class LSApplication extends MultiDexApplication {
-    private static LSApplication instance;
 
     public static final String DF_DOMAIN_API = "ap-southeast-1-api.uiza.co";
     public static final String DF_TOKEN = "uap-f785bc511967473fbe6048ee5fb7ea59-69fefb79";
@@ -28,33 +28,20 @@ public class LSApplication extends MultiDexApplication {
     private static final String APP_SECRET = "uap-c1ffbff4db954ddcb050c6af0b43ba56-41193b64";
 
 
-//    private static final String NEW_APPID = "c2c2808817ca4fea82f5b325fe0e02b7";
-    private static final String DOMAIN_API = "api.uiza.io";
-    private static final String NEW_API_KEY = "uap-c2c2808817ca4fea82f5b325fe0e02b7-ef605d7d";
+    private static final String DOMAIN_API = "https://development-api.uizadev.io";
+    private static final String API_TOKEN = "uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15";
+    SharedPreferences preferences;
     @Override
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        instance = this;
         Constants.setDebugMode(true);
-        int apiVersion = Constants.API_VERSION_4;
-        Constants.setApiVersion(apiVersion);
-        UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-        //UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-        //UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
-        String s = EncryptUtil.getAppSigned(getApplicationContext());
-        Timber.e("s = %s", s);
-        String hmac = EncryptUtil.hmacSHA256("namnd", "namdeptrai");
-        Timber.e("hmac = %s", hmac);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String apiToken = preferences.getString("api_token_key", API_TOKEN);
+        UZUtil.initV5Workspace(this, DOMAIN_API, apiToken);
+
     }
 
-    public static LSApplication getInstance() {
-        return instance;
-    }
-
-    public static Context getContext() {
-        return instance.getApplicationContext();
-    }
 }

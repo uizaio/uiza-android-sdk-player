@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
 
 import io.uiza.live.UizaLiveView;
 import io.uiza.live.enums.FilterRender;
@@ -48,7 +48,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     private static final String RECORD_FOLDER = "uiza-live";
     private UizaMediaButton startButton;
     private UizaMediaButton bRecord;
-
+    private UizaMediaButton btAudio;
     private String liveStreamUrl;
     private String currentDateAndTime = "";
     private File folder;
@@ -59,14 +59,16 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         super.onCreate(savedState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_live_stream);
-        liveView = findViewById(R.id.uiza_open_glview);
+        liveView = findViewById(R.id.uiza_live_view);
         liveView.setLiveListener(this);
         liveView.setProfile(ProfileVideoEncoder.P360);
         startButton = findViewById(R.id.b_start_stop);
         startButton.setOnClickListener(this);
         startButton.setEnabled(false);
         bRecord = findViewById(R.id.b_record);
+        btAudio = findViewById(R.id.btn_audio);
         bRecord.setOnClickListener(this);
+        btAudio.setOnClickListener(this);
         AppCompatImageButton switchCamera = findViewById(R.id.switch_camera);
         switchCamera.setOnClickListener(this);
         File movieFolder = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
@@ -90,9 +92,9 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         builder.setTitle("Exit");
         builder.setMessage("Do you want exit?");
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                super.onBackPressed();
-                dialog.dismiss();
-                finish();
+            super.onBackPressed();
+            dialog.dismiss();
+            finish();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
@@ -372,12 +374,21 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
             } else {
                 liveView.stopRecord();
             }
+        } else if(id == R.id.btn_audio){
+            Timber.e("audioMuted: %b", liveView.isAudioMuted());
+            if(liveView.isAudioMuted()){
+                liveView.enableAudio();
+            } else {
+                liveView.disableAudio();
+            }
+            btAudio.setChecked(liveView.isAudioMuted());
         }
     }
 
     @Override
     public void onInit(boolean success) {
         startButton.setEnabled(success);
+        btAudio.setVisibility(View.GONE);
         liveView.setCameraChangeListener(this);
         liveView.setRecordListener(this);
     }
@@ -385,6 +396,8 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     @Override
     public void onConnectionSuccess() {
         startButton.setChecked(true);
+        btAudio.setVisibility(View.VISIBLE);
+        btAudio.setChecked(false);
         Toast.makeText(UizaLiveActivity.this, "Connection success", Toast.LENGTH_SHORT).show();
     }
 
@@ -408,6 +421,8 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     @Override
     public void onDisconnect() {
         startButton.setChecked(false);
+        btAudio.setVisibility(View.GONE);
+        btAudio.setChecked(false);
         Toast.makeText(UizaLiveActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 

@@ -19,7 +19,6 @@ public final class Utils {
 
     public static void init(Context context) {
         Utils.context = context.getApplicationContext();
-//        UizaBase.getInstance().init();
         initSentry(context, BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE));
     }
 

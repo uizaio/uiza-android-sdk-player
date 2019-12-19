@@ -8,9 +8,9 @@ import android.util.Base64;
 import org.apache.commons.codec.DecoderException;
 
 import testlibuiza.R;
-import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.restapi.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.utils.EncryptUtil;
 import vn.uiza.utils.StringUtil;
-import vn.uiza.utils.util.Encryptor;
 
 public class DummyUtil {
 
@@ -25,7 +25,7 @@ public class DummyUtil {
         String hexText = input.substring(16);
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
         String base64 = Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
-        String decrypt = Encryptor.decrypt(key, hexIv, base64);
+        String decrypt = EncryptUtil.decrypt(key, hexIv, base64);
         return StringUtil.toObject(decrypt, LicenseAcquisitionUrl.class);
     }
 

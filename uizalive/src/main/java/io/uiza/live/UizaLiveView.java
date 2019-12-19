@@ -464,11 +464,7 @@ public class UizaLiveView extends RelativeLayout {
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2) {
-                cameraHelper.startPreview(CameraHelper.Facing.FRONT);
-//            } else {
-//                cameraHelper.startPreview(CameraHelper.Facing.FRONT);
-//            }
+            cameraHelper.startPreview(CameraHelper.Facing.FRONT);
             if (liveListener != null) {
                 liveListener.surfaceChanged(format, width, height);
             }

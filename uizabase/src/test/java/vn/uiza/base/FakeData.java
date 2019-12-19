@@ -4,27 +4,27 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import java.util.ArrayList;
 import java.util.List;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
-import vn.uiza.restapi.uiza.model.v3.ad.Ad;
-import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
-import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
-import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
-import vn.uiza.restapi.uiza.model.v3.skin.listskin.Datum;
-import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
-import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.model.tracking.UizaTracking;
+import vn.uiza.restapi.model.v3.ad.Ad;
+import vn.uiza.restapi.model.v3.ad.AdWrapper;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.uiza.restapi.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
+import vn.uiza.restapi.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.uiza.restapi.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
+import vn.uiza.restapi.model.v3.livestreaming.retrievealiveevent.Metadata;
+import vn.uiza.restapi.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
+import vn.uiza.restapi.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.uiza.restapi.model.v3.metadata.createmetadata.ResultCreateMetadata;
+import vn.uiza.restapi.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
+import vn.uiza.restapi.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.uiza.restapi.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.uiza.restapi.model.v3.skin.listskin.Datum;
+import vn.uiza.restapi.model.v3.skin.listskin.ResultGetListSkin;
+import vn.uiza.restapi.model.v3.usermanagement.createanuser.CreateUser;
+import vn.uiza.restapi.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.restapi.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 
 public class FakeData {
     public static final String BASE_URL = "/";
@@ -341,8 +341,8 @@ public class FakeData {
 
     public static ResultGetViewALiveFeed resultGetViewALiveFeed() {
         ResultGetViewALiveFeed resultGetViewALiveFeed = new ResultGetViewALiveFeed();
-        vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.Data data =
-                new vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.Data();
+        vn.uiza.restapi.model.v3.livestreaming.getviewalivefeed.Data data =
+                new vn.uiza.restapi.model.v3.livestreaming.getviewalivefeed.Data();
         data.setWatchnow(1);
         resultGetViewALiveFeed.setData(data);
         resultGetViewALiveFeed.setVersion(4);
@@ -358,8 +358,8 @@ public class FakeData {
 
     public static ResultGetTokenStreaming resultGetTokenStreaming() {
         ResultGetTokenStreaming tokenStreaming = new ResultGetTokenStreaming();
-        vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.Data data =
-                new vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.Data();
+        vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.Data data =
+                new vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.Data();
         data.setToken(
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlfaWQiOiI0NWE5MDhmNy1hNjJlLTRlYWYtOGNlMi1kYzU2OTlmMzM0MDYiLCJhcHBfaWQiOiI5OThhMWExNzEzODY0NDQyOGNlMDI4ZDJkZTIwYzVhMCIsImNvbnRlbnRfdHlwZSI6ImxpdmUiLCJpYXQiOjE1NjIyOTY4NjksImV4cCI6MTU2MjMwMDQ2OX0.fcdN0vibBqlUxfknTwJy5OlticpyjqsqZz0yiTmek_I");
         tokenStreaming.setData(data);

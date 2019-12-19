@@ -5,9 +5,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
-import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
-import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
+import vn.uiza.restapi.model.tracking.UizaTracking;
+import vn.uiza.restapi.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.model.tracking.muiza.Muiza;
 
 public interface UizaTrackingService {
     //@Headers("Content-Type: application/json")

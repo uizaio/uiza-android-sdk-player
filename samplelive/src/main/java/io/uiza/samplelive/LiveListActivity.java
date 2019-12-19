@@ -3,6 +3,7 @@ package io.uiza.samplelive;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,15 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import io.reactivex.disposables.CompositeDisposable;
+import io.uiza.extensions.PaginationScrollListener;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
+import vn.uiza.restapi.model.v5.live.CreateLiveBody;
 import vn.uiza.restapi.restclient.UizaClientFactory;
-import vn.uiza.restapi.uiza.model.ListWrap;
-import vn.uiza.restapi.uiza.model.v5.CreateLiveEntityBody;
 
 public class LiveListActivity extends AppCompatActivity
         implements LiveEntityAdapter.OnActionListener, PopupMenu.OnMenuItemClickListener {
@@ -36,19 +41,41 @@ public class LiveListActivity extends AppCompatActivity
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     String region;
 
+    String pageToken = null;
+    private boolean isLoading = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
         setContentView(R.layout.activity_live_list);
         progressBar = findViewById(R.id.progress_bar);
         recyclerView = findViewById(R.id.contentList);
-        findViewById(R.id.fb_btn).setOnClickListener(v -> showCreateLiveDialog());
+        FloatingActionButton actionButton = findViewById(R.id.fb_btn);
+        actionButton.setOnClickListener(v -> showCreateLiveDialog());
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         region = preferences.getString("region_key", "asia-south1");
         SampleUtils.setVertical(recyclerView);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         adapter.setListener(this);
-        loadEntities();
+        recyclerView.addOnScrollListener(new PaginationScrollListener((LinearLayoutManager) recyclerView.getLayoutManager(), actionButton) {
+            @Override
+            protected void loadMoreItems() {
+                new Handler().postDelayed(() -> loadEntities(), 100);
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return pageToken == null && !adapter.isEmpty();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+        // load first network delay for API call
+        new Handler().postDelayed(this::loadEntities, 100);
     }
 
     private void showCreateLiveDialog() {
@@ -91,17 +118,27 @@ public class LiveListActivity extends AppCompatActivity
 
     private void loadEntities() {
         Timber.e("loadEntities");
-        progressBar.setVisibility(View.VISIBLE);
+        if(adapter.isEmpty())
+            progressBar.setVisibility(View.VISIBLE);
+        adapter.addLoadingFooter();
+        isLoading = true;
         compositeDisposable.add(RxBinder.bind(
                 UizaClientFactory.getLiveService()
-                        .getEntities()
-                        .map(ListWrap::getData),
+                        .getEntities(pageToken, 8)
+                        .map(o -> {
+                            pageToken = o.getNextPageToken();
+                            return o.getData();
+                        }),
                 entities -> {
                     if (entities != null) {
-                        adapter.setEntities(entities);
+                        adapter.addAll(entities);
                     }
+                    isLoading = false;
+                    adapter.removeLoadingFooter();
                     progressBar.setVisibility(View.GONE);
                 }, throwable -> {
+                    isLoading = false;
+                    adapter.removeLoadingFooter();
                     progressBar.setVisibility(View.GONE);
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -134,12 +171,10 @@ public class LiveListActivity extends AppCompatActivity
 
     private void createLive(String streamName) {
         progressBar.setVisibility(View.VISIBLE);
-        CreateLiveEntityBody body = new CreateLiveEntityBody(
+        CreateLiveBody body = new CreateLiveBody(
                 streamName,
-                "Demo of $streamName",
-                region,
-                SampleLiveApplication.APP_ID,
-                SampleLiveApplication.USER_ID
+                "Description of " + streamName,
+                region
         );
         compositeDisposable.add(RxBinder.bind(
                 UizaClientFactory.getLiveService().createEntity(body),
@@ -154,7 +189,7 @@ public class LiveListActivity extends AppCompatActivity
         ));
     }
 
-    private void showMessage(String message){
+    private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
@@ -167,7 +202,7 @@ public class LiveListActivity extends AppCompatActivity
                         if (res != null && res.isDeleted()) {
                             adapter.removeItem(res.getId());
                         }
-                    },  throwable -> {
+                    }, throwable -> {
                         showMessage(throwable.getLocalizedMessage());
                         Timber.e(throwable);
                     }

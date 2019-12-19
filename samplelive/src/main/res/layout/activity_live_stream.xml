@@ -7,7 +7,7 @@
     android:background="@android:color/black">
 
     <io.uiza.live.UizaLiveView
-        android:id="@+id/uiza_open_glview"
+        android:id="@+id/uiza_live_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:adaptiveBitrate="false"
@@ -19,6 +19,23 @@
         app:useCamera2="true"
         app:videoSize="p720"
         app:viewType="openGlView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center">
+
+        <io.uiza.samplelive.UizaMediaButton
+            android:id="@+id/btn_audio"
+            style="@style/UizaMediaLiveButton"
+            android:tint="@android:color/white"
+            android:tintMode="src_in"
+            app:srcActive="@drawable/ic_mic_white_24"
+            app:srcInactive="@drawable/ic_mic_off_white_24"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,6 +54,7 @@
             android:tintMode="src_in"
             app:srcActive="@drawable/ic_stop_white_24"
             app:srcInactive="@drawable/ic_record_white_24" />
+
 
         <RelativeLayout
             android:layout_width="0dp"

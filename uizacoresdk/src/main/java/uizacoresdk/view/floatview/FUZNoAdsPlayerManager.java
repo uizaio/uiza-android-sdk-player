@@ -14,7 +14,7 @@ import java.util.List;
 
 import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 
 public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.apache.commons.codec.DecoderException;
 
 import testlibuiza.R;
-import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.restapi.model.v3.drm.LicenseAcquisitionUrl;
 
 public class DummyActivity extends AppCompatActivity {
     private final String TAG = "TAG" + getClass().getSimpleName();

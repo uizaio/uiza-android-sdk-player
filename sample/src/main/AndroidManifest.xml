@@ -12,14 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".sample.v3.MainV3Activity">
+        <activity android:name=".sample.v5.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.v3.api.UZTestAPIActivity" />
+        <activity
+            android:name=".sample.v5.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".sample.v5.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="testlibuiza.sample.v5.MainActivity" />
+        </activity>
+        <activity
+            android:name=".sample.v5.UizaTestAPIActivity"
+            android:parentActivityName=".sample.v5.MainActivity" />
+        <activity
+            android:name=".sample.v5.LiveListActivity"
+            android:parentActivityName=".sample.v5.MainActivity" />
+        <activity
+            android:name=".sample.v5.LivePlaybackActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <!-- This is important to give configChanges in case you want full screen mode -->
         <activity
             android:name=".sample.v3.fullscreen.PortraitFullScreenActivity"
@@ -33,9 +50,6 @@
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity
-            android:name=".sample.livestream.LivestreamBroadcasterActivity"
-            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".sample.v3.customskin.CustomSkinXMLActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />

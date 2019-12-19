@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
@@ -19,8 +20,8 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LStoreUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 /**
  * Created by loitp on 5/3/2019.
@@ -134,7 +135,7 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
     }
 
     @Override

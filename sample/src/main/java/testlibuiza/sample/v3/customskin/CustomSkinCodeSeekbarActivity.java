@@ -6,10 +6,11 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -22,8 +23,8 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 /**
  * Created by loitp on 27/2/2019.
@@ -99,7 +100,7 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (isInitSuccess) {
             seekBar.setMax((int) uzVideo.getDuration());
             updateUISeekbarPosition(false);

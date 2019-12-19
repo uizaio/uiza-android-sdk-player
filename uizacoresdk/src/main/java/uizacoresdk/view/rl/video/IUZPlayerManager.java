@@ -75,7 +75,7 @@ import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.autosize.UZImageButton;
 

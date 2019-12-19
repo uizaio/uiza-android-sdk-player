@@ -1,26 +1,25 @@
 package uizacoresdk.view.vdh;
 
 import android.content.Context;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewCompat;
-import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
+
+import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.utils.util.SentryUtils;
 
 public class VDHView extends LinearLayout {
-    private final String TAG = getClass().getSimpleName();
     private View headerView;
     private View bodyView;
     private ViewDragHelper mViewDragHelper;
@@ -44,15 +43,11 @@ public class VDHView extends LinearLayout {
     private Callback callback;
 
     public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
+
     public enum Part {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT}
 
     private State state = State.NULL;
     private Part part;
-
-    private int marginBottomInPixel = 0;
-    private int marginTopInPixel = 0;
-    private int marginLeftInPixel = 0;
-    private int marginRightInPixel = 0;
 
     private GestureDetector mDetector;
     private UZPlayerView.OnTouchEvent onTouchEvent;
@@ -108,14 +103,11 @@ public class VDHView extends LinearLayout {
         screenH = LScreenUtil.getScreenHeight();
         headerView = findViewById(R.id.header_view);
         bodyView = findViewById(R.id.body_view);
-        headerView.post(new Runnable() {
-            @Override
-            public void run() {
-                sizeWHeaderViewOriginal = headerView.getMeasuredWidth();
-                sizeHHeaderViewOriginal = headerView.getMeasuredHeight();
-                sizeWHeaderViewMin = sizeWHeaderViewOriginal / 2;
-                sizeHHeaderViewMin = sizeHHeaderViewOriginal / 2;
-            }
+        headerView.post(() -> {
+            sizeWHeaderViewOriginal = headerView.getMeasuredWidth();
+            sizeHHeaderViewOriginal = headerView.getMeasuredHeight();
+            sizeWHeaderViewMin = sizeWHeaderViewOriginal / 2;
+            sizeHHeaderViewMin = sizeHHeaderViewOriginal / 2;
         });
     }
 
@@ -338,7 +330,7 @@ public class VDHView extends LinearLayout {
         final float x = event.getX();
         final float y = event.getY();
         boolean isViewUnder = mViewDragHelper.isViewUnder(headerView, (int) x, (int) y);
-        if ((event.getAction() & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_UP) {
+        if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
             if (state == null) {
                 return isViewUnder;
             }
@@ -400,7 +392,7 @@ public class VDHView extends LinearLayout {
         if (isEnableRevertMaxSize) {
             smoothSlideTo(0, 0);
         } else {
-            Log.e(TAG, "Error: cannot maximize because isEnableRevertMaxSize is true");
+            Timber.e("Error: cannot maximize because isEnableRevertMaxSize is true");
         }
     }
 
@@ -427,11 +419,11 @@ public class VDHView extends LinearLayout {
             return;
         }
         if (isEnableRevertMaxSize) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
+            Timber.e("Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
         if (!isMinimizedAtLeastOneTime) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
+            Timber.e("Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = screenW - sizeWHeaderViewMin * 3 / 2;
@@ -445,11 +437,11 @@ public class VDHView extends LinearLayout {
             return;
         }
         if (isEnableRevertMaxSize) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
+            Timber.e("Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
         if (!isMinimizedAtLeastOneTime) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
+            Timber.e("Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = -sizeWHeaderViewMin / 2;

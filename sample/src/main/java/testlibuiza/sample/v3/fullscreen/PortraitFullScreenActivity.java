@@ -1,8 +1,11 @@
 package testlibuiza.sample.v3.fullscreen;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.util.UZUtil;
@@ -10,8 +13,8 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class PortraitFullScreenActivity extends AppCompatActivity implements UZCallback {
 
@@ -35,7 +38,7 @@ public class PortraitFullScreenActivity extends AppCompatActivity implements UZC
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
-            ResultGetLinkPlay resultGetLinkPlay, Data data) {
+                             ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
     }
 
     @Override

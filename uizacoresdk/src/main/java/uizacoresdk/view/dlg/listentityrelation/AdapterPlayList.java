@@ -23,7 +23,7 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.model.v2.listallentity.Item;
 
 public class AdapterPlayList extends RecyclerView.Adapter<AdapterPlayList.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();

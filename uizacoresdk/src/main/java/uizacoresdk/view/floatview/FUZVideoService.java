@@ -41,7 +41,7 @@ import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -124,7 +124,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (!isInitCustomLinkplay) {
-            if (UZData.getInstance().getData() == null) {
+            if (UZData.getInstance().getPlayback() == null) {
                 return START_NOT_STICKY;
             }
         }
@@ -333,7 +333,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
-        if (UZData.getInstance().getData() == null) {
+        if (UZData.getInstance().getPlayback() == null) {
             return;
         }
         Timber.d("miniplayer STEP 5 START OPEN APP, miniplayer content position %d", fuzVideo.getCurrentPosition());

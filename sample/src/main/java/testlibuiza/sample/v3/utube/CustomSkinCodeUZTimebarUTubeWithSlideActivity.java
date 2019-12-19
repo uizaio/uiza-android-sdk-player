@@ -3,18 +3,18 @@ package testlibuiza.sample.v3.utube;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
@@ -181,7 +181,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
     }
 
-    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (frmUTVideoBottom != null && isGetDataSuccess) {
             frmUTVideoBottom.updateUI(resultGetLinkPlay, data);
         }

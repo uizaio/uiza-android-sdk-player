@@ -19,7 +19,7 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 

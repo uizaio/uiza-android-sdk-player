@@ -1,9 +1,10 @@
 package vn.uiza.restapi.restclient;
 
 import vn.uiza.core.common.Constants;
+import vn.uiza.restapi.UizaLiveService;
+import vn.uiza.restapi.UizaVodService;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
 import vn.uiza.restapi.linkplay.UizaLinkPlayService;
-import vn.uiza.restapi.live.UizaLiveService;
 import vn.uiza.restapi.tracking.UizaTrackingService;
 import vn.uiza.restapi.uiza.UZService;
 
@@ -12,6 +13,25 @@ public class UizaClientFactory {
     private UizaClientFactory() {
     }
 
+    /**
+     * setup for API_VERSION_5
+     * environment {@link Constants.ENVIRONMENT#DEV}
+     *
+     * @param baseApiUrl Base Url of API
+     * @param token      API Token
+     */
+    public static void setup(String baseApiUrl, String token) {
+        setup(baseApiUrl, token, Constants.ENVIRONMENT.DEV);
+    }
+
+    /**
+     * setup for API_VERSION_5
+     *
+     * @param baseApiUrl  Base Url of API
+     * @param token       API Token
+     * @param environment One if {@link Constants.ENVIRONMENT#DEV},
+     *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
+     */
     public static void setup(String baseApiUrl, String token, @Constants.ENVIRONMENT int environment) {
         UZRestClient.getInstance().init(baseApiUrl, token);
         if (environment == Constants.ENVIRONMENT.DEV) {
@@ -29,7 +49,7 @@ public class UizaClientFactory {
         }
     }
 
-    public static void changeAPIToken(String token){
+    public static void changeAPIToken(String token) {
         UZRestClient.getInstance().changeAuthorization(token);
     }
 
@@ -42,12 +62,18 @@ public class UizaClientFactory {
     }
 
     // optional
+    @Deprecated
     public static UZService getUizaService() {
         return UZRestClient.getInstance().createService(UZService.class);
     }
 
+    // V5
     public static UizaLiveService getLiveService() {
         return UZRestClient.getInstance().createService(UizaLiveService.class);
+    }
+
+    public static UizaVodService getVideoService() {
+        return UZRestClient.getInstance().createService(UizaVodService.class);
     }
 
     public static UizaLinkPlayService getLinkPlayService() {

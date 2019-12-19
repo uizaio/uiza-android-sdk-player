@@ -1,6 +1,6 @@
 package uizacoresdk.view.dlg.listentityrelation;
 
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.model.v2.listallentity.Item;
 
 /**
  * Created by LENOVO on 3/30/2018.

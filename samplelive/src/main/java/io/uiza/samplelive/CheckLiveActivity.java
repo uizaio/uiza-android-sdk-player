@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,8 +20,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UizaClientFactory;
-import vn.uiza.restapi.uiza.model.v5.CreateLiveEntityBody;
-import vn.uiza.restapi.uiza.model.v5.LiveEntity;
+import vn.uiza.restapi.model.v5.live.CreateLiveBody;
+import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.utils.StringUtil;
 
 public class CheckLiveActivity extends AppCompatActivity implements View.OnClickListener {
@@ -117,7 +116,7 @@ public class CheckLiveActivity extends AppCompatActivity implements View.OnClick
 
     private void createLive(String streamName) {
         progressBar.setVisibility(View.VISIBLE);
-        CreateLiveEntityBody body = new CreateLiveEntityBody(streamName, "Uiza Demo Live Stream", region, SampleLiveApplication.APP_ID, SampleLiveApplication.USER_ID);
+        CreateLiveBody body = new CreateLiveBody(streamName, "Uiza Demo Live Stream", region);
         Observable<LiveEntity> obs = UizaClientFactory.getLiveService().createEntity(body);
         compositeDisposable.add(RxBinder.bind(obs, res -> {
             entity = res;

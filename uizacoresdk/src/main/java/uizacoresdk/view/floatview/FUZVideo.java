@@ -40,14 +40,14 @@ import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.tracking.UizaTrackingService;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
-import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
-import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.tracking.UizaTracking;
+import vn.uiza.restapi.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.model.tracking.muiza.Muiza;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.Url;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FUZVideo extends RelativeLayout {
     private static final String M3U8_EXTENSION = ".m3u8";
@@ -349,7 +349,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUpResource(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
-        if (mResultGetLinkPlay != null && UZData.getInstance().getData() != null) {
+        if (mResultGetLinkPlay != null && UZData.getInstance().getPlayback() != null) {
             List<String> listLinkPlay = new ArrayList<>();
             List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
             if (isLivestream) {

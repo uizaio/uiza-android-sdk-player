@@ -20,8 +20,6 @@ public class SampleLiveApplication extends MultiDexApplication {
     public static final String STREAM_KEY = "live_ljNx4GLp3F";
 
     private static final String API_TOKEN = "uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15"; // dynamic
-    public static final String APP_ID = "duyqt-app";
-    public static final String USER_ID = "duyqt1";
     SharedPreferences preferences;
 
     @Override
@@ -34,7 +32,7 @@ public class SampleLiveApplication extends MultiDexApplication {
         Constants.setDebugMode(false);
         Constants.setApiVersion(Constants.API_VERSION_5);
         String apiToken = preferences.getString("api_token_key", API_TOKEN);
-        UizaClientFactory.setup(DEV_HOST, apiToken, Constants.ENVIRONMENT.DEV);
+        UizaClientFactory.setup(DEV_HOST, apiToken);
     }
 
     public static String getLiveEndpoint() {

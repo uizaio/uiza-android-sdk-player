@@ -15,13 +15,10 @@ import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.linkplay.UizaLinkPlayService;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
-import vn.uiza.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
-import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
-import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.uiza.restapi.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.uiza.restapi.model.v3.usermanagement.createanuser.CreateUser;
+import vn.uiza.restapi.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.utils.StringUtil;
 import vn.uiza.views.LToast;
 

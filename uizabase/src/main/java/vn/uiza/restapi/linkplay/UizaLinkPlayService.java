@@ -3,7 +3,7 @@ package vn.uiza.restapi.linkplay;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 
 public interface UizaLinkPlayService {
 

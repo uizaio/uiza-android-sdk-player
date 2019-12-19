@@ -36,7 +36,7 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZExceptionUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 
 abstract class FUZPlayerManagerAbs {
     protected final String TAG = getClass().getSimpleName();

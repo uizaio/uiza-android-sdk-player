@@ -15,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import testlibuiza.R;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.utils.StringUtil;
 
 public class FrmVideoBottom extends Fragment {
@@ -36,7 +36,7 @@ public class FrmVideoBottom extends Fragment {
         tvJsonLinkplay = (TextView) view.findViewById(R.id.tv_json_linkplay);
     }
 
-    public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void updateUI(ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         tvJsonData.setText(StringUtil.toBeautyJson(data));
         tvJsonLinkplay.setText(StringUtil.toBeautyJson(resultGetLinkPlay));
     }

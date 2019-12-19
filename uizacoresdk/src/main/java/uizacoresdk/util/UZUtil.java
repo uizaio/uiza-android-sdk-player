@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -30,7 +32,6 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
-import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.floatview.FUZVideoService;
@@ -40,11 +41,10 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.auth.Auth;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.utils.CallbackGetDetailEntity;
+import vn.uiza.restapi.model.v2.auth.Auth;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.utils.StringUtil;
-import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.utils.util.SharedPreferenceUtil;
@@ -326,14 +326,6 @@ public class UZUtil {
 
     //=============================================================================START FOR UIZA V3
 
-    public static void getDetailEntity(final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
-    }
-
-    public static void getDataFromEntityIdLive(final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDataFromEntityIdLive(UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
-    }
-
     public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_12);
@@ -341,7 +333,7 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException(UZException.ERR_13);
         }
-        if (UZDataCLP.getInstance().getUzCustomLinkPlay() == null) {
+        if (UZDataCLP.getInstance().getPlayback() == null) {
             Timber.e(UZException.ERR_14);
             return false;
         }
@@ -351,13 +343,35 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(context)) {
             Timber.d("miniplayer STEP 6 initLinkPlay");
-            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlayback());
         } else {
             UZUtil.stopMiniPlayer(context);
-            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlayback());
         }
         UZUtil.setIsInitPlaylistFolder(context, false);
         return true;
+    }
+
+    public static void initLiveEntity(@NonNull Activity activity, @NonNull UZVideo uzVideo, UizaPlayback playback) {
+        if (playback != null) {
+            UZUtil.setClickedPip(activity, false);
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            Timber.e(UZException.ERR_0);
+            return;
+        }
+        if (UZUtil.getClickedPip(activity)) {
+            Timber.d("miniplayer STEP 6 initEntity");
+            UZUtil.play(uzVideo, null, true);
+        } else {
+            //check if play entity
+            UZUtil.stopMiniPlayer(activity);
+            if (playback != null) {
+                UZUtil.play(uzVideo, playback);
+            }
+        }
+        UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZDataCLP.getInstance().clearData();
     }
 
     public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
@@ -425,28 +439,25 @@ public class UZUtil {
         UZDataCLP.getInstance().clearData();
     }
 
-    private static void playCustomLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
+    private static void playCustomLinkPlay(final UZVideo uzVideo, final UizaPlayback playback) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.initCustomLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
-            }
-        });
+        uzVideo.post(() -> uzVideo.initPlayback(playback.getHls(), playback.isLive()));
     }
 
     private static void play(final UZVideo uzVideo, final String entityId, final boolean isLive) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                if (isLive) {
-                    uzVideo.initLiveEntity(entityId);
-                } else {
-                    uzVideo.init(entityId);
-                }
+        uzVideo.post(() -> {
+            if (isLive) {
+                uzVideo.initLiveEntity(entityId);
+            } else {
+                uzVideo.init(entityId);
             }
         });
+    }
+
+    private static void play(final UZVideo uzVideo, final UizaPlayback playback) {
+        UZData.getInstance().setSettingPlayer(false);
+        uzVideo.post(() -> uzVideo.initPlayback(playback));
     }
 
     private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
@@ -469,44 +480,95 @@ public class UZUtil {
         return false;
     }
 
-    // call initWorkspace in onCreate of Application
-    public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
+
+    /**
+     * @param context         see {@link Context}
+     * @param apiVersion      One of {@link Constants#API_VERSION_5},
+     *                        {@link Constants#API_VERSION_4}, or {@link Constants#API_VERSION_3}
+     * @param domainAPI       Base Url of API
+     * @param token           API Token
+     * @param appId           App Id
+     * @param environment     One if {@link Constants.ENVIRONMENT#DEV},
+     *                        {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
+     * @param currentPlayerId Skin of player
+     * @return true if init success
+     * @deprecated in V5 because v5 do not use AppId,
+     * use {@link #initWorkspace(Context, int, String, String, int, int)}
+     */
+    public static boolean initWorkspace(Context context, int apiVersion, String domainAPI, String token, String appId, int environment, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
-        if (domainApi == null || domainApi.isEmpty()) {
+        if (TextUtils.isEmpty(domainAPI)) {
             throw new NullPointerException(UZException.ERR_16);
         }
-        if (token == null || token.isEmpty()) {
+        if (TextUtils.isEmpty(token)) {
             throw new NullPointerException(UZException.ERR_17);
         }
-        if (appId == null || appId.isEmpty()) {
+        if (TextUtils.isEmpty(appId)) {
             throw new NullPointerException(UZException.ERR_18);
         }
         if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
             throw new NoClassDefFoundError(UZException.ERR_504);
         }
-//        if (Constants.IS_DEBUG) {
-//            Timber.plant(new Timber.DebugTree());
-//        }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
-        return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);
+        return UZData.getInstance().initSDK(apiVersion, domainAPI, token, appId, environment);
+    }
+
+    /**
+     * InitSDK
+     *
+     * @param context         see {@link Context}
+     * @param apiVersion      One of {@link Constants#API_VERSION_5},
+     *                        {@link Constants#API_VERSION_4}, or {@link Constants#API_VERSION_3}
+     * @param domainAPI       Base Url of API
+     * @param token           API Token
+     * @param environment     One if {@link Constants.ENVIRONMENT#DEV},
+     *                        {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
+     * @param currentPlayerId Skin of player
+     * @return true if success init or false
+     */
+    public static boolean initWorkspace(@NonNull Context context,
+                                        int apiVersion,
+                                        String domainAPI,
+                                        String token,
+                                        int environment,
+                                        @LayoutRes int currentPlayerId) {
+        if (domainAPI == null || domainAPI.isEmpty()) {
+            throw new NullPointerException(UZException.ERR_16);
+        }
+        if (token == null || token.isEmpty()) {
+            throw new NullPointerException(UZException.ERR_17);
+        }
+        if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
+            throw new NoClassDefFoundError(UZException.ERR_504);
+        }
+        Utils.init(context.getApplicationContext());
+        UZUtil.setCurrentPlayerId(currentPlayerId);
+        return UZData.getInstance().initSDK(apiVersion, domainAPI, token, environment);
     }
 
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {
         initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT.PROD, currentPlayerId);
     }
 
-    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
+    /**
+     * InitSDK for API_VERSION_5
+     * environment {@link Constants.ENVIRONMENT#PROD}
+     * and player skin {@link R.layout#uz_player_skin_1}
+     *
+     * @param context   see {@link Context}
+     * @param domainAPI Base Url of API
+     * @param token     API Token
+     * @return true if success init or false
+     */
+    public static void initV5Workspace(@NonNull Context context, String domainAPI, String token) {
+        initWorkspace(context, Constants.API_VERSION_5, domainAPI, token, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
     }
 
 
-    public static void setCasty(Activity activity) {
-        if (activity == null) {
-            throw new NullPointerException(UZException.ERR_12);
-        }
+    public static void setCasty(@NonNull Activity activity) {
         if (LDeviceUtil.isTV(activity)) {
             return;
         }

@@ -1,6 +1,6 @@
 package uizacoresdk.util;
 
-import uizacoresdk.model.UZCustomLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class UZDataCLP {
     private static final UZDataCLP ourInstance = new UZDataCLP();
@@ -12,17 +12,17 @@ public class UZDataCLP {
     private UZDataCLP() {
     }
 
-    private UZCustomLinkPlay uzCustomLinkPlay;
+    private UizaPlayback playback;
 
-    public UZCustomLinkPlay getUzCustomLinkPlay() {
-        return uzCustomLinkPlay;
+    public UizaPlayback getPlayback() {
+        return playback;
     }
 
-    public void setUzCustomLinkPlay(UZCustomLinkPlay uzCustomLinkPlay) {
-        this.uzCustomLinkPlay = uzCustomLinkPlay;
+    public void setPlayback(UizaPlayback playback) {
+        this.playback = playback;
     }
 
     public void clearData() {
-        uzCustomLinkPlay = null;
+        playback = null;
     }
 }

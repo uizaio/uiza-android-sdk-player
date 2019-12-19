@@ -4,24 +4,24 @@
     android:id="@id/root_view_uz_video"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="false"
-    >
+    android:animateLayoutChanges="false">
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <RelativeLayout
             android:id="@id/root_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <View
                 android:id="@id/bkg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/Black"
-                />
+                android:background="@color/Black" />
         </RelativeLayout>
+
         <uizacoresdk.view.rl.videoinfo.StatsForNerdsView
             android:id="@id/stats_for_nerds"
             android:layout_width="wrap_content"
@@ -29,8 +29,7 @@
             android:layout_marginTop="@dimen/padding_30"
             android:background="@color/black_65"
             android:visibility="gone"
-            tools:visibility="visible"
-            />
+            tools:visibility="visible" />
     </RelativeLayout>
 
     <ImageView
@@ -40,24 +39,21 @@
         android:layout_margin="@dimen/margin_5"
         android:contentDescription="@string/loitp"
         android:scaleType="centerCrop"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
     <ProgressBar
         android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="@dimen/w_20"
         android:layout_height="@dimen/w_20"
-        android:layout_centerInParent="true"
-        style="?android:attr/progressBarStyleLarge"
-        />
+        android:layout_centerInParent="true" />
 
     <LinearLayout
         android:id="@id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/Red"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@id/debug_text_view"
@@ -66,16 +62,14 @@
             android:paddingLeft="@dimen/padding_3"
             android:paddingRight="@dimen/padding_3"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_8"
-            />
+            android:textSize="@dimen/txt_8" />
 
         <LinearLayout
             android:id="@id/controls_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout

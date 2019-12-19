@@ -18,7 +18,7 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.

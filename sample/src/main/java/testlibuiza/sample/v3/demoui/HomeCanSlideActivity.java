@@ -12,8 +12,9 @@ import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
@@ -161,7 +162,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
     }
 
-    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }

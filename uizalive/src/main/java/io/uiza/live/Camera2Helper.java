@@ -35,6 +35,7 @@ public class Camera2Helper implements ICameraHelper {
 
     private RecordListener recordListener;
 
+
     Camera2Helper(@NonNull RtmpCamera2 camera) {
         this.rtmpCamera2 = camera;
     }

@@ -1,14 +1,14 @@
 package uizacoresdk.interfaces;
 
 import vn.uiza.core.exception.UZException;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public interface UZCallback {
     //when video init done with result
     //isInitSuccess onStateReadyFirst
     //isGetDataSuccess da co data ResultGetLinkPlay va Data
-    void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
+    void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback playback);
 
     //when pip video is init success
     void onStateMiniPlayer(boolean isInitMiniPlayerSuccess);

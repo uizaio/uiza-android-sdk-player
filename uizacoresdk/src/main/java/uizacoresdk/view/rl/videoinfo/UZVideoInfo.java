@@ -25,8 +25,8 @@ import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v2.listallentity.Item;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -151,7 +151,7 @@ public class UZVideoInfo extends RelativeLayout {
             Timber.e("setup resultRetrieveAnEntity == null");
             return;
         }
-        if (UZData.getInstance().getData() == null || UZData.getInstance().getData().getId() == null || UZData.getInstance().getData().getId() == null) {
+        if (UZData.getInstance().getPlayback() == null || !UZData.getInstance().getPlayback().canPlay()) {
             Timber.e("setup data is null");
         }
         updateUI();
@@ -161,20 +161,20 @@ public class UZVideoInfo extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            tvVideoName.setText(UZData.getInstance().getData().getName());
+            tvVideoName.setText(UZData.getInstance().getPlayback().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
             SentryUtils.captureException(e);
         }
-        if (UZData.getInstance().getData().getCreatedAt() != null) {
-            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt().toString()));
+        if (UZData.getInstance().getPlayback().getCreatedAt() != null) {
+            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getPlayback().getCreatedAt().toString()));
         } else {
             tvVideoTime.setText(nullS);
         }
         //TODO
         tvVideoRate.setText("12+");
         try {
-            tvVideoDescription.setText(UZData.getInstance().getData().getDescription().isEmpty() ? UZData.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UZData.getInstance().getData().getShortDescription() : UZData.getInstance().getData().getDescription());
+            tvVideoDescription.setText(UZData.getInstance().getPlayback().getDescription().isEmpty() ? emptyS : UZData.getInstance().getPlayback().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
             SentryUtils.captureException(e);

@@ -17,7 +17,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FBVideoAdapter extends RecyclerView.Adapter<FBVideoAdapter.MovieViewHolder> {
     public interface Callback {

@@ -3,10 +3,11 @@ package testlibuiza.sample.v3.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -36,8 +37,8 @@ import uizacoresdk.view.rl.video.UZAdPlayerCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 /**
  * Created by loitp on 1/9/2019.
@@ -83,7 +84,7 @@ public class EventActivity extends AppCompatActivity {
 
         uzVideo.addUZCallback(new UZCallback() {
             @Override
-            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
                 tvUzCallback.setText("isInitResult " + isInitSuccess);
             }
 

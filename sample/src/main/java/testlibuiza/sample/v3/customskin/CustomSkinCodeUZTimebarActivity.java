@@ -3,11 +3,12 @@ package testlibuiza.sample.v3.customskin;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -17,8 +18,8 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 
 /**
  * Created by loitp on 27/2/2019.
@@ -77,7 +78,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, UizaPlayback data) {
         if (isInitSuccess) {
             pb.setVisibility(View.GONE);
         }

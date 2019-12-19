@@ -24,7 +24,7 @@ import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
