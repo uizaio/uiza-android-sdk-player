@@ -1,26 +1,19 @@
 package vn.uiza.utils.util;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 
 import androidx.annotation.NonNull;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 public final class AppUtils {
 
@@ -28,39 +21,18 @@ public final class AppUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    public static boolean isInstallApp(String packageName) {
-        return !isSpace(packageName) && IntentUtils.getLaunchAppIntent(packageName) != null;
-    }
-
-    public static void installApp(String filePath, String authority) {
-        installApp(FileUtils.getFileByPath(filePath), authority);
-    }
-
-    public static void installApp(File file, String authority) {
-        if (!FileUtils.isFileExists(file)) return;
-        Utils.getContext().startActivity(IntentUtils.getInstallAppIntent(file, authority));
-    }
-
-    public static void installApp(Activity activity, String filePath, String authority, int requestCode) {
-        installApp(activity, FileUtils.getFileByPath(filePath), authority, requestCode);
-    }
 
     public static void installApp(Activity activity, File file, String authority, int requestCode) {
         if (!FileUtils.isFileExists(file)) return;
-        activity.startActivityForResult(IntentUtils.getInstallAppIntent(file, authority), requestCode);
+        activity.startActivityForResult(IntentUtils.getInstallAppIntent(activity, file, authority), requestCode);
     }
 
-    public static boolean installAppSilent(String filePath) {
+    public static boolean installAppSilent(Context context, String filePath) {
         File file = FileUtils.getFileByPath(filePath);
         if (!FileUtils.isFileExists(file)) return false;
         String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install " + filePath;
-        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, !isSystemApp(), true);
+        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, !isSystemApp(context), true);
         return commandResult.successMsg != null && commandResult.successMsg.toLowerCase().contains("success");
-    }
-
-    public static void uninstallApp(String packageName) {
-        if (isSpace(packageName)) return;
-        Utils.getContext().startActivity(IntentUtils.getUninstallAppIntent(packageName));
     }
 
     public static void uninstallApp(Activity activity, String packageName, int requestCode) {
@@ -68,44 +40,35 @@ public final class AppUtils {
         activity.startActivityForResult(IntentUtils.getUninstallAppIntent(packageName), requestCode);
     }
 
-    public static boolean uninstallAppSilent(String packageName, boolean isKeepData) {
-        if (isSpace(packageName)) return false;
-        String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm uninstall " + (isKeepData ? "-k " : "") + packageName;
-        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, !isSystemApp(), true);
+    public static boolean uninstallAppSilent(Context context, boolean isKeepData) {
+        if (isSpace(context.getPackageName())) return false;
+        String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm uninstall " + (isKeepData ? "-k " : "") + context.getPackageName();
+        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, !isSystemApp(context), true);
         return commandResult.successMsg != null && commandResult.successMsg.toLowerCase().contains("success");
-    }
-
-    public static void launchApp(String packageName) {
-        if (isSpace(packageName)) return;
-        Utils.getContext().startActivity(IntentUtils.getLaunchAppIntent(packageName));
     }
 
     public static void launchApp(Activity activity, String packageName, int requestCode) {
         if (isSpace(packageName)) return;
-        activity.startActivityForResult(IntentUtils.getLaunchAppIntent(packageName), requestCode);
+        activity.startActivityForResult(IntentUtils.getLaunchAppIntent(activity, packageName), requestCode);
     }
 
-    public static String getAppPackageName() {
-        return Utils.getContext().getPackageName();
+
+    public static void getAppDetailsSettings(Context context) {
+        getAppDetailsSettings(context, context.getPackageName());
     }
 
-    public static void getAppDetailsSettings() {
-        getAppDetailsSettings(Utils.getContext().getPackageName());
-    }
-
-    public static void getAppDetailsSettings(String packageName) {
+    public static void getAppDetailsSettings(Context context, String packageName) {
         if (isSpace(packageName)) return;
-        Utils.getContext().startActivity(IntentUtils.getAppDetailsSettingsIntent(packageName));
+        context.startActivity(IntentUtils.getAppDetailsSettingsIntent(packageName));
     }
 
-    public static String getAppName() {
-        return getAppName(Utils.getContext().getPackageName());
+    public static String getAppName(Context context) {
+        return getAppName(context.getPackageManager(), context.getPackageName());
     }
 
-    public static String getAppName(String packageName) {
+    public static String getAppName(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadLabel(pm).toString();
         } catch (PackageManager.NameNotFoundException e) {
@@ -115,14 +78,13 @@ public final class AppUtils {
         }
     }
 
-    public static Drawable getAppIcon() {
-        return getAppIcon(Utils.getContext().getPackageName());
+    public static Drawable getAppIcon(Context context) {
+        return getAppIcon(context.getPackageManager(), context.getPackageName());
     }
 
-    public static Drawable getAppIcon(String packageName) {
+    public static Drawable getAppIcon(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadIcon(pm);
         } catch (PackageManager.NameNotFoundException e) {
@@ -132,14 +94,13 @@ public final class AppUtils {
         }
     }
 
-    public static String getAppPath() {
-        return getAppPath(Utils.getContext().getPackageName());
+    public static String getAppPath(Context context) {
+        return getAppPath(context.getPackageManager(), context.getPackageName());
     }
 
-    public static String getAppPath(String packageName) {
+    public static String getAppPath(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.sourceDir;
         } catch (PackageManager.NameNotFoundException e) {
@@ -149,14 +110,13 @@ public final class AppUtils {
         }
     }
 
-    public static String getAppVersionName() {
-        return getAppVersionName(Utils.getContext().getPackageName());
+    public static String getAppVersionName(Context context) {
+        return getAppVersionName(context.getPackageManager(), context.getPackageName());
     }
 
-    public static String getAppVersionName(String packageName) {
+    public static String getAppVersionName(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -166,15 +126,14 @@ public final class AppUtils {
         }
     }
 
-    public static int getAppVersionCode() {
-        return getAppVersionCode(Utils.getContext().getPackageName());
+    public static int getAppVersionCode(Context context) {
+        return getAppVersionCode(context.getPackageManager(), context.getPackageName());
     }
 
 
-    public static int getAppVersionCode(String packageName) {
+    public static int getAppVersionCode(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return -1;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? -1 : pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -184,33 +143,15 @@ public final class AppUtils {
         }
     }
 
-    public static boolean isSystemApp() {
-        return isSystemApp(Utils.getContext().getPackageName());
+    public static boolean isSystemApp(Context context) {
+        return isSystemApp(context.getPackageManager(), context.getPackageName());
     }
 
-    public static boolean isSystemApp(String packageName) {
+    public static boolean isSystemApp(PackageManager pm, String packageName) {
         if (isSpace(packageName)) return false;
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
-            return false;
-        }
-    }
-
-    public static boolean isAppDebug() {
-        return isAppDebug(Utils.getContext().getPackageName());
-    }
-
-    public static boolean isAppDebug(String packageName) {
-        if (isSpace(packageName)) return false;
-        try {
-            PackageManager pm = Utils.getContext().getPackageManager();
-            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
-            return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             SentryUtils.captureException(e);
@@ -225,38 +166,20 @@ public final class AppUtils {
         return Math.round(currentVolume * 1f / maxVolume * 100);
     }
 
-    public static Signature[] getAppSignature() {
-        return getAppSignature(Utils.getContext().getPackageName());
-    }
-
-    public static Signature[] getAppSignature(String packageName) {
-        if (isSpace(packageName)) return null;
-        try {
-            PackageManager pm = Utils.getContext().getPackageManager();
-            @SuppressLint("PackageManagerGetSignatures")
-            PackageInfo pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
-            return pi == null ? null : pi.signatures;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
-            return null;
-        }
-    }
-
-    public static boolean isAppForeground() {
-        ActivityManager manager = (ActivityManager) Utils.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+    public static boolean isAppForeground(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = manager.getRunningAppProcesses();
         if (info == null || info.size() == 0) return false;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                return aInfo.processName.equals(Utils.getContext().getPackageName());
+                return aInfo.processName.equals(context.getPackageName());
             }
         }
         return false;
     }
 
-    public static boolean isAppForeground(String packageName) {
-        return !isSpace(packageName) && packageName.equals(ProcessUtils.getForegroundProcessName());
+    public static boolean isAppForeground(Context context, String packageName) {
+        return !isSpace(packageName) && packageName.equals(ProcessUtils.getForegroundProcessName(context));
     }
 
     public static class AppInfo {
@@ -347,13 +270,12 @@ public final class AppUtils {
         }
     }
 
-    public static AppInfo getAppInfo() {
-        return getAppInfo(Utils.getContext().getPackageName());
+    public static AppInfo getAppInfo(Context context) {
+        return getAppInfo(context.getPackageManager(), context.getPackageName());
     }
 
-    public static AppInfo getAppInfo(String packageName) {
+    public static AppInfo getAppInfo(PackageManager pm, String packageName) {
         try {
-            PackageManager pm = Utils.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return getBean(pm, pi);
         } catch (PackageManager.NameNotFoundException e) {
@@ -376,9 +298,8 @@ public final class AppUtils {
         return new AppInfo(packageName, name, icon, packagePath, versionName, versionCode, isSystem);
     }
 
-    public static List<AppInfo> getAppsInfo() {
+    public static List<AppInfo> getAppsInfo(PackageManager pm) {
         List<AppInfo> list = new ArrayList<>();
-        PackageManager pm = Utils.getContext().getPackageManager();
         List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
         for (PackageInfo pi : installedPackages) {
             AppInfo ai = getBean(pm, pi);
@@ -397,7 +318,6 @@ public final class AppUtils {
         }
         return true;
     }
-
 
 
 }

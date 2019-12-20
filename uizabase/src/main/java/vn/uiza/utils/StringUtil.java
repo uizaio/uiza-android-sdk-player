@@ -20,17 +20,12 @@ public class StringUtil {
     }
 
     public static <T> String toJson(T value) {
-        return (new Gson()).toJson(value);
-    }
-
-    public static <T> String toJson(List<T> values) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeSerializer())
                 .create();
-        Type listType = new TypeToken<List<T>>() {
-        }.getType();
-        return gson.toJson(values, listType);
+        return gson.toJson(value);
     }
+
 
     public static <T> String toBeautyJson(T value) {
         Gson gson = new GsonBuilder()
@@ -38,16 +33,6 @@ public class StringUtil {
                 .setPrettyPrinting()
                 .create();
         return gson.toJson(value);
-    }
-
-    public static <T> String toBeautyJson(List<T> values) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateTypeSerializer())
-                .setPrettyPrinting()
-                .create();
-        Type listType = new TypeToken<List<T>>() {
-        }.getType();
-        return gson.toJson(values, listType);
     }
 
     @Nullable

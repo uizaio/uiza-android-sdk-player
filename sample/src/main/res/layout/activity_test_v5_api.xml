@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/padding_5">
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,35 +107,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Get link play" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <Button
-                        android:id="@+id/bt_get_token_streaming"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Get token streaming" />
-
-                    <Button
-                        android:id="@+id/bt_get_link_play"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Get link play" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Live Streaming" />
 
             <HorizontalScrollView
@@ -144,41 +115,59 @@
                 android:scrollbars="none">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/bt_retrieve_a_live_event"
+                        android:id="@+id/bt_get_live_entities"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Retrieve a live event" />
+                        android:text="Get Entities" />
 
                     <Button
-                        android:id="@+id/bt_get_token_streaming_live"
+                        android:id="@+id/bt_get_live_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Get token streaming live" />
+                        android:text="Get Entity" />
 
                     <Button
-                        android:id="@+id/bt_get_link_play_live"
+                        android:id="@+id/bt_create_live_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Get link play live" />
+                        android:text="Create Entity" />
 
                     <Button
-                        android:id="@+id/bt_get_view_a_live_feed"
+                        android:id="@+id/bt_update_live_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Get view a live feed" />
+                        android:text="Update Entity" />
 
                     <Button
-                        android:id="@+id/bt_get_time_start_live"
+                        android:id="@+id/bt_delete_live_entity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Get time start live" />
+                        android:text="Delete Entity" />
 
                 </LinearLayout>
             </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Live Sessions" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/bt_get_sessions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Get Live Sessions" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -234,7 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="RESULT"
-                android:textSize="@dimen/txt_30" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv"

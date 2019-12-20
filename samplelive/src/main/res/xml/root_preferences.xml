@@ -47,7 +47,7 @@
             app:entries="@array/profile_entries"
             app:entryValues="@array/profile_values"
             app:iconSpaceReserved="false"
-            app:key="camera_key"
+            app:key="camera_profile_key"
             app:title="@string/profile_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -67,15 +67,6 @@
             app:key="keyframe_key"
             app:title="@string/keyframe_title"
             app:useSimpleSummaryProvider="true" />
-
-        <SwitchPreference
-            app:defaultValue="false"
-            app:iconSpaceReserved="false"
-            app:key="adaptive_bitrate_key"
-            app:summaryOff="Off adaptive video bitrate"
-            app:summaryOn="On adaptive video bitrate"
-            app:title="@string/adaptive_bitrate_title"
-            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 
@@ -87,7 +78,7 @@
         <ListPreference
             app:defaultValue="64"
             app:entries="@array/bitrate_entries"
-            app:entryValues="@array/bitrate_entries"
+            app:entryValues="@array/bitrate_values"
             app:iconSpaceReserved="false"
             app:key="audio_bitrate_key"
             app:title="@string/bitrate_title"

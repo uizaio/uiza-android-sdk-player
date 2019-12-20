@@ -41,11 +41,6 @@ public class Camera2Helper implements ICameraHelper {
     }
 
     @Override
-    public void setVideoEncoderConfig(@NotNull VideoEncoderConfig videoEncoder) {
-
-    }
-
-    @Override
     public void setConnectReTries(int reTries) {
         rtmpCamera2.setReTries(reTries);
     }
@@ -54,11 +49,6 @@ public class Camera2Helper implements ICameraHelper {
     public boolean reTry(long delay, @NonNull String reason) {
         return rtmpCamera2.reTry(delay, reason);
     }
-
-//    @Override
-//    public boolean shouldRetry(@NotNull String reason) {
-//        return rtmpCamera2.shouldRetry(reason);
-//    }
 
     @Override
     public void setCameraChangeListener(@NonNull CameraChangeListener cameraChangeListener) {
@@ -201,11 +191,11 @@ public class Camera2Helper implements ICameraHelper {
     public void switchCamera() throws UizaCameraOpenException {
         try {
             rtmpCamera2.switchCamera();
+            if (cameraChangeListener != null)
+                cameraChangeListener.onCameraChange(rtmpCamera2.isFrontCamera());
         } catch (CameraOpenException e) {
             throw new UizaCameraOpenException(e.getMessage());
         }
-        if (cameraChangeListener != null)
-            cameraChangeListener.onCameraChange(rtmpCamera2.isFrontCamera());
     }
 
     @Override
@@ -215,7 +205,7 @@ public class Camera2Helper implements ICameraHelper {
 
     @Override
     public void startPreview(@NotNull CameraHelper.Facing cameraFacing, int width, int height) {
-        rtmpCamera2.startPreview(cameraFacing, width, height);
+        rtmpCamera2.startPreview(cameraFacing, height, width);
     }
 
     @Override

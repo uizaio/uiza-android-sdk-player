@@ -36,12 +36,6 @@ public class Camera1Helper implements ICameraHelper {
         this.rtmpCamera1 = camera;
     }
 
-
-    @Override
-    public void setVideoEncoderConfig(@NotNull VideoEncoderConfig videoEncoder) {
-
-    }
-
     @Override
     public void setConnectReTries(int reTries) {
         rtmpCamera1.setReTries(reTries);
@@ -149,12 +143,18 @@ public class Camera1Helper implements ICameraHelper {
 
     @Override
     public boolean prepareVideo(@NotNull ProfileVideoEncoder profile) {
-        return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), 24, profile.getBitrate(), false, 90);
+        if (supportGlInterface())
+            return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), 24, profile.getBitrate(), false, 90);
+        else
+            return rtmpCamera1.prepareVideo(profile.getHeight(), profile.getWidth(), 24, profile.getBitrate(), false, 90);
     }
 
     @Override
     public boolean prepareVideo(@NotNull ProfileVideoEncoder profile, int fps, int iFrameInterval, int rotation) {
-        return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
+        if (supportGlInterface())
+            return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
+        else
+            return rtmpCamera1.prepareVideo(profile.getHeight(), profile.getWidth(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
     }
 
     @Override
@@ -200,12 +200,17 @@ public class Camera1Helper implements ICameraHelper {
 
     @Override
     public void startPreview(@NotNull CameraHelper.Facing cameraFacing) {
-        rtmpCamera1.startPreview(cameraFacing, 480, 640);
+        if (supportGlInterface()) {
+            rtmpCamera1.startPreview(cameraFacing, 480, 640);
+        } else {
+            rtmpCamera1.startPreview(cameraFacing);
+        }
+
     }
 
     @Override
     public void startPreview(@NotNull CameraHelper.Facing cameraFacing, int width, int height) {
-        rtmpCamera1.startPreview(cameraFacing, width, height);
+        rtmpCamera1.startPreview(cameraFacing, height, width);
     }
 
     @Override

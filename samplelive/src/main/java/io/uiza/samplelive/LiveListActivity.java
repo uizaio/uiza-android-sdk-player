@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,18 +19,21 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.uiza.extensions.PaginationScrollListener;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
+import vn.uiza.restapi.model.ListWrap;
 import vn.uiza.restapi.model.v5.live.CreateLiveBody;
+import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.restapi.model.v5.live.UpdateLiveBody;
 import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.utils.StringUtil;
 
 public class LiveListActivity extends AppCompatActivity
         implements LiveEntityAdapter.OnActionListener, PopupMenu.OnMenuItemClickListener {
@@ -41,9 +45,6 @@ public class LiveListActivity extends AppCompatActivity
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     String region;
 
-    String pageToken = null;
-    private boolean isLoading = false;
-
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
@@ -54,28 +55,32 @@ public class LiveListActivity extends AppCompatActivity
         actionButton.setOnClickListener(v -> showCreateLiveDialog());
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         region = preferences.getString("region_key", "asia-south1");
-        SampleUtils.setVertical(recyclerView);
+        SampleUtils.setVertical(recyclerView, 2);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         adapter.setListener(this);
-        recyclerView.addOnScrollListener(new PaginationScrollListener((LinearLayoutManager) recyclerView.getLayoutManager(), actionButton) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            protected void loadMoreItems() {
-                new Handler().postDelayed(() -> loadEntities(), 100);
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return pageToken == null && !adapter.isEmpty();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && actionButton.getVisibility() == View.VISIBLE) {
+                    actionButton.hide();
+                } else if (dy < 0 && actionButton.getVisibility() != View.VISIBLE) {
+                    actionButton.show();
+                }
             }
         });
-        // load first network delay for API call
         new Handler().postDelayed(this::loadEntities, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1001) {
+            if (adapter != null) {
+                new Handler().postDelayed(this::loadEntities, 100);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showCreateLiveDialog() {
@@ -102,6 +107,62 @@ public class LiveListActivity extends AppCompatActivity
         builder.show();
     }
 
+    private void showUpdateLiveDialog(final LiveEntity entity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(entity.getName());
+        View root = getLayoutInflater().inflate(R.layout.dlg_update_live, null);
+        builder.setView(root);
+        final AppCompatEditText streamIp = root.findViewById(R.id.stream_name);
+        final AppCompatEditText descIp = root.findViewById(R.id.stream_desc);
+        streamIp.setText(entity.getName());
+        LUIUtil.setLastCursorEditText(streamIp);
+        descIp.setText(entity.getDescription());
+        LUIUtil.setLastCursorEditText(descIp);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            String name = streamIp.getText().toString();
+            String desc = descIp.getText().toString();
+
+            boolean isValid = true;
+            if (TextUtils.isEmpty(name)) {
+                streamIp.setError("Error");
+                isValid = false;
+            }
+            if (TextUtils.isEmpty(desc)) {
+                descIp.setError("Error");
+                isValid = false;
+            }
+            if (name.equalsIgnoreCase(entity.getName()) && desc.equalsIgnoreCase(entity.getDescription())) {
+                isValid = false;
+            }
+            if (isValid) {
+                dialog.dismiss();
+                updateEntity(new UpdateLiveBody(name, desc));
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void showDetailDialog(final LiveEntity entity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(entity.getName());
+        builder.setMessage(StringUtil.toBeautyJson(entity));
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void showConfirmRemoveDialog(LiveEntity entity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(entity.getName());
+        builder.setMessage("Do you want Remove?");
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            removeEntity();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -118,29 +179,25 @@ public class LiveListActivity extends AppCompatActivity
 
     private void loadEntities() {
         Timber.e("loadEntities");
-        if(adapter.isEmpty())
+        if (adapter.isEmpty())
             progressBar.setVisibility(View.VISIBLE);
         adapter.addLoadingFooter();
-        isLoading = true;
         compositeDisposable.add(RxBinder.bind(
                 UizaClientFactory.getLiveService()
-                        .getEntities(pageToken, 8)
-                        .map(o -> {
-                            pageToken = o.getNextPageToken();
-                            return o.getData();
-                        }),
+                        .getEntities()
+                        .map(ListWrap::getData),
                 entities -> {
                     if (entities != null) {
-                        adapter.addAll(entities);
+                        adapter.setEntities(entities);
                     }
-                    isLoading = false;
                     adapter.removeLoadingFooter();
                     progressBar.setVisibility(View.GONE);
                 }, throwable -> {
-                    isLoading = false;
                     adapter.removeLoadingFooter();
                     progressBar.setVisibility(View.GONE);
-                    showMessage(throwable.getLocalizedMessage());
+                    if (!(throwable instanceof java.lang.NullPointerException)) {
+                        showMessage(throwable.getLocalizedMessage());
+                    }
                     Timber.e(throwable);
                 }
         ));
@@ -163,8 +220,14 @@ public class LiveListActivity extends AppCompatActivity
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.del_entity) {
-            removeEntity();
+        int itemId = item.getItemId();
+        LiveEntity entity = adapter.getItemId(currentEntityId);
+        if (itemId == R.id.del_entity) {
+            showConfirmRemoveDialog(entity);
+        } else if (itemId == R.id.rename_entity) {
+            showUpdateLiveDialog(entity);
+        } else if (itemId == R.id.detail_entity) {
+            showDetailDialog(entity);
         }
         return false;
     }
@@ -181,7 +244,7 @@ public class LiveListActivity extends AppCompatActivity
                 res -> {
                     Intent intent = new Intent(LiveListActivity.this, CheckLiveActivity.class);
                     intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, res);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1001);
                 }, throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -191,6 +254,21 @@ public class LiveListActivity extends AppCompatActivity
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void updateEntity(@NonNull UpdateLiveBody updateLiveBody) {
+        progressBar.setVisibility(View.VISIBLE);
+        if (currentEntityId != null) {
+            compositeDisposable.add(RxBinder.bind(
+                    UizaClientFactory.getLiveService()
+                            .updateEntity(currentEntityId, updateLiveBody),
+                    res -> adapter.replace(res), throwable -> {
+                        showMessage(throwable.getLocalizedMessage());
+                        Timber.e(throwable);
+                    }, () -> progressBar.setVisibility(View.GONE)
+
+            ));
+        }
     }
 
     private void removeEntity() {

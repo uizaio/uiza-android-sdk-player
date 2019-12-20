@@ -24,46 +24,46 @@ public interface UizaVodService {
     /**
      * Get an vod entity
      */
-    @GET("/v1/vod_entities/{id}")
+    @GET("/v1/video_entities/{id}")
     Observable<VODEntity> getEntity(@Path("id") String id);
 
 
     /**
      * Get list of vod entity
      */
-    @GET("/v1/vod_entities")
+    @GET("/v1/video_entities")
     Observable<ListWrap<VODEntity>> getEntities();
 
 
     /**
      * Create a vod entity
      */
-    @POST("/v1/vod_entities")
+    @POST("/v1/video_entities")
     Observable<VODEntity> createEntity(@Body CreateVODBody createVODBody);
 
 
     /**
      * update a vod entity
      */
-    @PUT("/v1/vod_entities/{id}")
+    @PUT("/v1/video_entities/{id}")
     Observable<UpdateVODResponse> updateEntity(@Path("id") String id, @Body UpdateVODBody updateVODBody);
 
 
     /**
      * delete a vod entity
      */
-    @DELETE("/v1/vod_entities/{id}")
+    @DELETE("/v1/video_entities/{id}")
     Observable<DeleteVODResponse> deleteEntity(@Path("id") String id);
 
     /**
      * puslish a vod
      */
-    @POST("/v1/vod_entities/{id}/publish")
+    @POST("/v1/video_entities/{id}/publish")
     Observable<PublishVODResponse> publishVOD(@Path("id") String id);
 
     /**
      * puslish a vod
      */
-    @GET("/v1/vod_entities/{id}/publish/status")
+    @GET("/v1/video_entities/{id}/publish/status")
     Observable<PublishVODStatusResponse> getPublishVODStatus(@Path("id") String id);
 }

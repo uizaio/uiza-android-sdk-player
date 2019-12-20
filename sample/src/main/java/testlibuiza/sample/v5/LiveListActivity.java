@@ -16,8 +16,9 @@ import testlibuiza.sample.utils.SampleUtils;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.model.ListWrap;
+import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.utils.ListUtil;
 
 
 public class LiveListActivity extends AppCompatActivity {
@@ -43,21 +44,23 @@ public class LiveListActivity extends AppCompatActivity {
     private void loadLiveEntities() {
         progressBar.setVisibility(View.VISIBLE);
         UizaLiveService service = UizaClientFactory.getLiveService();
-        compositeDisposable.add(RxBinder.bind(service.getEntities().map(ListWrap::getData), entities -> {
-            if (entities != null && !entities.isEmpty()) {
-                adapter.setEntities(entities);
-                textView.setVisibility(View.GONE);
-            } else {
-                textView.setText("Empty");
-                textView.setVisibility(View.VISIBLE);
-            }
-            progressBar.setVisibility(View.GONE);
-        }, throwable -> {
-            textView.setText(throwable.getLocalizedMessage());
-            progressBar.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            Timber.e(throwable);
-        }));
+        compositeDisposable.add(RxBinder.bind(service.getEntities()
+                        .map(o -> ListUtil.filter(o.getData(), LiveEntity::isOnline)),
+                entities -> {
+                    if (!ListUtil.isEmpty(entities)) {
+                        adapter.setEntities(entities);
+                        textView.setVisibility(View.GONE);
+                    } else {
+                        textView.setText("No LiveEntity broadcasting...");
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                }, throwable -> {
+                    textView.setText(throwable.getLocalizedMessage());
+                    textView.setVisibility(View.VISIBLE);
+                    Timber.e(throwable);
+                }, () ->
+                        progressBar.setVisibility(View.GONE)
+        ));
 
     }
 }

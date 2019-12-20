@@ -19,6 +19,8 @@
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@android:color/darker_gray"
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:text="message" />

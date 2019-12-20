@@ -528,6 +528,8 @@ public class UZVideo extends RelativeLayout
      * init player with livestream entity id
      */
     public void initPlayback(@NonNull UizaPlayback playback) {
+        if(UZData.getInstance().getUzInput() != null)
+            UZData.getInstance().getUzInput().setPlayback(playback);
         initPlayback(playback.getHls(), playback.isLive());
     }
 

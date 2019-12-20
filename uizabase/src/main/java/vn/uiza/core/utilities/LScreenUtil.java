@@ -77,6 +77,13 @@ public class LScreenUtil {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
+    public static double getHpW() {
+        double w = getScreenWidth() + 0.0;
+        double h = getScreenHeight() + 0.0;
+        Timber.e("hhhh = %f", h);
+        return Math.max(w, h) / Math.min(w, h);
+    }
+
     public static int getScreenHeightIncludeNavigationBar(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         final Display display = windowManager.getDefaultDisplay();

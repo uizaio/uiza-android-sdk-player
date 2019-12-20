@@ -54,7 +54,7 @@ public class LSocialUtil {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType(Constants.TEXT_TYPE);
-            intent.putExtra(Intent.EXTRA_SUBJECT, AppUtils.getAppName());
+            intent.putExtra(Intent.EXTRA_SUBJECT, AppUtils.getAppName(activity));
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, SHARE_TITLE));
         } catch (Exception e) {

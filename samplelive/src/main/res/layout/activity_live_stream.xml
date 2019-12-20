@@ -10,7 +10,6 @@
         android:id="@+id/uiza_live_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:adaptiveBitrate="false"
         app:audioBitrate="64"
         app:audioSampleRate="32000"
         app:audioStereo="true"
@@ -20,10 +19,54 @@
         app:videoSize="p720"
         app:viewType="openGlView" />
 
+    <RelativeLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:gravity="start">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            app:srcCompat="@drawable/ic_arrow_back_white_24" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_top"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_ccu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/ic_viewer_white_24"
+            android:drawablePadding="8dp"
+            android:maxLines="1"
+            android:text="2K"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:srcActive="@drawable/ic_mic_white_24"
+            app:srcInactive="@drawable/ic_mic_off_white_24" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom"
         android:gravity="center">
 
         <io.uiza.samplelive.UizaMediaButton
@@ -31,17 +74,21 @@
             style="@style/UizaMediaLiveButton"
             android:tint="@android:color/white"
             android:tintMode="src_in"
+            android:visibility="gone"
             app:srcActive="@drawable/ic_mic_white_24"
-            app:srcInactive="@drawable/ic_mic_off_white_24"
-            android:visibility="gone"/>
+            app:srcInactive="@drawable/ic_mic_off_white_24" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 

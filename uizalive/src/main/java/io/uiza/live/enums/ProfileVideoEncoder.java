@@ -2,8 +2,6 @@ package io.uiza.live.enums;
 
 //
 
-import android.util.Size;
-
 /**
  * Profile Encoding for Live
  * Codec H264
@@ -42,5 +40,13 @@ public enum ProfileVideoEncoder {
 
     public int getHeight() {
         return height;
+    }
+
+    public static ProfileVideoEncoder find(int height) {
+        if (height >= 1080)
+            return P1080;
+        else if (height >= 720)
+            return P720;
+        else return P360;
     }
 }

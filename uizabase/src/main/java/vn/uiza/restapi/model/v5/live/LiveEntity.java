@@ -3,6 +3,8 @@ package vn.uiza.restapi.model.v5.live;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -114,7 +116,7 @@ public class LiveEntity implements Parcelable {
     }
 
     public boolean canLive() {
-        return ingest != null && ingest.canLive();
+        return ingest != null && ingest.canLive() && status == LiveStatus.READY;
     }
 
     public boolean isOnline() {
@@ -131,4 +133,17 @@ public class LiveEntity implements Parcelable {
         return null;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof LiveEntity) {
+            LiveEntity e = (LiveEntity) obj;
+            return e.getId().equalsIgnoreCase(id);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

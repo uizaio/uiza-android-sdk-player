@@ -8,19 +8,9 @@ import com.pedro.rtplibrary.base.Camera2Base;
 
 import java.io.IOException;
 
-import io.uiza.live.VideoEncoderConfig;
 import io.uiza.live.enums.ProfileVideoEncoder;
 
 public interface ICameraHelper {
-
-    /**
-     * Sets the video encoder configuration.
-     * <p>
-     * Each video encoder configuration corresponds to a set of video parameters,
-     * including the resolution, frame rate, bitrate, and video orientation.
-     */
-    void setVideoEncoderConfig(VideoEncoderConfig videoEncoder);
-
     /**
      * @param reTries retry connect reTries times
      */

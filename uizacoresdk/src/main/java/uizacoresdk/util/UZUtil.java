@@ -59,7 +59,6 @@ import static android.content.Context.ACTIVITY_SERVICE;
  */
 
 public class UZUtil {
-    private final static String TAG = UZUtil.class.getSimpleName();
 
     public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
         if (imageButton == null) {
@@ -462,12 +461,7 @@ public class UZUtil {
 
     private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.initPlaylistFolder(metadataId);
-            }
-        });
+        uzVideo.post(() -> uzVideo.initPlaylistFolder(metadataId));
     }
 
     public static boolean isDependencyAvailable(String dependencyClass) {

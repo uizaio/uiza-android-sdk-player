@@ -26,4 +26,6 @@ public interface UizaLiveListener {
     );
 
     void surfaceDestroyed();
+
+    void onBackgroundTooLong();
 }

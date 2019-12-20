@@ -1,6 +1,7 @@
 package io.uiza.samplelive;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.preference.PreferenceManager;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -28,13 +31,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
 
 import io.uiza.live.UizaLiveView;
 import io.uiza.live.enums.FilterRender;
 import io.uiza.live.enums.ProfileVideoEncoder;
 import io.uiza.live.enums.RecordStatus;
 import io.uiza.live.enums.Translate;
+import io.uiza.live.interfaces.CCUListener;
 import io.uiza.live.interfaces.CameraChangeListener;
 import io.uiza.live.interfaces.RecordListener;
 import io.uiza.live.interfaces.UizaCameraOpenException;
@@ -42,7 +45,7 @@ import io.uiza.live.interfaces.UizaLiveListener;
 import timber.log.Timber;
 
 public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListener,
-        View.OnClickListener, RecordListener, CameraChangeListener {
+        View.OnClickListener, RecordListener, CameraChangeListener, CCUListener {
 
     private static final String TAG = "UizaLiveActivity";
     private static final String RECORD_FOLDER = "uiza-live";
@@ -53,20 +56,26 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     private String currentDateAndTime = "";
     private File folder;
     private UizaLiveView liveView;
+    private TextView tvCCU;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         setContentView(R.layout.activity_live_stream);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        findViewById(R.id.btn_back).setOnClickListener(this);
         liveView = findViewById(R.id.uiza_live_view);
         liveView.setLiveListener(this);
-        liveView.setProfile(ProfileVideoEncoder.P360);
+        liveView.setProfile(ProfileVideoEncoder.P720);
         startButton = findViewById(R.id.b_start_stop);
         startButton.setOnClickListener(this);
         startButton.setEnabled(false);
         bRecord = findViewById(R.id.b_record);
         btAudio = findViewById(R.id.btn_audio);
+        tvCCU = findViewById(R.id.tv_ccu);
         bRecord.setOnClickListener(this);
         btAudio.setOnClickListener(this);
         AppCompatImageButton switchCamera = findViewById(R.id.switch_camera);
@@ -80,6 +89,28 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
             liveStreamUrl = SampleLiveApplication.getLiveEndpoint();
         }
         Timber.e("liveStreamUrl = %s", liveStreamUrl);
+        liveView.setCcuListener(this);
+        liveView.setBackgroundAllowedDuration(10000);
+        int profile = Integer.valueOf(preferences.getString("camera_profile_key", "360"));
+        int fps = Integer.valueOf(preferences.getString("fps_key", "24"));
+        int audioBitrate = Integer.valueOf(preferences.getString("audio_bitrate_key", "64"));
+        int audioSampleRate = Integer.valueOf(preferences.getString("sample_rate_key", "32000"));
+        boolean stereo = preferences.getBoolean("audio_stereo_key", true);
+        liveView.setProfile(ProfileVideoEncoder.find(profile));
+        liveView.setFps(fps);
+        liveView.setAudioBitrate(audioBitrate);
+        liveView.setAudioSampleRate(audioSampleRate);
+        liveView.setAudioStereo(stereo);
+    }
+
+    @Override
+    protected void onResume() {
+        Timber.e("onResume");
+        if (liveView != null) {
+            Timber.e("liveView onResume");
+            liveView.onResume();
+        }
+        super.onResume();
     }
 
     @Override
@@ -374,14 +405,16 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
             } else {
                 liveView.stopRecord();
             }
-        } else if(id == R.id.btn_audio){
+        } else if (id == R.id.btn_audio) {
             Timber.e("audioMuted: %b", liveView.isAudioMuted());
-            if(liveView.isAudioMuted()){
+            if (liveView.isAudioMuted()) {
                 liveView.enableAudio();
             } else {
                 liveView.disableAudio();
             }
             btAudio.setChecked(liveView.isAudioMuted());
+        } else if (id == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -397,6 +430,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     public void onConnectionSuccess() {
         startButton.setChecked(true);
         btAudio.setVisibility(View.VISIBLE);
+        tvCCU.setVisibility(View.VISIBLE);
         btAudio.setChecked(false);
         Toast.makeText(UizaLiveActivity.this, "Connection success", Toast.LENGTH_SHORT).show();
     }
@@ -422,6 +456,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     public void onDisconnect() {
         startButton.setChecked(false);
         btAudio.setVisibility(View.GONE);
+        tvCCU.setVisibility(View.GONE);
         btAudio.setChecked(false);
         Toast.makeText(UizaLiveActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
     }
@@ -450,6 +485,16 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     @Override
     public void surfaceDestroyed() {
         Timber.e("surfaceDestroyed");
+    }
+
+    @Override
+    public void onBackgroundTooLong() {
+        Toast.makeText(this, "You go to background for a long time !", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCcu(int viewers) {
+        runOnUiThread(() -> tvCCU.setText(String.valueOf(viewers)));
     }
 
     @Override

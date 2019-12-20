@@ -28,6 +28,7 @@ public interface UizaLiveService {
 
     /**
      * Get list of entities
+     * Default pageSize = 10
      */
     @GET("/v1/live_entities")
     Observable<ListWrap<LiveEntity>> getEntities();
@@ -75,10 +76,18 @@ public interface UizaLiveService {
     Observable<LiveEntity> resetStreamKey(@Path("id") String id);
 
     /**
-     * Get an session
+     * Get an session => move to private api
      */
+    @Deprecated
     @GET("/v1/live_entities/{entity_id}/live_sessions/{id}")
     Observable<LiveSession> getSession(@Path("entity_id") String entityId, @Path("id") String id);
+
+    /**
+     * Get list of sessions
+     * pageSize default 10
+     */
+    @GET("/v1/live_entities/{entity_id}/live_sessions")
+    Observable<ListWrap<LiveSession>> getSessions(@Path("entity_id") String entityId);
 
     /**
      * Get list of sessions

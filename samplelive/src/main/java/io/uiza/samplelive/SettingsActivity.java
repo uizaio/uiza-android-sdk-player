@@ -35,7 +35,6 @@ public class SettingsActivity extends AppCompatActivity {
                         String value = (String) newValue;
                         UizaClientFactory.changeAPIToken(value);
                         Timber.e(value);
-
                     }
                     return true;
                 });

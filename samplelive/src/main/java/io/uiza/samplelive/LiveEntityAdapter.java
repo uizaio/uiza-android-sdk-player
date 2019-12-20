@@ -1,19 +1,24 @@
 package io.uiza.samplelive;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.restapi.model.v5.live.LiveStatus;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -73,15 +78,8 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             default:
                 ItemViewHolder itemHolder = (ItemViewHolder) holder;
                 itemHolder.titleView.setText(entity.getName());
-                if (entity.getStatus() != null)
-                    itemHolder.descView.setText(entity.getStatus().getValue());
-                else
-                    itemHolder.descView.setText("");
-                itemHolder.itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(holder.itemView.getContext(), CheckLiveActivity.class);
-                    intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, entity);
-                    holder.itemView.getContext().startActivity(intent);
-                });
+                itemHolder.setStatusView(entity.getStatus());
+                itemHolder.itemView.setOnClickListener(v -> itemHolder.onClick(entity));
                 if (listener != null) {
                     itemHolder.actionBtn.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
                 }
@@ -93,14 +91,49 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     protected static class ItemViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         AppCompatTextView titleView;
-        AppCompatTextView descView;
+        AppCompatTextView statusView;
         AppCompatImageButton actionBtn;
 
         ItemViewHolder(View root) {
             super(root);
             titleView = root.findViewById(R.id.tv_title);
-            descView = root.findViewById(R.id.tv_description);
+            statusView = root.findViewById(R.id.tv_status);
             actionBtn = root.findViewById(R.id.action_button);
+        }
+
+        private void setStatusView(LiveStatus status) {
+            if (status == null) {
+                statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_err, null));
+                statusView.setText("Error");
+                return;
+            }
+            switch (status) {
+                case INIT:
+                    statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_init, null));
+                    break;
+                case READY:
+                    statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_ready, null));
+                    break;
+                case BROADCASTING:
+                    statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_live, null));
+                    break;
+            }
+            statusView.setText(status.getValue());
+        }
+
+        private void onClick(LiveEntity entity) {
+            Context context = itemView.getContext();
+            if (entity.canLive()) {
+                Intent liveIntent = new Intent(context, UizaLiveActivity.class);
+                liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ENDPOINT, entity.getIngest().getStreamLink());
+                ((Activity)context).startActivityForResult(liveIntent, 1001);
+            } else if (entity.isOnline()) {
+                Toast.makeText(context, "Thread is streaming..", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(context, CheckLiveActivity.class);
+                intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, entity);
+                ((Activity)context).startActivityForResult(intent, 1001);
+            }
         }
     }
 
@@ -141,6 +174,16 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             entities.remove(position);
             notifyItemRemoved(position);
         }
+    }
+
+    public void replace(LiveEntity entity) {
+        int position = entities.indexOf(entity);
+        if (position < entities.size() && position >= 0) {
+            entities.remove(position);
+            entities.add(position, entity);
+            notifyItemChanged(position);
+        }
+
     }
 
     public void clear() {

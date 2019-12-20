@@ -1,15 +1,18 @@
 package vn.uiza.utils.util;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+
 import vn.uiza.core.common.Constants;
 
 public final class IntentUtils {
@@ -18,11 +21,11 @@ public final class IntentUtils {
         throw new UnsupportedOperationException("u can't troll me...");
     }
 
-    public static Intent getInstallAppIntent(String filePath, String authority) {
-        return getInstallAppIntent(FileUtils.getFileByPath(filePath), authority);
+    public static Intent getInstallAppIntent(Context context,String filePath, String authority) {
+        return getInstallAppIntent(context, FileUtils.getFileByPath(filePath), authority);
     }
 
-    public static Intent getInstallAppIntent(File file, String authority) {
+    public static Intent getInstallAppIntent(Context context, File file, String authority) {
         if (file == null) return null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
@@ -31,7 +34,7 @@ public final class IntentUtils {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            data = FileProvider.getUriForFile(Utils.getContext(), authority, file);
+            data = FileProvider.getUriForFile(context, authority, file);
         }
         intent.setDataAndType(data, type);
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -43,8 +46,8 @@ public final class IntentUtils {
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    public static Intent getLaunchAppIntent(String packageName) {
-        return Utils.getContext().getPackageManager().getLaunchIntentForPackage(packageName);
+    public static Intent getLaunchAppIntent(Context context, String packageName) {
+        return context.getPackageManager().getLaunchIntentForPackage(packageName);
     }
 
     public static Intent getAppDetailsSettingsIntent(String packageName) {

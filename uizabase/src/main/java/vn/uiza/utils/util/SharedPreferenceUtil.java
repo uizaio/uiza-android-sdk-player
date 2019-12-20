@@ -3,13 +3,14 @@ package vn.uiza.utils.util;
 import android.content.SharedPreferences;
 
 public class SharedPreferenceUtil {
+
     public static <T> void put(SharedPreferences preferences, String key, T data) {
         SharedPreferences.Editor editor = preferences.edit();
         if (data instanceof String) {
             editor.putString(key, (String) data);
-        } else if (data instanceof  Boolean) {
+        } else if (data instanceof Boolean) {
             editor.putBoolean(key, (Boolean) data);
-        } else if (data instanceof  Float) {
+        } else if (data instanceof Float) {
             editor.putFloat(key, (Float) data);
         } else if (data instanceof Integer) {
             editor.putInt(key, (Integer) data);
@@ -21,18 +22,20 @@ public class SharedPreferenceUtil {
         editor.apply();
     }
 
-    public static <T> Object get(SharedPreferences preferences, String key, T defaultValue) {
+    public static <T> T get(SharedPreferences preferences, String key, T defaultValue) {
         try {
             if (defaultValue instanceof String) {
-                return preferences.getString(key, (String) defaultValue);
+                return (T) preferences.getString(key, (String) defaultValue);
             } else if (defaultValue instanceof Integer) {
-                return preferences.getInt(key, (Integer) defaultValue);
+                return (T) Integer.valueOf(preferences.getInt(key, (Integer) defaultValue));
             } else if (defaultValue instanceof Boolean) {
-                return preferences.getBoolean(key, (Boolean) defaultValue);
+                return (T) Boolean.valueOf(preferences.getBoolean(key, (Boolean) defaultValue));
             } else if (defaultValue instanceof Long) {
-                return preferences.getLong(key, (Long) defaultValue);
+                return (T) Long.valueOf(preferences.getLong(key, (Long) defaultValue));
             } else if (defaultValue instanceof Float) {
-                return preferences.getFloat(key, (Float) defaultValue);
+                return (T) Float.valueOf(preferences.getFloat(key, (Float) defaultValue));
+            } else if (defaultValue instanceof Double) {
+                return (T) Double.valueOf(preferences.getFloat(key, (Float) defaultValue));
             } else {
                 throw new IllegalArgumentException("This data is not support to save to shared preference");
             }

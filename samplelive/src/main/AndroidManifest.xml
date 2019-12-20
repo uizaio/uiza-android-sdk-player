@@ -53,7 +53,12 @@
         <activity
             android:name=".UizaLiveActivity"
             android:parentActivityName=".CheckLiveActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InputActivity"
+            android:label="@string/force_new_live"
+            android:theme="@style/DlgAppTheme" />
     </application>
 
 </manifest>

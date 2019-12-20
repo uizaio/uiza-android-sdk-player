@@ -14,6 +14,10 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -23,6 +27,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -41,17 +47,19 @@ import net.ossrs.rtmp.ConnectCheckerRtmp;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import io.uiza.live.enums.FilterRender;
-import io.uiza.live.enums.FrameRate;
 import io.uiza.live.enums.OrientationMode;
 import io.uiza.live.enums.ProfileVideoEncoder;
+import io.uiza.live.interfaces.CCUListener;
 import io.uiza.live.interfaces.CameraChangeListener;
 import io.uiza.live.interfaces.ICameraHelper;
 import io.uiza.live.interfaces.RecordListener;
 import io.uiza.live.interfaces.UizaLiveListener;
 import io.uiza.live.util.LiveUtil;
 import timber.log.Timber;
+import vn.uiza.core.utilities.LScreenUtil;
 
 /**
  * @required: <uses-permission android:name="android.permission.CAMERA"/> and
@@ -59,13 +67,13 @@ import timber.log.Timber;
  */
 public class UizaLiveView extends RelativeLayout {
 
-    private static final String TAG = "UizaLiveView";
-
+    private static final long SECOND = 1000;
+    private static final long MINUTE = 60 * SECOND;
     private static final int SURFACE = 0;
     private static final int TEXTURE = 1;
     private static final int OPENGL = 2;
     private static final int LIGH_OPENGL = 3;
-
+    private String mainStreamUrl;
     private ICameraHelper cameraHelper;
     /**
      * ProfileEncoder default 360p
@@ -102,6 +110,13 @@ public class UizaLiveView extends RelativeLayout {
     private boolean adaptiveBitrate;
 
     private UizaLiveListener liveListener;
+
+    private CCUListener ccuListener;
+    private long backgroundAllowedDuration = 2 * MINUTE; // default is 2 minutes
+    private CountDownTimer backgroundTimer;
+    private boolean isBroadcastingBeforeGoingBackground;
+    private boolean isFromBackgroundTooLong;
+    private boolean isLandscape;
 
     private BitrateAdapter bitrateAdapter;
 
@@ -246,10 +261,6 @@ public class UizaLiveView extends RelativeLayout {
         progressBar = findViewById(R.id.pb);
         progressBar.getIndeterminateDrawable().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
         cameraHelper.setConnectReTries(10);
-        VideoEncoderConfig config = new VideoEncoderConfig(
-                new VideoDimension(profile.getWidth(), profile.getHeight()),
-                FrameRate.FPS_24, profile.getBitrate(), orientationMode);
-        cameraHelper.setVideoEncoderConfig(config);
     }
 
     private void showShouldAcceptPermission() {
@@ -306,6 +317,95 @@ public class UizaLiveView extends RelativeLayout {
         this.liveListener = liveListener;
     }
 
+    int ccu;
+
+    public void setCcuListener(CCUListener ccuListener) {
+        this.ccuListener = ccuListener;
+        handler.sendEmptyMessage(0);
+    }
+
+    Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (ccuListener != null) {
+                if (cameraHelper != null && cameraHelper.isStreaming()) {
+                    ccu += (new Random()).nextInt(11);
+                    ccuListener.onCcu(ccu);
+                }
+                handler.sendEmptyMessageDelayed(0, 3000);
+            }
+        }
+    };
+
+    /**
+     * Must be called when the app go to resume state
+     */
+    public void onResume() {
+        checkAndResumeLivestreamIfNeeded();
+        if (isFromBackgroundTooLong) {
+            if (liveListener != null) {
+                liveListener.onBackgroundTooLong();
+            }
+            isFromBackgroundTooLong = false;
+        }
+    }
+
+    /**
+     * Set duration which allows livestream to keep the info
+     *
+     * @param duration the duration which allows livestream to keep the info
+     */
+    public void setBackgroundAllowedDuration(long duration) {
+        this.backgroundAllowedDuration = duration;
+    }
+
+    private void checkAndResumeLivestreamIfNeeded() {
+        cancelBackgroundTimer();
+
+        if (!isBroadcastingBeforeGoingBackground) return;
+
+        isBroadcastingBeforeGoingBackground = false;
+        // We delay a second because the surface need to be resumed before we can prepare something
+        // Improve this method whenever you can
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    stopStream(); // make sure stop stream and start it again
+                    if (prepareAudio() && prepareVideo(isLandscape)) {
+                        startStream(mainStreamUrl);
+                    }
+                } catch (Exception ignored) {
+                    Timber.e("Can not resume livestream right now !");
+                }
+            }
+        }, SECOND);
+    }
+
+    private void startBackgroundTimer() {
+        if (backgroundTimer == null) {
+            backgroundTimer = new CountDownTimer(backgroundAllowedDuration, SECOND) {
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                public void onFinish() {
+                    isBroadcastingBeforeGoingBackground = false;
+                    isFromBackgroundTooLong = true;
+                }
+            };
+        }
+        backgroundTimer.start();
+    }
+
+    private void cancelBackgroundTimer() {
+        if (backgroundTimer != null) {
+            backgroundTimer.cancel();
+        }
+        backgroundTimer = null;
+    }
+
     /**
      * you must call in onInit()
      *
@@ -347,9 +447,17 @@ public class UizaLiveView extends RelativeLayout {
         cameraHelper.startPreview(cameraHelper.isFrontCamera() ? CameraHelper.Facing.FRONT : CameraHelper.Facing.BACK);
     }
 
+    /**
+     * Please call {@link #prepareStream} before use
+     *
+     * @param liveEndpoint
+     */
     public void startStream(String liveEndpoint) {
+        mainStreamUrl = liveEndpoint;
+        Timber.e("mainStreamUrl: %s", mainStreamUrl);
         progressBar.setVisibility(View.VISIBLE);
         cameraHelper.startStream(liveEndpoint);
+        Timber.d("startStream streamUrl %s", liveEndpoint);
     }
 
     public boolean isStreaming() {
@@ -379,16 +487,58 @@ public class UizaLiveView extends RelativeLayout {
         cameraHelper.stopRecord();
     }
 
+    /**
+     * Call this method before use @startStream.
+     *
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
     public boolean prepareStream() {
         return prepareAudio() && prepareVideo();
     }
 
+    /**
+     * Call this method before use {@link #startStream}.
+     *
+     * @param isLandscape:
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
+    public boolean prepareStream(boolean isLandscape) {
+        return prepareAudio() && prepareVideo(isLandscape);
+    }
+
+    /**
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     * audio bitrate is dynamic
+     * sampleRate of audio in hz: 44100
+     * isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     * (1 audio channel).
+     * echoCanceler: check from AcousticEchoCanceler.isAvailable()
+     * noiseSuppressor: check from NoiseSuppressor.isAvailable()
+     *
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
     public boolean prepareAudio() {
         return cameraHelper.prepareAudio(audioBitrate, audioSampleRate, audioStereo);
     }
 
+    /**
+     * default rotation
+     *
+     * @return
+     */
     public boolean prepareVideo() {
-        return cameraHelper.prepareVideo(profile, fps, keyframe, CameraHelper.getCameraOrientation(getContext()));
+        int rotation = CameraHelper.getCameraOrientation(getContext());
+        isLandscape = rotation == 0 || rotation == 180;
+        return cameraHelper.prepareVideo(profile, fps, keyframe, rotation);
+    }
+
+
+    public boolean prepareVideo(boolean isLandscape) {
+        this.isLandscape = isLandscape;
+        return cameraHelper.prepareVideo(profile, fps, keyframe, isLandscape ? 0 : 90);
     }
 
     public void enableAA(boolean enable) {
@@ -419,7 +569,7 @@ public class UizaLiveView extends RelativeLayout {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            ((AutoFitTextureView) findViewById(R.id.camera_view)).setAspectRatio(480, 640);
+            ((AutoFitTextureView) findViewById(R.id.camera_view)).setAspectRatio(480, 854);
             if (liveListener != null) {
                 liveListener.surfaceCreated();
             }
@@ -442,6 +592,7 @@ public class UizaLiveView extends RelativeLayout {
                 cameraHelper.stopStream();
             }
             cameraHelper.stopPreview();
+            startBackgroundTimer();
             if (liveListener != null) {
                 liveListener.surfaceDestroyed();
             }
@@ -464,9 +615,12 @@ public class UizaLiveView extends RelativeLayout {
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            cameraHelper.startPreview(CameraHelper.Facing.FRONT);
+            double hpw = LScreenUtil.getHpW();
+            int maxHeight = (int) (width * hpw);
+            int mHeight = Math.min(maxHeight, height);
+            cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, mHeight);
             if (liveListener != null) {
-                liveListener.surfaceChanged(format, width, height);
+                liveListener.surfaceChanged(format, width, mHeight);
             }
         }
 
@@ -479,6 +633,7 @@ public class UizaLiveView extends RelativeLayout {
                 cameraHelper.stopStream();
             }
             cameraHelper.stopPreview();
+            startBackgroundTimer();
             if (liveListener != null) {
                 liveListener.surfaceDestroyed();
             }
@@ -510,7 +665,7 @@ public class UizaLiveView extends RelativeLayout {
                     }
                 }
             });
-
+            isBroadcastingBeforeGoingBackground = true;
         }
 
         @Override

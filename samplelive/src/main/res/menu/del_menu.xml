@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/rename_entity"
+        android:title="Update" />
     <item
         android:id="@+id/del_entity"
-        android:title="@string/menu_del"
-        />
+        android:title="@string/menu_del" />
+    <item
+        android:id="@+id/detail_entity"
+        android:title="Details" />
 </menu>

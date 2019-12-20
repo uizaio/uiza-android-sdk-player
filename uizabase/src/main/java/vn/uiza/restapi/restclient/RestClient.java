@@ -68,7 +68,7 @@ public abstract class RestClient {
         addHeader(AUTHORIZATION, token);
     }
 
-    public void changeAuthorization(String token){
+    public void changeAuthorization(String token) {
         removeAuthorization();
         addAuthorization(token);
     }

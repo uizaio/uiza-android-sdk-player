@@ -30,6 +30,7 @@ public class LSApplication extends MultiDexApplication {
 
     private static final String DOMAIN_API = "https://development-api.uizadev.io";
     private static final String API_TOKEN = "uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15";
+    public static final String DEFAULT_REGION = "asia-south1";
     SharedPreferences preferences;
     @Override
     public void onCreate() {
