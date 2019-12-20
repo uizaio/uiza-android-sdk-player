@@ -22,7 +22,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.model.v5.UizaPlayback;
-import vn.uiza.utils.StringUtil;
 import vn.uiza.views.LToast;
 
 /**
@@ -34,6 +33,14 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     private UZVideo uzVideo;
     private EditText etLinkPlay;
     private Button btPlay;
+
+    private boolean isLive = false;
+
+    private static final String[] urls = new String[]{
+            "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+            "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8",
+            "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+            "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,41 +76,30 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             }
         });
 
-        final UizaPlayback uZCustomLinkPlay0 = new UizaPlayback();
-        uZCustomLinkPlay0.setHls("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
-
-        final UizaPlayback uZCustomLinkPlay1 = new UizaPlayback();
-        uZCustomLinkPlay1.setHls("https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8");
-        uZCustomLinkPlay1.setLive(true);
-
-        final UizaPlayback uZCustomLinkPlay2 = new UizaPlayback();
-        uZCustomLinkPlay2.setHls("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8");
-        uZCustomLinkPlay2.setLive(true);
-
-        final UizaPlayback uZCustomLinkPlay3 = new UizaPlayback();
-        uZCustomLinkPlay3.setHls("https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd");
-
         findViewById(R.id.bt_0).setOnClickListener(view -> {
-            UZDataCLP.getInstance().setPlayback(uZCustomLinkPlay0);
-            etLinkPlay.setText(StringUtil.toBeautyJson(uZCustomLinkPlay0));
+            etLinkPlay.setText(urls[0]);
             LUIUtil.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_1).setOnClickListener(view -> {
-            UZDataCLP.getInstance().setPlayback(uZCustomLinkPlay1);
-            etLinkPlay.setText(StringUtil.toBeautyJson(uZCustomLinkPlay1));
+            etLinkPlay.setText(urls[1]);
+            isLive = true;
             LUIUtil.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_2).setOnClickListener(view -> {
-            UZDataCLP.getInstance().setPlayback(uZCustomLinkPlay2);
-            etLinkPlay.setText(StringUtil.toBeautyJson(uZCustomLinkPlay2));
+            etLinkPlay.setText(urls[2]);
+            isLive = true;
             LUIUtil.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_3).setOnClickListener(view -> {
-            UZDataCLP.getInstance().setPlayback(uZCustomLinkPlay3);
-            etLinkPlay.setText(StringUtil.toBeautyJson(uZCustomLinkPlay3));
+            etLinkPlay.setText(urls[3]);
             LUIUtil.setLastCursorEditText(etLinkPlay);
         });
+
         btPlay.setOnClickListener(view -> {
+            final UizaPlayback playback = new UizaPlayback();
+            playback.setHls(etLinkPlay.getText().toString());
+            playback.setLive(isLive);
+            UZDataCLP.getInstance().setPlayback(playback);
             boolean isInitSuccess = UZUtil.initCustomLinkPlay(activity, uzVideo);
             if (!isInitSuccess) {
                 LToast.show(activity, "Init failed");

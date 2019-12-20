@@ -41,7 +41,7 @@ If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will nee
 - Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
 
         // for ChromeCast
-        implementation 'com.android.support:mediarouter-v7:28.0.0'
+        implementation 'androidx.mediarouter:mediarouter:1.0.0'
         implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
 
 - If advertising support should be enabled, also add the following dependencies to your project:
@@ -94,7 +94,7 @@ compileOptions {
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, Constants.API_VERSION_4, api, token, appId);
+                UZUtil.initWorkspace(this, baseApiUrl, apiToken);
             }
      }
      ```
@@ -115,9 +115,9 @@ compileOptions {
 ## How to call API?:
 Call api by using this function
 
-    UZService service = UZRestClient.createService(UZService.class);
-    UZAPIMaster.getInstance().subscribe(service.getListMetadata(),
-    	resultGetListMetadata -> {},
+    UizaLiveService service = UizaClientFactory.getLiveService();
+    RxBinder.bind(service.getEntity(entityId),
+    	listEntityWraps -> {},
     	throwable -> {}
     );
   Other API can be used with the same function above.
@@ -155,7 +155,7 @@ In your `activity` or `fragment`
     ```
     uzVideo = (UZVideo) findViewById(R.id.uiza_video);
     uzVideo.setUZCallback(this);
-    UZUtil.initEntity(activity, uzVideo, "put the entity id here");
+    UZUtil.initEntity(activity, uzVideo, "put the entityId or UizaPlayback here");
     ```
 - Play with playlist/folder:
     ```
@@ -228,18 +228,18 @@ On function `onCreate()` of `Activity`, put this code:
 Ex:
 
     @Override  
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedState) {
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedState);
     }
 
 **Note:** If you are using Chromecast, please use UZUtil.setCasty(Activity activity) on function onCreate() of Activity
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedState) {
         UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedState);
     }
 
 Ex: findView from your custom layout:
@@ -309,15 +309,16 @@ In `onPermission()`:
 
 Start a `portrait` livestream:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {  
-        uzLivestream.startStream(uzLivestream.getMainStreamUrl());  
+    if (uzLivestream.prepareStream()) {  
+        uzLivestream.startStream(liveStreamUrl);  
     }
 
 To stream in landscape mode, use `uzLivestream.prepareVideoLandscape()` instead.
 
 Start a livestream and save to MP4 file:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD()) {  
+	uzLivestream.setProfile(ProfileVideoEncoder.P720);
+    if (uzLivestream.prepareStream()) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
