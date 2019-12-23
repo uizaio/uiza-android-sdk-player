@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.bt_vod_list).setOnClickListener(this);
         findViewById(R.id.bt_guide).setOnClickListener(this);
         findViewById(R.id.bt_fixtest).setOnClickListener(this);
         findViewById(R.id.bt_live_playback).setOnClickListener(this);
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.bt_vod_list:
+                launchActivity(VODListActivity.class);
+                break;
             case R.id.bt_guide:
                 launchActivity(UizaTestAPIActivity.class);
                 break;

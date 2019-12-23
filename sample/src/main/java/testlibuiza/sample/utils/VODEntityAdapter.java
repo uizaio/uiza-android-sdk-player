@@ -12,31 +12,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.v5.LivePlaybackActivity;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.LiveStatus;
+import testlibuiza.sample.v3.linkplay.PlayerActivity;
+import vn.uiza.restapi.model.v5.vod.VODEntity;
+import vn.uiza.utils.util.ViewUtils;
 
-public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ViewHolder> {
+public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.ViewHolder> {
 
-    List<LiveEntity> entities;
-
+    List<VODEntity> entities;
     OnMoreActionListener listener;
 
-    public LiveEntityAdapter() {
+    public VODEntityAdapter() {
     }
 
-    public void setEntities(List<LiveEntity> entities) {
+    public void setEntities(List<VODEntity> entities) {
         this.entities = entities;
         notifyDataSetChanged();
     }
 
-    public void setOnMoreListener(OnMoreActionListener listener) {
+    public void setMoreActionListener(OnMoreActionListener listener) {
         this.listener = listener;
     }
 
@@ -50,9 +48,9 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        LiveEntity entity = entities.get(position);
+        VODEntity entity = entities.get(position);
         holder.titleView.setText(entity.getName());
-        holder.setStatusView(entity.getStatus());
+        holder.setThumbnail(entity);
         holder.itemView.setOnClickListener(v -> holder.onClick(entity));
         if (listener != null) {
             holder.actionButton.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
@@ -66,8 +64,8 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
         return entities.size();
     }
 
-    public LiveEntity getItemId(String id) {
-        for (LiveEntity entity : entities) {
+    public VODEntity getItemId(String id) {
+        for (VODEntity entity : entities) {
             if (entity.getId().equalsIgnoreCase(id)) {
                 return entity;
             }
@@ -76,7 +74,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
     }
 
     public void removeItem(String id) {
-        LiveEntity entity = getItemId(id);
+        VODEntity entity = getItemId(id);
         if (entity != null) {
             entities.remove(entity);
             notifyDataSetChanged();
@@ -96,38 +94,22 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
             statusView = root.findViewById(R.id.tv_status);
             thumbnailView = root.findViewById(R.id.iv_thumbnail);
             actionButton = root.findViewById(R.id.action_button);
+            statusView.setVisibility(View.GONE);
         }
 
-        private void setStatusView(LiveStatus status) {
-            if (status == null) {
-                statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_err, null));
-                statusView.setText("Error");
-                return;
-            }
-            switch (status) {
-                case INIT:
-                case READY:
-                    statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_init, null));
-                    statusView.setText("Offline");
-                    break;
-                case BROADCASTING:
-                    statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_live, null));
-                    statusView.setText(status.getValue());
-                    break;
-            }
-
+        private void setThumbnail(VODEntity entity) {
+            ViewUtils.loadImage(thumbnailView, entity.getThumbnail(), R.drawable.ic_person_white_48);
         }
 
-        private void onClick(LiveEntity entity) {
+        private void onClick(VODEntity entity) {
             Context context = itemView.getContext();
-            if (entity.isOnline()) {
-                Intent liveIntent = new Intent(context, LivePlaybackActivity.class);
+            if (entity.getUizaPlayback().canPlay()) {
+                Intent liveIntent = new Intent(context, PlayerActivity.class);
                 liveIntent.putExtra("extra_live_entity", entity);
                 ((Activity) context).startActivityForResult(liveIntent, 1001);
             } else {
-                Toast.makeText(context, "Thread is offline", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No playback...", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }

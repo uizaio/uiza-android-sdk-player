@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Sample UizaV5</string>
+    <string name="live_playback">Uiza Live Playback</string>
+    <string name="vod_playback">Uiza VOD Playback</string>
     <string name="video_info">This is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\n</string>
     <string name="title_activity_settings">Settings</string>
     <string name="source_title">Source</string>

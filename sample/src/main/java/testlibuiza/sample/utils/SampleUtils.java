@@ -15,6 +15,10 @@ public class SampleUtils {
         attachLayout(recyclerView, LinearLayout.VERTICAL, 1, false);
     }
 
+    public static void setVertical(RecyclerView recyclerView, int spanCount) {
+        attachLayout(recyclerView, LinearLayout.VERTICAL, spanCount, false);
+    }
+
     public static void setVertical(RecyclerView recyclerView, int spanCount, boolean reverse) {
         attachLayout(recyclerView, LinearLayout.VERTICAL, spanCount, reverse);
     }

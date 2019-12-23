@@ -30,26 +30,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Uiza VOD"
+                    android:text="@string/vod_playback"
                     android:textSize="@dimen/txt_30" />
 
                 <Button
-                    android:id="@+id/bt_slide_0"
+                    android:id="@+id/bt_vod_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.1 Slide" />
-
-                <Button
-                    android:id="@+id/bt_resize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1.2. Resize" />
+                    android:text="1.0 VOD" />
 
                 <Button
                     android:id="@+id/bt_fixtest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.3. Fix Test" />
+                    android:text="1.1 Fix Test" />
 
             </LinearLayout>
 
@@ -64,14 +58,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Uiza Live Playback"
+                    android:text="@string/live_playback"
                     android:textSize="@dimen/txt_30" />
 
                 <Button
                     android:id="@+id/bt_live_playback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. Playback" />
+                    android:text="2. Live" />
             </LinearLayout>
 
             <LinearLayout

@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".sample.v5.VODListActivity"
+            android:label="@string/vod_playback"
+            android:parentActivityName=".sample.v5.MainActivity" />
+        <activity
             android:name=".sample.v5.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".sample.v5.MainActivity">
@@ -32,11 +36,12 @@
             android:parentActivityName=".sample.v5.MainActivity" />
         <activity
             android:name=".sample.v5.LiveListActivity"
+            android:label="@string/live_playback"
             android:parentActivityName=".sample.v5.MainActivity" />
         <activity
             android:name=".sample.v5.LivePlaybackActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- This is important to give configChanges in case you want full screen mode -->
         <activity
             android:name=".sample.v3.fullscreen.PortraitFullScreenActivity"

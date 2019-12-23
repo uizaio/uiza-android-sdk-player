@@ -119,6 +119,10 @@ public class LiveEntity implements Parcelable {
         return ingest != null && ingest.canLive() && status == LiveStatus.READY;
     }
 
+    public boolean isInit() {
+        return status == LiveStatus.INIT;
+    }
+
     public boolean isOnline() {
         return status == LiveStatus.BROADCASTING;
     }

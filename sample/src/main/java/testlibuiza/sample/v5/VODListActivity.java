@@ -15,38 +15,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.reactivex.disposables.CompositeDisposable;
 import testlibuiza.R;
-import testlibuiza.sample.utils.LiveEntityAdapter;
 import testlibuiza.sample.utils.OnMoreActionListener;
 import testlibuiza.sample.utils.SampleUtils;
+import testlibuiza.sample.utils.VODEntityAdapter;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.restapi.UizaVodService;
+import vn.uiza.restapi.model.ListWrap;
+import vn.uiza.restapi.model.v5.vod.VODEntity;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 
-
-public class LiveListActivity extends AppCompatActivity implements OnMoreActionListener, PopupMenu.OnMenuItemClickListener {
+public class VODListActivity extends AppCompatActivity implements OnMoreActionListener,
+        PopupMenu.OnMenuItemClickListener {
 
     TextView textView;
     ProgressBar progressBar;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    LiveEntityAdapter adapter;
+    VODEntityAdapter adapter;
     String currentEntityId;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedState) {
+        super.onCreate(savedState);
         setContentView(R.layout.activity_livelist);
         RecyclerView recyclerView = findViewById(R.id.rcv_content);
         progressBar = findViewById(R.id.progress_bar);
         textView = findViewById(R.id.tv_message);
         SampleUtils.setVertical(recyclerView, 2);
-        adapter = new LiveEntityAdapter();
-        adapter.setOnMoreListener(this);
+        adapter = new VODEntityAdapter();
+        adapter.setMoreActionListener(this);
         recyclerView.setAdapter(adapter);
-        loadLiveEntities();
+        loadVODEntities();
     }
 
     @Override
@@ -57,11 +58,11 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
         }
     }
 
-    private void loadLiveEntities() {
+    private void loadVODEntities() {
         progressBar.setVisibility(View.VISIBLE);
-        UizaLiveService service = UizaClientFactory.getLiveService();
+        UizaVodService service = UizaClientFactory.getVideoService();
         compositeDisposable.add(RxBinder.bind(service.getEntities()
-                        .map(o -> ListUtil.filter(o.getData(), e -> !e.isInit())),
+                        .map(ListWrap::getData),
                 entities -> {
                     if (!ListUtil.isEmpty(entities)) {
                         adapter.setEntities(entities);
@@ -77,10 +78,10 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
                 }, () ->
                         progressBar.setVisibility(View.GONE)
         ));
-
     }
 
-    private void showDetailDialog(final LiveEntity entity) {
+
+    private void showDetailDialog(final VODEntity entity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(entity.getName());
         builder.setMessage(StringUtil.toBeautyJson(entity));
@@ -106,7 +107,7 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int itemId = item.getItemId();
-        LiveEntity entity = adapter.getItemId(currentEntityId);
+        VODEntity entity = adapter.getItemId(currentEntityId);
         if (itemId == R.id.detail_entity) {
             showDetailDialog(entity);
         }

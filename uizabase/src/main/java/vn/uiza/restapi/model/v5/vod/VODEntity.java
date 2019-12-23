@@ -170,7 +170,7 @@ public class VODEntity implements Parcelable {
     }
 
     public String getThumbnail() {
-        return thumbnail;
+        return thumbnail == null ? poster : thumbnail;
     }
 
     public VODType getType() {
