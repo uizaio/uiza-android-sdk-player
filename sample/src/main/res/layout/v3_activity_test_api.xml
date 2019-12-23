@@ -226,6 +226,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Get time start live" />
+                    <Button
+                        android:id="@+id/bt_check_live"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Check live" />
 
                 </LinearLayout>
             </HorizontalScrollView>

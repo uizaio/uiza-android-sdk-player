@@ -34,6 +34,7 @@ import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.uiza.model.v4.LiveStatusResponse;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
@@ -77,6 +78,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
         findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
         findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
+        findViewById(R.id.bt_check_live).setOnClickListener(this);
 
         findViewById(R.id.bt_list_skin).setOnClickListener(this);
         findViewById(R.id.bt_skin_config).setOnClickListener(this);
@@ -153,6 +155,9 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
             case R.id.bt_get_time_start_live:
                 getTimeStartLive();
                 break;
+            case R.id.bt_check_live:
+                checkLiveStatus();
+                break;
             case R.id.bt_list_skin:
                 getListSkin();
                 break;
@@ -165,8 +170,27 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+
+
     private void showTv(Object o) {
         LUIUtil.printBeautyJson(o, tv);
+    }
+
+    private void checkLiveStatus() {
+        UZService service = UZRestClient.createService(UZService.class);
+        UZAPIMaster.getInstance().subscribe(service.checkLiveStatus(UZData.getInstance().getAPIVersion(), "2997cbf0-6a25-42ef-955e-c11469c2ec6b"), new ApiSubscriber<LiveStatusResponse>() {
+            @Override
+            public void onSuccess(LiveStatusResponse o) {
+                LLog.d(TAG, "isAvailable: " + o.getCheckLiveStatus().isAvailable());
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "checkLiveStatus onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
     }
 
     private void createAnUser() {
