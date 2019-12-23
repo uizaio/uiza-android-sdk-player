@@ -105,7 +105,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
             Context context = itemView.getContext();
             if (entity.getUizaPlayback().canPlay()) {
                 Intent liveIntent = new Intent(context, PlayerActivity.class);
-                liveIntent.putExtra("extra_live_entity", entity);
+                liveIntent.putExtra("extra_vod_entity", entity);
                 ((Activity) context).startActivityForResult(liveIntent, 1001);
             } else {
                 Toast.makeText(context, "No playback...", Toast.LENGTH_SHORT).show();

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_vod_list).setOnClickListener(this);
         findViewById(R.id.bt_guide).setOnClickListener(this);
         findViewById(R.id.bt_fixtest).setOnClickListener(this);
+        findViewById(R.id.bt_fire_login).setOnClickListener(this);
         findViewById(R.id.bt_live_playback).setOnClickListener(this);
         findViewById(R.id.bt_settings).setOnClickListener(this);
         findViewById(R.id.bt_dummy).setOnClickListener(this);
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_guide:
                 launchActivity(UizaTestAPIActivity.class);
+                break;
+            case R.id.bt_fire_login:
+                launchActivity(FirebaseAuthActivity.class);
                 break;
             case R.id.bt_live_playback:
                 launchActivity(LiveListActivity.class);

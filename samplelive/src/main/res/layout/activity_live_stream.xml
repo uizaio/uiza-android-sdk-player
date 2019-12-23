@@ -67,7 +67,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_bottom"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@android:color/transparent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
 
         <io.uiza.samplelive.UizaMediaButton
             android:id="@+id/btn_audio"

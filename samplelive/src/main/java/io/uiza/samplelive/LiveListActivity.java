@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.uiza.adapters.LiveEntityAdapter;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
 import vn.uiza.core.utilities.LUIUtil;

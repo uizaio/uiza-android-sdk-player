@@ -1,5 +1,9 @@
 package io.uiza.extensions;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -7,6 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SampleUtils {
+
+    private static final String SHARED_PREFERENCES = "UizaSampleLive";
+    private static final String PREFERENCES_USER_NAME = "username";
+    private static final String PREFERENCES_USER_EMAIL = "email";
+    private static final String PREFERENCES_USER_ID = "id";
+    private static final String DEFAULT_USER = "User";
+
+    public static final String DBNAME = "uizachatlive";
+
     private SampleUtils() {
     }
 
@@ -44,5 +57,31 @@ public class SampleUtils {
             int offset = (((GridLayoutManager) layoutManager).getOrientation() == RecyclerView.VERTICAL) ? recyclerView.getHeight() : recyclerView.getWidth();
             ((GridLayoutManager) layoutManager).scrollToPositionWithOffset(elementNum, offset);
         }
+    }
+
+
+    public static void closeKeyboard(Context context, View view) {
+        InputMethodManager manager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void saveLocalUser(Context context, String email, String id) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences.edit()
+                .putString(PREFERENCES_USER_NAME, email.split("@")[0])
+                .putString(PREFERENCES_USER_EMAIL, email)
+                .putString(PREFERENCES_USER_ID, id)
+                .apply();
+
+    }
+
+    public static String getLocalUsername(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(PREFERENCES_USER_NAME, DEFAULT_USER);
+    }
+
+    public static String getLocalUserId(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(PREFERENCES_USER_ID, "");
     }
 }

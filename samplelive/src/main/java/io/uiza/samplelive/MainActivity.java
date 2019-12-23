@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.live_btn).setOnClickListener(this);
         findViewById(R.id.force_live_btn).setOnClickListener(this);
+        findViewById(R.id.bt_firebase_auth).setOnClickListener(this);
         findViewById(R.id.setting_btn).setOnClickListener(this);
     }
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.setting_btn:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            case R.id.bt_firebase_auth:
+                startActivity(new Intent(MainActivity.this, FirebaseAuthActivity.class));
                 break;
             default:
                 break;

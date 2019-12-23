@@ -12,6 +12,7 @@ import vn.uiza.restapi.restclient.UizaClientFactory;
 public class SampleLiveApplication extends MultiDexApplication {
 
     public static final String EXTRA_STREAM_ENDPOINT = "uiza_live_extra_stream_endpoint";
+    public static final String EXTRA_STREAM_ID = "uiza_live_extra_stream_id";
 
 
     private static final String DEV_HOST = "https://development-api.uizadev.io";

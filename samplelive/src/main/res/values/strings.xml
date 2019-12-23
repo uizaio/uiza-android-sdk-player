@@ -25,4 +25,13 @@
     <string name="stereo_title">Stereo</string>
     <string name="sample_rate_title">Sample rate</string>
     <string name="region_prompt">Choose a region</string>
+    <string name="title_activity_firebase_auth">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 </resources>

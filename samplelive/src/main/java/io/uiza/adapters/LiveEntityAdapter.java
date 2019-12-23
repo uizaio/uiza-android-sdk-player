@@ -1,4 +1,4 @@
-package io.uiza.samplelive;
+package io.uiza.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.uiza.samplelive.CheckLiveActivity;
+import io.uiza.samplelive.R;
+import io.uiza.samplelive.SampleLiveApplication;
+import io.uiza.samplelive.UizaLiveActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.model.v5.live.LiveStatus;
 
@@ -125,6 +129,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             Context context = itemView.getContext();
             if (entity.canLive()) {
                 Intent liveIntent = new Intent(context, UizaLiveActivity.class);
+                liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ID, entity.getId());
                 liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ENDPOINT, entity.getIngest().getStreamLink());
                 ((Activity)context).startActivityForResult(liveIntent, 1001);
             } else if (entity.isOnline()) {
@@ -222,7 +227,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    interface OnActionListener {
+    public interface OnActionListener {
         void onMoreClick(View v, String entityId);
     }
 }

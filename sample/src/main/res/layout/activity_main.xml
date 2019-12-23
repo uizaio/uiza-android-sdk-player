@@ -60,12 +60,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/live_playback"
                     android:textSize="@dimen/txt_30" />
-
+                <Button
+                    android:id="@+id/bt_fire_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.1 Login" />
                 <Button
                     android:id="@+id/bt_live_playback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. Live" />
+                    android:text="2.1 Live" />
             </LinearLayout>
 
             <LinearLayout

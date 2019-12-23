@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,13 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.uiza.adapters.ChatAdapter;
+import io.uiza.adapters.ChatData;
+import io.uiza.extensions.SampleUtils;
 import io.uiza.live.UizaLiveView;
 import io.uiza.live.enums.FilterRender;
 import io.uiza.live.enums.ProfileVideoEncoder;
@@ -58,6 +69,11 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     private UizaLiveView liveView;
     private TextView tvCCU;
     SharedPreferences preferences;
+    private String liveStreamId; // entityId
+    private DatabaseReference mReference;
+    private ChatAdapter mAdapter;
+    private Handler handler = new Handler();
+    RecyclerView chatRCV;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -75,6 +91,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         startButton.setEnabled(false);
         bRecord = findViewById(R.id.b_record);
         btAudio = findViewById(R.id.btn_audio);
+        chatRCV = findViewById(R.id.rcv_chat);
         tvCCU = findViewById(R.id.tv_ccu);
         bRecord.setOnClickListener(this);
         btAudio.setOnClickListener(this);
@@ -84,6 +101,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         if (movieFolder != null)
             folder = new File(movieFolder.getAbsolutePath()
                     + RECORD_FOLDER);
+        liveStreamId = getIntent().getStringExtra(SampleLiveApplication.EXTRA_STREAM_ID);
         liveStreamUrl = getIntent().getStringExtra(SampleLiveApplication.EXTRA_STREAM_ENDPOINT);
         if (TextUtils.isEmpty(liveStreamUrl)) {
             liveStreamUrl = SampleLiveApplication.getLiveEndpoint();
@@ -101,6 +119,16 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         liveView.setAudioBitrate(audioBitrate);
         liveView.setAudioSampleRate(audioSampleRate);
         liveView.setAudioStereo(stereo);
+        String mUserId = SampleUtils.getLocalUserId(this);
+        if (!TextUtils.isEmpty(mUserId) && !TextUtils.isEmpty(liveStreamId)) {
+            chatRCV.setVisibility(View.VISIBLE);
+            SampleUtils.setVertical(chatRCV);
+            mAdapter = new ChatAdapter();
+            chatRCV.setAdapter(mAdapter);
+            setupConnection();
+        } else {
+            chatRCV.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -514,5 +542,36 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         } else {
             Toast.makeText(UizaLiveActivity.this, "Record " + status.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // CHAT
+    private void setupConnection() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mReference = database.getReference(liveStreamId);
+
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Timber.d("SUCCESS!");
+                handleReturn(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Timber.e("ERROR: %s", databaseError.getDetails());
+                handler.post(() -> Toast.makeText(UizaLiveActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        });
+    }
+
+    private void handleReturn(DataSnapshot dataSnapshot) {
+        mAdapter.clearData();
+        for (DataSnapshot item : dataSnapshot.getChildren()) {
+            ChatData data = item.getValue(ChatData.class);
+            mAdapter.addData(data);
+        }
+        mAdapter.notifyDataSetChanged();
+        if (mAdapter.getItemCount() > 1)
+            chatRCV.post(() -> chatRCV.smoothScrollToPosition(mAdapter.getItemCount() - 1));
     }
 }

@@ -6,9 +6,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" /> <!-- needed by background Rtp service to keep service alive -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Optional for play store -->
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- for record -->
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -24,6 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".FirebaseAuthActivity"
+            android:label="@string/title_activity_firebase_auth"></activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"

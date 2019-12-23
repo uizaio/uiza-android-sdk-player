@@ -2,6 +2,7 @@ package vn.uiza.utils;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -47,7 +48,7 @@ public class ListUtil {
         return list == null || list.isEmpty();
     }
 
-    public static <T> List<T> filter(List<T> list, Pre<T, Boolean> pre) {
+    public static <T> List<T> filter(@NonNull List<T> list, Pre<T, Boolean> pre) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return list.stream().filter(pre::get).collect(Collectors.toList());
         } else {

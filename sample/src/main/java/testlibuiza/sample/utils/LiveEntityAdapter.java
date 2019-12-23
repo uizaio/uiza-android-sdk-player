@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import testlibuiza.BuildConfig;
 import testlibuiza.R;
 import testlibuiza.sample.v5.LivePlaybackActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
@@ -120,7 +121,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
 
         private void onClick(LiveEntity entity) {
             Context context = itemView.getContext();
-            if (entity.isOnline()) {
+            if (entity.isOnline() || BuildConfig.DEBUG) {
                 Intent liveIntent = new Intent(context, LivePlaybackActivity.class);
                 liveIntent.putExtra("extra_live_entity", entity);
                 ((Activity) context).startActivityForResult(liveIntent, 1001);

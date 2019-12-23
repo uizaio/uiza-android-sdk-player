@@ -34,6 +34,9 @@
         <activity
             android:name=".sample.v5.UizaTestAPIActivity"
             android:parentActivityName=".sample.v5.MainActivity" />
+        <activity android:name=".sample.v5.FirebaseAuthActivity"
+            android:parentActivityName=".sample.v5.MainActivity"
+            />
         <activity
             android:name=".sample.v5.LiveListActivity"
             android:label="@string/live_playback"
