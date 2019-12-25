@@ -135,7 +135,6 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         } else {
             chatRCV.setVisibility(View.GONE);
         }
-
         orientationManager = new OrientationManager(this, SensorManager.SENSOR_DELAY_NORMAL, this);
         orientationManager.enable();
     }
