@@ -2,6 +2,7 @@ package testlibuiza.sample.v5;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -78,12 +79,12 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
             chatRCV.setVisibility(View.VISIBLE);
             llInput.setVisibility(View.VISIBLE);
             mChatInput.setOnEditorActionListener((textView, i, keyEvent) -> {
-                ChatData data = new ChatData();
-                data.setMessage(mChatInput.getText().toString());
-                data.setId(mUserId);
-                data.setName(mUsername);
-                mReference.child(String.valueOf(new Date().getTime())).setValue(data);
-                closeAndClean();
+                Editable message = mChatInput.getText();
+                if (message != null) {
+                    ChatData data = new ChatData(mUserId, mUsername, message.toString());
+                    mReference.child(String.valueOf(new Date().getTime())).setValue(data);
+                    closeAndClean();
+                }
                 return true;
             });
         } else {

@@ -28,6 +28,8 @@
 
 -dontwarn com.google.android.material.**
 -keep class com.google.android.material.** { *; }
+-dontwarn com.google.firebase.database.**
+-keep class com.google.firebase.database.** { *; }
 
 -dontwarn androidx.**
 -keep class androidx.** { *; }
@@ -52,6 +54,7 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class vn.uiza.restapi.model.** { <fields>; }
+-keep class io.uiza.adapters.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)

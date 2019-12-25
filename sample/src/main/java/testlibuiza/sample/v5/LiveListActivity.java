@@ -70,12 +70,13 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
                         textView.setText("No Thread...");
                         textView.setVisibility(View.VISIBLE);
                     }
+                    progressBar.setVisibility(View.GONE);
                 }, throwable -> {
                     textView.setText(throwable.getLocalizedMessage());
                     textView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     Timber.e(throwable);
-                }, () ->
-                        progressBar.setVisibility(View.GONE)
+                }
         ));
 
     }

@@ -1,40 +1,43 @@
 package testlibuiza.sample.utils;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Class responsible to hold the name and the message to the user
  * to send to firebase
  */
-public class ChatData {
+public class ChatData implements Serializable {
 
-    private String mName;
-    private String mId;
-    private String mMessage;
+    @SerializedName("name")
+    String name;
+    @SerializedName("id")
+    String id;
+    @SerializedName("message")
+    String message;
 
     public ChatData() {
         // empty constructor
     }
 
-    public String getName() {
-        return mName;
+    public ChatData(String id, String name, String message) {
+        this.id = id;
+        this.name = name;
+        this.message = message;
     }
 
-    public void setName(String name) {
-        mName = name;
+    public String getName() {
+        return this.name;
     }
+
 
     public String getId() {
-        return mId;
+        return this.id;
     }
 
     public String getMessage() {
-        return mMessage;
+        return this.message;
     }
 
-    public void setMessage(String message) {
-        mMessage = message;
-    }
-
-    public void setId(String id) {
-        mId = id;
-    }
 }
