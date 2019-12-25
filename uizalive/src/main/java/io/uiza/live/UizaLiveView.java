@@ -46,7 +46,6 @@ import java.util.Random;
 
 import io.uiza.live.enums.AspectRatio;
 import io.uiza.live.enums.FilterRender;
-import io.uiza.live.enums.OrientationMode;
 import io.uiza.live.enums.ProfileVideoEncoder;
 import io.uiza.live.interfaces.CCUListener;
 import io.uiza.live.interfaces.CameraChangeListener;
@@ -93,7 +92,6 @@ public class UizaLiveView extends RelativeLayout {
      */
     private int audioSampleRate;
 
-    private OrientationMode orientationMode;
     private ProgressBar progressBar;
     private TextView tvLiveStatus;
 
@@ -151,8 +149,6 @@ public class UizaLiveView extends RelativeLayout {
                 } else {
                     profile = ProfileVideoEncoder.P360;
                 }
-                int orimode = a.getInt(R.styleable.UizaLiveView_orientationMode, 0);
-                orientationMode = OrientationMode.fromValue(orimode);
                 fps = a.getInt(R.styleable.UizaLiveView_fps, 24);
                 keyframe = a.getInt(R.styleable.UizaLiveView_keyframe, 2);
                 audioStereo = a.getBoolean(R.styleable.UizaLiveView_audioStereo, true);
@@ -170,7 +166,6 @@ public class UizaLiveView extends RelativeLayout {
         } else {
             useCamera2 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
             profile = ProfileVideoEncoder.P360;
-            orientationMode = OrientationMode.ADAPTIVE;
             fps = 24;
             keyframe = 2;
             audioStereo = true;
@@ -179,7 +174,7 @@ public class UizaLiveView extends RelativeLayout {
             // for OpenGL
             keepAspectRatio = true;
             AAEnabled = false;
-            ManagerRender.numFilters  = 1;
+            ManagerRender.numFilters = 1;
             isFlipHorizontal = false;
             isFlipVertical = false;
         }
@@ -207,9 +202,16 @@ public class UizaLiveView extends RelativeLayout {
         cameraHelper.setConnectReTries(10);
     }
 
+    /**
+     * Set AspectRatio
+     *
+     * @param aspectRatio One of {@link AspectRatio#RATIO_19_9},
+     *                    {@link AspectRatio#RATIO_18_9},
+     *                    {@link AspectRatio#RATIO_16_9} or {@link AspectRatio#RATIO_4_3}
+     */
     public void setAspectRatio(AspectRatio aspectRatio) {
         this.aspectRatio = aspectRatio;
-        if(openGlView != null) {
+        if (openGlView != null) {
             int screenWidth = LScreenUtil.getScreenWidth();
             openGlView.getLayoutParams().width = screenWidth;
             openGlView.getLayoutParams().height = (int) (screenWidth * aspectRatio.getAspectRatio());
@@ -334,7 +336,7 @@ public class UizaLiveView extends RelativeLayout {
      * Must be called when the app go to resume state
      */
     public void onResume() {
-        checkAndResumeLivestreamIfNeeded();
+        checkAndResumeLiveStreamIfNeeded();
         if (isFromBackgroundTooLong) {
             if (liveListener != null) {
                 liveListener.onBackgroundTooLong();
@@ -352,7 +354,7 @@ public class UizaLiveView extends RelativeLayout {
         this.backgroundAllowedDuration = duration;
     }
 
-    private void checkAndResumeLivestreamIfNeeded() {
+    private void checkAndResumeLiveStreamIfNeeded() {
         cancelBackgroundTimer();
 
         if (!isBroadcastingBeforeGoingBackground) return;

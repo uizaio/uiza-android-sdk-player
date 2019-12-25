@@ -2,11 +2,6 @@
 <resources>
     <declare-styleable name="UizaLiveView">
         <attr name="useCamera2" format="boolean" />
-        <attr name="orientationMode" format="enum">
-            <enum name="ADAPTIVE" value="0" />
-            <enum name="FIXED_LANDSCAPE" value="1" />
-            <enum name="FIXED_PORTRAIT" value="2" />
-        </attr>
         <attr name="videoSize" format="enum">
             <enum name="p360" value="360" />
             <enum name="p720" value="720" />
