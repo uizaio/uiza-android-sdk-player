@@ -77,10 +77,9 @@ public class LScreenUtil {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    public static double getHpW() {
-        double w = getScreenWidth() + 0.0;
-        double h = getScreenHeight() + 0.0;
-        Timber.e("hhhh = %f", h);
+    public static double aspectRatio() {
+        double w = (double) getScreenWidth();
+        double h = (double) getScreenHeight();
         return Math.max(w, h) / Math.min(w, h);
     }
 

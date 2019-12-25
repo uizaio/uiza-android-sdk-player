@@ -21,11 +21,6 @@ public interface ICameraHelper {
     void setRecordListener(RecordListener recordListener);
 
     /**
-     * Check support Filter
-     */
-    boolean supportGlInterface();
-
-    /**
      * Set filter in position 0.
      *
      * @param filterReader filter to set. You can modify parameters to filter after set it to stream.

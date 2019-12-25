@@ -19,13 +19,14 @@ import com.google.firebase.auth.FirebaseUser;
 import testlibuiza.R;
 import testlibuiza.sample.utils.SampleUtils;
 import timber.log.Timber;
+import vn.uiza.utils.StringUtil;
 
 public class FirebaseAuthActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     Handler handler = new Handler();
 
-    private AppCompatEditText etUsername, etPassword;
+    private AppCompatEditText etEmail, etPassword;
     ProgressBar progressBar;
     ConstraintLayout loginForm;
     AppCompatButton btLogout;
@@ -37,7 +38,7 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
         mAuth = FirebaseAuth.getInstance();
         loginForm = findViewById(R.id.login_form);
         btLogout = findViewById(R.id.bt_logout);
-        etUsername = findViewById(R.id.et_username);
+        etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         progressBar = findViewById(R.id.progress_bar);
         findViewById(R.id.bt_login).setOnClickListener(this);
@@ -57,9 +58,9 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.bt_login:
                 progressBar.setVisibility(View.VISIBLE);
-                String user = etUsername.getText().toString();
+                String user = etEmail.getText().toString();
                 String pwd = etPassword.getText().toString();
-                if (TextUtils.isEmpty(user) || TextUtils.isEmpty(pwd)) {
+                if (StringUtil.isEmailValid(user) || TextUtils.isEmpty(pwd)) {
                     onFailure(new Throwable("User or password is wrong!"));
                     return;
                 }
@@ -67,9 +68,9 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.bt_register:
                 progressBar.setVisibility(View.VISIBLE);
-                String rguser = etUsername.getText().toString();
+                String rguser = etEmail.getText().toString();
                 String rgpwd = etPassword.getText().toString();
-                if (TextUtils.isEmpty(rguser) || TextUtils.isEmpty(rgpwd)) {
+                if (StringUtil.isEmailValid(rguser) || TextUtils.isEmpty(rgpwd)) {
                     onFailure(new Throwable("User or password is wrong!"));
                     return;
                 }
@@ -105,7 +106,7 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void loginSuccess(FirebaseUser user) {
-        SampleUtils.saveLocalUser(this, etUsername.getText().toString(), user.getUid());
+        SampleUtils.saveLocalUser(this, etEmail.getText().toString(), user.getUid());
         loginForm.setVisibility(View.GONE);
         btLogout.setVisibility(View.VISIBLE);
         handler.post(() -> Toast.makeText(this, user.getUid() + " login success", Toast.LENGTH_LONG).show());
@@ -113,7 +114,7 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void registerSuccess(FirebaseUser user) {
-        SampleUtils.saveLocalUser(this, etUsername.getText().toString(), user.getUid());
+        SampleUtils.saveLocalUser(this, etEmail.getText().toString(), user.getUid());
         loginForm.setVisibility(View.GONE);
         btLogout.setVisibility(View.VISIBLE);
         handler.post(() -> Toast.makeText(this, user.getDisplayName() + " register success", Toast.LENGTH_LONG).show());

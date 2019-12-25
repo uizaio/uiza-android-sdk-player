@@ -5,17 +5,17 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import vn.uiza.core.utilities.LScreenUtil;
 
@@ -44,7 +44,7 @@ class StatusBarCompatLollipop {
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
-            ViewCompat.setFitsSystemWindows(mChildView, false);
+            mChildView.setFitsSystemWindows(false);
             ViewCompat.requestApplyInsets(mChildView);
         }
     }
@@ -73,7 +73,7 @@ class StatusBarCompatLollipop {
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
-            ViewCompat.setFitsSystemWindows(mChildView, false);
+            mChildView.setFitsSystemWindows(false);
             ViewCompat.requestApplyInsets(mChildView);
         }
     }
@@ -97,17 +97,12 @@ class StatusBarCompatLollipop {
         window.setStatusBarColor(Color.TRANSPARENT);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
-        ViewCompat.setOnApplyWindowInsetsListener(collapsingToolbarLayout, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                return insets;
-            }
-        });
+        ViewCompat.setOnApplyWindowInsetsListener(collapsingToolbarLayout, (v, insets) -> insets);
 
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
-            ViewCompat.setFitsSystemWindows(mChildView, false);
+            mChildView.setFitsSystemWindows(false);
             ViewCompat.requestApplyInsets(mChildView);
         }
 
@@ -137,17 +132,14 @@ class StatusBarCompatLollipop {
         }
 
         collapsingToolbarLayout.setFitsSystemWindows(false);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) > appBarLayout.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
-                    if (window.getStatusBarColor() != statusColor) {
-                        startColorAnimation(window.getStatusBarColor(), statusColor, collapsingToolbarLayout.getScrimAnimationDuration(), window);
-                    }
-                } else {
-                    if (window.getStatusBarColor() != Color.TRANSPARENT) {
-                        startColorAnimation(window.getStatusBarColor(), Color.TRANSPARENT, collapsingToolbarLayout.getScrimAnimationDuration(), window);
-                    }
+        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if (Math.abs(verticalOffset) > appBarLayout1.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
+                if (window.getStatusBarColor() != statusColor) {
+                    startColorAnimation(window.getStatusBarColor(), statusColor, collapsingToolbarLayout.getScrimAnimationDuration(), window);
+                }
+            } else {
+                if (window.getStatusBarColor() != Color.TRANSPARENT) {
+                    startColorAnimation(window.getStatusBarColor(), Color.TRANSPARENT, collapsingToolbarLayout.getScrimAnimationDuration(), window);
                 }
             }
         });
@@ -164,12 +156,9 @@ class StatusBarCompatLollipop {
         }
         sAnimator = ValueAnimator.ofArgb(startColor, endColor)
                 .setDuration(duration);
-        sAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                if (window != null) {
-                    window.setStatusBarColor((Integer) valueAnimator.getAnimatedValue());
-                }
+        sAnimator.addUpdateListener(valueAnimator -> {
+            if (window != null) {
+                window.setStatusBarColor((Integer) valueAnimator.getAnimatedValue());
             }
         });
         sAnimator.start();

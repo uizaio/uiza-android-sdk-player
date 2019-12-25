@@ -2,6 +2,8 @@ package vn.uiza.core.utilities;
 
 import android.app.Activity;
 import android.app.UiModeManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -52,14 +54,9 @@ public class LDeviceUtil {
     }
 
     public static void setClipboard(Context context, String text) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(text);
-        } else {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText(COPY_LABEL, text);
-            clipboard.setPrimaryClip(clip);
-        }
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(COPY_LABEL, text);
+        clipboard.setPrimaryClip(clip);
         LToast.show(context, "Copied!");
     }
 

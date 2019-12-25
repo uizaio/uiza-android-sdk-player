@@ -11,7 +11,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -21,8 +20,6 @@ import android.os.Message;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,12 +32,10 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.pedro.encoder.input.gl.render.ManagerRender;
 import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.rtmp.RtmpCamera2;
-import com.pedro.rtplibrary.util.BitrateAdapter;
-import com.pedro.rtplibrary.view.AutoFitTextureView;
-import com.pedro.rtplibrary.view.LightOpenGlView;
 import com.pedro.rtplibrary.view.OpenGlView;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
@@ -49,6 +44,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import io.uiza.live.enums.AspectRatio;
 import io.uiza.live.enums.FilterRender;
 import io.uiza.live.enums.OrientationMode;
 import io.uiza.live.enums.ProfileVideoEncoder;
@@ -69,10 +65,6 @@ public class UizaLiveView extends RelativeLayout {
 
     private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
-    private static final int SURFACE = 0;
-    private static final int TEXTURE = 1;
-    private static final int OPENGL = 2;
-    private static final int LIGH_OPENGL = 3;
     private String mainStreamUrl;
     private ICameraHelper cameraHelper;
     /**
@@ -101,13 +93,12 @@ public class UizaLiveView extends RelativeLayout {
      */
     private int audioSampleRate;
 
-    private int viewType = OPENGL;
     private OrientationMode orientationMode;
     private ProgressBar progressBar;
     private TextView tvLiveStatus;
 
+    OpenGlView openGlView;
     private boolean useCamera2;
-    private boolean adaptiveBitrate;
 
     private UizaLiveListener liveListener;
 
@@ -116,9 +107,12 @@ public class UizaLiveView extends RelativeLayout {
     private CountDownTimer backgroundTimer;
     private boolean isBroadcastingBeforeGoingBackground;
     private boolean isFromBackgroundTooLong;
-    private boolean isLandscape;
+    private boolean isLandscape = false;
+    private boolean AAEnabled = false;
+    private boolean keepAspectRatio = false;
+    private boolean isFlipHorizontal = false, isFlipVertical = false;
 
-    private BitrateAdapter bitrateAdapter;
+    AspectRatio aspectRatio = AspectRatio.RATIO_16_9;
 
     public UizaLiveView(Context context) {
         this(context, null);
@@ -146,37 +140,80 @@ public class UizaLiveView extends RelativeLayout {
     private void initView(AttributeSet attrs, int defStyleAttr) {
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.UizaLiveView, defStyleAttr, 0);
-            boolean hasLollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-            viewType = a.getInt(R.styleable.UizaLiveView_viewType, OPENGL);
-            useCamera2 = a.getBoolean(R.styleable.UizaLiveView_useCamera2, hasLollipop) && hasLollipop;
-            int res = a.getInt(R.styleable.UizaLiveView_videoSize, 360);
-            if (res == 1080) {
-                profile = ProfileVideoEncoder.P1080;
-            } else if (res == 720) {
-                profile = ProfileVideoEncoder.P720;
-            } else {
-                profile = ProfileVideoEncoder.P360;
+            try {
+                boolean hasLollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+                useCamera2 = a.getBoolean(R.styleable.UizaLiveView_useCamera2, hasLollipop) && hasLollipop;
+                int res = a.getInt(R.styleable.UizaLiveView_videoSize, 360);
+                if (res == 1080) {
+                    profile = ProfileVideoEncoder.P1080;
+                } else if (res == 720) {
+                    profile = ProfileVideoEncoder.P720;
+                } else {
+                    profile = ProfileVideoEncoder.P360;
+                }
+                int orimode = a.getInt(R.styleable.UizaLiveView_orientationMode, 0);
+                orientationMode = OrientationMode.fromValue(orimode);
+                fps = a.getInt(R.styleable.UizaLiveView_fps, 24);
+                keyframe = a.getInt(R.styleable.UizaLiveView_keyframe, 2);
+                audioStereo = a.getBoolean(R.styleable.UizaLiveView_audioStereo, true);
+                audioBitrate = a.getInt(R.styleable.UizaLiveView_audioBitrate, 64) * 1024; //64 Kbps
+                audioSampleRate = a.getInt(R.styleable.UizaLiveView_audioSampleRate, 32000); // 32 KHz
+                // for openGL
+                keepAspectRatio = a.getBoolean(R.styleable.UizaLiveView_keepAspectRatio, true);
+                AAEnabled = a.getBoolean(R.styleable.UizaLiveView_AAEnabled, false);
+                ManagerRender.numFilters = a.getInt(R.styleable.UizaLiveView_numFilters, 1);
+                isFlipHorizontal = a.getBoolean(R.styleable.UizaLiveView_isFlipHorizontal, false);
+                isFlipVertical = a.getBoolean(R.styleable.UizaLiveView_isFlipVertical, false);
+            } finally {
+                a.recycle();
             }
-            int orimode = a.getInt(R.styleable.UizaLiveView_orientationMode, 0);
-            orientationMode = OrientationMode.fromValue(orimode);
-            fps = a.getInt(R.styleable.UizaLiveView_fps, 24);
-            keyframe = a.getInt(R.styleable.UizaLiveView_keyframe, 2);
-            adaptiveBitrate = a.getBoolean(R.styleable.UizaLiveView_adaptiveBitrate, false);
-            audioStereo = a.getBoolean(R.styleable.UizaLiveView_audioStereo, true);
-            audioBitrate = a.getInt(R.styleable.UizaLiveView_audioBitrate, 64) * 1024; //64 Kbps
-            audioSampleRate = a.getInt(R.styleable.UizaLiveView_audioSampleRate, 32000); // 32 KHz
         } else {
-            boolean hasLollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-            viewType = OPENGL;
-            useCamera2 = hasLollipop;
+            useCamera2 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
             profile = ProfileVideoEncoder.P360;
             orientationMode = OrientationMode.ADAPTIVE;
             fps = 24;
             keyframe = 2;
-            adaptiveBitrate = false;
             audioStereo = true;
             audioBitrate = 64 * 1024; //64 Kbps
             audioSampleRate = 32000; // 32 KHz
+            // for OpenGL
+            keepAspectRatio = true;
+            AAEnabled = false;
+            ManagerRender.numFilters  = 1;
+            isFlipHorizontal = false;
+            isFlipVertical = false;
+        }
+    }
+
+
+    /**
+     * Call one time
+     * Note: you must call inflate in this method
+     */
+    private void onCreateView() {
+        inflate(getContext(), R.layout.layout_uiza_glview, this);
+        openGlView = findViewById(R.id.camera_view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2)
+            cameraHelper = new Camera2Helper(new RtmpCamera2(openGlView, connectCheckerRtmp));
+        else
+            cameraHelper = new Camera1Helper(new RtmpCamera1(openGlView, connectCheckerRtmp));
+        openGlView.setCameraFlip(isFlipHorizontal, isFlipVertical);
+        openGlView.setKeepAspectRatio(keepAspectRatio);
+        openGlView.enableAA(AAEnabled);
+        openGlView.getHolder().addCallback(surfaceCallback);
+        tvLiveStatus = findViewById(R.id.live_status);
+        progressBar = findViewById(R.id.pb);
+        progressBar.getIndeterminateDrawable().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
+        cameraHelper.setConnectReTries(10);
+    }
+
+    public void setAspectRatio(AspectRatio aspectRatio) {
+        this.aspectRatio = aspectRatio;
+        if(openGlView != null) {
+            int screenWidth = LScreenUtil.getScreenWidth();
+            openGlView.getLayoutParams().width = screenWidth;
+            openGlView.getLayoutParams().height = (int) (screenWidth * aspectRatio.getAspectRatio());
+            openGlView.requestLayout();
         }
     }
 
@@ -213,55 +250,6 @@ public class UizaLiveView extends RelativeLayout {
                 .check();
     }
 
-    /**
-     * Call one time
-     * Note: you must call inflate in this method
-     */
-    private void onCreateView() {
-        Timber.d("viewType: %d", viewType);
-        switch (viewType) {
-            case SURFACE:
-                inflate(getContext(), R.layout.layout_uiza_surfaceview, this);
-                SurfaceView surfaceView = findViewById(R.id.camera_view);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2)
-                    cameraHelper = new Camera2Helper(new RtmpCamera2(surfaceView, connectCheckerRtmp));
-                else
-                    cameraHelper = new Camera1Helper(new RtmpCamera1(surfaceView, connectCheckerRtmp));
-                surfaceView.getHolder().addCallback(surfaceCallback);
-                break;
-            case TEXTURE:
-                inflate(getContext(), R.layout.layout_uiza_textureview, this);
-                AutoFitTextureView textureView = findViewById(R.id.camera_view);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2) {
-                    cameraHelper = new Camera2Helper(new RtmpCamera2(textureView, connectCheckerRtmp));
-                } else
-                    cameraHelper = new Camera1Helper(new RtmpCamera1(textureView, connectCheckerRtmp));
-                textureView.setSurfaceTextureListener(surfaceTextureListener);
-                break;
-            case LIGH_OPENGL:
-                inflate(getContext(), R.layout.layout_uiza_light_glview, this);
-                LightOpenGlView lightOpenGlView = findViewById(R.id.camera_view);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2)
-                    cameraHelper = new Camera2Helper(new RtmpCamera2(lightOpenGlView, connectCheckerRtmp));
-                else
-                    cameraHelper = new Camera1Helper(new RtmpCamera1(lightOpenGlView, connectCheckerRtmp));
-                lightOpenGlView.getHolder().addCallback(surfaceCallback);
-                break;
-            default:
-                inflate(getContext(), R.layout.layout_uiza_glview, this);
-                OpenGlView openGlView = findViewById(R.id.camera_view);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && useCamera2)
-                    cameraHelper = new Camera2Helper(new RtmpCamera2(openGlView, connectCheckerRtmp));
-                else
-                    cameraHelper = new Camera1Helper(new RtmpCamera1(openGlView, connectCheckerRtmp));
-                openGlView.getHolder().addCallback(surfaceCallback);
-                break;
-        }
-        tvLiveStatus = findViewById(R.id.live_status);
-        progressBar = findViewById(R.id.pb);
-        progressBar.getIndeterminateDrawable().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
-        cameraHelper.setConnectReTries(10);
-    }
 
     private void showShouldAcceptPermission() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -322,6 +310,10 @@ public class UizaLiveView extends RelativeLayout {
     public void setCcuListener(CCUListener ccuListener) {
         this.ccuListener = ccuListener;
         handler.sendEmptyMessage(0);
+    }
+
+    public void setLandscape(boolean landscape) {
+        isLandscape = landscape;
     }
 
     Handler handler = new Handler(Looper.getMainLooper()) {
@@ -387,7 +379,7 @@ public class UizaLiveView extends RelativeLayout {
         if (backgroundTimer == null) {
             backgroundTimer = new CountDownTimer(backgroundAllowedDuration, SECOND) {
                 public void onTick(long millisUntilFinished) {
-
+                    // Nothing
                 }
 
                 public void onFinish() {
@@ -409,7 +401,7 @@ public class UizaLiveView extends RelativeLayout {
     /**
      * you must call in onInit()
      *
-     * @param cameraChangeListener
+     * @param cameraChangeListener : camera witch listener
      */
     public void setCameraChangeListener(CameraChangeListener cameraChangeListener) {
         cameraHelper.setCameraChangeListener(cameraChangeListener);
@@ -418,7 +410,7 @@ public class UizaLiveView extends RelativeLayout {
     /**
      * you must call in oInit()
      *
-     * @param recordListener
+     * @param recordListener : record status listener
      */
     public void setRecordListener(RecordListener recordListener) {
         cameraHelper.setRecordListener(recordListener);
@@ -447,17 +439,16 @@ public class UizaLiveView extends RelativeLayout {
         cameraHelper.startPreview(cameraHelper.isFrontCamera() ? CameraHelper.Facing.FRONT : CameraHelper.Facing.BACK);
     }
 
+
     /**
      * Please call {@link #prepareStream} before use
      *
-     * @param liveEndpoint
+     * @param liveEndpoint: Stream Url
      */
     public void startStream(String liveEndpoint) {
         mainStreamUrl = liveEndpoint;
-        Timber.e("mainStreamUrl: %s", mainStreamUrl);
         progressBar.setVisibility(View.VISIBLE);
         cameraHelper.startStream(liveEndpoint);
-        Timber.d("startStream streamUrl %s", liveEndpoint);
     }
 
     public boolean isStreaming() {
@@ -494,7 +485,7 @@ public class UizaLiveView extends RelativeLayout {
      * * doesn't support any configuration seated or your device hasn't a AAC encoder).
      */
     public boolean prepareStream() {
-        return prepareAudio() && prepareVideo();
+        return prepareAudio() && prepareVideo(isLandscape);
     }
 
     /**
@@ -527,7 +518,7 @@ public class UizaLiveView extends RelativeLayout {
     /**
      * default rotation
      *
-     * @return
+     * @return true if success, false if otherwise
      */
     public boolean prepareVideo() {
         int rotation = CameraHelper.getCameraOrientation(getContext());
@@ -565,45 +556,6 @@ public class UizaLiveView extends RelativeLayout {
         return cameraHelper.getStreamHeight();
     }
 
-    private TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener() {
-
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            ((AutoFitTextureView) findViewById(R.id.camera_view)).setAspectRatio(480, 854);
-            if (liveListener != null) {
-                liveListener.surfaceCreated();
-            }
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            cameraHelper.startPreview(CameraHelper.Facing.FRONT);
-            if (liveListener != null) {
-                liveListener.surfaceChanged(0, width, height);
-            }
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            if (cameraHelper.isRecording()) {
-                cameraHelper.stopRecord();
-            }
-            if (cameraHelper.isStreaming()) {
-                cameraHelper.stopStream();
-            }
-            cameraHelper.stopPreview();
-            startBackgroundTimer();
-            if (liveListener != null) {
-                liveListener.surfaceDestroyed();
-            }
-            return true;
-        }
-
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-        }
-    };
     private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         @Override
@@ -615,13 +567,12 @@ public class UizaLiveView extends RelativeLayout {
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            double hpw = LScreenUtil.getHpW();
-            int maxHeight = (int) (width * hpw);
-            int mHeight = Math.min(maxHeight, height);
-            cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, mHeight);
+            int mHeight = Math.min((int) (width * aspectRatio.getAspectRatio()), height);
+            cameraHelper.startPreview(CameraHelper.Facing.BACK, width, mHeight);
             if (liveListener != null) {
                 liveListener.surfaceChanged(format, width, mHeight);
             }
+
         }
 
         @Override
@@ -643,16 +594,6 @@ public class UizaLiveView extends RelativeLayout {
     private ConnectCheckerRtmp connectCheckerRtmp = new ConnectCheckerRtmp() {
         @Override
         public void onConnectionSuccessRtmp() {
-            if (adaptiveBitrate) {
-                bitrateAdapter = new BitrateAdapter(new BitrateAdapter.Listener() {
-
-                    @Override
-                    public void onBitrateAdapted(int bitrate) {
-                        cameraHelper.setVideoBitrateOnFly(bitrate);
-                    }
-                });
-                bitrateAdapter.setMaxBitrate(cameraHelper.getBitrate());
-            }
             ((Activity) getContext()).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -695,7 +636,6 @@ public class UizaLiveView extends RelativeLayout {
 
         @Override
         public void onNewBitrateRtmp(long bitrate) {
-            if (bitrateAdapter != null) bitrateAdapter.adaptBitrate(bitrate);
             if (liveListener != null) liveListener.onNewBitrate(bitrate);
         }
 
@@ -780,12 +720,6 @@ public class UizaLiveView extends RelativeLayout {
 
     public void setAudioSampleRate(int audioSampleRate) {
         this.audioSampleRate = audioSampleRate;
-    }
-
-    public boolean supportFilter() {
-        if (cameraHelper != null)
-            return cameraHelper.supportGlInterface();
-        return (viewType == 2 || viewType == 3);
     }
 
     public void setVideoBitrateOnFly(int bitrate) {

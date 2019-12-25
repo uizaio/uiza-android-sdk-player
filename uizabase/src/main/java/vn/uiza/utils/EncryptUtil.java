@@ -24,6 +24,7 @@ import vn.uiza.utils.util.SentryUtils;
 public final class EncryptUtil {
 
     private EncryptUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     private static final String ALGORITHM = "HmacSHA256"; // HmacMD5, HmacSHA1, HmacSHA256, HmacSHA512

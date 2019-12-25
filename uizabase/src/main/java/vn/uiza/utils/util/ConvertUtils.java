@@ -1,6 +1,5 @@
 package vn.uiza.utils.util;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -100,18 +99,17 @@ public final class ConvertUtils {
         return (double) byteNum / unit;
     }
 
-    @SuppressLint("DefaultLocale")
     public static String byte2FitMemorySize(long byteNum) {
         if (byteNum < 0) {
             return "shouldn't be less than zero!";
         } else if (byteNum < MemoryConstants.KB) {
-            return String.format("%.3fB", (double) byteNum + 0.0005);
+            return String.format(Locale.getDefault(), "%.3fB", (double) byteNum + 0.0005);
         } else if (byteNum < MemoryConstants.MB) {
-            return String.format("%.3fKB", (double) byteNum / MemoryConstants.KB + 0.0005);
+            return String.format(Locale.getDefault(), "%.3fKB", (double) byteNum / MemoryConstants.KB + 0.0005);
         } else if (byteNum < MemoryConstants.GB) {
-            return String.format("%.3fMB", (double) byteNum / MemoryConstants.MB + 0.0005);
+            return String.format(Locale.getDefault(), "%.3fMB", (double) byteNum / MemoryConstants.MB + 0.0005);
         } else {
-            return String.format("%.3fGB", (double) byteNum / MemoryConstants.GB + 0.0005);
+            return String.format(Locale.getDefault(), "%.3fGB", (double) byteNum / MemoryConstants.GB + 0.0005);
         }
     }
 

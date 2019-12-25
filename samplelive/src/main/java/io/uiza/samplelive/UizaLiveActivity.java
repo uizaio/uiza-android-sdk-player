@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ import io.uiza.adapters.ChatAdapter;
 import io.uiza.adapters.ChatData;
 import io.uiza.extensions.SampleUtils;
 import io.uiza.live.UizaLiveView;
+import io.uiza.live.enums.AspectRatio;
 import io.uiza.live.enums.FilterRender;
 import io.uiza.live.enums.ProfileVideoEncoder;
 import io.uiza.live.enums.RecordStatus;
@@ -56,7 +59,7 @@ import io.uiza.live.interfaces.UizaLiveListener;
 import timber.log.Timber;
 
 public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListener,
-        View.OnClickListener, RecordListener, CameraChangeListener, CCUListener {
+        View.OnClickListener, RecordListener, CameraChangeListener, CCUListener, OrientationManager.OrientationListener {
 
     private static final String TAG = "UizaLiveActivity";
     private static final String RECORD_FOLDER = "uiza-live";
@@ -70,10 +73,10 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     private TextView tvCCU;
     SharedPreferences preferences;
     private String liveStreamId; // entityId
-    private DatabaseReference mReference;
     private ChatAdapter mAdapter;
     private Handler handler = new Handler();
     RecyclerView chatRCV;
+    OrientationManager orientationManager;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -119,6 +122,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         liveView.setAudioBitrate(audioBitrate);
         liveView.setAudioSampleRate(audioSampleRate);
         liveView.setAudioStereo(stereo);
+//        liveView.setAspectRatio(AspectRatio.RATIO_18_9);
         String mUserId = SampleUtils.getLocalUserId(this);
         if (!TextUtils.isEmpty(mUserId) && !TextUtils.isEmpty(liveStreamId)) {
             chatRCV.setVisibility(View.VISIBLE);
@@ -129,13 +133,44 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         } else {
             chatRCV.setVisibility(View.GONE);
         }
+
+        orientationManager = new OrientationManager(this, SensorManager.SENSOR_DELAY_NORMAL, this);
+        orientationManager.enable();
+    }
+
+    @Override
+    public void onOrientationChange(OrientationManager.ScreenOrientation screenOrientation) {
+        switch (screenOrientation) {
+            case PORTRAIT:
+                rotateView(0);
+                break;
+            case LANDSCAPE:
+                rotateView(1);
+                break;
+            case REVERSED_PORTRAIT:
+                rotateView(2);
+                break;
+            case REVERSED_LANDSCAPE:
+                rotateView(3);
+                break;
+        }
+    }
+
+    int beforeRotation;
+
+    public void rotateView(int rotation) {
+        AppCompatImageButton switchCamera = findViewById(R.id.switch_camera);
+        float dk = rotation - beforeRotation;
+        if (dk >= 3) dk = -1f;
+        if (dk <= -3) dk = 1f;
+        float deg = switchCamera.getRotation() + dk * 90F;
+        switchCamera.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
+        beforeRotation = rotation;
     }
 
     @Override
     protected void onResume() {
-        Timber.e("onResume");
         if (liveView != null) {
-            Timber.e("liveView onResume");
             liveView.onResume();
         }
         super.onResume();
@@ -161,11 +196,8 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (liveView.supportFilter()) {
-            getMenuInflater().inflate(R.menu.gl_menu, menu);
-            return true;
-        }
-        return false;
+        getMenuInflater().inflate(R.menu.gl_menu, menu);
+        return true;
     }
 
     @Override
@@ -179,11 +211,6 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
                     "FXAA " + (liveView.isAAEnabled() ? "enabled" : "disabled"),
                     Toast.LENGTH_SHORT).show();
             return true;
-            //filters. NOTE: You can change filter values on fly without reset the filter.
-            // Example:
-            // ColorFilterRender color = new ColorFilterRender()
-            // rtmpCamera2.setFilter(color);
-            // color.setRGBColor(255, 0, 0); //red tint
         } else if (itemId == R.id.no_filter) {
             liveView.setFilter(FilterRender.None);
             return true;
@@ -547,7 +574,7 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
     // CHAT
     private void setupConnection() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mReference = database.getReference(liveStreamId);
+        DatabaseReference mReference = database.getReference(liveStreamId);
 
         mReference.addValueEventListener(new ValueEventListener() {
             @Override

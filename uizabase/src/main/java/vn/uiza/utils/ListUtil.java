@@ -21,6 +21,7 @@ import vn.uiza.helpers.DateTypeSerializer;
 public class ListUtil {
     // default constructor is private
     private ListUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     public static <T> String toJson(List<T> values) {

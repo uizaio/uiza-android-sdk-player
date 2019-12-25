@@ -24,6 +24,7 @@ dependencies {
    implementation project(':uizabase')
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.7.4'
+    // CameraX core library
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //runtime permission https://github.com/Karumi/Dexter
     implementation 'com.karumi:dexter:6.0.1'

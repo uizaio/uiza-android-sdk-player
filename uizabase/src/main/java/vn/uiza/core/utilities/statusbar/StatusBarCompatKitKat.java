@@ -7,17 +7,19 @@ package vn.uiza.core.utilities.statusbar;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import vn.uiza.core.utilities.LScreenUtil;
 
 /**
@@ -114,7 +116,7 @@ class StatusBarCompatKitKat {
         addMarginTopToContentChild(mContentChild, statusBarHeight);
 
         if (mContentChild != null) {
-            ViewCompat.setFitsSystemWindows(mContentChild, false);
+            mContentChild.setFitsSystemWindows(false);
         }
     }
 
@@ -136,7 +138,7 @@ class StatusBarCompatKitKat {
         removeFakeStatusBarViewIfExist(activity);
         removeMarginTopOfContentChild(mContentChild, LScreenUtil.getStatusBarHeight(activity));
         if (mContentChild != null) {
-            ViewCompat.setFitsSystemWindows(mContentChild, false);
+            mContentChild.setFitsSystemWindows(false);
         }
     }
 
@@ -190,19 +192,16 @@ class StatusBarCompatKitKat {
             statusView.setAlpha(0f);
         }
 
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) > appBarLayout.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
-                    if (statusView.getAlpha() == 0) {
-                        statusView.animate().cancel();
-                        statusView.animate().alpha(1f).setDuration(collapsingToolbarLayout.getScrimAnimationDuration()).start();
-                    }
-                } else {
-                    if (statusView.getAlpha() == 1) {
-                        statusView.animate().cancel();
-                        statusView.animate().alpha(0f).setDuration(collapsingToolbarLayout.getScrimAnimationDuration()).start();
-                    }
+        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if (Math.abs(verticalOffset) > appBarLayout1.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
+                if (statusView.getAlpha() == 0) {
+                    statusView.animate().cancel();
+                    statusView.animate().alpha(1f).setDuration(collapsingToolbarLayout.getScrimAnimationDuration()).start();
+                }
+            } else {
+                if (statusView.getAlpha() == 1) {
+                    statusView.animate().cancel();
+                    statusView.animate().alpha(0f).setDuration(collapsingToolbarLayout.getScrimAnimationDuration()).start();
                 }
             }
         });

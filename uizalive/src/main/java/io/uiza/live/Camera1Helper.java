@@ -22,7 +22,6 @@ import io.uiza.live.interfaces.CameraChangeListener;
 import io.uiza.live.interfaces.ICameraHelper;
 import io.uiza.live.interfaces.RecordListener;
 import io.uiza.live.interfaces.UizaCameraOpenException;
-import timber.log.Timber;
 
 public class Camera1Helper implements ICameraHelper {
 
@@ -61,44 +60,25 @@ public class Camera1Helper implements ICameraHelper {
         this.recordListener = recordListener;
     }
 
-    @Override
-    public boolean supportGlInterface() {
-        try {
-            return rtmpCamera1.getGlInterface() != null;
-        } catch (RuntimeException e) {
-            return false;
-        }
-    }
 
     @Override
     public void setFilter(@NotNull BaseFilterRender filterReader) {
-        if (supportGlInterface())
-            rtmpCamera1.getGlInterface().setFilter(filterReader);
-        else
-            Timber.e("Filter is not support in this view");
+        rtmpCamera1.getGlInterface().setFilter(filterReader);
     }
 
     @Override
     public void setFilter(int filterPosition, @NotNull BaseFilterRender filterReader) {
-        if (supportGlInterface())
-            rtmpCamera1.getGlInterface().setFilter(filterPosition, filterReader);
-        else
-            Timber.e("Filter is not support in this view");
+        rtmpCamera1.getGlInterface().setFilter(filterPosition, filterReader);
     }
 
     @Override
     public void enableAA(boolean aAEnabled) {
-        if (supportGlInterface())
-            rtmpCamera1.getGlInterface().enableAA(aAEnabled);
-        else
-            Timber.e("Filter is not support in this view");
+        rtmpCamera1.getGlInterface().enableAA(aAEnabled);
     }
 
     @Override
     public boolean isAAEnabled() {
-        if (supportGlInterface())
-            return rtmpCamera1.getGlInterface().isAAEnabled();
-        return false;
+        return rtmpCamera1.getGlInterface().isAAEnabled();
     }
 
     @Override
@@ -143,18 +123,12 @@ public class Camera1Helper implements ICameraHelper {
 
     @Override
     public boolean prepareVideo(@NotNull ProfileVideoEncoder profile) {
-        if (supportGlInterface())
-            return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), 24, profile.getBitrate(), false, 90);
-        else
-            return rtmpCamera1.prepareVideo(profile.getHeight(), profile.getWidth(), 24, profile.getBitrate(), false, 90);
+        return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), 24, profile.getBitrate(), false, 90);
     }
 
     @Override
     public boolean prepareVideo(@NotNull ProfileVideoEncoder profile, int fps, int iFrameInterval, int rotation) {
-        if (supportGlInterface())
-            return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
-        else
-            return rtmpCamera1.prepareVideo(profile.getHeight(), profile.getWidth(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
+        return rtmpCamera1.prepareVideo(profile.getWidth(), profile.getHeight(), fps, profile.getBitrate(), false, iFrameInterval, rotation);
     }
 
     @Override
@@ -200,17 +174,12 @@ public class Camera1Helper implements ICameraHelper {
 
     @Override
     public void startPreview(@NotNull CameraHelper.Facing cameraFacing) {
-        if (supportGlInterface()) {
-            rtmpCamera1.startPreview(cameraFacing, 480, 640);
-        } else {
-            rtmpCamera1.startPreview(cameraFacing);
-        }
-
+        rtmpCamera1.startPreview(cameraFacing, 480, 640);
     }
 
     @Override
-    public void startPreview(@NotNull CameraHelper.Facing cameraFacing, int width, int height) {
-        rtmpCamera1.startPreview(cameraFacing, height, width);
+    public void startPreview(@NotNull CameraHelper.Facing cameraFacing, int w, int h) {
+        rtmpCamera1.startPreview(cameraFacing, h, w);
     }
 
     @Override
