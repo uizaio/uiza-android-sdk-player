@@ -78,7 +78,7 @@ public class UizaLiveView extends RelativeLayout {
     /**
      * Keyframe default 2
      */
-    private int keyframe;
+    private int frameInterval;
     /**
      * Audio Stereo: default true
      */
@@ -150,7 +150,7 @@ public class UizaLiveView extends RelativeLayout {
                     profile = ProfileVideoEncoder.P360;
                 }
                 fps = a.getInt(R.styleable.UizaLiveView_fps, 24);
-                keyframe = a.getInt(R.styleable.UizaLiveView_keyframe, 2);
+                frameInterval = a.getInt(R.styleable.UizaLiveView_frame_interval, 2);
                 audioStereo = a.getBoolean(R.styleable.UizaLiveView_audioStereo, true);
                 audioBitrate = a.getInt(R.styleable.UizaLiveView_audioBitrate, 64) * 1024; //64 Kbps
                 audioSampleRate = a.getInt(R.styleable.UizaLiveView_audioSampleRate, 32000); // 32 KHz
@@ -167,7 +167,7 @@ public class UizaLiveView extends RelativeLayout {
             useCamera2 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
             profile = ProfileVideoEncoder.P360;
             fps = 24;
-            keyframe = 2;
+            frameInterval = 2;
             audioStereo = true;
             audioBitrate = 64 * 1024; //64 Kbps
             audioSampleRate = 32000; // 32 KHz
@@ -525,13 +525,13 @@ public class UizaLiveView extends RelativeLayout {
     public boolean prepareVideo() {
         int rotation = CameraHelper.getCameraOrientation(getContext());
         isLandscape = rotation == 0 || rotation == 180;
-        return cameraHelper.prepareVideo(profile, fps, keyframe, rotation);
+        return cameraHelper.prepareVideo(profile, fps, frameInterval, rotation);
     }
 
 
     public boolean prepareVideo(boolean isLandscape) {
         this.isLandscape = isLandscape;
-        return cameraHelper.prepareVideo(profile, fps, keyframe, isLandscape ? 0 : 90);
+        return cameraHelper.prepareVideo(profile, fps, frameInterval, isLandscape ? 0 : 90);
     }
 
     public void enableAA(boolean enable) {
@@ -708,8 +708,8 @@ public class UizaLiveView extends RelativeLayout {
         this.fps = fps;
     }
 
-    public void setKeyframe(int keyframe) {
-        this.keyframe = keyframe;
+    public void setFrameInterval(int frameInterval) {
+        this.frameInterval = frameInterval;
     }
 
     public void setAudioStereo(boolean audioStereo) {

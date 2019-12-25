@@ -9,7 +9,7 @@ android {
         applicationId "com.uiza.module.sample"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 191223
+        versionCode 191225
         versionName "5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

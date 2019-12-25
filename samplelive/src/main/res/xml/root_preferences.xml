@@ -62,9 +62,9 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            app:defaultValue="24"
+            app:defaultValue="2"
             app:iconSpaceReserved="false"
-            app:key="keyframe_key"
+            app:key="frame_interval_key"
             app:title="@string/keyframe_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>

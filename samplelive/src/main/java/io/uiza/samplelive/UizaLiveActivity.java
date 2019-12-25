@@ -114,11 +114,13 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         liveView.setBackgroundAllowedDuration(10000);
         int profile = Integer.valueOf(preferences.getString("camera_profile_key", "360"));
         int fps = Integer.valueOf(preferences.getString("fps_key", "24"));
+        int frameInterval = Integer.valueOf(preferences.getString("frame_interval_key", "2"));
         int audioBitrate = Integer.valueOf(preferences.getString("audio_bitrate_key", "64"));
         int audioSampleRate = Integer.valueOf(preferences.getString("sample_rate_key", "32000"));
         boolean stereo = preferences.getBoolean("audio_stereo_key", true);
         liveView.setProfile(ProfileVideoEncoder.find(profile));
         liveView.setFps(fps);
+        liveView.setFrameInterval(frameInterval);
         liveView.setAudioBitrate(audioBitrate);
         liveView.setAudioSampleRate(audioSampleRate);
         liveView.setAudioStereo(stereo);

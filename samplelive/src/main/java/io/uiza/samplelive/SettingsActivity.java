@@ -1,6 +1,7 @@
 package io.uiza.samplelive;
 
 import android.os.Bundle;
+import android.text.InputType;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,10 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 });
             }
+
+            EditTextPreference frameInterval = findPreference("frame_interval_key");
+            if (frameInterval != null)
+                frameInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
 
         }
     }

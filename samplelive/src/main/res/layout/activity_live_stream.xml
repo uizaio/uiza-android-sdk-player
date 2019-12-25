@@ -14,7 +14,7 @@
         app:audioSampleRate="32000"
         app:audioStereo="true"
         app:fps="24"
-        app:keyframe="2"
+        app:frame_interval="2"
         app:videoSize="p720"
         app:useCamera2="true"
         app:AAEnabled="false"

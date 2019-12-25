@@ -16,7 +16,7 @@
     <string name="fps_title">Fps</string>
     <string name="bitrate_title">Bitrate</string>
     <string name="adaptive_bitrate_title">Adaptive bitrate</string>
-    <string name="keyframe_title">Keyframe frequency</string>
+    <string name="keyframe_title">Frame Interval</string>
 
     <string name="format_title">Format</string>
 

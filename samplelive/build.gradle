@@ -9,7 +9,7 @@ android {
         applicationId "io.uiza.samplelive"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 191223
+        versionCode 191225
         versionName "5.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
