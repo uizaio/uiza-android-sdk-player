@@ -3,6 +3,8 @@ package testlibuiza.sample.v5;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
     private DatabaseReference mReference;
     Handler handler = new Handler();
     private AppCompatEditText mChatInput;
+    private RelativeLayout llInput;
     private ChatAdapter mAdapter;
     LiveEntity entity;
     RecyclerView chatRCV;
@@ -59,6 +62,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         setContentView(R.layout.activity_fullscreen_portrait);
         uzVideo = findViewById(R.id.uiza_video);
         chatRCV = findViewById(R.id.rv_chat);
+        llInput = findViewById(R.id.ll_input);
         mChatInput = findViewById(R.id.et_compose);
         SampleUtils.setVertical(chatRCV);
         mAdapter = new ChatAdapter();
@@ -71,16 +75,21 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         mUserId = SampleUtils.getLocalUserId(this);
         if (!TextUtils.isEmpty(mUserId) && !TextUtils.isEmpty(mUsername)) {
             setupConnection();
+            chatRCV.setVisibility(View.VISIBLE);
+            llInput.setVisibility(View.VISIBLE);
+            mChatInput.setOnEditorActionListener((textView, i, keyEvent) -> {
+                ChatData data = new ChatData();
+                data.setMessage(mChatInput.getText().toString());
+                data.setId(mUserId);
+                data.setName(mUsername);
+                mReference.child(String.valueOf(new Date().getTime())).setValue(data);
+                closeAndClean();
+                return true;
+            });
+        } else {
+            chatRCV.setVisibility(View.GONE);
+            llInput.setVisibility(View.GONE);
         }
-        mChatInput.setOnEditorActionListener((textView, i, keyEvent) -> {
-            ChatData data = new ChatData();
-            data.setMessage(mChatInput.getText().toString());
-            data.setId(mUserId);
-            data.setName(mUsername);
-            mReference.child(String.valueOf(new Date().getTime())).setValue(data);
-            closeAndClean();
-            return true;
-        });
     }
 
     private void closeAndClean() {
@@ -101,7 +110,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
             uzVideo.setFreeSize(true); // must be set this line
         } else {
             Toast.makeText(this, "No playback or Offline", Toast.LENGTH_LONG).show();
-//            (new Handler()).postDelayed(this::finish, 2000);
+            (new Handler()).postDelayed(this::finish, 2000);
         }
 
     }

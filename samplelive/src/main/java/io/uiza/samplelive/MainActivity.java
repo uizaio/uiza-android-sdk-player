@@ -6,8 +6,12 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.TooltipCompat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    AppCompatButton btLoginFirebase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
@@ -15,7 +19,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.live_btn).setOnClickListener(this);
         findViewById(R.id.force_live_btn).setOnClickListener(this);
-        findViewById(R.id.bt_firebase_auth).setOnClickListener(this);
+        btLoginFirebase = findViewById(R.id.bt_firebase_auth);
+        TooltipCompat.setTooltipText(btLoginFirebase, "For Chat demo");
+        btLoginFirebase.setOnClickListener(this);
         findViewById(R.id.setting_btn).setOnClickListener(this);
     }
 
