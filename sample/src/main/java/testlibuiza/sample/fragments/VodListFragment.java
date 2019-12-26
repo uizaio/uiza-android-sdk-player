@@ -1,17 +1,20 @@
-package testlibuiza.sample;
+package testlibuiza.sample.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.reactivex.disposables.CompositeDisposable;
 import testlibuiza.R;
@@ -27,39 +30,66 @@ import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 
-public class VODListActivity extends AppCompatActivity implements OnMoreActionListener,
-        PopupMenu.OnMenuItemClickListener {
+public class VodListFragment extends Fragment implements OnMoreActionListener,
+        PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     TextView textView;
-    ProgressBar progressBar;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     VODEntityAdapter adapter;
     String currentEntityId;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean isLoading = false;
 
+    public VodListFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * @return A new instance of fragment VodListFragment.
+     */
+    public static VodListFragment newInstance() {
+        return new VodListFragment();
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedState) {
-        super.onCreate(savedState);
-        setContentView(R.layout.activity_livelist);
-        RecyclerView recyclerView = findViewById(R.id.rcv_content);
-        progressBar = findViewById(R.id.progress_bar);
-        textView = findViewById(R.id.tv_message);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_livelist, container, false);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_container);
+        RecyclerView recyclerView = root.findViewById(R.id.rcv_content);
+        textView = root.findViewById(R.id.tv_message);
         SampleUtils.setVertical(recyclerView, 2);
         adapter = new VODEntityAdapter();
         adapter.setMoreActionListener(this);
         recyclerView.setAdapter(adapter);
-        loadVODEntities();
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+        recyclerView.setAdapter(adapter);
+        mSwipeRefreshLayout.post(this::loadVODEntities);
+        return root;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mSwipeRefreshLayout.setRefreshing(false);
         if (!compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
     }
 
     private void loadVODEntities() {
-        progressBar.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
+        isLoading = true;
         UizaVodService service = UizaClientFactory.getVideoService();
         compositeDisposable.add(RxBinder.bind(service.getEntities()
                         .map(ListWrap::getData),
@@ -71,22 +101,26 @@ public class VODListActivity extends AppCompatActivity implements OnMoreActionLi
                         textView.setText("No Thread...");
                         textView.setVisibility(View.VISIBLE);
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
                 }, throwable -> {
                     textView.setText(throwable.getLocalizedMessage());
                     textView.setVisibility(View.VISIBLE);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     Timber.e(throwable);
-                }, () ->
-                        progressBar.setVisibility(View.GONE)
+                    isLoading = false;
+                }
         ));
     }
 
-
     private void showDetailDialog(final VODEntity entity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(entity.getName());
-        builder.setMessage(StringUtil.toBeautyJson(entity));
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
-        builder.show();
+        if (getContext() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(entity.getName());
+            builder.setMessage(StringUtil.toBeautyJson(entity));
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+            builder.show();
+        }
     }
 
     private void showPopup(View v) {
@@ -112,5 +146,14 @@ public class VODListActivity extends AppCompatActivity implements OnMoreActionLi
             showDetailDialog(entity);
         }
         return false;
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!isLoading) {
+            loadVODEntities();
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

@@ -12,17 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".sample.MainActivity">
+        <activity android:name=".sample.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".sample.VODListActivity"
-            android:label="@string/vod_playback"
-            android:parentActivityName=".sample.MainActivity" />
         <activity
             android:name=".sample.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -38,13 +35,9 @@
             android:name=".sample.FirebaseAuthActivity"
             android:parentActivityName=".sample.MainActivity" />
         <activity
-            android:name=".sample.LiveListActivity"
-            android:label="@string/live_playback"
-            android:parentActivityName=".sample.MainActivity" />
-        <activity
             android:name=".sample.LivePlaybackActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:parentActivityName=".sample.LiveListActivity"
+            android:parentActivityName=".sample.fragments.LiveListFragment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".sample.PlayerActivity"

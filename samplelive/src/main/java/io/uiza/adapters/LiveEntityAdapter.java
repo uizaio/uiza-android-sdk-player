@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +24,15 @@ import io.uiza.samplelive.SampleLiveApplication;
 import io.uiza.samplelive.UizaLiveActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.model.v5.live.LiveStatus;
+import vn.uiza.utils.util.ViewUtils;
 
-public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ItemViewHolder> {
 
-    private static final int ITEM = 0;
-    private static final int LOADING = 1;
+    public static final String[] thumbnails = new String[]{"https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
+            "https://2sao.vietnamnetjsc.vn/images/2018/09/29/20/51/duong-tu-04.jpg", "https://nguoi-noi-tieng.com/images/post/maria-ozawa-nong-bong-tren-khan-dai-tran-dau-thai-lan-indonesia-871230.jpg",
+            "https://dep365.com/wp-content/uploads/2019/11/img_5dce6569246fa.jpg", "http://giadinh.mediacdn.vn/thumb_w/640/2019/10/30/ngoc-trinh-5-1572423107231301246873-crop-15724237122011649225014.jpg", "https://haiquanonline.com.vn/stores/news_dataimages/hoannm/122019/19/17/in_article/2415_9-3835_phim_Mat_Biec.jpg",
+            "https://media.tinmoi.vn/upload/honghanh/2019/05/07/086010-phi-huyen-trang-giau-co-va-noi-tieng-muc-nao-sau-tuyen-bo-tu-kiem-tie.jpg", "https://viknews.com/vi/wp-content/uploads/2019/04/Hot-girl-Trâm-Anh.jpg"};
+
 
     List<LiveEntity> entities;
     OnActionListener listener;
@@ -35,11 +40,6 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public LiveEntityAdapter() {
         entities = new ArrayList<>();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return (position == entities.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
     public void setEntities(List<LiveEntity> entities) {
@@ -58,36 +58,21 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder = null;
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == LOADING) {
-            View rootLoad = inflater.inflate(R.layout.row_loading, parent, false);
-            viewHolder = new LoadingViewHolder(rootLoad);
-        } else {
-            View root = inflater.inflate(R.layout.row_entity, parent, false);
-            viewHolder = new ItemViewHolder(root);
-        }
-        return viewHolder;
+        View root = inflater.inflate(R.layout.row_entity, parent, false);
+        return new ItemViewHolder(root);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         LiveEntity entity = entities.get(position);
-
-        switch (getItemViewType(position)) {
-            case LOADING:
-                // Nothing
-                break;
-            default:
-                ItemViewHolder itemHolder = (ItemViewHolder) holder;
-                itemHolder.titleView.setText(entity.getName());
-                itemHolder.setStatusView(entity.getStatus());
-                itemHolder.itemView.setOnClickListener(v -> itemHolder.onClick(entity));
-                if (listener != null) {
-                    itemHolder.actionBtn.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
-                }
-                break;
+        holder.titleView.setText(entity.getName());
+        holder.setStatusView(entity.getStatus());
+        holder.setThumbnailView(position);
+        holder.itemView.setOnClickListener(v -> holder.onClick(entity));
+        if (listener != null) {
+            holder.actionBtn.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
         }
 
     }
@@ -97,12 +82,19 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         AppCompatTextView titleView;
         AppCompatTextView statusView;
         AppCompatImageButton actionBtn;
+        AppCompatImageView thumbnailView;
 
         ItemViewHolder(View root) {
             super(root);
+            thumbnailView = root.findViewById(R.id.iv_thumbnail);
             titleView = root.findViewById(R.id.tv_title);
             statusView = root.findViewById(R.id.tv_status);
             actionBtn = root.findViewById(R.id.action_button);
+        }
+
+        public void setThumbnailView(int position) {
+            String thumbnail = thumbnails[position % thumbnails.length];
+            ViewUtils.loadImage(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
         private void setStatusView(LiveStatus status) {
@@ -131,13 +123,13 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 Intent liveIntent = new Intent(context, UizaLiveActivity.class);
                 liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ID, entity.getId());
                 liveIntent.putExtra(SampleLiveApplication.EXTRA_STREAM_ENDPOINT, entity.getIngest().getStreamLink());
-                ((Activity)context).startActivityForResult(liveIntent, 1001);
+                ((Activity) context).startActivityForResult(liveIntent, 1001);
             } else if (entity.isOnline()) {
                 Toast.makeText(context, "Thread is streaming..", Toast.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent(context, CheckLiveActivity.class);
                 intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, entity);
-                ((Activity)context).startActivityForResult(intent, 1001);
+                ((Activity) context).startActivityForResult(intent, 1001);
             }
         }
     }

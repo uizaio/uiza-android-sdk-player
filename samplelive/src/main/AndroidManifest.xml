@@ -24,8 +24,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FirebaseAuthActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="@string/title_activity_firebase_auth"/>
+            android:label="@string/title_activity_firebase_auth"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -36,8 +36,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,12 +45,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LiveListActivity"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".CheckLiveActivity"
-            android:parentActivityName=".LiveListActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UizaLiveActivity"

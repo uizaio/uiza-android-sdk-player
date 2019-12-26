@@ -1,17 +1,20 @@
-package testlibuiza.sample;
+package testlibuiza.sample.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.reactivex.disposables.CompositeDisposable;
 import testlibuiza.R;
@@ -27,38 +30,66 @@ import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 
 
-public class LiveListActivity extends AppCompatActivity implements OnMoreActionListener, PopupMenu.OnMenuItemClickListener {
+public class LiveListFragment extends Fragment implements OnMoreActionListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+
 
     TextView textView;
-    ProgressBar progressBar;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     LiveEntityAdapter adapter;
     String currentEntityId;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    boolean isLoading = false;
 
+    public LiveListFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * @return A new instance of fragment LiveListFragment.
+     */
+    public static LiveListFragment newInstance() {
+        return new LiveListFragment();
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_livelist);
-        RecyclerView recyclerView = findViewById(R.id.rcv_content);
-        progressBar = findViewById(R.id.progress_bar);
-        textView = findViewById(R.id.tv_message);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedState) {
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.activity_livelist, container, false);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_container);
+        RecyclerView recyclerView = root.findViewById(R.id.rcv_content);
+        textView = root.findViewById(R.id.tv_message);
         SampleUtils.setVertical(recyclerView, 2);
         adapter = new LiveEntityAdapter();
         adapter.setOnMoreListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
         recyclerView.setAdapter(adapter);
-        loadLiveEntities();
+        mSwipeRefreshLayout.post(this::loadLiveEntities);
+        return root;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mSwipeRefreshLayout.setRefreshing(false);
         if (!compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
     }
 
     private void loadLiveEntities() {
-        progressBar.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
+        isLoading = true;
         UizaLiveService service = UizaClientFactory.getLiveService();
         compositeDisposable.add(RxBinder.bind(service.getEntities()
                         .map(o -> ListUtil.filter(o.getData(), e -> !e.isInit())),
@@ -70,23 +101,27 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
                         textView.setText("No Thread...");
                         textView.setVisibility(View.VISIBLE);
                     }
-                    progressBar.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
                 }, throwable -> {
                     textView.setText(throwable.getLocalizedMessage());
                     textView.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     Timber.e(throwable);
+                    isLoading = false;
                 }
         ));
 
     }
 
     private void showDetailDialog(final LiveEntity entity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(entity.getName());
-        builder.setMessage(StringUtil.toBeautyJson(entity));
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
-        builder.show();
+        if (getContext() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(entity.getName());
+            builder.setMessage(StringUtil.toBeautyJson(entity));
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+            builder.show();
+        }
     }
 
     private void showPopup(View v) {
@@ -112,5 +147,14 @@ public class LiveListActivity extends AppCompatActivity implements OnMoreActionL
             showDetailDialog(entity);
         }
         return false;
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!isLoading) {
+            loadLiveEntities();
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

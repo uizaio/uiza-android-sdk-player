@@ -147,7 +147,7 @@ public class ViewUtils {
     }
 
 
-    enum TransformationType {
+    public enum TransformationType {
         CIRCLE,
         ROUND,
         BLUR,

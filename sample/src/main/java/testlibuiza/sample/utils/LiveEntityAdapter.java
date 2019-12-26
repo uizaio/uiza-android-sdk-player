@@ -16,11 +16,13 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Random;
 
 import testlibuiza.R;
 import testlibuiza.sample.LivePlaybackActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.model.v5.live.LiveStatus;
+import vn.uiza.utils.util.ViewUtils;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ViewHolder> {
 
@@ -52,6 +54,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LiveEntity entity = entities.get(position);
         holder.titleView.setText(entity.getName());
+        holder.setThumbnailView(position);
         holder.setStatusView(entity.getStatus());
         holder.itemView.setOnClickListener(v -> holder.onClick(entity));
         if (listener != null) {
@@ -87,6 +90,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
         // each data item is just a string in this case
         AppCompatTextView titleView;
         AppCompatTextView statusView;
+        AppCompatTextView tvViewers;
         AppCompatImageView thumbnailView;
         AppCompatImageButton actionButton;
 
@@ -94,14 +98,22 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
             super(root);
             titleView = root.findViewById(R.id.tv_title);
             statusView = root.findViewById(R.id.tv_status);
+            tvViewers = root.findViewById(R.id.tv_viewers);
             thumbnailView = root.findViewById(R.id.iv_thumbnail);
             actionButton = root.findViewById(R.id.action_button);
+            tvViewers.setVisibility(View.GONE);
+        }
+
+        public void setThumbnailView(int position) {
+            String thumbnail = VODEntityAdapter.thumbnails[position % VODEntityAdapter.thumbnails.length];
+            ViewUtils.loadImage(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
         private void setStatusView(LiveStatus status) {
             if (status == null) {
                 statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_err, null));
                 statusView.setText("Error");
+                tvViewers.setVisibility(View.GONE);
                 return;
             }
             switch (status) {
@@ -109,10 +121,13 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
                 case READY:
                     statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_init, null));
                     statusView.setText("Offline");
+                    tvViewers.setVisibility(View.GONE);
                     break;
                 case BROADCASTING:
+                    tvViewers.setVisibility(View.VISIBLE);
                     statusView.setBackground(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.background_live, null));
-                    statusView.setText(status.getValue());
+                    statusView.setText("Live");
+                    tvViewers.setText(String.valueOf((new Random().nextInt(100))));
                     break;
             }
 

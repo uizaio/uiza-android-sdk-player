@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Random;
 
 import testlibuiza.R;
 import testlibuiza.sample.PlayerActivity;
@@ -24,6 +25,11 @@ import vn.uiza.restapi.model.v5.vod.VODEntity;
 import vn.uiza.utils.util.ViewUtils;
 
 public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.ViewHolder> {
+
+    public static final String[] thumbnails = new String[]{"https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
+            "https://2sao.vietnamnetjsc.vn/images/2018/09/29/20/51/duong-tu-04.jpg", "https://nguoi-noi-tieng.com/images/post/maria-ozawa-nong-bong-tren-khan-dai-tran-dau-thai-lan-indonesia-871230.jpg",
+            "https://dep365.com/wp-content/uploads/2019/11/img_5dce6569246fa.jpg", "http://giadinh.mediacdn.vn/thumb_w/640/2019/10/30/ngoc-trinh-5-1572423107231301246873-crop-15724237122011649225014.jpg", "https://haiquanonline.com.vn/stores/news_dataimages/hoannm/122019/19/17/in_article/2415_9-3835_phim_Mat_Biec.jpg",
+            "https://media.tinmoi.vn/upload/honghanh/2019/05/07/086010-phi-huyen-trang-giau-co-va-noi-tieng-muc-nao-sau-tuyen-bo-tu-kiem-tie.jpg", "https://viknews.com/vi/wp-content/uploads/2019/04/Hot-girl-Trâm-Anh.jpg"};
 
     List<VODEntity> entities;
     OnMoreActionListener listener;
@@ -52,7 +58,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         VODEntity entity = entities.get(position);
         holder.titleView.setText(entity.getName());
-        holder.setThumbnail(entity);
+        holder.setThumbnail(position);
         holder.itemView.setOnClickListener(v -> holder.onClick(entity));
         if (listener != null) {
             holder.actionButton.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
@@ -87,6 +93,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
         // each data item is just a string in this case
         AppCompatTextView titleView;
         AppCompatTextView statusView;
+        AppCompatTextView tvViewers;
         AppCompatImageView thumbnailView;
         AppCompatImageButton actionButton;
 
@@ -94,14 +101,19 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
             super(root);
             titleView = root.findViewById(R.id.tv_title);
             statusView = root.findViewById(R.id.tv_status);
+            tvViewers = root.findViewById(R.id.tv_viewers);
             thumbnailView = root.findViewById(R.id.iv_thumbnail);
             actionButton = root.findViewById(R.id.action_button);
             statusView.setVisibility(View.GONE);
+            tvViewers.setText(String.valueOf((new Random().nextInt(1000))));
+
         }
 
-        private void setThumbnail(VODEntity entity) {
-            ViewUtils.loadImage(thumbnailView, entity.getThumbnail(), R.drawable.ic_person_white_48);
+        private void setThumbnail(int position) {
+            String thumbnail = thumbnails[position % thumbnails.length];
+            ViewUtils.loadImage(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
+
 
         private void onClick(VODEntity entity) {
             Context context = itemView.getContext();
