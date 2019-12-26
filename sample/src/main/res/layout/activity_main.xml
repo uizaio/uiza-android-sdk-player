@@ -4,9 +4,9 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/LightGrey"
+    android:background="@color/light_grey"
     android:orientation="vertical"
-    tools:context="testlibuiza.sample.v3.MainV3Activity">
+    tools:context="testlibuiza.sample.MainActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
@@ -23,15 +23,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:text="@string/vod_playback"
-                    android:textSize="@dimen/txt_30" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/bt_vod_list"
@@ -51,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -59,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/live_playback"
-                    android:textSize="@dimen/txt_30" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/bt_fire_login"
@@ -78,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -86,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Guide Call API"
-                    android:textSize="@dimen/txt_30" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/bt_guide"
@@ -99,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -107,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="More"
-                    android:textSize="@dimen/txt_30" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/bt_error"

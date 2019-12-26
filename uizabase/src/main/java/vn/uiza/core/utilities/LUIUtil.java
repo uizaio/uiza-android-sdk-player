@@ -15,7 +15,6 @@ import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
-import android.os.Handler;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -45,7 +44,6 @@ import java.util.Random;
 
 import timber.log.Timber;
 import vn.uiza.R;
-import vn.uiza.utils.StringUtil;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
 
@@ -192,7 +190,7 @@ public class LUIUtil {
 
         EditText searchEditText = searchView.findViewById(R.id.search_src_text);
         searchEditText.setTextColor(Color.WHITE);
-        searchEditText.setHintTextColor(ContextCompat.getColor(context, R.color.LightGrey));
+        searchEditText.setHintTextColor(ContextCompat.getColor(context, R.color.light_grey));
 
         SpannableStringBuilder ssb = new SpannableStringBuilder("   ");
         if (hintText != null) {
@@ -247,19 +245,19 @@ public class LUIUtil {
     }
 
     private static int[] colors = {
-            R.color.LightBlue,
-            R.color.LightCoral,
-            R.color.LightCyan,
-            R.color.LightGoldenrodYellow,
-            R.color.LightGreen,
-            R.color.LightGrey,
-            R.color.LightPink,
-            R.color.LightSalmon,
-            R.color.LightSeaGreen,
-            R.color.LightSlateGray,
-            R.color.LightSteelBlue,
-            R.color.LightYellow,
-            R.color.LightSkyBlue
+            R.color.light_blue,
+            R.color.light_coral,
+            R.color.light_cyan,
+            R.color.light_goldenrod_yellow,
+            R.color.light_green,
+            R.color.light_grey,
+            R.color.light_pink,
+            R.color.light_salmon,
+            R.color.light_sea_green,
+            R.color.light_slate_gray,
+            R.color.light_steel_blue,
+            R.color.light_yellow,
+            R.color.light_sky_blue
     };
 
     public static int getColor(Context context) {

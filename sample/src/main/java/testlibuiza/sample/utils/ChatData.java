@@ -1,5 +1,6 @@
 package testlibuiza.sample.utils;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,14 +9,15 @@ import java.io.Serializable;
  * Class responsible to hold the name and the message to the user
  * to send to firebase
  */
+@IgnoreExtraProperties
 public class ChatData implements Serializable {
 
     @SerializedName("name")
-    String name;
+    public String name;
     @SerializedName("id")
-    String id;
+    public String id;
     @SerializedName("message")
-    String message;
+    public String message;
 
     public ChatData() {
         // empty constructor
@@ -40,4 +42,15 @@ public class ChatData implements Serializable {
         return this.message;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

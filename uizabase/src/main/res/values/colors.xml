@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="primaryColor">#0a0f20</color>
     <color name="colorPrimary">#0b0e0f</color>
     <color name="colorPrimaryTrans">#550b0e0f</color>
     <color name="colorPrimaryDark">#0b0e0f</color>
@@ -11,31 +13,32 @@
     <color name="vip4">#fec835</color>
     <color name="vip5">#fd8833</color>
 
+    <color name="black_2">#05000000</color>
     <color name="black_5">#10000000</color>
     <color name="black_35">#44000000</color>
     <color name="black_65">#A6000000</color>
+    <color name="black_85">#D9000000</color>
+    <color name="black_95">#EE000000</color>
 
     <color name="transparent">#00000000</color>
-    <color name="White">#FFFFFF</color>
-    <color name="LightGrey">#D3D3D3</color>
-    <color name="Black">#000000</color>
+    <color name="light_grey">#D3D3D3</color>
 
-    <color name="LightYellow">#FFFFE0</color>
-    <color name="LightPink">#FFB6C1</color>
-    <color name="LightSalmon">#FFA07A</color>
-    <color name="LightGoldenrodYellow">#FAFAD2</color>
-    <color name="WhiteSmoke">#F5F5F5</color>
-    <color name="LightCoral">#F08080</color>
-    <color name="LightCyan">#E0FFFF</color>
-    <color name="LightSteelBlue">#B0C4DE</color>
-    <color name="LightBlue">#ADD8E6</color>
-    <color name="LightGreen">#90EE90</color>
-    <color name="LightSkyBlue">#87CEFA</color>
-    <color name="Gray">#808080</color>
-    <color name="Green">#00ff00</color>
-    <color name="GreenTran">#5500ff00</color>
-    <color name="LightSlateGray">#778899</color>
-    <color name="LightSeaGreen">#20B2AA</color>
+    <color name="light_yellow">#FFFFE0</color>
+    <color name="light_pink">#FFB6C1</color>
+    <color name="light_salmon">#FFA07A</color>
+    <color name="light_goldenrod_yellow">#FAFAD2</color>
+    <color name="white_smoke">#F5F5F5</color>
+    <color name="light_coral">#F08080</color>
+    <color name="light_cyan">#E0FFFF</color>
+    <color name="light_steel_blue">#B0C4DE</color>
+    <color name="light_blue">#ADD8E6</color>
+    <color name="light_green">#90EE90</color>
+    <color name="light_sky_blue">#87CEFA</color>
+    <color name="grey">#808080</color>
+    <color name="green">#00ff00</color>
+    <color name="green_tran">#5500ff00</color>
+    <color name="light_slate_gray">#778899</color>
+    <color name="light_sea_green">#20B2AA</color>
 
     <color name="pdlg_color_white">#eeeeee</color>
     <color name="pdlg_color_blue">#1976D2</color>
@@ -50,25 +53,19 @@
 
     <color name="info_video_gray">#999999</color>
     <color name="info_video_description">#888888</color>
-    <color name="black_85">#D9000000</color>
-    <color name="black_95">#EE000000</color>
 
-    <color name="grey">#818181</color>
-    <color name="black_2">#05000000</color>
-
-    <color name="primaryColor">#0a0f20</color>
-    <color name="White_55">#55FFFFFF</color>
-    <color name="White_85">#99FFFFFF</color>
-    <color name="White_99">#BBFFFFFF</color>
-    <color name="WhiteTrans">#55FFFFFF</color>
-    <color name="WhiteTrans99">#99FFFFFF</color>
-    <color name="DeepPink">#FF1493</color>
+    <color name="white_55">#55FFFFFF</color>
+    <color name="white_85">#99FFFFFF</color>
+    <color name="white_99">#BBFFFFFF</color>
+    <color name="white_trans">#55FFFFFF</color>
+    <color name="white_trans_99">#99FFFFFF</color>
+    <color name="deep_pink">#FF1493</color>
     <color name="bottom_press_icon">#b41482</color>
-    <color name="Red">#FF0000</color>
-    <color name="RedTrans">#55FF0000</color>
-    <color name="DimGray">#696969</color>
-    <color name="Blue">#0000FF</color>
-    <color name="BlueTran">#550000FF</color>
+    <color name="red">#FF0000</color>
+    <color name="red_trans">#55FF0000</color>
+    <color name="dim_gray">#696969</color>
+    <color name="blue">#0000FF</color>
+    <color name="blue_trans">#550000FF</color>
 
     <color name="alarm_title_active">#444444</color>
     <color name="alarm_title_outdated">#888888</color>

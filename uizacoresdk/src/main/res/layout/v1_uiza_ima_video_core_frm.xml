@@ -4,7 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/Black">
+    android:background="@android:color/black">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/player_view"
@@ -28,7 +28,7 @@
         android:id="@+id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Red"
+        android:background="@color/red"
         android:orientation="vertical">
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_3"
             android:paddingRight="@dimen/padding_3"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:id="@+id/controls_root"

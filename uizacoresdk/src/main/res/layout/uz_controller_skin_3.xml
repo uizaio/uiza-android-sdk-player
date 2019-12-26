@@ -30,7 +30,7 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_weight="1"
             android:singleLine="true"
-            android:textColor="@color/White"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <vn.uiza.views.autosize.UZImageButton
@@ -114,7 +114,7 @@
             android:paddingLeft="@dimen/padding_5"
             android:paddingRight="@dimen/padding_5"
             android:text="@string/live"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_time"
@@ -133,7 +133,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_5"
             android:layout_toLeftOf="@id/iv_live_view"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_view"
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
     <LinearLayout
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/White" />
+                android:textColor="@android:color/white" />
         </RelativeLayout>
 
         <LinearLayout
@@ -272,7 +272,7 @@
                 android:layout_below="@id/preview_frame_layout"
                 android:layout_marginLeft="@dimen/margin_5"
                 android:includeFontPadding="false"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
             <vn.uiza.views.autosize.UZTextView
@@ -284,7 +284,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginRight="@dimen/margin_5"
                 android:includeFontPadding="false"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
             <uizacoresdk.view.rl.timebar.UZTimebar
@@ -292,13 +292,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/uz_duration"
-                app:ad_marker_color="@color/LightYellow"
-                app:buffered_color="@color/LightGrey"
-                app:played_ad_marker_color="@color/LightYellow"
-                app:played_color="@color/White"
+                app:ad_marker_color="@color/light_yellow"
+                app:buffered_color="@color/light_grey"
+                app:played_ad_marker_color="@color/light_yellow"
+                app:played_color="@android:color/white"
                 app:previewFrameLayout="@id/preview_frame_layout"
-                app:scrubber_color="@color/White"
-                app:unplayed_color="@color/Gray" />
+                app:scrubber_color="@android:color/white"
+                app:unplayed_color="@color/grey" />
         </RelativeLayout>
 
     </LinearLayout>

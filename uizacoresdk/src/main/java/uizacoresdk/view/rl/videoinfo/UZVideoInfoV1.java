@@ -6,6 +6,7 @@ package uizacoresdk.view.rl.videoinfo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -103,7 +104,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
         nestedScrollView = findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
         recyclerView = findViewById(R.id.rv);
         tvVideoName = findViewById(R.id.tv_video_name);
         tvVideoTime = findViewById(R.id.tv_video_time);

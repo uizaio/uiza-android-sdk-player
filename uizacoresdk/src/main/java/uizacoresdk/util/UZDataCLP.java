@@ -1,6 +1,6 @@
 package uizacoresdk.util;
 
-import vn.uiza.restapi.model.v5.UizaPlayback;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 
 public class UZDataCLP {
     private static final UZDataCLP ourInstance = new UZDataCLP();
@@ -12,17 +12,17 @@ public class UZDataCLP {
     private UZDataCLP() {
     }
 
-    private UizaPlayback playback;
+    private PlaybackInfo playbackInfo;
 
-    public UizaPlayback getPlayback() {
-        return playback;
+    public PlaybackInfo getPlaybackInfo() {
+        return playbackInfo;
     }
 
-    public void setPlayback(UizaPlayback playback) {
-        this.playback = playback;
+    public void setPlaybackInfo(PlaybackInfo playback) {
+        this.playbackInfo = playback;
     }
 
     public void clearData() {
-        playback = null;
+        playbackInfo = null;
     }
 }

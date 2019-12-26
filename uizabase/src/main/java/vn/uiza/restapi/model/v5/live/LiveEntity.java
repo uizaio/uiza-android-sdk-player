@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.model.v5.UizaPlayback;
 
 public class LiveEntity implements Parcelable {
@@ -21,7 +22,7 @@ public class LiveEntity implements Parcelable {
     @SerializedName("ingest")
     LiveIngest ingest;
     @SerializedName("playback")
-    LivePlayback playback;
+    UizaPlayback playback;
     @SerializedName("region")
     String region;
     @SerializedName("status")
@@ -41,7 +42,7 @@ public class LiveEntity implements Parcelable {
         region = in.readString();
         status = LiveStatus.valueOf(in.readString());
         ingest = in.readParcelable(LiveIngest.class.getClassLoader());
-        playback = in.readParcelable(UizaPlayback.class.getClassLoader());
+        playback = in.readParcelable(PlaybackInfo.class.getClassLoader());
         createdAt = new Date(in.readLong());
         updatedAt = new Date(in.readLong());
     }
@@ -94,7 +95,7 @@ public class LiveEntity implements Parcelable {
         return ingest;
     }
 
-    public LivePlayback getPlayback() {
+    public UizaPlayback getPlayback() {
         return playback;
     }
 
@@ -131,10 +132,8 @@ public class LiveEntity implements Parcelable {
         return playback != null && playback.getHls() != null;
     }
 
-    public UizaPlayback getUizaPlayback() {
-        if (playback != null)
-            return new UizaPlayback(this);
-        return null;
+    public PlaybackInfo getPlaybackInfo() {
+        return new PlaybackInfo(this);
     }
 
     @Override

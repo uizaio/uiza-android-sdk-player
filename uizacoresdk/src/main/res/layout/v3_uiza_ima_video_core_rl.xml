@@ -19,7 +19,7 @@
                 android:id="@id/bkg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/Black" />
+                android:background="@android:color/black" />
         </RelativeLayout>
 
         <uizacoresdk.view.rl.videoinfo.StatsForNerdsView
@@ -52,7 +52,7 @@
         android:id="@id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Red"
+        android:background="@color/red"
         android:orientation="vertical">
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_3"
             android:paddingRight="@dimen/padding_3"
-            android:textColor="@color/White"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/txt_8" />
 
         <LinearLayout
@@ -95,7 +95,7 @@
             android:layout_marginTop="@dimen/margin_5"
             android:gravity="center"
             android:padding="@dimen/padding_5"
-            android:textColor="@color/White"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/txt_16"
             android:textStyle="bold" />
     </RelativeLayout>

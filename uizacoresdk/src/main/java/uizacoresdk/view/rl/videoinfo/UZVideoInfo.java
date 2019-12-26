@@ -3,6 +3,7 @@ package uizacoresdk.view.rl.videoinfo;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,6 +27,7 @@ import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -103,7 +104,7 @@ public class UZVideoInfo extends RelativeLayout {
         nestedScrollView = (NestedScrollView) findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         tvVideoName = (TextView) findViewById(R.id.tv_video_name);
         tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
@@ -151,7 +152,8 @@ public class UZVideoInfo extends RelativeLayout {
             Timber.e("setup resultRetrieveAnEntity == null");
             return;
         }
-        if (UZData.getInstance().getPlayback() == null || !UZData.getInstance().getPlayback().canPlay()) {
+        PlaybackInfo info = UZData.getInstance().getPlaybackInfo();
+        if (info == null || !info.canPlay()) {
             Timber.e("setup data is null");
         }
         updateUI();
@@ -161,20 +163,20 @@ public class UZVideoInfo extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            tvVideoName.setText(UZData.getInstance().getPlayback().getName());
+            tvVideoName.setText(UZData.getInstance().getPlaybackInfo().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
             SentryUtils.captureException(e);
         }
-        if (UZData.getInstance().getPlayback().getCreatedAt() != null) {
-            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getPlayback().getCreatedAt().toString()));
+        if (UZData.getInstance().getPlaybackInfo().getCreatedAt() != null) {
+            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getPlaybackInfo().getCreatedAt().toString()));
         } else {
             tvVideoTime.setText(nullS);
         }
         //TODO
         tvVideoRate.setText("12+");
         try {
-            tvVideoDescription.setText(UZData.getInstance().getPlayback().getDescription().isEmpty() ? emptyS : UZData.getInstance().getPlayback().getDescription());
+            tvVideoDescription.setText(UZData.getInstance().getPlaybackInfo().getDescription().isEmpty() ? emptyS : UZData.getInstance().getPlaybackInfo().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
             SentryUtils.captureException(e);

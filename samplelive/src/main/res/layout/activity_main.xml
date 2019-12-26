@@ -16,13 +16,13 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/live_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:drawableStart="@drawable/ic_live_tv_white_24"
         android:drawablePadding="16dp"
-        android:drawableTint="@android:color/background_dark"
+        android:drawableTint="?attr/colorAccent"
         android:text="Livestream"
         app:layout_constraintBottom_toTopOf="@+id/force_live_btn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,12 +30,12 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/force_live_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:drawableStart="@drawable/ic_copyright_white_24"
         android:drawablePadding="16dp"
-        android:drawableTint="@android:color/background_dark"
+        android:drawableTint="?attr/colorAccent"
         android:text="Force Live"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_desc_firebase"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="(For demo chat)"
@@ -54,11 +54,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_firebase_auth"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_viewer_white_24"
         android:drawablePadding="16dp"
-        android:drawableTint="@android:color/background_dark"
+        android:drawableTint="?attr/colorAccent"
         android:text="Login to Chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,12 +67,12 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/setting_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_settings_white_24"
         android:drawablePadding="16dp"
-        android:drawableTint="@android:color/background_dark"
+        android:drawableTint="?attr/colorAccent"
         android:text="Settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

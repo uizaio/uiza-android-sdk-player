@@ -43,7 +43,7 @@ import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.model.v2.auth.Auth;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.model.v5.UizaPlayback;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.utils.StringUtil;
 import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
@@ -332,7 +332,7 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException(UZException.ERR_13);
         }
-        if (UZDataCLP.getInstance().getPlayback() == null) {
+        if (UZDataCLP.getInstance().getPlaybackInfo() == null) {
             Timber.e(UZException.ERR_14);
             return false;
         }
@@ -342,16 +342,16 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(context)) {
             Timber.d("miniplayer STEP 6 initLinkPlay");
-            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlayback());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlaybackInfo());
         } else {
             UZUtil.stopMiniPlayer(context);
-            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlayback());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlaybackInfo());
         }
         UZUtil.setIsInitPlaylistFolder(context, false);
         return true;
     }
 
-    public static void initLiveEntity(@NonNull Activity activity, @NonNull UZVideo uzVideo, UizaPlayback playback) {
+    public static void initLiveEntity(@NonNull Activity activity, @NonNull UZVideo uzVideo, PlaybackInfo playback) {
         if (playback != null) {
             UZUtil.setClickedPip(activity, false);
         }
@@ -438,7 +438,7 @@ public class UZUtil {
         UZDataCLP.getInstance().clearData();
     }
 
-    private static void playCustomLinkPlay(final UZVideo uzVideo, final UizaPlayback playback) {
+    private static void playCustomLinkPlay(final UZVideo uzVideo, final PlaybackInfo playback) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(() -> uzVideo.initPlayback(playback.getHls(), playback.isLive()));
     }
@@ -454,7 +454,7 @@ public class UZUtil {
         });
     }
 
-    private static void play(final UZVideo uzVideo, final UizaPlayback playback) {
+    private static void play(final UZVideo uzVideo, final PlaybackInfo playback) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(() -> uzVideo.initPlayback(playback));
     }

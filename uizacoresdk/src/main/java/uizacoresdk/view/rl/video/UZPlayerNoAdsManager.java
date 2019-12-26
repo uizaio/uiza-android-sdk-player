@@ -19,20 +19,17 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     @Override
     public void setRunnable() {
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
-                    return;
-                }
-                handleVideoProgress();
+        runnable = () -> {
+            if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
+                return;
+            }
+            handleVideoProgress();
 
-                if (uzVideo.getDebugTextView() != null) {
-                    uzVideo.getDebugTextView().setText(getDebugString());
-                }
-                if (handler != null && runnable != null) {
-                    handler.postDelayed(runnable, 1000);
-                }
+            if (uzVideo.getDebugTextView() != null) {
+                uzVideo.getDebugTextView().setText(getDebugString());
+            }
+            if (handler != null && runnable != null) {
+                handler.postDelayed(runnable, 1000);
             }
         };
         handler.postDelayed(runnable, 0);

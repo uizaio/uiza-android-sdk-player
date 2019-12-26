@@ -24,7 +24,7 @@ import vn.uiza.restapi.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.model.v5.UizaPlayback;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.utils.util.Utils;
@@ -245,31 +245,31 @@ public class UZData {
         if (uzInput == null) {
             return null;
         }
-        if (uzInput.getPlayback() == null) {
+        if (uzInput.getPlaybackInfo() == null) {
             return null;
         }
-        return uzInput.getPlayback().getId();
+        return uzInput.getPlaybackInfo().getId();
     }
 
     public String getEntityName() {
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             return "";
         }
-        return uzInput.getPlayback().getName();
+        return uzInput.getPlaybackInfo().getName();
     }
 
     public String getThumbnail() {
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             return null;
         }
-        return uzInput.getPlayback().getThumbnail();
+        return uzInput.getPlaybackInfo().getThumbnail();
     }
 
     public String getChannelName() {
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             return null;
         }
-        return uzInput.getPlayback().getChannelName();
+        return uzInput.getPlaybackInfo().getChannelName();
     }
 
     public String getUrlIMAAd() {
@@ -287,10 +287,10 @@ public class UZData {
     }
 
     public String getLastFeedId() {
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             return null;
         }
-        return uzInput.getPlayback().getLastFeedId();
+        return uzInput.getPlaybackInfo().getLastFeedId();
     }
 
     public ResultGetTokenStreaming getResultGetTokenStreaming() {
@@ -300,16 +300,16 @@ public class UZData {
         return uzInput.getResultGetTokenStreaming();
     }
 
-    public ResultGetLinkPlay getResultGetLinkPlay() {
-        if (uzInput == null) {
-            return null;
-        }
-        return uzInput.getResultGetLinkPlay();
-    }
-
-    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-        uzInput.setResultGetLinkPlay(resultGetLinkPlay);
-    }
+//    public ResultGetLinkPlay getResultGetLinkPlay() {
+//        if (uzInput == null) {
+//            return null;
+//        }
+//        return uzInput.getResultGetLinkPlay();
+//    }
+//
+//    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
+//        uzInput.setResultGetLinkPlay(resultGetLinkPlay);
+//    }
 
     //==================================================================================================================START TRACKING
     public UizaTracking createTrackingInput(Context context, String eventType) {
@@ -334,12 +334,12 @@ public class UZData {
         uizaTracking.setPlayerName(Constants.PLAYER_NAME);
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
         //entity_id, entity_name
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             uizaTracking.setEntityId(NULL);
             uizaTracking.setEntityName(NULL);
         } else {
-            uizaTracking.setEntityId(uzInput.getPlayback().getId());
-            uizaTracking.setEntityName(uzInput.getPlayback().getName());
+            uizaTracking.setEntityId(uzInput.getPlaybackInfo().getId());
+            uizaTracking.setEntityName(uzInput.getPlaybackInfo().getName());
         }
         uizaTracking.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
         uizaTracking.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
@@ -391,12 +391,12 @@ public class UZData {
         muiza.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
         muiza.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
         muiza.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
-        if (uzInput == null || uzInput.getPlayback() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             muiza.setEntityId(NULL);
             muiza.setEntityName(NULL);
         } else {
-            muiza.setEntityId(uzInput.getPlayback().getId());
-            muiza.setEntityName(uzInput.getPlayback().getName());
+            muiza.setEntityId(uzInput.getPlaybackInfo().getId());
+            muiza.setEntityName(uzInput.getPlaybackInfo().getName());
         }
         muiza.setEntityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl());
         muiza.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
@@ -568,11 +568,11 @@ public class UZData {
     }
     //end singleton data if play playlist folder
 
-    public UizaPlayback getPlayback() {
+    public PlaybackInfo getPlaybackInfo() {
         if (uzInput == null) {
             return null;
         }
-        return uzInput.getPlayback();
+        return uzInput.getPlaybackInfo();
     }
 
     private boolean isUseWithVDHView;

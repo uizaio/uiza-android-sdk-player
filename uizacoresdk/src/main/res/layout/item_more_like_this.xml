@@ -38,7 +38,7 @@
                 android:layout_alignParentBottom="true"
                 android:padding="@dimen/padding_3"
                 android:singleLine="true"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/txt_10" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

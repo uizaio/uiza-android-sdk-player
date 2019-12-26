@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_5"
-        card_view:cardBackgroundColor="@color/White"
+        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="@dimen/padding_5"
         card_view:cardElevation="@dimen/w_3">
 
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/padding_5"
-            android:textColor="@color/Gray"
+            android:textColor="@color/grey"
             android:textSize="@dimen/txt_18" />
     </androidx.cardview.widget.CardView>
 

@@ -18,7 +18,7 @@
 
             <solid android:color="@color/transparent" />
 
-            <stroke android:width="0.5dp" android:color="@color/White" />
+            <stroke android:width="0.5dp" android:color="@android:color/white" />
 
             <corners android:radius="@dimen/round_45" />
 

@@ -46,7 +46,6 @@ import io.uiza.adapters.ChatAdapter;
 import io.uiza.adapters.ChatData;
 import io.uiza.extensions.SampleUtils;
 import io.uiza.live.UizaLiveView;
-import io.uiza.live.enums.AspectRatio;
 import io.uiza.live.enums.FilterRender;
 import io.uiza.live.enums.ProfileVideoEncoder;
 import io.uiza.live.enums.RecordStatus;
@@ -560,16 +559,17 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
 
     @Override
     public void onStatusChange(RecordStatus status) {
-        bRecord.setChecked(status == RecordStatus.RECORDING);
-
-        if (status == RecordStatus.RECORDING) {
-            Toast.makeText(this, "Recording... ", Toast.LENGTH_SHORT).show();
-        } else if (status == RecordStatus.STOPPED) {
-            currentDateAndTime = "";
-            Toast.makeText(this, "Stopped", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(UizaLiveActivity.this, "Record " + status.toString(), Toast.LENGTH_SHORT).show();
-        }
+        runOnUiThread(() -> {
+            bRecord.setChecked(status == RecordStatus.RECORDING);
+            if (status == RecordStatus.RECORDING) {
+                Toast.makeText(this, "Recording... ", Toast.LENGTH_SHORT).show();
+            } else if (status == RecordStatus.STOPPED) {
+                currentDateAndTime = "";
+                Toast.makeText(this, "Stopped", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(UizaLiveActivity.this, "Record " + status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // CHAT

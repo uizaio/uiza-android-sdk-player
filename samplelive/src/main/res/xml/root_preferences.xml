@@ -43,7 +43,7 @@
         app:title="@string/video_title">
 
         <ListPreference
-            app:defaultValue="360"
+            app:defaultValue="720"
             app:entries="@array/profile_entries"
             app:entryValues="@array/profile_values"
             app:iconSpaceReserved="false"

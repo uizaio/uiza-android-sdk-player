@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.Target;
 
 public class ViewUtils {
     public static void visibleViews(View... views) {
@@ -137,11 +138,20 @@ public class ViewUtils {
         loadImage(imageView, imageUrl, 0, TransformationType.NONE);
     }
 
+    public static void loadThumbnail(@NonNull ImageView imageView, @NonNull String imageUrl, long position) {
+        Glide.with(imageView)
+                .load(imageUrl)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .transform(new GlideThumbnailTransformationPB(position))
+                .into(imageView);
+    }
+
 
     enum TransformationType {
         CIRCLE,
         ROUND,
         BLUR,
+        THUMB,
         NONE;
 
         @NonNull
@@ -153,6 +163,8 @@ public class ViewUtils {
                     return new BlurTransformation(context);
                 case ROUND:
                     return new RoundedCorners(20);
+                case THUMB:
+                    return new GlideThumbnailTransformationPB(1000);
                 default:
                     return new RoundedCorners(0);
             }

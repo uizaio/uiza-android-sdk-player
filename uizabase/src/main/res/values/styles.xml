@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -37,9 +38,9 @@
 
     <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@color/White</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/White</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="uiza_dialog_animation">

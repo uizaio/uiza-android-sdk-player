@@ -1,5 +1,6 @@
 package io.uiza.samplelive;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,20 +26,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.setting_btn).setOnClickListener(this);
     }
 
+    private <T extends Activity> void launchActivity(Class<T> tClass) {
+        startActivity(new Intent(MainActivity.this, tClass));
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.live_btn:
-                startActivity(new Intent(MainActivity.this, LiveListActivity.class));
+                launchActivity(LiveListActivity.class);
                 break;
             case R.id.force_live_btn:
-                startActivity(new Intent(MainActivity.this, InputActivity.class));
+                launchActivity(InputActivity.class);
                 break;
             case R.id.setting_btn:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                launchActivity(SettingsActivity.class);
                 break;
             case R.id.bt_firebase_auth:
-                startActivity(new Intent(MainActivity.this, FirebaseAuthActivity.class));
+                launchActivity(FirebaseAuthActivity.class);
                 break;
             default:
                 break;

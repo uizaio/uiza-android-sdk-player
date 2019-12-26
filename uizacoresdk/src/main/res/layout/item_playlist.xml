@@ -29,13 +29,13 @@
                 android:id="@+id/tv_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/iv_cover"
+                android:layout_alignEnd="@+id/iv_cover"
                 android:layout_margin="@dimen/margin_3"
                 android:background="@drawable/bt_duration"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="tv_duration"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/txt_8" />
 
             <LinearLayout
@@ -53,7 +53,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="tv_name"
-                    android:textColor="@color/White"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_10"
                     android:textStyle="bold" />
 
@@ -68,42 +68,42 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:text="tv_year"
-                        android:textColor="@color/White"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/txt_8"
                         android:textStyle="bold" />
 
                     <View
                         android:layout_width="@dimen/w_1"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_5"
-                        android:background="@color/White" />
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:background="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tv_duration_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_5"
+                        android:layout_marginStart="@dimen/margin_5"
                         android:singleLine="true"
                         android:text="tv_duration_2"
-                        android:textColor="@color/White"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/txt_8"
                         android:textStyle="bold" />
 
                     <View
                         android:layout_width="@dimen/w_1"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_5"
-                        android:background="@color/White" />
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:background="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tv_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_5"
+                        android:layout_marginStart="@dimen/margin_5"
                         android:background="@drawable/bt_rate"
                         android:singleLine="true"
                         android:text="tv_rate"
-                        android:textColor="@color/White"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/txt_8"
                         android:textStyle="bold" />
                 </LinearLayout>

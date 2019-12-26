@@ -42,6 +42,7 @@ import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -83,7 +84,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginR;
     private int marginB;
     private int progressBarColor;
-    private ResultGetLinkPlay mResultGetLinkPlay;
+//    private ResultGetLinkPlay mResultGetLinkPlay;
+    private PlaybackInfo mPlaybackInfo;
     private int positionBeforeDisappearX = Constants.UNKNOW;
     private int positionBeforeDisappearY = Constants.UNKNOW;
     private CountDownTimer countDownTimer;
@@ -116,15 +118,15 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             inflateControls();
         }
 
-        try {
-            cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
-        } catch (NullPointerException e) {
-            Timber.e(e, "Error cannot find cdnHost");
-            SentryUtils.captureException(e);
-        }
+//        try {
+//            cdnHost = mPlaybackInfo.getCdn().get(0).getHost();
+//        } catch (NullPointerException e) {
+//            Timber.e(e, "Error cannot find cdnHost");
+//            SentryUtils.captureException(e);
+//        }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (!isInitCustomLinkplay) {
-            if (UZData.getInstance().getPlayback() == null) {
+            if (UZData.getInstance().getPlaybackInfo() == null) {
                 return START_NOT_STICKY;
             }
         }
@@ -193,8 +195,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        mResultGetLinkPlay = UZData.getInstance().getResultGetLinkPlay();
-        if (mResultGetLinkPlay == null) {
+        mPlaybackInfo = UZData.getInstance().getPlaybackInfo();
+        if (mPlaybackInfo == null) {
             stopSelf();
         }
         videoW = UZUtil.getVideoWidth(getBaseContext());
@@ -333,7 +335,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
-        if (UZData.getInstance().getPlayback() == null) {
+        if (UZData.getInstance().getPlaybackInfo() == null) {
             return;
         }
         Timber.d("miniplayer STEP 5 START OPEN APP, miniplayer content position %d", fuzVideo.getCurrentPosition());

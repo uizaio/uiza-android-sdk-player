@@ -7,12 +7,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginTop="@dimen/margin_13"
         android:paddingLeft="@dimen/padding_30"
         android:paddingRight="@dimen/padding_30"
         android:text="@string/speed"
-        android:textColor="@color/Black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/txt_22" />
 
     <ScrollView
@@ -36,7 +35,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -48,7 +47,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -60,7 +59,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -72,7 +71,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -84,7 +83,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -96,7 +95,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
 
             <CheckedTextView
@@ -108,7 +107,7 @@
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/Black"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_14" />
         </LinearLayout>
     </ScrollView>

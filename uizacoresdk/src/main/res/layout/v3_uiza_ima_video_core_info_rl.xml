@@ -14,16 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/padding_50"
-            android:paddingTop="@dimen/padding_50">
+            android:paddingTop="@dimen/padding_50"
+            android:paddingBottom="@dimen/padding_50">
 
             <TextView
                 android:id="@+id/tv_video_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10"
-                android:textColor="@color/White"
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/txt_20"
                 android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10">
+                android:paddingEnd="@dimen/padding_10">
 
                 <TextView
                     android:id="@+id/tv_video_time"
@@ -46,12 +46,12 @@
                     android:id="@+id/tv_video_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_15"
+                    android:layout_marginStart="@dimen/margin_15"
                     android:background="@drawable/bt_rate"
                     android:gravity="center"
-                    android:paddingLeft="@dimen/padding_10"
-                    android:paddingRight="@dimen/padding_10"
-                    android:textColor="@color/White"
+                    android:paddingStart="@dimen/padding_10"
+                    android:paddingEnd="@dimen/padding_10"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_15" />
             </LinearLayout>
 
@@ -60,8 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10"
                 android:textColor="@color/info_video_description"
                 android:textSize="@dimen/txt_14" />
 
@@ -76,8 +76,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10">
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                     android:id="@+id/tv_video_starring"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:textColor="@color/info_video_description"
                     android:textSize="@dimen/txt_14" />
             </LinearLayout>
@@ -101,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10">
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                     android:id="@+id/tv_video_director"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:textColor="@color/info_video_description"
                     android:textSize="@dimen/txt_14" />
             </LinearLayout>
@@ -126,8 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10">
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
                     android:id="@+id/tv_video_genres"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:textColor="@color/info_video_description"
                     android:textSize="@dimen/txt_14" />
             </LinearLayout>
@@ -150,7 +150,7 @@
                 android:id="@+id/tv_debug"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginStart="@dimen/margin_5"
                 android:textColor="@color/info_video_description"
                 android:textSize="@dimen/txt_10"
                 android:visibility="gone" />
@@ -159,11 +159,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_55"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10"
                 android:text="@string/more_like_this"
                 android:textAllCaps="true"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/txt_20"
                 android:textStyle="bold" />
 
@@ -171,8 +171,8 @@
                 android:id="@+id/tv_more_like_this_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10"
                 android:textColor="@color/info_video_description"
                 android:textSize="@dimen/txt_14"
                 android:textStyle="bold"

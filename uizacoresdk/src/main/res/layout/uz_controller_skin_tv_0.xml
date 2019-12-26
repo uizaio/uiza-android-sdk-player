@@ -27,10 +27,10 @@
             android:id="@id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_10"
             android:layout_weight="1"
             android:singleLine="true"
-            android:textColor="@color/White"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -50,14 +50,14 @@
             android:paddingLeft="@dimen/padding_5"
             android:paddingRight="@dimen/padding_5"
             android:text="@string/live"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_time"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_live_time"
+            android:layout_toStartOf="@id/tv_live_time"
             android:background="@color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_timer_white_48" />
@@ -67,16 +67,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_5"
-            android:layout_toLeftOf="@id/iv_live_view"
-            android:textColor="@color/White" />
+            android:layout_marginEnd="@dimen/margin_5"
+            android:layout_toStartOf="@id/iv_live_view"
+            android:textColor="@android:color/white" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_view"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_live_view"
+            android:layout_toStartOf="@id/tv_live_view"
             android:background="@color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_visibility_white_48" />
@@ -85,9 +85,9 @@
             android:id="@id/tv_live_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/White" />
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
     <LinearLayout
@@ -121,15 +121,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/preview_frame_layout"
-                android:layout_toLeftOf="@id/uz_duration"
-                android:layout_toRightOf="@id/uz_position"
-                app:ad_marker_color="@color/LightYellow"
-                app:buffered_color="@color/LightGrey"
-                app:played_ad_marker_color="@color/LightYellow"
-                app:played_color="@color/White"
+                android:layout_toStartOf="@id/uz_duration"
+                android:layout_toEndOf="@id/uz_position"
+                app:ad_marker_color="@color/light_yellow"
+                app:buffered_color="@color/light_grey"
+                app:played_ad_marker_color="@color/light_yellow"
+                app:played_color="@android:color/white"
                 app:previewFrameLayout="@id/preview_frame_layout"
-                app:scrubber_color="@color/White"
-                app:unplayed_color="@color/Gray" />
+                app:scrubber_color="@android:color/white"
+                app:unplayed_color="@color/grey" />
 
             <vn.uiza.views.autosize.UZTextView
                 android:id="@id/uz_position"
@@ -138,7 +138,7 @@
                 android:layout_below="@id/preview_frame_layout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
             <vn.uiza.views.autosize.UZTextView
@@ -150,7 +150,7 @@
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
+                android:textColor="@android:color/white"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -263,7 +263,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:maxLines="2"
-            android:textColor="@color/White"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/txt_30" />
     </RelativeLayout>
 </RelativeLayout>

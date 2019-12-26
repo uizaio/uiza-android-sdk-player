@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.model.v5.UizaPlayback;
-import vn.uiza.restapi.model.v5.live.LivePlayback;
 
 public class VODEntity implements Parcelable {
 
@@ -65,7 +65,7 @@ public class VODEntity implements Parcelable {
     String publishToCdn;
 
     @SerializedName("playback")
-    LivePlayback playback;
+    UizaPlayback playback;
 
     /**
      * A set of predefined key-value pairs that you can attach to a video object,
@@ -185,7 +185,7 @@ public class VODEntity implements Parcelable {
         return publishToCdn;
     }
 
-    public LivePlayback getPlayback() {
+    public UizaPlayback getPlayback() {
         return playback;
     }
 
@@ -202,7 +202,7 @@ public class VODEntity implements Parcelable {
     }
 
 
-    public UizaPlayback getUizaPlayback() {
-        return new UizaPlayback(this);
+    public PlaybackInfo getPlaybackInfo() {
+        return new PlaybackInfo(this);
     }
 }

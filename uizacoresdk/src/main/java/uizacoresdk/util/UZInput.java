@@ -1,8 +1,7 @@
 package uizacoresdk.util;
 
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
-import vn.uiza.restapi.model.v5.UizaPlayback;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
 
 /**
  * Created by loitp on 18/1/2019.
@@ -11,9 +10,9 @@ import vn.uiza.restapi.model.v5.UizaPlayback;
 public class UZInput {
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
-    private UizaPlayback playback;
+    private PlaybackInfo playbackInfo;
     private ResultGetTokenStreaming resultGetTokenStreaming;
-    private ResultGetLinkPlay resultGetLinkPlay;
+//    private ResultGetLinkPlay resultGetLinkPlay;
 
     public String getUrlIMAAd() {
         return urlIMAAd;
@@ -31,16 +30,16 @@ public class UZInput {
         this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
     }
 
-    public UizaPlayback getPlayback() {
-        return playback;
+    public PlaybackInfo getPlaybackInfo() {
+        return playbackInfo;
     }
 
-    public void setPlayback(UizaPlayback playback) {
-        this.playback = playback;
+    public void setPlaybackInfo(PlaybackInfo playback) {
+        this.playbackInfo = playback;
     }
 
     public boolean isLivestream() {
-        return playback != null;
+        return playbackInfo != null && playbackInfo.isLive();
     }
 
     public ResultGetTokenStreaming getResultGetTokenStreaming() {
@@ -51,11 +50,11 @@ public class UZInput {
         this.resultGetTokenStreaming = resultGetTokenStreaming;
     }
 
-    public ResultGetLinkPlay getResultGetLinkPlay() {
-        return resultGetLinkPlay;
-    }
+//    public ResultGetLinkPlay getResultGetLinkPlay() {
+//        return resultGetLinkPlay;
+//    }
 
-    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-        this.resultGetLinkPlay = resultGetLinkPlay;
-    }
+//    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
+//        this.resultGetLinkPlay = resultGetLinkPlay;
+//    }
 }

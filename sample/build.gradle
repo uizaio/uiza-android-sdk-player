@@ -9,7 +9,7 @@ android {
         applicationId "com.uiza.module.sample"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 191225
+        versionCode 191226
         versionName "5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -66,7 +66,7 @@ dependencies {
     //compile 'com.google.android.gms:play-services:12.0.1'
 //    api 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'commons-codec:commons-codec:1.13'
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
+    implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
 
     implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
     implementation 'com.google.android.gms:play-services-ads:18.3.0'

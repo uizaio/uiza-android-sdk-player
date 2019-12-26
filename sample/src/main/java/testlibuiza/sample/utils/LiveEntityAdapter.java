@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import testlibuiza.BuildConfig;
 import testlibuiza.R;
-import testlibuiza.sample.v5.LivePlaybackActivity;
+import testlibuiza.sample.LivePlaybackActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.model.v5.live.LiveStatus;
 

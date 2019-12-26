@@ -8,8 +8,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -64,7 +62,6 @@ import java.util.List;
 import java.util.UUID;
 
 import timber.log.Timber;
-import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
@@ -77,6 +74,7 @@ import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.util.ViewUtils;
 import vn.uiza.views.autosize.UZImageButton;
 
 abstract class IUZPlayerManager implements PreviewLoader {
@@ -195,11 +193,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         }
         setPlayWhenReady(false);
         if (thumbnailsUrl != null) {
-            Glide.with(imageView)
-                    .load(thumbnailsUrl)
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .transform(new GlideThumbnailTransformationPB(currentPosition))
-                    .into(imageView);
+            ViewUtils.loadThumbnail(imageView, thumbnailsUrl, currentPosition);
         }
     }
 

@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.v3.linkplay.PlayerActivity;
+import testlibuiza.sample.PlayerActivity;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.restapi.model.v5.vod.VODEntity;
 import vn.uiza.utils.util.ViewUtils;
 
@@ -103,10 +105,14 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
 
         private void onClick(VODEntity entity) {
             Context context = itemView.getContext();
-            if (entity.getUizaPlayback().canPlay()) {
-                Intent liveIntent = new Intent(context, PlayerActivity.class);
-                liveIntent.putExtra("extra_vod_entity", entity);
-                ((Activity) context).startActivityForResult(liveIntent, 1001);
+            PlaybackInfo info = entity.getPlaybackInfo();
+            info.setUizaPlayback(new UizaPlayback("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+                    "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8"
+                    , "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd"));
+            if (info.canPlay()) {
+                Intent intent = new Intent(context, PlayerActivity.class);
+                intent.putExtra("extra_playback_info", info);
+                ((Activity) context).startActivityForResult(intent, 1001);
             } else {
                 Toast.makeText(context, "No playback...", Toast.LENGTH_SHORT).show();
             }

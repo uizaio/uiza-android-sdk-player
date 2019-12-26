@@ -35,19 +35,15 @@ import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
-import vn.uiza.restapi.linkplay.UizaLinkPlayService;
-import vn.uiza.restapi.restclient.UZRestClientTracking;
-import vn.uiza.restapi.restclient.UizaClientFactory;
-import vn.uiza.restapi.tracking.UizaTrackingService;
-import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.restapi.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.Url;
-import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.restapi.restclient.UZRestClientTracking;
+import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.tracking.UizaTrackingService;
 
 public class FUZVideo extends RelativeLayout {
     private static final String M3U8_EXTENSION = ".m3u8";
@@ -315,59 +311,59 @@ public class FUZVideo extends RelativeLayout {
 
     //=============================================================================================================END LIFE CIRCLE
     //=============================================================================================================START API
-    private void callAPIGetTokenStreaming(final String entityId, final CallbackGetLinkPlay callbackGetLinkPlay) {
-        UZService service = UizaClientFactory.getUizaService();
-        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
-        sendGetTokenStreaming.setEntityId(entityId);
-        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        RxBinder.bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
-                result -> {
-                    if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
-                        callbackGetLinkPlay.onSuccess(null);
-                        return;
-                    }
-                    String tokenStreaming = result.getData().getToken();
-                    Timber.d("tokenStreaming %s", tokenStreaming);
-                    callAPIGetLinkPlay(entityId, tokenStreaming, callbackGetLinkPlay);
-                }, throwable -> callbackGetLinkPlay.onSuccess(null));
-    }
+//    private void callAPIGetTokenStreaming(final String entityId, final CallbackGetLinkPlay callbackGetLinkPlay) {
+//        UZService service = UizaClientFactory.getUizaService();
+//        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+//        sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
+//        sendGetTokenStreaming.setEntityId(entityId);
+//        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+//        RxBinder.bind(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming),
+//                result -> {
+//                    if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
+//                        callbackGetLinkPlay.onSuccess(null);
+//                        return;
+//                    }
+//                    String tokenStreaming = result.getData().getToken();
+//                    Timber.d("tokenStreaming %s", tokenStreaming);
+//                    callAPIGetLinkPlay(entityId, tokenStreaming, callbackGetLinkPlay);
+//                }, throwable -> callbackGetLinkPlay.onSuccess(null));
+//    }
 
-    private void callAPIGetLinkPlay(String entityId, String tokenStreaming, final CallbackGetLinkPlay callbackGetLinkPlay) {
-        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
-            callbackGetLinkPlay.onSuccess(null);
-            return;
-        }
-        UizaClientFactory.getLinkPlayClient().addAuthorization(tokenStreaming);
-        UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
-        String appId = UZData.getInstance().getAppId();
-        String typeContent = SendGetTokenStreaming.STREAM;
-        RxBinder.bind(service.getLinkPlay(appId, entityId, typeContent), result -> {
-            Timber.d("getLinkPlayVOD onSuccess");
-            checkToSetUpResource(result, callbackGetLinkPlay);
-        }, throwable -> callbackGetLinkPlay.onSuccess(null));
-    }
+//    private void callAPIGetLinkPlay(String entityId, String tokenStreaming, final CallbackGetLinkPlay callbackGetLinkPlay) {
+//        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
+//            callbackGetLinkPlay.onSuccess(null);
+//            return;
+//        }
+//        UizaClientFactory.getLinkPlayClient().addAuthorization(tokenStreaming);
+//        UizaLinkPlayService service = UizaClientFactory.getLinkPlayService();
+//        String typeContent = SendGetTokenStreaming.STREAM;
+//        RxBinder.bind(service.getLinkPlay(appId, entityId, typeContent), result -> {
+//            Timber.d("getLinkPlayVOD onSuccess");
+//            checkToSetUpResource(result, callbackGetLinkPlay);
+//        }, throwable -> callbackGetLinkPlay.onSuccess(null));
+//    }
 
-    private void checkToSetUpResource(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
-        if (mResultGetLinkPlay != null && UZData.getInstance().getPlayback() != null) {
+    private void checkToSetUpResource(CallbackGetLinkPlay callbackGetLinkPlay) {
+        if (UZData.getInstance().getPlaybackInfo() != null) {
             List<String> listLinkPlay = new ArrayList<>();
-            List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
+            PlaybackInfo info = UZData.getInstance().getPlaybackInfo();
+            List<String> urlList = info.getUrls();
             if (isLivestream) {
                 // Bat buoc dung linkplay m3u8 cho nay, do bug cua system
-                for (Url url : urlList) {
-                    if (url.getUrl().toLowerCase().endsWith(M3U8_EXTENSION)) {
-                        listLinkPlay.add(url.getUrl());
+                for (String url : urlList) {
+                    if (url.toLowerCase().endsWith(M3U8_EXTENSION)) {
+                        listLinkPlay.add(url);
                     }
                 }
             } else {
-                for (Url url : urlList) {
-                    if (url.getUrl().toLowerCase().endsWith(MPD_EXTENSION)) {
-                        listLinkPlay.add(url.getUrl());
+                for (String url : urlList) {
+                    if (url.toLowerCase().endsWith(MPD_EXTENSION)) {
+                        listLinkPlay.add(url);
                     }
                 }
-                for (Url url : urlList) {
-                    if (url.getUrl().toLowerCase().endsWith(M3U8_EXTENSION)) {
-                        listLinkPlay.add(url.getUrl());
+                for (String url : urlList) {
+                    if (url.toLowerCase().endsWith(M3U8_EXTENSION)) {
+                        listLinkPlay.add(url);
                     }
                 }
             }
@@ -648,7 +644,7 @@ public class FUZVideo extends RelativeLayout {
             return;
         }
         Timber.d("-----------------------> playPlaylistPosition %d -> %s", position, data.getName());
-        callAPIGetTokenStreaming(data.getId(), callbackGetLinkPlay);
+//        callAPIGetTokenStreaming(data.getId(), callbackGetLinkPlay);
     }
 
     public interface CallbackGetLinkPlay {
