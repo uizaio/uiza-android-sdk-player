@@ -5,11 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import testlibuiza.R;
 import timber.log.Timber;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.restclient.UizaRestClient;
+import vn.uiza.utils.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -34,11 +38,21 @@ public class SettingsActivity extends AppCompatActivity {
                 apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     if (newValue instanceof String) {
                         String value = (String) newValue;
-                        UizaClientFactory.changeAPIToken(value);
+                        UZUtil.changeAPIToken(value);
                         Timber.e(value);
                     }
                     return true;
                 });
+            }
+            ListPreference lstPreference = findPreference("api_base_url_key");
+            if(lstPreference != null){
+                lstPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
+                    if(newValue instanceof String){
+                        String value = (String)newValue;
+                        UizaRestClient.getInstance().changeApiBaseUrl(value);
+                    }
+                    return true;
+                }));
             }
 
         }

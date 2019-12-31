@@ -8,10 +8,10 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 29123118
+        versionName "5.0.1"
 
-        def EXO_VERSION = "2.9.6"
+        def EXO_VERSION = "2.10.8"
         buildConfigField "String", "EXO_VERSION", "\"${EXO_VERSION}\""
     }
     /*buildTypes {
@@ -41,17 +41,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
     implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
     // exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
-    implementation 'com.google.android.exoplayer:extension-ima:2.9.6'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.6'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.6'
+    api 'com.google.android.exoplayer:exoplayer:2.10.8'
+    implementation 'com.google.android.exoplayer:extension-ima:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
 
     // android support lib
     implementation 'androidx.mediarouter:mediarouter:1.1.0'
-
-    //https://github.com/rubensousa/PreviewSeekBar
-    api 'com.github.rubensousa:previewseekbar:2.0.0'
-    api 'com.github.rubensousa:previewseekbar-exoplayer:2.8.1.0'
 
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito

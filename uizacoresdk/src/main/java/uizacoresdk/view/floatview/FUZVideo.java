@@ -30,9 +30,10 @@ import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.AppUtils;
+import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
 import vn.uiza.restapi.model.tracking.UizaTracking;
@@ -246,7 +247,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        initData(linkPlay, null, null, null, isAdsDependencyAvailable());
+        initData(linkPlay, null, null, null, AppUtils.isAdsDependencyAvailable());
         onResume();
     }
 
@@ -495,7 +496,6 @@ public class FUZVideo extends RelativeLayout {
         UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
         uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
-        uizaTrackingCCU.setAi(UZData.getInstance().getAppId());
         uizaTrackingCCU.setSn(UZData.getInstance().getChannelName()); // stream name
         uizaTrackingCCU.setDi(UZOsUtil.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
@@ -505,7 +505,7 @@ public class FUZVideo extends RelativeLayout {
         }, throwable -> handler.postDelayed(this::trackUizaCCUForLivestream, INTERVAL_TRACK_CCU));
     }
 
-    protected void addTrackingMuizaError(String event, UZException e) {
+    protected void addTrackingMuizaError(String event, UizaException e) {
         if (isInitCustomLinkPlay) {
             return;
         }
@@ -558,7 +558,7 @@ public class FUZVideo extends RelativeLayout {
 
         void onVideoSizeChanged(int width, int height);
 
-        void onPlayerError(UZException error);
+        void onPlayerError(UizaException error);
     }
 
 
@@ -601,7 +601,7 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    protected void onPlayerError(UZException error) {
+    protected void onPlayerError(UizaException error) {
         addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, error);
         if (callback != null) {
             callback.onPlayerError(error);
@@ -649,10 +649,6 @@ public class FUZVideo extends RelativeLayout {
 
     public interface CallbackGetLinkPlay {
         void onSuccess(String linkPlay);
-    }
-
-    protected boolean isAdsDependencyAvailable() {
-        return UZUtil.isDependencyAvailable("com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer");
     }
     //=============================================================================================================END CALLBACK
 }

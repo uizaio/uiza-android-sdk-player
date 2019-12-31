@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -277,6 +276,7 @@
             android:layout_toStartOf="@id/btn_close"
             android:gravity="bottom"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/default_stats_1"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_12"
@@ -306,7 +306,7 @@
             android:text="@string/default_stats_3"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_12"
-            tools:text="3.16.0 / 2.9.5 / 3.0"
+            tools:text="--- / --- / --"
             />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_device_info"
@@ -337,11 +337,11 @@
 
         <ImageView
             android:id="@+id/btn_close"
-            android:layout_width="@dimen/w_30"
-            android:layout_height="@dimen/w_30"
+            android:layout_width="@dimen/w_25"
+            android:layout_height="@dimen/w_25"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/padding_10"
             android:background="@drawable/pdlg_icon_close"
             android:contentDescription="@null"
             />

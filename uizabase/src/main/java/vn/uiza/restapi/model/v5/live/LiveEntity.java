@@ -27,6 +27,8 @@ public class LiveEntity implements Parcelable {
     String region;
     @SerializedName("status")
     LiveStatus status;
+    @SerializedName("dvr")
+    boolean dvr;
     @SerializedName("created_at")
     Date createdAt;
     @SerializedName("updated_at")
@@ -41,6 +43,7 @@ public class LiveEntity implements Parcelable {
         description = in.readString();
         region = in.readString();
         status = LiveStatus.valueOf(in.readString());
+        dvr = in.readInt() == 1;
         ingest = in.readParcelable(LiveIngest.class.getClassLoader());
         playback = in.readParcelable(PlaybackInfo.class.getClassLoader());
         createdAt = new Date(in.readLong());
@@ -56,6 +59,7 @@ public class LiveEntity implements Parcelable {
         if (status != null)
             dest.writeString(status.name());
         else dest.writeString("");
+        dest.writeInt(dvr ? 1 : 0);
         dest.writeParcelable(ingest, flags);
         dest.writeParcelable(playback, flags);
         dest.writeLong(createdAt.getTime());
@@ -130,6 +134,10 @@ public class LiveEntity implements Parcelable {
 
     public boolean isPlayback() {
         return playback != null && playback.getHls() != null;
+    }
+
+    public boolean isDvr() {
+        return dvr;
     }
 
     public PlaybackInfo getPlaybackInfo() {

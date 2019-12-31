@@ -33,7 +33,7 @@ public class UizaClientFactory {
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      */
     public static void setup(String baseApiUrl, String token, @Constants.ENVIRONMENT int environment) {
-        UZRestClient.getInstance().init(baseApiUrl, token);
+        UizaRestClient.getInstance().init(baseApiUrl, token);
         if (environment == Constants.ENVIRONMENT.DEV) {
             UZRestClientGetLinkPlay.getInstance().init(Constants.URL_GET_LINK_PLAY_DEV, "");
             UZRestClientHeartBeat.getInstance().init(Constants.URL_HEART_BEAT_DEV, "");
@@ -50,11 +50,11 @@ public class UizaClientFactory {
     }
 
     public static void changeAPIToken(String token) {
-        UZRestClient.getInstance().changeAuthorization(token);
+        UizaRestClient.getInstance().changeAuthorization(token);
     }
 
-    public static UZRestClient getUizaClient() {
-        return UZRestClient.getInstance();
+    public static UizaRestClient getUizaClient() {
+        return UizaRestClient.getInstance();
     }
 
     public static UZRestClientGetLinkPlay getLinkPlayClient() {
@@ -64,16 +64,16 @@ public class UizaClientFactory {
     // optional
     @Deprecated
     public static UZService getUizaService() {
-        return UZRestClient.getInstance().createService(UZService.class);
+        return UizaRestClient.getInstance().createService(UZService.class);
     }
 
     // V5
     public static UizaLiveService getLiveService() {
-        return UZRestClient.getInstance().createService(UizaLiveService.class);
+        return UizaRestClient.getInstance().createService(UizaLiveService.class);
     }
 
     public static UizaVodService getVideoService() {
-        return UZRestClient.getInstance().createService(UizaVodService.class);
+        return UizaRestClient.getInstance().createService(UizaVodService.class);
     }
 
     public static UizaLinkPlayService getLinkPlayService() {

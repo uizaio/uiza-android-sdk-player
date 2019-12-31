@@ -1,5 +1,6 @@
 package testlibuiza.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -30,10 +31,12 @@ import timber.log.Timber;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LActivityUtil;
+import uizacoresdk.view.vdh.VDHView;
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.LActivityUtil;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.utils.ScreenUtil;
 
 public class LivePlaybackActivity extends AppCompatActivity implements UZCallback {
 
@@ -61,6 +64,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_playback);
         uzVideo = findViewById(R.id.uiza_video);
+        uzVideo.hideDebugTextView(true);
         chatRCV = findViewById(R.id.rv_chat);
         llInput = findViewById(R.id.ll_input);
         mChatInput = findViewById(R.id.et_compose);
@@ -107,7 +111,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         }
         PlaybackInfo playback = entity.getPlaybackInfo();
         if (playback != null && entity.isOnline()) {
-            UZUtil.initLiveEntity(this, uzVideo, playback);
+            UZUtil.initEntity(uzVideo, playback);
             uzVideo.setFreeSize(true); // must be set this line
         } else {
             Toast.makeText(this, "No playback or Offline", Toast.LENGTH_LONG).show();
@@ -122,7 +126,9 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
 
     @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
-
+        if (isInitMiniPlayerSuccess) {
+            onBackPressed();
+        }
     }
 
     @Override
@@ -132,12 +138,25 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
-
+        if (!isLandscape) {
+            int w = ScreenUtil.getScreenWidth();
+            int h = w * 9 / 16;
+            uzVideo.setFreeSize(false);
+            uzVideo.setSize(w, h);
+        }
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UizaException e) {
 
+    }
+    @Override
+    public void onBackPressed() {
+        if (uzVideo.isLandscape()) {
+            uzVideo.getIbBackScreenIcon().performClick();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -191,4 +210,9 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
             chatRCV.post(() -> chatRCV.smoothScrollToPosition(mAdapter.getItemCount() - 1));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import vn.uiza.core.common.Constants;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 public class UZOsUtil {
     @SuppressLint("HardwareIds")

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import vn.uiza.core.exception.UZException;
+import vn.uiza.core.exception.UizaException;
 
 public class ErrorActivity extends AppCompatActivity {
 
@@ -14,37 +14,37 @@ public class ErrorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error);
         TextView tvErr = findViewById(R.id.tv_err);
-        String s = UZException.ERR_CODE_0 + " - " + UZException.ERR_0 + "\n"
-                + UZException.ERR_CODE_1 + " - " + UZException.ERR_1 + "\n"
-                + UZException.ERR_CODE_2 + " - " + UZException.ERR_2 + "\n"
-                + UZException.ERR_CODE_3 + " - " + UZException.ERR_3 + "\n"
-                + UZException.ERR_CODE_4 + " - " + UZException.ERR_4 + "\n"
-                + UZException.ERR_CODE_5 + " - " + UZException.ERR_5 + "\n"
-                + UZException.ERR_CODE_6 + " - " + UZException.ERR_6 + "\n"
-                + UZException.ERR_CODE_7 + " - " + UZException.ERR_7 + "\n"
-                + UZException.ERR_CODE_8 + " - " + UZException.ERR_8 + "\n"
-                + UZException.ERR_CODE_9 + " - " + UZException.ERR_9 + "\n"
-                + UZException.ERR_CODE_10 + " - " + UZException.ERR_10 + "\n"
-                + UZException.ERR_CODE_11 + " - " + UZException.ERR_11 + "\n"
-                + UZException.ERR_CODE_12 + " - " + UZException.ERR_12 + "\n"
-                + UZException.ERR_CODE_13 + " - " + UZException.ERR_13 + "\n"
-                + UZException.ERR_CODE_14 + " - " + UZException.ERR_14 + "\n"
-                + UZException.ERR_CODE_15 + " - " + UZException.ERR_15 + "\n"
-                + UZException.ERR_CODE_16 + " - " + UZException.ERR_16 + "\n"
-                + UZException.ERR_CODE_17 + " - " + UZException.ERR_17 + "\n"
-                + UZException.ERR_CODE_18 + " - " + UZException.ERR_18 + "\n"
-                + UZException.ERR_CODE_19 + " - " + UZException.ERR_19 + "\n"
-                + UZException.ERR_CODE_20 + " - " + UZException.ERR_20 + "\n"
-                + UZException.ERR_CODE_21 + " - " + UZException.ERR_21 + "\n"
-                + UZException.ERR_CODE_22 + " - " + UZException.ERR_22 + "\n"
-                + UZException.ERR_CODE_23 + " - " + UZException.ERR_23 + "\n"
-                + UZException.ERR_CODE_24 + " - " + UZException.ERR_24 + "\n"
-                + UZException.ERR_CODE_400 + " - " + UZException.ERR_400 + "\n"
-                + UZException.ERR_CODE_401 + " - " + UZException.ERR_401 + "\n"
-                + UZException.ERR_CODE_404 + " - " + UZException.ERR_404 + "\n"
-                + UZException.ERR_CODE_422 + " - " + UZException.ERR_422 + "\n"
-                + UZException.ERR_CODE_500 + " - " + UZException.ERR_500 + "\n"
-                + UZException.ERR_CODE_503 + " - " + UZException.ERR_503 + "\n";
+        String s = UizaException.ERR_CODE_0 + " - " + UizaException.ERR_0 + "\n"
+                + UizaException.ERR_CODE_1 + " - " + UizaException.ERR_1 + "\n"
+                + UizaException.ERR_CODE_2 + " - " + UizaException.ERR_2 + "\n"
+                + UizaException.ERR_CODE_3 + " - " + UizaException.ERR_3 + "\n"
+                + UizaException.ERR_CODE_4 + " - " + UizaException.ERR_4 + "\n"
+                + UizaException.ERR_CODE_5 + " - " + UizaException.ERR_5 + "\n"
+                + UizaException.ERR_CODE_6 + " - " + UizaException.ERR_6 + "\n"
+                + UizaException.ERR_CODE_7 + " - " + UizaException.ERR_7 + "\n"
+                + UizaException.ERR_CODE_8 + " - " + UizaException.ERR_8 + "\n"
+                + UizaException.ERR_CODE_9 + " - " + UizaException.ERR_9 + "\n"
+                + UizaException.ERR_CODE_10 + " - " + UizaException.ERR_10 + "\n"
+                + UizaException.ERR_CODE_11 + " - " + UizaException.ERR_11 + "\n"
+                + UizaException.ERR_CODE_12 + " - " + UizaException.ERR_12 + "\n"
+                + UizaException.ERR_CODE_13 + " - " + UizaException.ERR_13 + "\n"
+                + UizaException.ERR_CODE_14 + " - " + UizaException.ERR_14 + "\n"
+                + UizaException.ERR_CODE_15 + " - " + UizaException.ERR_15 + "\n"
+                + UizaException.ERR_CODE_16 + " - " + UizaException.ERR_16 + "\n"
+                + UizaException.ERR_CODE_17 + " - " + UizaException.ERR_17 + "\n"
+                + UizaException.ERR_CODE_18 + " - " + UizaException.ERR_18 + "\n"
+                + UizaException.ERR_CODE_19 + " - " + UizaException.ERR_19 + "\n"
+                + UizaException.ERR_CODE_20 + " - " + UizaException.ERR_20 + "\n"
+                + UizaException.ERR_CODE_21 + " - " + UizaException.ERR_21 + "\n"
+                + UizaException.ERR_CODE_22 + " - " + UizaException.ERR_22 + "\n"
+                + UizaException.ERR_CODE_23 + " - " + UizaException.ERR_23 + "\n"
+                + UizaException.ERR_CODE_24 + " - " + UizaException.ERR_24 + "\n"
+                + UizaException.ERR_CODE_400 + " - " + UizaException.ERR_400 + "\n"
+                + UizaException.ERR_CODE_401 + " - " + UizaException.ERR_401 + "\n"
+                + UizaException.ERR_CODE_404 + " - " + UizaException.ERR_404 + "\n"
+                + UizaException.ERR_CODE_422 + " - " + UizaException.ERR_422 + "\n"
+                + UizaException.ERR_CODE_500 + " - " + UizaException.ERR_500 + "\n"
+                + UizaException.ERR_CODE_503 + " - " + UizaException.ERR_503 + "\n";
 
         tvErr.setText(s);
     }

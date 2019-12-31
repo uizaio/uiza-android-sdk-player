@@ -1,5 +1,9 @@
 package vn.uiza.utils;
 
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -106,6 +110,24 @@ public class StringUtil {
      */
     public static boolean isEmailValid(@Nullable CharSequence email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    /**
+     * convert html to plain text
+     *
+     * @param htmlText : html String
+     * @return plain text
+     */
+    public static String htmlToPlainText(String htmlText) {
+        Spanned spanned;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            spanned = Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            spanned = Html.fromHtml(htmlText);
+        }
+        char[] chars = new char[spanned.length()];
+        TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
+        return new String(chars);
     }
 
 }

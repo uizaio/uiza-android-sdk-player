@@ -5,69 +5,97 @@
     android:background="@color/white_smoke"
     android:orientation="vertical">
 
-    <uizacoresdk.view.rl.video.UZVideo
-        android:id="@+id/uiza_video"
+    <uizacoresdk.view.vdh.VDHView
+        android:id="@+id/vdhv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <EditText
-        android:id="@+id/et_link_play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter any linkplay here"
-        android:padding="@dimen/padding_5"
-        android:textSize="@dimen/txt_14" />
-
-    <HorizontalScrollView
-        android:id="@+id/hsv_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@id/header_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="@android:color/black">
 
-            <Button
-                android:id="@+id/bt_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_5"
-                android:text="Link 0"
-                android:textSize="@dimen/txt_18" />
+            <uizacoresdk.view.rl.video.UZVideo
+                android:id="@id/uiza_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
-            <Button
-                android:id="@+id/bt_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_5"
-                android:text="Link 1"
-                android:textSize="@dimen/txt_18" />
+        <ScrollView
+            android:id="@id/body_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
 
-            <Button
-                android:id="@+id/bt_2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding_5"
-                android:text="Link 2"
-                android:textSize="@dimen/txt_18" />
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/bt_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_5"
-                android:text="Link 3"
-                android:textSize="@dimen/txt_18" />
-        </LinearLayout>
-    </HorizontalScrollView>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/et_link_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter any linkplay here"
+                    android:padding="@dimen/padding_5"
+                    android:textSize="@dimen/txt_14" />
+
+                <HorizontalScrollView
+                    android:id="@+id/hsv_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/bt_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_5"
+                            android:text="Link 0"
+                            android:textSize="@dimen/txt_18" />
+
+                        <Button
+                            android:id="@+id/bt_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_5"
+                            android:text="Link 1"
+                            android:textSize="@dimen/txt_18" />
+
+                        <Button
+                            android:id="@+id/bt_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_5"
+                            android:text="Link 2"
+                            android:textSize="@dimen/txt_18" />
+
+                        <Button
+                            android:id="@+id/bt_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_5"
+                            android:text="Link 3"
+                            android:textSize="@dimen/txt_18" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+    </uizacoresdk.view.vdh.VDHView>
 
     <Button
         android:id="@+id/bt_stats_for_nerds"
@@ -75,8 +103,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_5"
         android:text="StatsForNerds toggle"
-        android:textSize="@dimen/txt_18"
-        />
+        android:textSize="@dimen/txt_18" />
 
     <Button
         android:id="@+id/bt_play"

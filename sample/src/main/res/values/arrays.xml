@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="region_arrays">
+        <item>in-bangalore-1</item>
+        <item>in-mumbai-1</item>
         <item>asia-south1</item>
         <item>asia-southeast1</item>
         <item>do-bangalore</item>
+    </string-array>
+
+    <string-array name="api_base_arrays">
+        <item>Development</item>
+        <item>GA Test</item>
+    </string-array>
+
+    <string-array name="api_base_values">
+        <item>development-api.uizadev.io</item>
+        <item>api.uiza.sh</item>
     </string-array>
 </resources>

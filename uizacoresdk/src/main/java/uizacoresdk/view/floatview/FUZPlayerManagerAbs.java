@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -30,12 +31,14 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZExceptionUtil;
+import vn.uiza.core.exception.UizaExceptionUtil;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 
 abstract class FUZPlayerManagerAbs {
@@ -118,7 +121,7 @@ abstract class FUZPlayerManagerAbs {
             } else {
                 // TextFormat with custom label
                 textFormat = Format.createTextContainerFormat(null, subtitle.getName(), null, sampleMimeType, null,
-                        Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
+                        Format.NO_VALUE, Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
             }
             MediaSource textMediaSource =
                     new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
@@ -131,7 +134,6 @@ abstract class FUZPlayerManagerAbs {
                 mergedMediaSource.add(textMediaSource);
             }
         }
-
         return new MergingMediaSource(mergedMediaSource.toArray(new MediaSource[0]));
     }
 
@@ -246,7 +248,7 @@ abstract class FUZPlayerManagerAbs {
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
+                fuzVideo.onPlayerError(UizaExceptionUtil.getExceptionPlayback());
             }
         }
 
@@ -274,7 +276,7 @@ abstract class FUZPlayerManagerAbs {
     class FUZVideoListener implements VideoListener {
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
-                float pixelWidthHeightRatio) {
+                                       float pixelWidthHeightRatio) {
             videoW = width;
             videoH = height;
             if (fuzVideo != null) {

@@ -1,7 +1,6 @@
 package uizacoresdk.interfaces;
 
-import vn.uiza.core.exception.UZException;
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.core.exception.UizaException;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 
 public interface UZCallback {
@@ -20,6 +19,6 @@ public interface UZCallback {
     void onScreenRotate(boolean isLandscape);
 
     //when uiimavideo had an error
-    void onError(UZException e);
+    void onError(UizaException e);
 
 }

@@ -14,15 +14,12 @@ public class SampleLiveApplication extends MultiDexApplication {
     public static final String EXTRA_STREAM_ENDPOINT = "uiza_live_extra_stream_endpoint";
     public static final String EXTRA_STREAM_ID = "uiza_live_extra_stream_id";
 
-
-    private static final String DEV_HOST = "https://development-api.uizadev.io";
+    private static final String DEV_HOST = "development-api.uizadev.io";
 
     public static final String LIVE_URL = "rtmp://679b139b89-in.streamwiz.dev/transcode";
     public static final String STREAM_KEY = "live_ljNx4GLp3F";
 
-    private static final String API_TOKEN = "uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15"; // dynamic
     SharedPreferences preferences;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,12 +29,12 @@ public class SampleLiveApplication extends MultiDexApplication {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Constants.setDebugMode(false);
         Constants.setApiVersion(Constants.API_VERSION_5);
-        String apiToken = preferences.getString("api_token_key", API_TOKEN);
-        UizaClientFactory.setup(DEV_HOST, apiToken);
+        String host = preferences.getString("api_base_url_key", DEV_HOST);
+        String apiToken = preferences.getString("api_token_key", "");
+        UizaClientFactory.setup(host, apiToken);
     }
 
     public static String getLiveEndpoint() {
         return LIVE_URL + "/" + STREAM_KEY;
     }
-
 }

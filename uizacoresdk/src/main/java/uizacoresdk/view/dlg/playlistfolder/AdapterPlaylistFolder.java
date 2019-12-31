@@ -22,8 +22,8 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.LAnimationUtil;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
@@ -94,49 +94,41 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         } else {
             playListHolder.tvDescription.setText(data.getShortDescription());
         }
-        LImageUtil.load(context, data.getThumbnail(), playListHolder.ivCover);
+        ImageUtil.load(playListHolder.ivCover, data.getThumbnail());
 
-        playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
+        playListHolder.rootView.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
-            public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
-                    @Override
-                    public void onCancel() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onEnd() {
-                        if (callbackPlaylistFolder != null) {
-                            callbackPlaylistFolder.onClickItem(data, position);
-                        }
-                    }
-
-                    @Override
-                    public void onRepeat() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onStart() {
-                        //do nothing
-                    }
-                });
+            public void onCancel() {
+                //do nothing
             }
-        });
 
-        playListHolder.rootView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean isFocus) {
-                Timber.d("onFocusChange isFocus: %b", isFocus);
-                if (isFocus) {
-                    playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
-                } else {
-                    playListHolder.rootView.setBackgroundResource(0);
-                }
+            public void onEnd() {
                 if (callbackPlaylistFolder != null) {
-                    callbackPlaylistFolder.onFocusChange(data, position);
+                    callbackPlaylistFolder.onClickItem(data, position);
                 }
+            }
+
+            @Override
+            public void onRepeat() {
+                //do nothing
+            }
+
+            @Override
+            public void onStart() {
+                //do nothing
+            }
+        }));
+
+        playListHolder.rootView.setOnFocusChangeListener((view, isFocus) -> {
+            Timber.d("onFocusChange isFocus: %b", isFocus);
+            if (isFocus) {
+                playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
+            } else {
+                playListHolder.rootView.setBackgroundResource(0);
+            }
+            if (callbackPlaylistFolder != null) {
+                callbackPlaylistFolder.onFocusChange(data, position);
             }
         });
     }

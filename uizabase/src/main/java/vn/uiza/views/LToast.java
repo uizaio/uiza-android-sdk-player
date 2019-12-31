@@ -13,7 +13,7 @@ import java.util.List;
 
 import timber.log.Timber;
 import vn.uiza.R;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 public class LToast {
     private final static String TAG = LToast.class.getSimpleName();

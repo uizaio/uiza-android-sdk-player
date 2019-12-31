@@ -53,7 +53,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import vn.uiza.R;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 public class UZVerticalSeekBar extends AppCompatSeekBar {
     public static final int ROTATION_ANGLE_CW_90 = 90;

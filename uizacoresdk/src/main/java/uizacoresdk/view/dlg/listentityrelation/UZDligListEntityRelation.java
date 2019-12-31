@@ -18,7 +18,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
 import vn.uiza.restapi.model.v2.listallentityrelation.ListAllEntityRelation;
 

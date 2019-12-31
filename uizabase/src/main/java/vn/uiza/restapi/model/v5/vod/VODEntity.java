@@ -36,7 +36,7 @@ public class VODEntity implements Parcelable {
      * Total times this entity has been viewed.
      */
     @SerializedName("view")
-    String view;
+    int view;
 
     /**
      * The video's poster URL, meant to be displayable to end users.
@@ -57,7 +57,7 @@ public class VODEntity implements Parcelable {
      * Duration of entity in seconds. Measured up to oneth million of a second.
      */
     @SerializedName("duration")
-    String duration;
+    float duration;
     /**
      * Status of published task, possible values are [ queue, not-ready, success, failed ]
      */
@@ -96,12 +96,12 @@ public class VODEntity implements Parcelable {
         name = in.readString();
         description = in.readString();
         shortDescription = in.readString();
-        view = in.readString();
+        view = in.readInt();
         poster = in.readString();
         thumbnail = in.readString();
         int typeInt = in.readInt();
         type = VODType.values()[typeInt];
-        duration = in.readString();
+        duration = in.readInt();
         publishToCdn = in.readString();
         embeddedMetadata = in.readParcelable(EmbeddedMetadata.class.getClassLoader());
         createdAt = new Date(in.readLong());
@@ -120,12 +120,12 @@ public class VODEntity implements Parcelable {
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(shortDescription);
-        dest.writeString(view);
+        dest.writeInt(view);
         dest.writeString(poster);
         dest.writeString(thumbnail);
         int typeInt = type == null ? -1 : type.ordinal();
         dest.writeInt(typeInt);
-        dest.writeString(duration);
+        dest.writeFloat(duration);
         dest.writeString(publishToCdn);
         dest.writeParcelable(embeddedMetadata, flags);
         dest.writeLong(createdAt.getTime());
@@ -161,7 +161,7 @@ public class VODEntity implements Parcelable {
         return shortDescription;
     }
 
-    public String getView() {
+    public int getView() {
         return view;
     }
 
@@ -177,7 +177,7 @@ public class VODEntity implements Parcelable {
         return type;
     }
 
-    public String getDuration() {
+    public float getDuration() {
         return duration;
     }
 

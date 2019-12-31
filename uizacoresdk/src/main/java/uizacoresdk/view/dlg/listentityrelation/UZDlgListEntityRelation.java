@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
 
 /**

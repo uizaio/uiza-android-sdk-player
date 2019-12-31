@@ -15,11 +15,14 @@ public class Constants {
     public static boolean IS_DEBUG = false;
     public static final String PLAYER_NAME = "UZSDK";
     public static final String USER_AGENT = "UizaSDK-Android";
-    public static final String PLAYER_SDK_VERSION = "3.1.9";
+    public static final String PLAYER_SDK_VERSION = "5.0.1";
+    @Deprecated
     public static final int API_VERSION_3 = 3;
+    @Deprecated
     public static final int API_VERSION_4 = 4;
     public static final int API_VERSION_5 = 5;
-    public static int apiVersion = API_VERSION_3;
+
+    public static int apiVersion = API_VERSION_5;
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;

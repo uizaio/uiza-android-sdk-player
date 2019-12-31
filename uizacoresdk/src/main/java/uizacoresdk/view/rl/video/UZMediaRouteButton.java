@@ -2,11 +2,13 @@ package uizacoresdk.view.rl.video;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.mediarouter.app.MediaRouteButton;
-import android.util.AttributeSet;
-import uizacoresdk.util.UZUtil;
-import vn.uiza.core.exception.UZException;
+
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.AppUtils;
 
 public class UZMediaRouteButton extends MediaRouteButton {
 
@@ -40,9 +42,8 @@ public class UZMediaRouteButton extends MediaRouteButton {
     }
 
     private void checkChromeCastAvailable() {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
-            throw new NoClassDefFoundError(UZException.ERR_505);
+        if (!AppUtils.checkChromeCastAvailable()) {
+            throw new NoClassDefFoundError(UizaException.ERR_505);
         }
     }
 }

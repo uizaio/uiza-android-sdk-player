@@ -15,15 +15,18 @@
  */
 package vn.uiza.views.draggablepanel;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import vn.uiza.R;
-import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.utils.ScreenUtil;
 
 /**
  * Custom view created to handle DraggableView using fragments. With this custom view the client
@@ -36,7 +39,6 @@ import vn.uiza.core.utilities.LScreenUtil;
  * @author Pedro Vicente Gómez Sánchez.
  */
 public class DraggablePanel extends FrameLayout {
-    private final String TAG = getClass().getSimpleName();
     private static final int DEFAULT_TOP_FRAGMENT_HEIGHT = 200;
     private static final int DEFAULT_TOP_FRAGMENT_MARGIN = 0;
     private static final float DEFAULT_SCALE_FACTOR = 2;
@@ -68,12 +70,18 @@ public class DraggablePanel extends FrameLayout {
 
     public DraggablePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeAttrs(attrs);
+        initializeAttrs(attrs, 0);
     }
 
     public DraggablePanel(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeAttrs(attrs);
+        initializeAttrs(attrs, defStyle);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public DraggablePanel(Context context, AttributeSet attrs, int defStyle, int defStyleRes) {
+        super(context, attrs, defStyle, defStyleRes);
+        initializeAttrs(attrs, defStyle);
     }
 
     /**
@@ -271,7 +279,7 @@ public class DraggablePanel extends FrameLayout {
 
         inflate(getContext(), R.layout.view_draggable_panel, this);
         draggableView = findViewById(R.id.draggable_view);
-        draggableView.setScreenSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenHeight());
+        draggableView.setScreenSize(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight());
         draggableView.setTopViewHeight(topFragmentHeight);
         draggableView.setFragmentManager(fragmentManager);
         draggableView.attachTopFragment(topFragment);
@@ -308,7 +316,7 @@ public class DraggablePanel extends FrameLayout {
                         return;
                     }
                     int currentHeight = draggableView.getLayoutParams().height;
-                    int screenH = LScreenUtil.getScreenHeight();
+                    int screenH = ScreenUtil.getScreenHeight();
                     if (isViewInTopPart) {
                         if (currentHeight <= screenH) {
                             //LLog.d(TAG, "onPartOfView top");
@@ -317,14 +325,14 @@ public class DraggablePanel extends FrameLayout {
                     } else {
                         if (currentHeight >= screenH) {
                             //LLog.d(TAG, "onPartOfView bottom");
-                            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight();
+                            draggableView.getLayoutParams().height = ScreenUtil.getScreenHeight();
                             draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
                         }
                     }
                     draggableView.requestLayout();
                 }
             });
-            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+            draggableView.getLayoutParams().height = ScreenUtil.getScreenHeight() + bottomUZTimebar;
             draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
             draggableView.requestLayout();
         }
@@ -362,18 +370,22 @@ public class DraggablePanel extends FrameLayout {
      *
      * @param attrs to analyze.
      */
-    private void initializeAttrs(AttributeSet attrs) {
-        TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.draggable_panel);
-        this.topFragmentHeight = attributes.getDimensionPixelSize(R.styleable.draggable_panel_top_fragment_height, DEFAULT_TOP_FRAGMENT_HEIGHT);
-        this.xScaleFactor = attributes.getFloat(R.styleable.draggable_panel_x_scale_factor, DEFAULT_SCALE_FACTOR);
-        this.yScaleFactor = attributes.getFloat(R.styleable.draggable_panel_y_scale_factor, DEFAULT_SCALE_FACTOR);
-        this.topFragmentMarginRight = attributes.getDimensionPixelSize(R.styleable.draggable_panel_top_fragment_margin_right, DEFAULT_TOP_FRAGMENT_MARGIN);
-        this.topFragmentMarginBottom = attributes.getDimensionPixelSize(R.styleable.draggable_panel_top_fragment_margin_bottom, DEFAULT_TOP_FRAGMENT_MARGIN);
-        this.enableHorizontalAlphaEffect = attributes.getBoolean(R.styleable.draggable_panel_enable_horizontal_alpha_effect, DEFAULT_ENABLE_HORIZONTAL_ALPHA_EFFECT);
-        this.enableClickToMaximize = attributes.getBoolean(R.styleable.draggable_panel_enable_click_to_maximize_panel, DEFAULT_ENABLE_CLICK_TO_MAXIMIZE);
-        this.enableClickToMinimize = attributes.getBoolean(R.styleable.draggable_panel_enable_click_to_minimize_panel, DEFAULT_ENABLE_CLICK_TO_MINIMIZE);
-        this.enableTouchListener = attributes.getBoolean(R.styleable.draggable_panel_enable_touch_listener_panel, DEFAULT_ENABLE_TOUCH_LISTENER);
-        attributes.recycle();
+    private void initializeAttrs(AttributeSet attrs, int defStyle) {
+        TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.DraggablePanel, defStyle, 0);
+        try {
+            this.topFragmentHeight = attributes.getDimensionPixelSize(R.styleable.DraggablePanel_top_fragment_height, DEFAULT_TOP_FRAGMENT_HEIGHT);
+            this.xScaleFactor = attributes.getFloat(R.styleable.DraggablePanel_x_scale_factor, DEFAULT_SCALE_FACTOR);
+            this.yScaleFactor = attributes.getFloat(R.styleable.DraggablePanel_y_scale_factor, DEFAULT_SCALE_FACTOR);
+            this.topFragmentMarginRight = attributes.getDimensionPixelSize(R.styleable.DraggablePanel_top_fragment_margin_right, DEFAULT_TOP_FRAGMENT_MARGIN);
+            this.topFragmentMarginBottom = attributes.getDimensionPixelSize(R.styleable.DraggablePanel_top_fragment_margin_bottom, DEFAULT_TOP_FRAGMENT_MARGIN);
+            this.enableHorizontalAlphaEffect = attributes.getBoolean(R.styleable.DraggablePanel_enable_horizontal_alpha_effect, DEFAULT_ENABLE_HORIZONTAL_ALPHA_EFFECT);
+            this.enableClickToMaximize = attributes.getBoolean(R.styleable.DraggablePanel_enable_click_to_maximize_panel, DEFAULT_ENABLE_CLICK_TO_MAXIMIZE);
+            this.enableClickToMinimize = attributes.getBoolean(R.styleable.DraggablePanel_enable_click_to_minimize_panel, DEFAULT_ENABLE_CLICK_TO_MINIMIZE);
+            this.enableTouchListener = attributes.getBoolean(R.styleable.DraggablePanel_enable_touch_listener_panel, DEFAULT_ENABLE_TOUCH_LISTENER);
+        } finally {
+            attributes.recycle();
+        }
+
     }
 
     public void setTouchEnabled(boolean touchEnable) {

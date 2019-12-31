@@ -215,11 +215,9 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
             liveView.setFilter(FilterRender.None);
             return true;
         } else if (itemId == R.id.analog_tv) {
-            liveView.setFilter(FilterRender.AnalogTV);
+//            liveView.setFilter(FilterRender.AnalogTV);
             return true;
         } else if (itemId == R.id.android_view) {
-//            AndroidViewFilterRender androidViewFilterRender = new AndroidViewFilterRender();
-//            androidViewFilterRender.setView(findViewById(R.id.switch_camera));
             liveView.setFilter(FilterRender.AndroidView);
             return true;
         } else if (itemId == R.id.basic_deformation) {

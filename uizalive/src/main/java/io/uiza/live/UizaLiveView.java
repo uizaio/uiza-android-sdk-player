@@ -54,7 +54,7 @@ import io.uiza.live.interfaces.RecordListener;
 import io.uiza.live.interfaces.UizaLiveListener;
 import io.uiza.live.util.LiveUtil;
 import timber.log.Timber;
-import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.utils.ScreenUtil;
 
 /**
  * @required: <uses-permission android:name="android.permission.CAMERA"/> and
@@ -212,7 +212,7 @@ public class UizaLiveView extends RelativeLayout {
     public void setAspectRatio(AspectRatio aspectRatio) {
         this.aspectRatio = aspectRatio;
         if (openGlView != null) {
-            int screenWidth = LScreenUtil.getScreenWidth();
+            int screenWidth = ScreenUtil.getScreenWidth();
             openGlView.getLayoutParams().width = screenWidth;
             openGlView.getLayoutParams().height = (int) (screenWidth * aspectRatio.getAspectRatio());
             openGlView.requestLayout();
@@ -574,7 +574,6 @@ public class UizaLiveView extends RelativeLayout {
             if (liveListener != null) {
                 liveListener.surfaceChanged(format, width, mHeight);
             }
-
         }
 
         @Override
@@ -585,7 +584,8 @@ public class UizaLiveView extends RelativeLayout {
             if (cameraHelper.isStreaming()) {
                 cameraHelper.stopStream();
             }
-            cameraHelper.stopPreview();
+            if (cameraHelper.isOnPreview())
+                cameraHelper.stopPreview();
             startBackgroundTimer();
             if (liveListener != null) {
                 liveListener.surfaceDestroyed();

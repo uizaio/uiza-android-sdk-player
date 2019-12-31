@@ -1,6 +1,8 @@
 package testlibuiza.sample.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -39,6 +42,8 @@ public class LiveListFragment extends Fragment implements OnMoreActionListener, 
     String currentEntityId;
     SwipeRefreshLayout mSwipeRefreshLayout;
     boolean isLoading = false;
+
+    SharedPreferences preferences;
 
     public LiveListFragment() {
         // Required empty public constructor
@@ -68,7 +73,10 @@ public class LiveListFragment extends Fragment implements OnMoreActionListener, 
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
         recyclerView.setAdapter(adapter);
-        mSwipeRefreshLayout.post(this::loadLiveEntities);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String apiToken = preferences.getString("api_token_key", "");
+        if(!TextUtils.isEmpty(apiToken))
+            mSwipeRefreshLayout.post(this::loadLiveEntities);
         return root;
     }
 

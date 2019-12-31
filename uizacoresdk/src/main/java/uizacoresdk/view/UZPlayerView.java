@@ -12,8 +12,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.util.List;
 
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.SentryUtils;
 
 /**
  * Created by loitp on 6/8/2018.

@@ -8,6 +8,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import vn.uiza.restapi.model.ListWrap;
+import vn.uiza.restapi.model.v5.vod.AWSUploadKey;
 import vn.uiza.restapi.model.v5.vod.CreateVODBody;
 import vn.uiza.restapi.model.v5.vod.DeleteVODResponse;
 import vn.uiza.restapi.model.v5.vod.PublishVODResponse;
@@ -66,4 +67,8 @@ public interface UizaVodService {
      */
     @GET("/v1/video_entities/{id}/publish/status")
     Observable<PublishVODStatusResponse> getPublishVODStatus(@Path("id") String id);
+
+
+    @GET("/v1/video_entities/{id}/config/aws")
+    Observable<AWSUploadKey> getAWSUploadKey(@Path("id") String id);
 }

@@ -6,10 +6,12 @@ import android.text.InputType;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import timber.log.Timber;
 import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.restclient.UizaRestClient;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -45,6 +47,16 @@ public class SettingsActivity extends AppCompatActivity {
             if (frameInterval != null)
                 frameInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
 
+            ListPreference lstPreference = findPreference("api_base_url_key");
+            if(lstPreference != null){
+                lstPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
+                    if(newValue instanceof String){
+                        String value = (String)newValue;
+                        UizaRestClient.getInstance().changeApiBaseUrl(value);
+                    }
+                    return true;
+                }));
+            }
         }
     }
 }

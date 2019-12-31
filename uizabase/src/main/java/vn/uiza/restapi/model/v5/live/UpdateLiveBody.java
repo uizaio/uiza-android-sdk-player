@@ -7,10 +7,17 @@ public class UpdateLiveBody {
     String name;
     @SerializedName("description")
     String description;
+    @SerializedName("dvr")
+    boolean dvr;
 
     public UpdateLiveBody(String name, String description) {
+        this(name, description, true);
+    }
+
+    public UpdateLiveBody(String name, String description, boolean dvr) {
         this.name = name;
         this.description = description;
+        this.dvr = dvr;
     }
 
     public String getName() {
@@ -19,5 +26,9 @@ public class UpdateLiveBody {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isDvr() {
+        return dvr;
     }
 }

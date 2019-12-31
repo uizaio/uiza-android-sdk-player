@@ -77,3 +77,5 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
  }
  -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+-dontwarn retrofit2.**

@@ -29,7 +29,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_close_black_48dp" />
+            android:src="@drawable/ic_close_black_48" />
     </RelativeLayout>
 
     <FrameLayout

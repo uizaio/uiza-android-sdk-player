@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.LUIUtil;
 
 /**
  * Created by loitp on 5/2/2018.

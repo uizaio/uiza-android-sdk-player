@@ -33,7 +33,7 @@ import java.io.IOException;
 
 import timber.log.Timber;
 import uizacoresdk.R;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 /**
  * Core class of Casty. It manages buttons/widgets and gives access to the media player.

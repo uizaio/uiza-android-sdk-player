@@ -20,8 +20,8 @@ import java.util.List;
 
 import uizacoresdk.R;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.utils.LAnimationUtil;
+import vn.uiza.utils.ImageUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
 import uizacoresdk.util.UZUtil;
 
@@ -93,36 +93,31 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
         } else {
             thumbnail = Constants.PREFIXS_SHORT + item.getThumbnail();
         }
-        LImageUtil.load(context, thumbnail, playListHolder.ivCover);
+        ImageUtil.load(playListHolder.ivCover, thumbnail );
 
-        playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
+        playListHolder.rootView.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
-            public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
-                    @Override
-                    public void onCancel() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onEnd() {
-                        if (playListCallback != null) {
-                            playListCallback.onClickItem(item, position);
-                        }
-                    }
-
-                    @Override
-                    public void onRepeat() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onStart() {
-                        //do nothing
-                    }
-                });
+            public void onCancel() {
+                //do nothing
             }
-        });
+
+            @Override
+            public void onEnd() {
+                if (playListCallback != null) {
+                    playListCallback.onClickItem(item, position);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                //do nothing
+            }
+
+            @Override
+            public void onStart() {
+                //do nothing
+            }
+        }));
     }
 
     @Override

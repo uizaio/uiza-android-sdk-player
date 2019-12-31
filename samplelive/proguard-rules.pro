@@ -67,3 +67,5 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+
+-dontwarn retrofit2.**

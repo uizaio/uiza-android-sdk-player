@@ -5,14 +5,15 @@ package uizacoresdk.view.dlg.listentityrelation;
  */
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.androidanimations.library.Techniques;
 
@@ -21,9 +22,9 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
+import vn.uiza.utils.LAnimationUtil;
+import vn.uiza.utils.ImageUtil;
 
 public class AdapterPlayList extends RecyclerView.Adapter<AdapterPlayList.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -96,36 +97,31 @@ public class AdapterPlayList extends RecyclerView.Adapter<AdapterPlayList.PlayLi
         } else {
             thumbnail = Constants.PREFIXS_SHORT + item.getThumbnail();
         }
-        LImageUtil.load(context, thumbnail, playListHolder.ivCover);
+        ImageUtil.load(playListHolder.ivCover, thumbnail);
 
-        playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
+        playListHolder.rootView.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
-            public void onClick(View v) {
-                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
-                    @Override
-                    public void onCancel() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onEnd() {
-                        if (callbackPlayList != null) {
-                            callbackPlayList.onClickItem(item, position);
-                        }
-                    }
-
-                    @Override
-                    public void onRepeat() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onStart() {
-                        //do nothing
-                    }
-                });
+            public void onCancel() {
+                //do nothing
             }
-        });
+
+            @Override
+            public void onEnd() {
+                if (callbackPlayList != null) {
+                    callbackPlayList.onClickItem(item, position);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                //do nothing
+            }
+
+            @Override
+            public void onStart() {
+                //do nothing
+            }
+        }));
     }
 
     @Override

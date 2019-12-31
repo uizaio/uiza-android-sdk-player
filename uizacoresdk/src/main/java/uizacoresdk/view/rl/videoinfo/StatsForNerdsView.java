@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import uizacoresdk.R;
-import vn.uiza.utils.util.ViewUtils;
+import vn.uiza.utils.ViewUtil;
 
 public class StatsForNerdsView extends RelativeLayout {
     private TextView textEntityId, textBufferHealth, textNetworkActivity, textVolume, textViewPortFrame,
@@ -54,12 +54,7 @@ public class StatsForNerdsView extends RelativeLayout {
         textLiveStreamLatencyTitle = findViewById(R.id.text_live_stream_latency_title);
 
         // close button
-        findViewById(R.id.btn_close).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewUtils.goneViews(StatsForNerdsView.this);
-            }
-        });
+        findViewById(R.id.btn_close).setOnClickListener(v -> ViewUtil.goneViews(StatsForNerdsView.this));
     }
 
     /**
@@ -196,13 +191,13 @@ public class StatsForNerdsView extends RelativeLayout {
      * Hide TextView latency of live stream
      */
     public void hideTextLiveStreamLatency() {
-        ViewUtils.goneViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
+        ViewUtil.goneViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
     }
 
     /**
      * Show TextView latency of live stream
      */
     public void showTextLiveStreamLatency() {
-        ViewUtils.visibleViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
+        ViewUtil.visibleViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
     }
 }

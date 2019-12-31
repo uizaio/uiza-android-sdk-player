@@ -15,9 +15,9 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.view.util.UizaDataV1;
-import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LSocialUtil;
+import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.LSocialUtil;
 import vn.uiza.views.layout.flowlayout.FlowLayout;
 
 /**
@@ -66,7 +66,7 @@ public class UZDlgShare extends Dialog {
     }
 
     private void genUI() {
-        int screenW = LScreenUtil.getScreenWidth();
+        int screenW = ScreenUtil.getScreenWidth();
         int sizeIv;
         if (isLandscape) {
             sizeIv = screenW / 12;

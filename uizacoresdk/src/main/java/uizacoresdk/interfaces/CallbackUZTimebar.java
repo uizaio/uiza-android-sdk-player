@@ -1,6 +1,7 @@
 package uizacoresdk.interfaces;
 
-import com.github.rubensousa.previewseekbar.PreviewView;
+
+import uizacoresdk.view.rl.previewseekbar.PreviewView;
 
 public interface CallbackUZTimebar {
     void onStartPreview(PreviewView previewView, int progress);

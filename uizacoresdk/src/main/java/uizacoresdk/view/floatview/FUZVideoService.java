@@ -35,15 +35,13 @@ import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.LAnimationUtil;
+import vn.uiza.utils.LConnectivityUtil;
+import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by loitp on 1/28/2019.
@@ -201,8 +199,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         videoW = UZUtil.getVideoWidth(getBaseContext());
         videoH = UZUtil.getVideoHeight(getBaseContext());
-        screenWidth = LScreenUtil.getScreenWidth();
-        screenHeight = LScreenUtil.getScreenHeight();
+        screenWidth = ScreenUtil.getScreenWidth();
+        screenHeight = ScreenUtil.getScreenHeight();
         pipTopPosition = UZUtil.getStablePipTopPosition(getBaseContext());
         marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
@@ -285,9 +283,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         boolean isToggleResume = fuzVideo.togglePauseResume();
         if (isToggleResume) {
-            btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+            btPlayPause.setImageResource(R.drawable.ic_pause_circle_outline_white_48);
         } else {
-            btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+            btPlayPause.setImageResource(R.drawable.ic_play_circle_outline_white_48);
         }
     }
 
@@ -296,7 +294,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         fuzVideo.pauseVideo();
-        btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+        btPlayPause.setImageResource(R.drawable.ic_play_circle_outline_white_48);
     }
 
     private void resumeVideo() {
@@ -304,7 +302,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         fuzVideo.resumeVideo();
-        btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+        btPlayPause.setImageResource(R.drawable.ic_pause_circle_outline_white_48);
     }
 
     private void disappear() {
@@ -327,6 +325,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void openApp() {
         if (fuzVideo == null || fuzVideo.getPlayer() == null) {
+            Timber.d("fuzVideo == null || fuzVideo.getPlayer() == null");
             return;
         }
         //stop video
@@ -336,9 +335,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
         if (UZData.getInstance().getPlaybackInfo() == null) {
+            Timber.d("getPlaybackInfo == null");
             return;
         }
-        Timber.d("miniplayer STEP 5 START OPEN APP, miniplayer content position %d", fuzVideo.getCurrentPosition());
         ComunicateMng.MsgFromServiceOpenApp msgFromServiceOpenApp = new ComunicateMng.MsgFromServiceOpenApp(null);
         msgFromServiceOpenApp.setPositionMiniPlayer(fuzVideo.getCurrentPosition());
         ComunicateMng.postFromService(msgFromServiceOpenApp);
@@ -865,7 +864,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     @Override
-    public void onPlayerError(UZException error) {
+    public void onPlayerError(UizaException error) {
         Timber.e("onPlayerError: %s", error.getMessage());
         stopSelf();
     }

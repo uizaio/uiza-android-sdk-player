@@ -9,9 +9,10 @@ import com.google.android.gms.cast.framework.CastStateListener;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.utils.util.ViewUtils;
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.AppUtils;
+import vn.uiza.utils.SentryUtils;
+import vn.uiza.utils.ViewUtil;
 
 /**
  * Created by loitp on 2/27/2019.
@@ -25,9 +26,8 @@ public class UZChromeCast {
     private UZChromeCastListener listener;
 
     {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
-            throw new NoClassDefFoundError(UZException.ERR_505);
+        if (!AppUtils.checkChromeCastAvailable()) {
+            throw new NoClassDefFoundError(UizaException.ERR_505);
         }
     }
 
@@ -63,9 +63,9 @@ public class UZChromeCast {
 
     private void updateMediaRouteButtonVisibility(int state) {
         if (state == CastState.NO_DEVICES_AVAILABLE) {
-            ViewUtils.goneViews(uzMediaRouteButton);
+            ViewUtil.goneViews(uzMediaRouteButton);
         } else {
-            ViewUtils.visibleViews(uzMediaRouteButton);
+            ViewUtil.visibleViews(uzMediaRouteButton);
         }
     }
 
@@ -81,7 +81,7 @@ public class UZChromeCast {
             SentryUtils.captureException(e);
         }
         if (castContext == null) {
-            ViewUtils.goneViews(uzMediaRouteButton);
+            ViewUtil.goneViews(uzMediaRouteButton);
             return;
         }
         updateMediaRouteButtonVisibility(castContext.getCastState());

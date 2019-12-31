@@ -10,6 +10,8 @@ public class ListWrap<T> {
     List<T> data;
     @SerializedName("next_page_token")
     String nextPageToken;
+    @SerializedName("prev_page_token")
+    String prevPageToken;
 
 
     public List<T> getData() {
@@ -18,5 +20,9 @@ public class ListWrap<T> {
 
     public String getNextPageToken() {
         return nextPageToken;
+    }
+
+    public String getPrevPageToken() {
+        return prevPageToken;
     }
 }

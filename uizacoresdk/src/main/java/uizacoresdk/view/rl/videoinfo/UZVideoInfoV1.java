@@ -8,28 +8,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.view.util.UizaDataV1;
-import vn.uiza.core.utilities.LDisplayUtils;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.model.v2.getdetailentity.GetDetailEntity;
 import vn.uiza.restapi.model.v2.listallentity.Item;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.SentryUtils;
 
 public class UZVideoInfoV1 extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
@@ -116,7 +116,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
         tvDebug = findViewById(R.id.tv_debug);
         tvMoreLikeThisMsg = findViewById(R.id.tv_more_like_this_msg);
 
-        int sizeW = LDisplayUtils.getScreenW(activity) / 2;
+        int sizeW = ScreenUtil.getScreenHeight() / 2;
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
             @Override

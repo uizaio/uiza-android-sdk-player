@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.uiza.R;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 public class FlowLayout extends ViewGroup {
     private static final String LOG_TAG = FlowLayout.class.getSimpleName();

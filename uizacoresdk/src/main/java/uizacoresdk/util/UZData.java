@@ -3,6 +3,7 @@ package uizacoresdk.util;
 import android.content.Context;
 import android.os.Build;
 import android.os.SystemClock;
+import android.text.TextUtils;
 
 import androidx.annotation.LayoutRes;
 
@@ -16,18 +17,17 @@ import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDateUtils;
+import vn.uiza.core.exception.UizaException;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.restapi.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.utils.util.Utils;
+import vn.uiza.utils.AppUtils;
+import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.Utils;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -73,12 +73,10 @@ public class UZData {
         this.playerInforId = playerInforId;
     }
 
-    private int mAPIVersion = Constants.API_VERSION_3;
+    private int mAPIVersion = Constants.apiVersion;
     private String mDomainAPI = "";
     private String mDomainAPITracking = "";
     private String mToken = "";
-    @Deprecated
-    private String mAppId = "";
 
     private Casty casty;
 
@@ -111,59 +109,14 @@ public class UZData {
      * @return true if success init or false
      */
     public boolean initSDK(int apiVersion, String domainAPI, String token, int environment) {
-        if (domainAPI == null || domainAPI.isEmpty() || domainAPI.contains(" ")
-                || token == null || token.isEmpty() || token.contains(" ")) {
+        if (TextUtils.isEmpty(domainAPI)) {
             return false;
         }
         mAPIVersion = apiVersion;
         mToken = token;
-        if (domainAPI.startsWith(Constants.PREFIX) || domainAPI.startsWith(Constants.PREFIXS)) {
-            mDomainAPI = domainAPI;
-        } else {
-            mDomainAPI = String.format(Locale.getDefault(), "%s%s", Constants.PREFIXS, domainAPI);
-        }
+        mDomainAPI = domainAPI;
         Constants.setApiVersion(apiVersion);
         UizaClientFactory.setup(mDomainAPI, token, environment);
-        UZUtil.setToken(Utils.getContext(), token);
-        syncCurrentUTCTime();// for synchronize server time
-        if (environment == Constants.ENVIRONMENT.DEV) {
-            mDomainAPITracking = Constants.URL_TRACKING_DEV;
-        } else if (environment == Constants.ENVIRONMENT.STAG) {
-            mDomainAPITracking = Constants.URL_TRACKING_STAG;
-        } else if (environment == Constants.ENVIRONMENT.PROD) {
-            mDomainAPITracking = Constants.URL_TRACKING_PROD;
-        } else {
-            return false;
-        }
-        UZUtil.setApiTrackEndPoint(Utils.getContext(), mDomainAPITracking);
-        return true;
-    }
-
-    /**
-     * InitSDK
-     *
-     * @param apiVersion  One of {@link Constants#API_VERSION_5},
-     *                    {@link Constants#API_VERSION_4}, or {@link Constants#API_VERSION_3}
-     * @param domainAPI   Base Url of API
-     * @param token       API Token
-     * @param appId       App Id
-     * @param environment One if {@link Constants.ENVIRONMENT#DEV},
-     *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
-     * @see #initSDK(int, String, String, int)
-     * @deprecated in V5
-     */
-    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, int environment) {
-        if (domainAPI == null || domainAPI.isEmpty() || domainAPI.contains(" ")
-                || token == null || token.isEmpty() || token.contains(" ")
-                || appId == null || appId.isEmpty() || appId.contains(" ")) {
-            return false;
-        }
-        mAPIVersion = apiVersion;
-        mDomainAPI = domainAPI;
-        mToken = token;
-        mAppId = appId;
-        Constants.setApiVersion(apiVersion);
-        UizaClientFactory.setup(Constants.PREFIXS + domainAPI, token, environment);
         UZUtil.setToken(Utils.getContext(), token);
         syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT.DEV) {
@@ -215,11 +168,6 @@ public class UZData {
         return mToken;
     }
 
-    @Deprecated
-    public String getAppId() {
-        return mAppId;
-    }
-
     private UZInput uzInput;
 
     public UZInput getUzInput() {
@@ -242,10 +190,7 @@ public class UZData {
     }
 
     public String getEntityId() {
-        if (uzInput == null) {
-            return null;
-        }
-        if (uzInput.getPlaybackInfo() == null) {
+        if (uzInput == null || uzInput.getPlaybackInfo() == null) {
             return null;
         }
         return uzInput.getPlaybackInfo().getId();
@@ -293,12 +238,12 @@ public class UZData {
         return uzInput.getPlaybackInfo().getLastFeedId();
     }
 
-    public ResultGetTokenStreaming getResultGetTokenStreaming() {
-        if (uzInput == null) {
-            return null;
-        }
-        return uzInput.getResultGetTokenStreaming();
-    }
+//    public ResultGetTokenStreaming getResultGetTokenStreaming() {
+//        if (uzInput == null) {
+//            return null;
+//        }
+//        return uzInput.getResultGetTokenStreaming();
+//    }
 
 //    public ResultGetLinkPlay getResultGetLinkPlay() {
 //        if (uzInput == null) {
@@ -321,7 +266,6 @@ public class UZData {
             return null;
         }
         UizaTracking uizaTracking = new UizaTracking();
-        uizaTracking.setAppId(getAppId());
         uizaTracking.setPageType(PAGE_TYPE);
         uizaTracking.setViewerUserId(UZOsUtil.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
@@ -378,7 +322,7 @@ public class UZData {
         addTrackingMuiza(context, event, null);
     }
 
-    public void addTrackingMuiza(Context context, String event, UZException e) {
+    public void addTrackingMuiza(Context context, String event, UizaException e) {
         if (context == null || event == null || event.isEmpty()) {
             return;
         }
@@ -443,7 +387,6 @@ public class UZData {
         muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
         muiza.setViewerUserId(UZOsUtil.getDeviceId(context));
-        muiza.setAppId(getAppId());
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
         muiza.setPlayerId(String.valueOf(currentPlayerId));
@@ -498,9 +441,8 @@ public class UZData {
     }
 
     public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
-            throw new NoClassDefFoundError(UZException.ERR_505);
+        if (!AppUtils.checkChromeCastAvailable()) {
+            throw new NoClassDefFoundError(UizaException.ERR_505);
         }
         int trackType = MediaTrack.TYPE_UNKNOWN;
         if (TEXT.equals(type)) {

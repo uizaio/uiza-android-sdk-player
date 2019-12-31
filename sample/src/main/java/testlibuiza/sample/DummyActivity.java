@@ -6,8 +6,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.apache.commons.codec.DecoderException;
-
 import testlibuiza.R;
 import testlibuiza.sample.utils.DummyUtil;
 import vn.uiza.restapi.model.v3.drm.LicenseAcquisitionUrl;
@@ -27,13 +25,13 @@ public class DummyActivity extends AppCompatActivity {
         tvOut = findViewById(R.id.tv_out);
         bt = findViewById(R.id.bt);
         tvIn.setText(strIn);
-        bt.setOnClickListener( v -> {
+        bt.setOnClickListener(v -> {
             try {
                 LicenseAcquisitionUrl licenseAcquisitionUrl = DummyUtil.decrypt(DummyActivity.this, strIn);
                 if (licenseAcquisitionUrl != null) {
                     tvOut.setText(licenseAcquisitionUrl.getLicenseAcquisitionUrl());
                 }
-            } catch (DecoderException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

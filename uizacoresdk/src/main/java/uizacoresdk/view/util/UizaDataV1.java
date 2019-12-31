@@ -11,7 +11,7 @@ import uizacoresdk.R;
 import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LDateUtils;
+import vn.uiza.utils.LDateUtils;
 import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.restapi.model.v2.auth.Auth;
 import vn.uiza.utils.StringUtil;

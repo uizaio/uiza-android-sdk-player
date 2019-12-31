@@ -3,6 +3,7 @@ package io.uiza.live;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 import android.os.Build;
+import android.util.Size;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,8 @@ import com.pedro.rtplibrary.util.RecordController;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.uiza.live.enums.ProfileVideoEncoder;
 import io.uiza.live.enums.RecordStatus;
@@ -165,9 +168,25 @@ public class Camera2Helper implements ICameraHelper {
             rtmpCamera2.switchCamera();
             if (cameraChangeListener != null)
                 cameraChangeListener.onCameraChange(rtmpCamera2.isFrontCamera());
+
         } catch (CameraOpenException e) {
             throw new UizaCameraOpenException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<UizaSize> getSupportedResolutions() {
+        List<Size> sizes;
+        if (rtmpCamera2.isFrontCamera()) {
+            sizes = rtmpCamera2.getResolutionsFront();
+        } else {
+            sizes = rtmpCamera2.getResolutionsBack();
+        }
+        List<UizaSize> usizes = new ArrayList<>();
+        for (Size s : sizes) {
+            usizes.add(UizaSize.fromSize(s));
+        }
+        return usizes;
     }
 
     @Override
@@ -177,7 +196,13 @@ public class Camera2Helper implements ICameraHelper {
 
     @Override
     public void startPreview(@NotNull CameraHelper.Facing cameraFacing, int w, int h) {
+        // because portrait
         rtmpCamera2.startPreview(cameraFacing, h, w);
+    }
+
+    @Override
+    public boolean isOnPreview() {
+        return rtmpCamera2.isOnPreview();
     }
 
     @Override

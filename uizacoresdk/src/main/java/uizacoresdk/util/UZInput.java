@@ -11,7 +11,7 @@ public class UZInput {
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
     private PlaybackInfo playbackInfo;
-    private ResultGetTokenStreaming resultGetTokenStreaming;
+//    private ResultGetTokenStreaming resultGetTokenStreaming;
 //    private ResultGetLinkPlay resultGetLinkPlay;
 
     public String getUrlIMAAd() {
@@ -42,19 +42,12 @@ public class UZInput {
         return playbackInfo != null && playbackInfo.isLive();
     }
 
-    public ResultGetTokenStreaming getResultGetTokenStreaming() {
-        return resultGetTokenStreaming;
-    }
-
-    public void setResultGetTokenStreaming(ResultGetTokenStreaming resultGetTokenStreaming) {
-        this.resultGetTokenStreaming = resultGetTokenStreaming;
-    }
-
-//    public ResultGetLinkPlay getResultGetLinkPlay() {
-//        return resultGetLinkPlay;
+//    public ResultGetTokenStreaming getResultGetTokenStreaming() {
+//        return resultGetTokenStreaming;
 //    }
 
-//    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-//        this.resultGetLinkPlay = resultGetLinkPlay;
+//    public void setResultGetTokenStreaming(ResultGetTokenStreaming resultGetTokenStreaming) {
+//        this.resultGetTokenStreaming = resultGetTokenStreaming;
 //    }
+//
 }

@@ -17,7 +17,7 @@ import androidx.core.view.ViewCompat;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.utils.ScreenUtil;
 
 /**
  * After Lollipop use system method.
@@ -112,7 +112,7 @@ class StatusBarCompatLollipop {
         toolbar.setFitsSystemWindows(false);
         if (toolbar.getTag() == null) {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-            int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
+            int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
             lp.height += statusBarHeight;
             toolbar.setLayoutParams(lp);
             toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());

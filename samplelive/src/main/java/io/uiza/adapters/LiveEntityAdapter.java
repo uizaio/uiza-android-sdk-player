@@ -24,18 +24,20 @@ import io.uiza.samplelive.SampleLiveApplication;
 import io.uiza.samplelive.UizaLiveActivity;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
 import vn.uiza.restapi.model.v5.live.LiveStatus;
-import vn.uiza.utils.util.ViewUtils;
+import vn.uiza.utils.ImageUtil;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ItemViewHolder> {
 
-    public static final String[] thumbnails = new String[]{"https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
+    public static final String[] thumbnails = new String[]{"https://cdn.pose.com.vn/assets/2019/04/22/do-my-linh-2.jpg",
+            "https://vcdn-giaitri.vnecdn.net/2019/10/01/SHION-264-1569900835_680x0.jpg",
+            "https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
             "https://2sao.vietnamnetjsc.vn/images/2018/09/29/20/51/duong-tu-04.jpg", "https://nguoi-noi-tieng.com/images/post/maria-ozawa-nong-bong-tren-khan-dai-tran-dau-thai-lan-indonesia-871230.jpg",
             "https://dep365.com/wp-content/uploads/2019/11/img_5dce6569246fa.jpg", "http://giadinh.mediacdn.vn/thumb_w/640/2019/10/30/ngoc-trinh-5-1572423107231301246873-crop-15724237122011649225014.jpg", "https://haiquanonline.com.vn/stores/news_dataimages/hoannm/122019/19/17/in_article/2415_9-3835_phim_Mat_Biec.jpg",
             "https://media.tinmoi.vn/upload/honghanh/2019/05/07/086010-phi-huyen-trang-giau-co-va-noi-tieng-muc-nao-sau-tuyen-bo-tu-kiem-tie.jpg", "https://viknews.com/vi/wp-content/uploads/2019/04/Hot-girl-Trâm-Anh.jpg"};
 
 
-    List<LiveEntity> entities;
-    OnActionListener listener;
+    private List<LiveEntity> entities;
+    private OnActionListener listener;
     private boolean isLoadingAdded = false;
 
     public LiveEntityAdapter() {
@@ -94,7 +96,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.It
 
         public void setThumbnailView(int position) {
             String thumbnail = thumbnails[position % thumbnails.length];
-            ViewUtils.loadImage(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+            ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
         private void setStatusView(LiveStatus status) {
@@ -131,13 +133,6 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.It
                 intent.putExtra(CheckLiveActivity.EXTRA_ENTITY, entity);
                 ((Activity) context).startActivityForResult(intent, 1001);
             }
-        }
-    }
-
-    protected class LoadingViewHolder extends RecyclerView.ViewHolder {
-
-        public LoadingViewHolder(View root) {
-            super(root);
         }
     }
 
@@ -204,14 +199,6 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.It
 
     public boolean isEmpty() {
         return getItemCount() == 0;
-    }
-
-    public void addLoadingFooter() {
-        isLoadingAdded = true;
-    }
-
-    public void removeLoadingFooter() {
-        isLoadingAdded = false;
     }
 
     public void setListener(OnActionListener listener) {

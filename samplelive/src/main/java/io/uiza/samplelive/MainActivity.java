@@ -31,7 +31,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.uiza.adapters.LiveEntityAdapter;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.model.ListWrap;
 import vn.uiza.restapi.model.v5.live.CreateLiveBody;
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity
     String currentEntityId;
     LiveEntityAdapter adapter = new LiveEntityAdapter();
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    String region;
     private boolean isLoading = false;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
         super.onCreate(savedState);
@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity
         progressBar = findViewById(R.id.progress_bar);
         FloatingActionButton actionButton = findViewById(R.id.fb_btn);
         actionButton.setOnClickListener(v -> showCreateLiveDialog());
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        region = preferences.getString("region_key", "asia-south1");
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SampleUtils.setVertical(recyclerView, 2);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
@@ -84,7 +83,28 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
         swipeRefreshLayout.post(this::loadEntities);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String apiToken = preferences.getString("api_token_key", "");
+        if(TextUtils.isEmpty(apiToken)){
+            showSourceSettingDialog();
+        }
+    }
+
+    private void showSourceSettingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("API Config");
+        builder.setMessage("Firstly, you need to set your API Key.");
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            launchActivity(SettingsActivity.class);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     @Override
@@ -188,7 +208,11 @@ public class MainActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(entity.getName());
         builder.setMessage(StringUtil.toBeautyJson(entity));
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            dialog.dismiss();
+            MainActivity.this.finish();
+
+        });
         builder.show();
     }
 
@@ -274,6 +298,7 @@ public class MainActivity extends AppCompatActivity
 
     private void createLive(String streamName) {
         progressBar.setVisibility(View.VISIBLE);
+        String region = preferences.getString("region_key", "asia-south1");
         CreateLiveBody body = new CreateLiveBody(
                 streamName,
                 "Description of " + streamName,

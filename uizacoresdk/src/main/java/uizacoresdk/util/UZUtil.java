@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 import uizacoresdk.R;
@@ -37,18 +38,20 @@ import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.exception.UizaException;
 import vn.uiza.restapi.model.v2.auth.Auth;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.utils.AppUtils;
+import vn.uiza.utils.ConvertUtils;
+import vn.uiza.utils.LConnectivityUtil;
+import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.SentryUtils;
+import vn.uiza.utils.SharedPreferenceUtil;
 import vn.uiza.utils.StringUtil;
-import vn.uiza.utils.util.ConvertUtils;
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.utils.util.SharedPreferenceUtil;
-import vn.uiza.utils.util.Utils;
+import vn.uiza.utils.Utils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -60,14 +63,14 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class UZUtil {
 
-    public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
+    public static void setUIFullScreenIcon(ImageButton imageButton, boolean isFullScreen) {
         if (imageButton == null) {
             return;
         }
         if (isFullScreen) {
-            imageButton.setImageResource(R.drawable.baseline_fullscreen_exit_white_48);
+            imageButton.setImageResource(R.drawable.ic_fullscreen_exit_white_48);
         } else {
-            imageButton.setImageResource(R.drawable.baseline_fullscreen_white_48);
+            imageButton.setImageResource(R.drawable.ic_fullscreen_white_48);
         }
     }
 
@@ -77,12 +80,12 @@ public class UZUtil {
         }
         int widthSurfaceView = 0;
         int heightSurfaceView = 0;
-        boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
+        boolean isFullScreen = ScreenUtil.isFullScreen(viewGroup.getContext());
         if (isFullScreen) {//landscape
-            widthSurfaceView = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
-            heightSurfaceView = LScreenUtil.getScreenHeight();
+            widthSurfaceView = ScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
+            heightSurfaceView = ScreenUtil.getScreenHeight();
         } else {//portrait
-            widthSurfaceView = LScreenUtil.getScreenWidth();
+            widthSurfaceView = ScreenUtil.getScreenWidth();
             if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
@@ -210,7 +213,7 @@ public class UZUtil {
         if (context == null || dialog == null) {
             return;
         }
-        boolean isFullScreen = LScreenUtil.isFullScreen(context);
+        boolean isFullScreen = ScreenUtil.isFullScreen(context);
         Window window = dialog.getWindow();
         if (window == null) return;
         if (isFullScreen) {
@@ -264,7 +267,7 @@ public class UZUtil {
             int min = (int) Double.parseDouble(duration) + 1;
             String minutes = Integer.toString(min % 60);
             minutes = minutes.length() == 1 ? "0" + minutes : minutes;
-            textView.setText((min / 60) + ":" + minutes);
+            textView.setText(String.format(Locale.getDefault(), "%d:%s", (min / 60), minutes));
         } catch (Exception e) {
             Timber.e(e, "Error setTextDuration");
             textView.setText(" - ");
@@ -325,23 +328,17 @@ public class UZUtil {
 
     //=============================================================================START FOR UIZA V3
 
-    public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
-        if (context == null) {
-            throw new NullPointerException(UZException.ERR_12);
-        }
-        if (uzVideo == null) {
-            throw new NullPointerException(UZException.ERR_13);
-        }
+    public static boolean initCustomLinkPlay(@NonNull UZVideo uzVideo) {
+        Context context = uzVideo.getContext();
         if (UZDataCLP.getInstance().getPlaybackInfo() == null) {
-            Timber.e(UZException.ERR_14);
+            Timber.e(UizaException.ERR_14);
             return false;
         }
         if (!LConnectivityUtil.isConnected(context)) {
-            Timber.e(UZException.ERR_0);
+            Timber.e(UizaException.ERR_0);
             return false;
         }
         if (UZUtil.getClickedPip(context)) {
-            Timber.d("miniplayer STEP 6 initLinkPlay");
             UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getPlaybackInfo());
         } else {
             UZUtil.stopMiniPlayer(context);
@@ -351,95 +348,87 @@ public class UZUtil {
         return true;
     }
 
-    public static void initLiveEntity(@NonNull Activity activity, @NonNull UZVideo uzVideo, PlaybackInfo playback) {
+    public static boolean initEntity(@NonNull UZVideo uzVideo, PlaybackInfo playback) {
+        Context context = uzVideo.getContext();
         if (playback != null) {
-            UZUtil.setClickedPip(activity, false);
+            UZUtil.setClickedPip(context, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
-            Timber.e(UZException.ERR_0);
-            return;
+        if (!LConnectivityUtil.isConnected(context)) {
+            Timber.e(UizaException.ERR_0);
+            return false;
         }
-        if (UZUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(context)) {
             Timber.d("miniplayer STEP 6 initEntity");
-            UZUtil.play(uzVideo, null, true);
+            UZUtil.play(uzVideo, playback.getId(), playback.isLive());
         } else {
             //check if play entity
-            UZUtil.stopMiniPlayer(activity);
+            UZUtil.stopMiniPlayer(context);
             if (playback != null) {
                 UZUtil.play(uzVideo, playback);
             }
         }
-        UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZUtil.setIsInitPlaylistFolder(context, false);
         UZDataCLP.getInstance().clearData();
+        return true;
     }
 
-    public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
-        initEntity(activity, uzVideo, entityId, false);
+    public static boolean initVODEntity(@NonNull UZVideo uzVideo, String entityId) {
+        return initEntity(uzVideo, entityId, false);
     }
 
-    public static void initLiveEntity(Activity activity, UZVideo uzVideo, String entityId) {
-        initEntity(activity, uzVideo, entityId, true);
+    public static boolean initLiveEntity(@NonNull UZVideo uzVideo, String entityId) {
+        return initEntity(uzVideo, entityId, true);
     }
 
-    private static void initEntity(Activity activity, UZVideo uzVideo, String entityId, boolean isLive) {
-        if (activity == null) {
-            throw new NullPointerException(UZException.ERR_12);
-        }
-        if (uzVideo == null) {
-            throw new NullPointerException(UZException.ERR_13);
-        }
+    private static boolean initEntity(@NonNull UZVideo uzVideo, String entityId, boolean isLive) {
+        Context context = uzVideo.getContext();
         if (entityId != null) {
-            UZUtil.setClickedPip(activity, false);
+            UZUtil.setClickedPip(context, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
-            Timber.e(UZException.ERR_0);
-            return;
+        if (!LConnectivityUtil.isConnected(context)) {
+            Timber.e(UizaException.ERR_0);
+            return false;
         }
-        if (UZUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(context)) {
             Timber.d("miniplayer STEP 6 initEntity");
             UZUtil.play(uzVideo, null, isLive);
         } else {
             //check if play entity
-            UZUtil.stopMiniPlayer(activity);
+            UZUtil.stopMiniPlayer(context);
             if (entityId != null) {
                 UZUtil.play(uzVideo, entityId, isLive);
             }
         }
-        UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZUtil.setIsInitPlaylistFolder(context, false);
         UZDataCLP.getInstance().clearData();
+        return true;
     }
 
-    public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
-        if (activity == null) {
-            throw new NullPointerException(UZException.ERR_12);
-        }
-        if (uzVideo == null) {
-            throw new NullPointerException(UZException.ERR_13);
-        }
+    public static void initPlaylistFolder(@NonNull UZVideo uzVideo, String metadataId) {
+        Context context = uzVideo.getContext();
         if (metadataId != null) {
-            UZUtil.setClickedPip(activity, false);
+            UZUtil.setClickedPip(context, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
-            Timber.e(UZException.ERR_0);
+        if (!LConnectivityUtil.isConnected(context)) {
+            Timber.e(UizaException.ERR_0);
             return;
         }
-        if (UZUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(context)) {
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 Timber.d("miniplayer STEP 6 initPlaylistFolder");
                 playPlaylist(uzVideo, null);
             }
         } else {
             //check if play entity
-            UZUtil.stopMiniPlayer(activity);
+            UZUtil.stopMiniPlayer(context);
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }
-        UZUtil.setIsInitPlaylistFolder(activity, true);
+        UZUtil.setIsInitPlaylistFolder(context, true);
         UZDataCLP.getInstance().clearData();
     }
 
     private static void playCustomLinkPlay(final UZVideo uzVideo, final PlaybackInfo playback) {
-        UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(() -> uzVideo.initPlayback(playback.getHls(), playback.isLive()));
     }
 
@@ -464,52 +453,6 @@ public class UZUtil {
         uzVideo.post(() -> uzVideo.initPlaylistFolder(metadataId));
     }
 
-    public static boolean isDependencyAvailable(String dependencyClass) {
-        try {
-            Class.forName(dependencyClass);
-            return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    /**
-     * @param context         see {@link Context}
-     * @param apiVersion      One of {@link Constants#API_VERSION_5},
-     *                        {@link Constants#API_VERSION_4}, or {@link Constants#API_VERSION_3}
-     * @param domainAPI       Base Url of API
-     * @param token           API Token
-     * @param appId           App Id
-     * @param environment     One if {@link Constants.ENVIRONMENT#DEV},
-     *                        {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
-     * @param currentPlayerId Skin of player
-     * @return true if init success
-     * @deprecated in V5 because v5 do not use AppId,
-     * use {@link #initWorkspace(Context, int, String, String, int, int)}
-     */
-    public static boolean initWorkspace(Context context, int apiVersion, String domainAPI, String token, String appId, int environment, int currentPlayerId) {
-        if (context == null) {
-            throw new NullPointerException(UZException.ERR_15);
-        }
-        if (TextUtils.isEmpty(domainAPI)) {
-            throw new NullPointerException(UZException.ERR_16);
-        }
-        if (TextUtils.isEmpty(token)) {
-            throw new NullPointerException(UZException.ERR_17);
-        }
-        if (TextUtils.isEmpty(appId)) {
-            throw new NullPointerException(UZException.ERR_18);
-        }
-        if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
-            throw new NoClassDefFoundError(UZException.ERR_504);
-        }
-        Utils.init(context.getApplicationContext());
-        UZUtil.setCurrentPlayerId(currentPlayerId);
-        return UZData.getInstance().initSDK(apiVersion, domainAPI, token, appId, environment);
-    }
-
     /**
      * InitSDK
      *
@@ -529,22 +472,15 @@ public class UZUtil {
                                         String token,
                                         int environment,
                                         @LayoutRes int currentPlayerId) {
-        if (domainAPI == null || domainAPI.isEmpty()) {
-            throw new NullPointerException(UZException.ERR_16);
+        if (TextUtils.isEmpty(domainAPI)) {
+            throw new NullPointerException(UizaException.ERR_16);
         }
-        if (token == null || token.isEmpty()) {
-            throw new NullPointerException(UZException.ERR_17);
-        }
-        if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
-            throw new NoClassDefFoundError(UZException.ERR_504);
+        if (!AppUtils.isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
+            throw new NoClassDefFoundError(UizaException.ERR_504);
         }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         return UZData.getInstance().initSDK(apiVersion, domainAPI, token, environment);
-    }
-
-    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT.PROD, currentPlayerId);
     }
 
     /**
@@ -557,8 +493,13 @@ public class UZUtil {
      * @param token     API Token
      * @return true if success init or false
      */
-    public static void initV5Workspace(@NonNull Context context, String domainAPI, String token) {
+    public static void initWorkspace(@NonNull Context context, String domainAPI, String token) {
         initWorkspace(context, Constants.API_VERSION_5, domainAPI, token, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
+    }
+
+    public static void changeAPIToken(String token) {
+        setToken(Utils.getContext(), token);
+        UizaClientFactory.changeAPIToken(token);
     }
 
 
@@ -566,9 +507,8 @@ public class UZUtil {
         if (LDeviceUtil.isTV(activity)) {
             return;
         }
-        if (!isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
-            throw new NoClassDefFoundError(UZException.ERR_505);
+        if (!AppUtils.checkChromeCastAvailable()) {
+            throw new NoClassDefFoundError(UizaException.ERR_505);
         }
         UZData.getInstance().setCasty(Casty.create(activity));
     }
@@ -626,7 +566,6 @@ public class UZUtil {
                     if (w < h) {
                         w = h;
                     }
-
                     //set profile
                     //https://docs.google.com/spreadsheets/d/13lIsH711GJjttmZzFixph3RZwvP7a7vZhppSFnvsEl8/edit#gid=1297908801
                     if (w <= 480) {
@@ -916,8 +855,8 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
-        int screenW = LScreenUtil.getScreenWidth();
-        int screenH = LScreenUtil.getScreenHeight();
+        int screenW = ScreenUtil.getScreenWidth();
+        int screenH = ScreenUtil.getScreenHeight();
         int rangeMarginW = screenW / 5;
         int rangeMarginH = screenH / 5;
         if (marginL < 0 || marginL > rangeMarginW) {
@@ -952,8 +891,8 @@ public class UZUtil {
             setMiniPlayerSizeHeight(context, Constants.W_180);
             return true;
         }
-        int screenWPx = LScreenUtil.getScreenWidth();
-        int screenHPx = LScreenUtil.getScreenHeight();
+        int screenWPx = ScreenUtil.getScreenWidth();
+        int screenHPx = ScreenUtil.getScreenHeight();
         if (videoWidthPx < 0 || videoWidthPx > screenWPx) {
             throw new IllegalArgumentException("Error: videoWidthPx is invalid, the right value must from 0px to " + screenWPx + "px or 0dp to " + ConvertUtils.px2dp(screenWPx) + "dp");
         }

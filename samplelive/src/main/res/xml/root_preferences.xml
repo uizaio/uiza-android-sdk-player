@@ -21,15 +21,21 @@
         app:iconSpaceReserved="false"
         app:key="pref_source"
         app:title="@string/source_title">
-
+        <ListPreference
+            app:defaultValue="development-api.uizadev.io"
+            app:entries="@array/api_base_arrays"
+            app:entryValues="@array/api_base_values"
+            app:iconSpaceReserved="false"
+            app:key="api_base_url_key"
+            app:title="@string/api_base_title"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            app:defaultValue="uap-445a3a1bc75440aa8caccafcc6f9c425-08509e15"
             app:iconSpaceReserved="false"
             app:key="api_token_key"
             app:title="@string/api_token_title"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="do-bangalore"
+            app:defaultValue="in-bangalore-1"
             app:entries="@array/region_arrays"
             app:entryValues="@array/region_arrays"
             app:iconSpaceReserved="false"

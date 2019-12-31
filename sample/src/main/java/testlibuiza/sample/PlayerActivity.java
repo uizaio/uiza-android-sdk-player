@@ -14,23 +14,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
+import timber.log.Timber;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LUIUtil;
+import uizacoresdk.view.vdh.VDHView;
+import vn.uiza.core.exception.UizaException;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.utils.ScreenUtil;
 import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
-    private Activity activity;
+public class PlayerActivity extends AppCompatActivity implements UZCallback, VDHView.Callback, UZPlayerView.OnTouchEvent, UZItemClick,
+        UZPlayerView.ControllerStateCallback {
     private UZVideo uzVideo;
+    private VDHView vdhv;
+
     private EditText etLinkPlay;
     HorizontalScrollView llBottom;
     private Button btPlay;
@@ -46,16 +52,21 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        activity = this;
+        UZUtil.setUseWithVDHView(true);
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         uzVideo = findViewById(R.id.uiza_video);
+        vdhv = findViewById(R.id.vdhv);
         llBottom = findViewById(R.id.hsv_bottom);
         etLinkPlay = findViewById(R.id.et_link_play);
         btPlay = findViewById(R.id.bt_play);
+        vdhv.setCallback(this);
+        vdhv.setOnTouchEvent(this);
+        vdhv.setScreenRotate(false);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        uzVideo.addControllerStateCallback(this);
         // If linkplay is livestream, it will auto move to live edge when onResume is called
         uzVideo.setAutoMoveToLiveEdge(true);
         uzVideo.hideDebugTextView(true);
@@ -113,9 +124,9 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             playback.setHls(etLinkPlay.getText().toString());
             playback.setLive(isLive);
             UZDataCLP.getInstance().setPlaybackInfo(playback);
-            boolean isInitSuccess = UZUtil.initCustomLinkPlay(activity, uzVideo);
+            boolean isInitSuccess = UZUtil.initCustomLinkPlay(uzVideo);
             if (!isInitSuccess) {
-                LToast.show(activity, "Init failed");
+                LToast.show(this, "Init failed");
             }
         });
         findViewById(R.id.bt_stats_for_nerds).setOnClickListener(v -> {
@@ -124,19 +135,19 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             }
         });
         if (playbackInfo != null) {
-            UZDataCLP.getInstance().setPlaybackInfo(playbackInfo);
-            boolean isInitSuccess = UZUtil.initCustomLinkPlay(activity, uzVideo);
+            boolean isInitSuccess = UZUtil.initEntity(uzVideo, playbackInfo);
             if (!isInitSuccess) {
-                LToast.show(activity, "Init failed");
+                LToast.show(this, "Init failed");
             }
         }
-        if (UZUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(this)) {
             btPlay.performClick();
         }
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, PlaybackInfo data) {
+        vdhv.setInitResult(isInitSuccess);
     }
 
     @Override
@@ -163,16 +174,24 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
+        if (!isLandscape) {
+            int w = ScreenUtil.getScreenWidth();
+            int h = w * 9 / 16;
+            uzVideo.setFreeSize(false);
+            uzVideo.setSize(w, h);
+        }
+        vdhv.setScreenRotate(isLandscape);
     }
 
     @Override
-    public void onError(UZException e) {
+    public void onError(UizaException e) {
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         uzVideo.onDestroy();
+        UZUtil.setUseWithVDHView(false);
     }
 
     @Override
@@ -184,6 +203,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     @Override
     public void onPause() {
         super.onPause();
+        vdhv.onPause();
         uzVideo.onPause();
     }
 
@@ -200,5 +220,86 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
+        if (isEnableRevertMaxSize && vdhv.isAppear()) {
+            // todo
+        }
+    }
+
+    @Override
+    public void onViewSizeChange(boolean isMaximizeView) {
+
+    }
+
+    @Override
+    public void onStateChange(VDHView.State state) {
+
+    }
+
+    @Override
+    public void onPartChange(VDHView.Part part) {
+
+    }
+
+    @Override
+    public void onViewPositionChanged(int left, int top, float dragOffset) {
+
+    }
+
+    @Override
+    public void onOverScroll(VDHView.State state, VDHView.Part part) {
+        uzVideo.pauseVideo();
+        vdhv.dissappear();
+    }
+
+    @Override
+    public void onEnableRevertMaxSize(boolean isEnableRevertMaxSize) {
+        updateUIRevertMaxChange(!isEnableRevertMaxSize);
+    }
+
+    @Override
+    public void onAppear(boolean isAppear) {
+        updateUIRevertMaxChange(vdhv.isEnableRevertMaxSize());
+    }
+
+    @Override
+    public void onSingleTapConfirmed(float x, float y) {
+        uzVideo.toggleShowHideController();
+    }
+
+    @Override
+    public void onLongPress(float x, float y) {
+
+    }
+
+    @Override
+    public void onDoubleTap(float x, float y) {
+
+    }
+
+    @Override
+    public void onSwipeRight() {
+
+    }
+
+    @Override
+    public void onSwipeLeft() {
+
+    }
+
+    @Override
+    public void onSwipeBottom() {
+
+    }
+
+    @Override
+    public void onSwipeTop() {
+
+    }
+    @Override
+    public void onVisibilityChange(boolean isShow) {
+        vdhv.setVisibilityChange(isShow);
     }
 }

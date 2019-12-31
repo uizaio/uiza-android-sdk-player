@@ -16,8 +16,8 @@ import androidx.customview.widget.ViewDragHelper;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.SentryUtils;
 
 public class VDHView extends LinearLayout {
     private View headerView;
@@ -99,8 +99,8 @@ public class VDHView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        screenW = LScreenUtil.getScreenWidth();
-        screenH = LScreenUtil.getScreenHeight();
+        screenW = ScreenUtil.getScreenWidth();
+        screenH = ScreenUtil.getScreenHeight();
         headerView = findViewById(R.id.header_view);
         bodyView = findViewById(R.id.body_view);
         headerView.post(() -> {

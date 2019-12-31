@@ -1,5 +1,6 @@
 package io.uiza.live.interfaces;
 
+import android.util.Size;
 import android.view.MotionEvent;
 
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
@@ -7,7 +8,9 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.rtplibrary.base.Camera2Base;
 
 import java.io.IOException;
+import java.util.List;
 
+import io.uiza.live.UizaSize;
 import io.uiza.live.enums.ProfileVideoEncoder;
 
 public interface ICameraHelper {
@@ -128,6 +131,7 @@ public interface ICameraHelper {
                          int rotation
     );
 
+    List<UizaSize> getSupportedResolutions();
     /**
      * Need be called after @prepareVideo or/and @prepareAudio. This method override resolution of
      *
@@ -169,6 +173,12 @@ public interface ICameraHelper {
      * is Front Camera
      */
     boolean isFrontCamera();
+
+    /**
+     * check is on preview
+     * @return true if onpreview, false if not preview.
+     */
+    boolean isOnPreview();
 
     /**
      * Stop camera preview. Ignored if streaming or already stopped. You need call it after

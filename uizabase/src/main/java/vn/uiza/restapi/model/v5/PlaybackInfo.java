@@ -180,6 +180,6 @@ public class PlaybackInfo implements Parcelable {
     }
 
     public boolean canPlay() {
-        return !TextUtils.isEmpty(hls);
+        return !TextUtils.isEmpty(hls) || !TextUtils.isEmpty(hlsTs) || !TextUtils.isEmpty(mpd);
     }
 }

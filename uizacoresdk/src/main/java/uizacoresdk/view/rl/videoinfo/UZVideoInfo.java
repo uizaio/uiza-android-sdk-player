@@ -22,13 +22,13 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LDisplayUtils;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Item;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.utils.util.SentryUtils;
+import vn.uiza.utils.SentryUtils;
 
 /**
  * Created by www.muathu@gmail.com on 18/1/2019.
@@ -116,7 +116,7 @@ public class UZVideoInfo extends RelativeLayout {
         tvDebug = (TextView) findViewById(R.id.tv_debug);
         tvMoreLikeThisMsg = (TextView) findViewById(R.id.tv_more_like_this_msg);
 
-        int sizeW = LDisplayUtils.getScreenW(activity) / 2;
+        int sizeW = ScreenUtil.getScreenHeight() / 2;
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
             @Override

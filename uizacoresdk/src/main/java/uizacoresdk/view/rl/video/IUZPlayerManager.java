@@ -8,7 +8,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -66,16 +65,17 @@ import uizacoresdk.interfaces.UZBufferCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.timebar.UZTimebar;
+import uizacoresdk.view.rl.PreviewTimeBar;
+import uizacoresdk.view.rl.previewseekbar.PreviewLoader;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UZExceptionUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.core.exception.UizaExceptionUtil;
+import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.LConnectivityUtil;
+import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.utils.util.ViewUtils;
-import vn.uiza.views.autosize.UZImageButton;
+import vn.uiza.utils.SentryUtils;
+import vn.uiza.views.autosize.UizaImageButton;
 
 abstract class IUZPlayerManager implements PreviewLoader {
     protected final String TAG = "TAG" + getClass().getSimpleName();
@@ -92,7 +92,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
     private String linkPlay;
     private List<Subtitle> subtitleList;
     private boolean isFirstStateReady;
-    private UZTimebar uzTimebar;
+    private PreviewTimeBar uzTimebar;
     private String thumbnailsUrl;
     private ImageView imageView;
     protected Handler handler;
@@ -193,7 +193,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         }
         setPlayWhenReady(false);
         if (thumbnailsUrl != null) {
-            ViewUtils.loadThumbnail(imageView, thumbnailsUrl, currentPosition);
+            ImageUtil.loadThumbnail(imageView, thumbnailsUrl, currentPosition);
         }
     }
 
@@ -270,7 +270,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         return videoH;
     }
 
-    protected void toggleVolumeMute(UZImageButton exoVolume) {
+    protected void toggleVolumeMute(UizaImageButton exoVolume) {
         if (!isPlayerValid() || exoVolume == null) {
             return;
         }
@@ -521,7 +521,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
             } else {
                 // TextFormat with custom label
                 textFormat = Format.createTextContainerFormat(null, subtitle.getName(), null, sampleMimeType, null,
-                        Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
+                        Format.NO_VALUE, Format.NO_VALUE,Format.NO_VALUE, subtitle.getLanguage());
             }
             MediaSource textMediaSource =
                     new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
@@ -840,7 +840,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
             if (uzVideo == null) {
                 return;
             }
-            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
+            uzVideo.handleError(UizaExceptionUtil.getExceptionPlayback());
             //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();

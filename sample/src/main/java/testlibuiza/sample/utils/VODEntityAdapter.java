@@ -22,11 +22,13 @@ import testlibuiza.sample.PlayerActivity;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.model.v5.UizaPlayback;
 import vn.uiza.restapi.model.v5.vod.VODEntity;
-import vn.uiza.utils.util.ViewUtils;
+import vn.uiza.utils.ImageUtil;
 
 public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.ViewHolder> {
 
-    public static final String[] thumbnails = new String[]{"https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
+    public static final String[] thumbnails = new String[]{"https://cdn.pose.com.vn/assets/2019/04/22/do-my-linh-2.jpg",
+            "https://vcdn-giaitri.vnecdn.net/2019/10/01/SHION-264-1569900835_680x0.jpg",
+            "https://media.ex-cdn.com/EXP/media.phunutoday.vn/files/hai.pham/2017/04/21/luu-diec-phi-tam-sinh-tam-the-phunutoday-5-1139-phunutoday.jpg",
             "https://2sao.vietnamnetjsc.vn/images/2018/09/29/20/51/duong-tu-04.jpg", "https://nguoi-noi-tieng.com/images/post/maria-ozawa-nong-bong-tren-khan-dai-tran-dau-thai-lan-indonesia-871230.jpg",
             "https://dep365.com/wp-content/uploads/2019/11/img_5dce6569246fa.jpg", "http://giadinh.mediacdn.vn/thumb_w/640/2019/10/30/ngoc-trinh-5-1572423107231301246873-crop-15724237122011649225014.jpg", "https://haiquanonline.com.vn/stores/news_dataimages/hoannm/122019/19/17/in_article/2415_9-3835_phim_Mat_Biec.jpg",
             "https://media.tinmoi.vn/upload/honghanh/2019/05/07/086010-phi-huyen-trang-giau-co-va-noi-tieng-muc-nao-sau-tuyen-bo-tu-kiem-tie.jpg", "https://viknews.com/vi/wp-content/uploads/2019/04/Hot-girl-Trâm-Anh.jpg"};
@@ -111,16 +113,18 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
 
         private void setThumbnail(int position) {
             String thumbnail = thumbnails[position % thumbnails.length];
-            ViewUtils.loadImage(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+            ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
 
         private void onClick(VODEntity entity) {
             Context context = itemView.getContext();
             PlaybackInfo info = entity.getPlaybackInfo();
-            info.setUizaPlayback(new UizaPlayback("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
-                    "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8"
-                    , "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd"));
+            if(!info.canPlay()) {
+                info.setUizaPlayback(new UizaPlayback("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+                        "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8"
+                        , "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd"));
+            }
             if (info.canPlay()) {
                 Intent intent = new Intent(context, PlayerActivity.class);
                 intent.putExtra("extra_playback_info", info);

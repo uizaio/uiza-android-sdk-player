@@ -28,7 +28,7 @@
         <enum name="centerInside" value="7" />
     </attr>
 
-    <declare-styleable name="draggable_panel">
+    <declare-styleable name="DraggablePanel">
         <attr name="top_fragment_height" format="dimension" />
         <attr name="x_scale_factor" format="float" />
         <attr name="y_scale_factor" format="float" />
@@ -40,7 +40,7 @@
         <attr name="enable_touch_listener_panel" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="draggable_view">
+    <declare-styleable name="DraggableView">
         <attr name="top_view_id" format="reference" />
         <attr name="bottom_view_id" format="reference" />
         <attr name="top_view_height" format="dimension" />
@@ -149,12 +149,12 @@
         <attr name="aspectRatioRelativeLayout" format="fraction" />
     </declare-styleable>
 
-    <declare-styleable name="UZImageButton">
+    <declare-styleable name="UizaImageButton">
         <attr name="useDefaultIB" format="boolean" />
         <attr name="srcDisabled" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="UZTextView">
+    <declare-styleable name="UizaTextView">
         <attr name="useDefaultTV" format="boolean" />
     </declare-styleable>
 </resources>

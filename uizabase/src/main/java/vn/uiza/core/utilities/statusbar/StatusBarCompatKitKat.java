@@ -20,7 +20,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.utils.ScreenUtil;
 
 /**
  * After kitkat add fake status bar
@@ -109,7 +109,7 @@ class StatusBarCompatKitKat {
 
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mContentChild = mContentView.getChildAt(0);
-        int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
+        int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
 
         removeFakeStatusBarViewIfExist(activity);
         addFakeStatusBarView(activity, statusColor, statusBarHeight);
@@ -136,7 +136,7 @@ class StatusBarCompatKitKat {
         View mContentChild = mContentView.getChildAt(0);
 
         removeFakeStatusBarViewIfExist(activity);
-        removeMarginTopOfContentChild(mContentChild, LScreenUtil.getStatusBarHeight(activity));
+        removeMarginTopOfContentChild(mContentChild, ScreenUtil.getStatusBarHeight(activity));
         if (mContentChild != null) {
             mContentChild.setFitsSystemWindows(false);
         }
@@ -168,14 +168,14 @@ class StatusBarCompatKitKat {
         toolbar.setFitsSystemWindows(false);
         if (toolbar.getTag() == null) {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-            int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
+            int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
             lp.height += statusBarHeight;
             toolbar.setLayoutParams(lp);
             toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
             toolbar.setTag(true);
         }
 
-        int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
+        int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
         removeFakeStatusBarViewIfExist(activity);
         removeMarginTopOfContentChild(mContentChild, statusBarHeight);
         final View statusView = addFakeStatusBarView(activity, statusColor, statusBarHeight);
