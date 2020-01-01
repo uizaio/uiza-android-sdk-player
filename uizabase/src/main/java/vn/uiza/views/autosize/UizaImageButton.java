@@ -11,9 +11,9 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
+import vn.uiza.utils.ConvertUtils;
 import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.ScreenUtil;
-import vn.uiza.utils.ConvertUtils;
 
 /**
  * Created by loitp on 2/27/2019.
@@ -22,16 +22,17 @@ import vn.uiza.utils.ConvertUtils;
 public class UizaImageButton extends AppCompatImageButton {
     public UizaImageButton(Context context) {
         super(context);
+        initSizeScreenW(null, 0);
     }
 
     public UizaImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initSizeScreenW(attrs);
+        initSizeScreenW(attrs, 0);
     }
 
     public UizaImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initSizeScreenW(attrs);
+        initSizeScreenW(attrs, defStyleAttr);
     }
 
     private Drawable drawableEnabled;
@@ -82,14 +83,22 @@ public class UizaImageButton extends AppCompatImageButton {
         isSetSrcDrawableEnabled = false;
     }
 
-    private void initSizeScreenW(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UizaImageButton);
-        isUseDefault = a.getBoolean(R.styleable.UizaImageButton_useDefaultIB, true);
-        drawableDisabled = a.getDrawable(R.styleable.UizaImageButton_srcDisabled);
+    private void initSizeScreenW(AttributeSet attrs, int defStyleAttr) {
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UizaImageButton, defStyleAttr, 0);
+            try {
+                isUseDefault = a.getBoolean(R.styleable.UizaImageButton_useDefaultIB, true);
+                drawableDisabled = a.getDrawable(R.styleable.UizaImageButton_srcDisabled);
+            } finally {
+                a.recycle();
+            }
+        } else {
+            isUseDefault = true;
+            drawableDisabled = null;
+        }
         //disable click sound of a particular button in android app
         setSoundEffectsEnabled(false);
         if (!isUseDefault) {
-            a.recycle();
             drawableEnabled = getDrawable();
             return;
         }
@@ -113,7 +122,6 @@ public class UizaImageButton extends AppCompatImageButton {
                 updateSizePortrait();
             }
         });
-        a.recycle();
         drawableEnabled = getDrawable();
     }
 

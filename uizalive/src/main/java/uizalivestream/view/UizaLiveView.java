@@ -226,7 +226,6 @@ public class UizaLiveView extends RelativeLayout {
         checkLivePermission();
     }
 
-
     private void checkLivePermission() {
         Dexter.withActivity((Activity) getContext()).withPermissions(Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO).withListener(new MultiplePermissionsListener() {

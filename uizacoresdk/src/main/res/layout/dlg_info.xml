@@ -10,7 +10,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_13"
         android:textColor="@android:color/black"
         android:textSize="@dimen/txt_22" />

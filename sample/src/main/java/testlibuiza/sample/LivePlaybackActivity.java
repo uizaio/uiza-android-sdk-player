@@ -28,19 +28,18 @@ import testlibuiza.sample.utils.ChatAdapter;
 import testlibuiza.sample.utils.ChatData;
 import testlibuiza.sample.utils.SampleUtils;
 import timber.log.Timber;
+import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZVideo;
-import uizacoresdk.view.vdh.VDHView;
+import uizacoresdk.view.UizaVideoView;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.utils.LActivityUtil;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.utils.LActivityUtil;
 import vn.uiza.utils.ScreenUtil;
 
 public class LivePlaybackActivity extends AppCompatActivity implements UZCallback {
 
-    private UZVideo uzVideo;
+    private UizaVideoView uzVideo;
     /**
      * Database instance
      **/
@@ -59,8 +58,8 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.fullscreen_skin);
+        UizaCoreSDK.setCasty(this);
+        UizaCoreSDK.setCurrentPlayerId(R.layout.fullscreen_skin);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_playback);
         uzVideo = findViewById(R.id.uiza_video);
@@ -111,7 +110,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         }
         PlaybackInfo playback = entity.getPlaybackInfo();
         if (playback != null && entity.isOnline()) {
-            UZUtil.initEntity(uzVideo, playback);
+            uzVideo.play(playback);
             uzVideo.setFreeSize(true); // must be set this line
         } else {
             Toast.makeText(this, "No playback or Offline", Toast.LENGTH_LONG).show();
@@ -150,6 +149,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
     public void onError(UizaException e) {
 
     }
+
     @Override
     public void onBackPressed() {
         if (uzVideo.isLandscape()) {

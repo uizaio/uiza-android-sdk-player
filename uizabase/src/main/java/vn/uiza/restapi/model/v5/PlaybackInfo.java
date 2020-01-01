@@ -182,4 +182,14 @@ public class PlaybackInfo implements Parcelable {
     public boolean canPlay() {
         return !TextUtils.isEmpty(hls) || !TextUtils.isEmpty(hlsTs) || !TextUtils.isEmpty(mpd);
     }
+
+    public String getLinkPlay() {
+        if (!TextUtils.isEmpty(hls)) {
+            return hls;
+        } else if (!TextUtils.isEmpty(hlsTs)) {
+            return hlsTs;
+        } else {
+            return mpd;
+        }
+    }
 }

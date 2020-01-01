@@ -287,7 +287,7 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
-            <uizacoresdk.view.rl.PreviewTimeBar
+            <uizacoresdk.widget.UizaPreviewTimeBar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

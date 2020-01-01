@@ -1,6 +1,5 @@
 package testlibuiza.sample;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,17 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
-import timber.log.Timber;
+import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZVideo;
-import uizacoresdk.view.vdh.VDHView;
+import uizacoresdk.view.UizaPlayerView;
+import uizacoresdk.view.UizaVideoView;
+import uizacoresdk.view.VDHView;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.utils.LUIUtil;
 import vn.uiza.utils.ScreenUtil;
 import vn.uiza.views.LToast;
 
@@ -32,9 +30,9 @@ import vn.uiza.views.LToast;
  * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, VDHView.Callback, UZPlayerView.OnTouchEvent, UZItemClick,
-        UZPlayerView.ControllerStateCallback {
-    private UZVideo uzVideo;
+public class PlayerActivity extends AppCompatActivity implements UZCallback, VDHView.Callback, UizaPlayerView.OnTouchEvent, UZItemClick,
+        UizaPlayerView.ControllerStateCallback {
+    private UizaVideoView uzVideo;
     private VDHView vdhv;
 
     private EditText etLinkPlay;
@@ -52,8 +50,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setUseWithVDHView(true);
-        UZUtil.setCasty(this);
+        UizaCoreSDK.setUseWithVDHView(true);
+        UizaCoreSDK.setCasty(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         uzVideo = findViewById(R.id.uiza_video);
@@ -123,8 +121,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
             final PlaybackInfo playback = new PlaybackInfo();
             playback.setHls(etLinkPlay.getText().toString());
             playback.setLive(isLive);
-            UZDataCLP.getInstance().setPlaybackInfo(playback);
-            boolean isInitSuccess = UZUtil.initCustomLinkPlay(uzVideo);
+            UizaCoreSDK.setCurrentPlaybackInfo(playback);
+            boolean isInitSuccess = uzVideo.initCustomLinkPlay();
             if (!isInitSuccess) {
                 LToast.show(this, "Init failed");
             }
@@ -135,7 +133,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
             }
         });
         if (playbackInfo != null) {
-            boolean isInitSuccess = UZUtil.initEntity(uzVideo, playbackInfo);
+            boolean isInitSuccess = uzVideo.play(playbackInfo);
             if (!isInitSuccess) {
                 LToast.show(this, "Init failed");
             }
@@ -191,7 +189,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
     public void onDestroy() {
         super.onDestroy();
         uzVideo.onDestroy();
-        UZUtil.setUseWithVDHView(false);
+        UizaCoreSDK.setUseWithVDHView(false);
     }
 
     @Override
@@ -298,6 +296,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
     public void onSwipeTop() {
 
     }
+
     @Override
     public void onVisibilityChange(boolean isShow) {
         vdhv.setVisibilityChange(isShow);

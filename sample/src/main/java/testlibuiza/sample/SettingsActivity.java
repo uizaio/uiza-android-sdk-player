@@ -14,6 +14,7 @@ import java.util.Locale;
 import testlibuiza.BuildConfig;
 import testlibuiza.R;
 import timber.log.Timber;
+import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.restapi.restclient.UizaRestClient;
 
@@ -40,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
                 apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     if (newValue instanceof String) {
                         String value = (String) newValue;
-                        UZUtil.changeAPIToken(value);
+                        UizaCoreSDK.changeAPIToken(value);
                         Timber.e(value);
                     }
                     return true;

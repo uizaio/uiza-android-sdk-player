@@ -3,6 +3,7 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -10,7 +11,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
-import vn.uiza.utils.LUIUtil;
 
 /**
  * Created by loitp on 4/19/2018.
@@ -22,6 +22,7 @@ public class UizaTextView extends AppCompatTextView {
 
     public UizaTextView(Context context) {
         super(context);
+        init(null, 0);
     }
 
     public UizaTextView(Context context, AttributeSet attrs) {
@@ -35,12 +36,24 @@ public class UizaTextView extends AppCompatTextView {
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UizaTextView, defStyleAttr, 0);
-        isUseDefault = a.getBoolean(R.styleable.UizaTextView_useDefaultTV, true);
-        LUIUtil.setTextShadow(this);
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UizaTextView, defStyleAttr, 0);
+            try {
+                isUseDefault = a.getBoolean(R.styleable.UizaTextView_useDefaultTV, true);
+            } finally {
+                a.recycle();
+            }
+        } else {
+            isUseDefault = true;
+        }
+        setShadowLayer(
+                1f, // radius
+                1f, // dx
+                1f, // dy
+                Color.BLACK // shadow color
+        );
         updateSize();
         setSingleLine();
-        a.recycle();
     }
 
     private void updateSize() {

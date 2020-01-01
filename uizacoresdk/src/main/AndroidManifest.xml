@@ -9,7 +9,7 @@
         android:usesCleartextTraffic="true">
 
         <service
-            android:name=".view.floatview.FUZVideoService"
+            android:name=".floatview.FloatUizaVideoService"
             android:enabled="true"
             android:exported="false" />
 

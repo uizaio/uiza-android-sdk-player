@@ -5,7 +5,7 @@
     android:background="@color/white_smoke"
     android:orientation="vertical">
 
-    <uizacoresdk.view.vdh.VDHView
+    <uizacoresdk.view.VDHView
         android:id="@+id/vdhv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/black">
 
-            <uizacoresdk.view.rl.video.UZVideo
+            <uizacoresdk.view.UizaVideoView
                 android:id="@id/uiza_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -95,7 +95,7 @@
                 </HorizontalScrollView>
             </LinearLayout>
         </ScrollView>
-    </uizacoresdk.view.vdh.VDHView>
+    </uizacoresdk.view.VDHView>
 
     <Button
         android:id="@+id/bt_stats_for_nerds"

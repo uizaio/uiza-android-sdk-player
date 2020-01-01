@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import testlibuiza.BuildConfig;
 import timber.log.Timber;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.UizaCoreSDK;
 import vn.uiza.core.common.Constants;
 
 public class LSApplication extends MultiDexApplication {
@@ -27,7 +27,7 @@ public class LSApplication extends MultiDexApplication {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String host = preferences.getString("api_base_url_key", DEV_HOST);
         String apiToken = preferences.getString("api_token_key", "");
-        UZUtil.initWorkspace(this, host, apiToken);
+        UizaCoreSDK.initWorkspace(this, host, apiToken);
     }
 
 }
