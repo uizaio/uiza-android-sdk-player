@@ -30,29 +30,29 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/
 
 Get latest release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
 
-If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will need to import dependencies:
+If you are using `uiza_android_sdk_player` (Version 4.0.9 and above), you will need to import dependencies:
 
     // for playing VOD, LIVE video
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:4.0.9'
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.5'
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
 
 - Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
 
         // for ChromeCast
         implementation 'androidx.mediarouter:mediarouter:1.0.0'
-        implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
+        implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
 
 - If advertising support should be enabled, also add the following dependencies to your project:
 
         // for IMA Ads
-        implementation 'com.google.android.exoplayer:extension-ima:2.9.5'
-        implementation 'com.google.android.gms:play-services-ads:17.1.3'
+        implementation 'com.google.android.exoplayer:extension-ima:2.10.8'
+        implementation 'com.google.android.gms:play-services-ads:18.3.0'
 
 **Note:**
 - The version of the ExoPlayer Extension IMA must match the version of the ExoPlayer library being used.
-- If you are using both ChromeCast and IMA Ads dependencies, we recommend using dependency 'com.google.android.gms:play-services-cast-framework:$version' with version >= 16.0.3 to avoid dependency version conflicts
+- If you are using both ChromeCast and IMA Ads dependencies, we recommend using dependency 'com.google.android.gms:play-services-cast-framework:$version' with version >= 18.0.0 to avoid dependency version conflicts
 
 If you are using uiza_android_sdk_player (Version < 4.0.9), you only need to import dependencies:
 
@@ -85,16 +85,15 @@ compileOptions {
 
 ## Init SDK
 
-1. appId : get in email at registration
-2. token : generate [HERE](https://docs.uiza.io/v4/#get-api-key).
-3. api : default is `ap-southeast-1-api.uiza.co`
+2. apiKey : generate [HERE](http://id.uiza.io/register).
+3. apiUrl : default is `api.uiza.sh`
 
      ```
      public class App extends MultiDexApplication {
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, baseApiUrl, apiToken);
+                UizaCoreSDK.initWorkspace(this, apiUrl, apiKey);
             }
      }
      ```
@@ -117,8 +116,12 @@ Call api by using this function
 
     UizaLiveService service = UizaClientFactory.getLiveService();
     RxBinder.bind(service.getEntity(entityId),
-    	listEntityWraps -> {},
-    	throwable -> {}
+    	listEntityWraps -> {
+			// onSucces
+    	},
+    	throwable -> {
+    		// onError
+    	}
     );
   Other API can be used with the same function above.
 
@@ -126,12 +129,12 @@ Call api by using this function
 [APIDOC](https://docs.uiza.io/v4/#introduction)
 
 This class help you know how to use all Uiza API, please refer to
-[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
+[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v5/sample/src/main/java/testlibuiza/sample/UizaTestAPIActivity.java)
 
 ## How to play the video?:
 **XML**
 
-    <uizacoresdk.view.rl.video.UZVideo
+    <uizacoresdk.view.UizaVideoView
       android:id="@id/uiza_video"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
@@ -152,18 +155,20 @@ Manifest
 In your `activity` or `fragment`
 
 - Play with entity:
+
     ```
-    uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+    uzVideo = (UizaVideoView) findViewById(R.id.uiza_video);
     uzVideo.setUZCallback(this);
-    UZUtil.initEntity(activity, uzVideo, "put the entityId or UizaPlayback here");
+    uzVideo.play("PlaybackInfo");
+	// or for VOD
+	uzVideo.play("put entityId");
+	// or Live
+	uzVideo.play("put entityId", true);
     ```
 - Play with playlist/folder:
+    
     ```
-    UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
-    ```
-- Play with livestream entity:
-    ```
-    UZUtil.initLiveEntity(activity, uzVideo, "put the livestream entity id here");
+    uzVideo.initPlaylistFolder("put the playlist/folder id here");
     ```
 
 Don't forget to add in activity life cycle event:
@@ -194,7 +199,7 @@ Don't forget to add in activity life cycle event:
 
 If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
 
-This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample)
+This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v5/sample)
 
 **More information for AndroidTV, AndroidBox:**
 
@@ -223,13 +228,13 @@ Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://g
 **Step 3:**
 On function `onCreate()` of `Activity`, put this code:
 
-    UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+    UizaCoreSDK.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
 
 Ex:
 
     @Override  
     protected void onCreate(@Nullable Bundle savedState) {
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+		UizaCoreSDK.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
         super.onCreate(savedState);
     }
 
@@ -237,8 +242,8 @@ Ex:
 
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        UizaCoreSDK.setCasty(this);
+        UizaCoreSDK.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedState);
     }
 
@@ -256,8 +261,8 @@ This sample help you know how to customize player's skin, please refer to  [THIS
 
 ***Note:***
 - You should not change the id of the view.
-Ex: android:id="@id/player_view"
-Do not change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
+Ex: `android:id="@id/player_view"`
+Do not change `android:id="@id/player_view_0"` or `android:id="@+id/player_view_0"` ...
 
 ## How to livestream with UizaSDK?:
 It's very easy, plz follow these steps below to implement:
@@ -291,35 +296,19 @@ In `onResume()`:
         super.onResume();  
     }
 
-Then put this line on `surfaceChanged(UZLivestream.StartPreview startPreview);`
-
-    int[] result = uzLivestream.getBestSizePreview();  
-    int width = result[0];  
-    int height = result[1];  
-    startPreview.onSizeStartPreview(width, height);
-
-In `onPermission()`:
-
-    @Override  
-    public void onPermission(boolean areAllPermissionsGranted) {  
-        if (areAllPermissionsGranted) {  
-           uzLivestream.setId("Put the entity id for livestream here");
-        }
-    }
-
 Start a `portrait` livestream:
 
     if (uzLivestream.prepareStream()) {  
         uzLivestream.startStream(liveStreamUrl);  
     }
 
-To stream in landscape mode, use `uzLivestream.prepareVideoLandscape()` instead.
+To stream in landscape mode, use `uzLivestream.prepareStream(true)` instead.
 
 Start a livestream and save to MP4 file:
 
 	uzLivestream.setProfile(ProfileVideoEncoder.P720);
     if (uzLivestream.prepareStream()) {  
-        uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
+        uzLivestream.startStream("streamUrl");  
     }
 
 Stop streaming (It auto saves mp4 file in your gallery if you start a livestream with option save local file)
@@ -339,7 +328,7 @@ This sample help you know how to use all Uiza SDK for livestream, please refer t
 ## For contributors
 
  Uiza Checkstyle configuration is based on the Google coding conventions from Google Java Style
- that can be found at https://google.github.io/styleguide/javaguide.html.
+ that can be found at [here](https://google.github.io/styleguide/javaguide.html).
  
  Your code must be followed the rules that defined in our [`uiza_style.xml` rules](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/configs/codestyle/uiza_style.xml)
  

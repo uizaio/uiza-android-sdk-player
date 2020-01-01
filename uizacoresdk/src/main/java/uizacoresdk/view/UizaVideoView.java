@@ -514,8 +514,8 @@ public class UizaVideoView extends RelativeLayout
             Timber.d("!isConnected return");
             return;
         }
-        if (mPlaybackInfo == null)
-            callAPIGetDetailEntity();
+//        if (mPlaybackInfo == null)
+        callAPIGetDetailEntity();
 //        callAPIGetPlayerInfor();
 //        callAPIGetUrlIMAAdTag();
 //        callAPIGetTokenStreaming();
@@ -1097,7 +1097,7 @@ public class UizaVideoView extends RelativeLayout
 
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         DEFAULT_VALUE_CONTROLLER_TIMEOUT = controllerShowTimeoutMs;
-        uzPlayerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+        post(() -> uzPlayerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT));
     }
 
     public int getControllerShowTimeoutMs() {
@@ -2662,6 +2662,7 @@ public class UizaVideoView extends RelativeLayout
         //set video cover o moi case, ngoai tru
         //click tu pip entity thi ko can show video cover
         //click tu pip playlist folder lan dau tien thi ko can show video cover, neu nhan skip next hoac skip prev thi se show video cover
+        play(playback);
         if (isPlayPlaylistFolder()) {
             if (isGetClickedPip) {
                 if (isClickedSkipNextOrSkipPrevious) {

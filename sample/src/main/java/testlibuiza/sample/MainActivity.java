@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 launchActivity(SettingsActivity.class);
                 break;
+            case R.id.action_test_event:
+                launchActivity(EventActivity.class);
+                break;
             case R.id.action_test_api:
                 launchActivity(UizaTestAPIActivity.class);
                 break;
