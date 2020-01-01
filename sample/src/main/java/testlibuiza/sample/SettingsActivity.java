@@ -6,14 +6,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Locale;
+
+import testlibuiza.BuildConfig;
 import testlibuiza.R;
 import timber.log.Timber;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.restclient.UizaRestClient;
-import vn.uiza.utils.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -45,16 +47,21 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
             ListPreference lstPreference = findPreference("api_base_url_key");
-            if(lstPreference != null){
+            if (lstPreference != null) {
                 lstPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
-                    if(newValue instanceof String){
-                        String value = (String)newValue;
+                    if (newValue instanceof String) {
+                        String value = (String) newValue;
                         UizaRestClient.getInstance().changeApiBaseUrl(value);
                     }
                     return true;
                 }));
             }
 
+            Preference verPref = findPreference("version_key");
+            if (verPref != null) {
+                verPref.setDefaultValue(String.valueOf(BuildConfig.VERSION_CODE));
+                verPref.setSummary(String.format(Locale.getDefault(), "%s - %d", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+            }
         }
     }
 }

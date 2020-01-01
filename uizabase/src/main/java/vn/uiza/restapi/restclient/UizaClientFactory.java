@@ -2,7 +2,7 @@ package vn.uiza.restapi.restclient;
 
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.UizaVodService;
+import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
 import vn.uiza.restapi.linkplay.UizaLinkPlayService;
 import vn.uiza.restapi.tracking.UizaTrackingService;
@@ -72,8 +72,8 @@ public class UizaClientFactory {
         return UizaRestClient.getInstance().createService(UizaLiveService.class);
     }
 
-    public static UizaVodService getVideoService() {
-        return UizaRestClient.getInstance().createService(UizaVodService.class);
+    public static UizaVideoService getVideoService() {
+        return UizaRestClient.getInstance().createService(UizaVideoService.class);
     }
 
     public static UizaLinkPlayService getLinkPlayService() {

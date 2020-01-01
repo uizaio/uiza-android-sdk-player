@@ -9,6 +9,8 @@
     <string name="source_title">Source</string>
     <string name="api_token_title">API Key</string>
     <string name="region_title">Region</string>
+    <string name="general_title">General</string>
+    <string name="version_title">Build Number</string>
     <string name="api_base_title">API URL</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

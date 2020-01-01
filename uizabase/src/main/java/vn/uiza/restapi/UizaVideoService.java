@@ -20,7 +20,7 @@ import vn.uiza.restapi.model.v5.vod.VODEntity;
 /**
  * Connect Uiza VOD Service API
  */
-public interface UizaVodService {
+public interface UizaVideoService {
 
     /**
      * Get an vod entity

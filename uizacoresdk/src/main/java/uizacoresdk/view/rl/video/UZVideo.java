@@ -101,7 +101,7 @@ import vn.uiza.core.utilities.connection.LConnectifyService;
 import vn.uiza.data.EventBusData;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.UizaVodService;
+import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
 import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.restapi.model.tracking.UizaTrackingCCU;
@@ -2551,7 +2551,7 @@ public class UZVideo extends RelativeLayout
                     handleError(UizaExceptionUtil.getExceptionCannotGetDetailEntitity());
                 });
             } else {
-                UizaVodService vodService = UizaClientFactory.getVideoService();
+                UizaVideoService vodService = UizaClientFactory.getVideoService();
                 RxBinder.bind(vodService.getEntity(entityId).map(VODEntity::getPlaybackInfo), data -> {
                     if (data.canPlay())
                         handleDetailEntityResponse(data);

@@ -8,16 +8,16 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true">
         <!-- support 18:9 -->
+        <!-- https://android-developers.googleblog.com/2017/03/update-your-app-to-take-advantage-of.html -->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.1" />
+            android:value="2.3" />
         <!--<receiver android:name=".core.utilities.connection.LConnectifyService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

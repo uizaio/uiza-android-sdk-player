@@ -26,7 +26,7 @@ import testlibuiza.sample.utils.SampleUtils;
 import testlibuiza.sample.utils.VODEntityAdapter;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.UizaVodService;
+import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.restapi.model.ListWrap;
 import vn.uiza.restapi.model.v5.vod.VODEntity;
 import vn.uiza.restapi.restclient.UizaClientFactory;
@@ -96,7 +96,7 @@ public class VodListFragment extends Fragment implements OnMoreActionListener,
     private void loadVODEntities() {
         mSwipeRefreshLayout.setRefreshing(true);
         isLoading = true;
-        UizaVodService service = UizaClientFactory.getVideoService();
+        UizaVideoService service = UizaClientFactory.getVideoService();
         compositeDisposable.add(RxBinder.bind(service.getEntities()
                         .map(ListWrap::getData),
                 entities -> {

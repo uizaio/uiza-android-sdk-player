@@ -13,9 +13,13 @@ import testlibuiza.app.LSApplication;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
+import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.restapi.model.ListWrap;
 import vn.uiza.restapi.model.v5.live.CreateLiveBody;
 import vn.uiza.restapi.model.v5.live.UpdateLiveBody;
+import vn.uiza.restapi.model.v5.vod.CreateVODBody;
+import vn.uiza.restapi.model.v5.vod.UpdateVODBody;
+import vn.uiza.restapi.model.v5.vod.VODInputType;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
@@ -30,12 +34,6 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedState);
         setContentView(R.layout.activity_test_v5_api);
         tv = findViewById(R.id.tv);
-        findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
-        findViewById(R.id.bt_create_metadata).setOnClickListener(this);
-        findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
-        findViewById(R.id.bt_update_metadata).setOnClickListener(this);
-        findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
-
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_create_entity).setOnClickListener(this);
@@ -69,32 +67,17 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_get_list_metadata:
-                getListMetadata();
-                break;
-            case R.id.bt_create_metadata:
-                createMetadata();
-                break;
-            case R.id.bt_get_detail_of_metadata:
-                getDetailOfMetadata();
-                break;
-            case R.id.bt_update_metadata:
-                updateMetadata();
-                break;
-            case R.id.bt_delete_an_metadata:
-                deleteAnMetadata();
-                break;
             case R.id.bt_list_all_entity:
-                getEntities();
+                getVODEntities();
                 break;
             case R.id.bt_create_entity:
-                createEntity();
+                createVODEntity();
                 break;
             case R.id.bt_retrieve_an_entity:
-                getEntity();
+                getVODEntity();
                 break;
             case R.id.bt_update_entity:
-                updateEntity();
+                updateVODEntity();
                 break;
             case R.id.bt_get_live_entities:
                 getLiveEntities();
@@ -195,46 +178,48 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void getDetailOfMetadata() {
+    private void getVODEntities() {
+        UizaVideoService service = UizaClientFactory.getVideoService();
+        compositeDisposable.add(RxBinder.bind(service.getEntities().map(ListWrap::getData),
+                liveEntities ->
+                        showMessage(ListUtil.toBeautyJson(liveEntities))
+                , throwable -> {
+                    showMessage(throwable.getLocalizedMessage());
+                    Timber.e(throwable);
+                }));
     }
 
-    private void updateMetadata() {
+    private void createVODEntity() {
+        UizaVideoService service = UizaClientFactory.getVideoService();
+        CreateVODBody vodBody = new CreateVODBody("test_live", "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd", VODInputType.S3);
+        compositeDisposable.add(RxBinder.bind(service.createEntity(vodBody),
+                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                throwable -> {
+                    showMessage(throwable.getLocalizedMessage());
+                    Timber.e(throwable);
+                }));
     }
 
-    private void deleteAnMetadata() {
+    private void getVODEntity() {
+        UizaVideoService service = UizaClientFactory.getVideoService();
+        compositeDisposable.add(RxBinder.bind(service.getEntity("4255b949-f967-4d4a-abb5-ebdd8ecb2f69"),
+                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                throwable -> {
+                    showMessage(throwable.getLocalizedMessage());
+                    Timber.e(throwable);
+                }));
     }
 
-    private void getEntities() {
-    }
-
-    private void createEntity() {
-    }
-
-    private void getEntity() {
-    }
-
-    private void updateEntity() {
-    }
-
-    private void getTokenStreaming() {
-    }
-
-    private void getLinkPlay() {
-    }
-
-    private void retrieveALiveEvent() {
-    }
-
-    private void getTokenStreamingLive() {
-    }
-
-    private void getLinkPlayLive() {
-    }
-
-    private void getViewALiveFeed() {
-    }
-
-    private void getTimeStartLive() {
+    private void updateVODEntity() {
+        UizaVideoService service = UizaClientFactory.getVideoService();
+        String entityId = "4255b949-f967-4d4a-abb5-ebdd8ecb2f69";
+        UpdateVODBody vodBody = new UpdateVODBody("Test vod from NamNd", "Test update VOD");
+        compositeDisposable.add(RxBinder.bind(service.updateEntity(entityId, vodBody),
+                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                throwable -> {
+                    showMessage(throwable.getLocalizedMessage());
+                    Timber.e(throwable);
+                }));
     }
 
     private void getListSkin() {
