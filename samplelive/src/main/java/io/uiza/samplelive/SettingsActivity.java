@@ -7,7 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Locale;
 
 import timber.log.Timber;
 import vn.uiza.restapi.restclient.UizaClientFactory;
@@ -56,6 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     return true;
                 }));
+            }
+
+            Preference verPref = findPreference("version_key");
+            if(verPref != null){
+                verPref.setDefaultValue(String.valueOf(BuildConfig.VERSION_CODE));
+                verPref.setSummary(String.format(Locale.getDefault(),"%s - %d", BuildConfig.VERSION_NAME  ,BuildConfig.VERSION_CODE));
             }
         }
     }

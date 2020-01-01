@@ -108,5 +108,15 @@
             app:title="@string/stereo_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
-
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="pref_general"
+        app:title="@string/general_title">
+        <Preference
+            app:defaultValue="200101"
+            app:iconSpaceReserved="false"
+            app:key="version_key"
+            app:title="@string/version_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>
