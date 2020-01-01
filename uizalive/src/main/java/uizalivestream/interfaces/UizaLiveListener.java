@@ -1,4 +1,4 @@
-package io.uiza.live.interfaces;
+package uizalivestream.interfaces;
 
 public interface UizaLiveListener {
 

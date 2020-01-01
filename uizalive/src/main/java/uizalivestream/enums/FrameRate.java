@@ -1,4 +1,4 @@
-package io.uiza.live.enums;
+package uizalivestream.enums;
 
 public enum FrameRate {
     FPS_20(20),

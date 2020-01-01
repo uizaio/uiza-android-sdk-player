@@ -1,4 +1,4 @@
-package io.uiza.live.enums;
+package uizalivestream.enums;
 
 public enum CameraViewType {
     SurfaceView(0), OpenGL(1);

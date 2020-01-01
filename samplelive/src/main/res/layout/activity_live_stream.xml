@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <io.uiza.live.UizaLiveView
+    <uizalivestream.view.UizaLiveView
         android:id="@+id/uiza_live_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +82,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp" />
 
-        <io.uiza.samplelive.UizaMediaButton
+        <io.uiza.widget.UizaMediaButton
             android:id="@+id/btn_audio"
             style="@style/UizaMediaLiveButton"
             android:tint="@android:color/white"
@@ -106,7 +106,7 @@
         android:orientation="horizontal">
 
 
-        <io.uiza.samplelive.UizaMediaButton
+        <io.uiza.widget.UizaMediaButton
             android:id="@+id/b_record"
             style="@style/UizaMediaLiveButton.Record"
             android:layout_marginEnd="5dp"
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <io.uiza.samplelive.UizaMediaButton
+            <io.uiza.widget.UizaMediaButton
                 android:id="@+id/b_start_stop"
                 style="@style/UizaMediaLiveButton.Start"
                 android:layout_centerInParent="true"

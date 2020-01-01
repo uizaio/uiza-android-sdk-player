@@ -45,16 +45,17 @@ import java.util.Locale;
 import io.uiza.adapters.ChatAdapter;
 import io.uiza.adapters.ChatData;
 import io.uiza.extensions.SampleUtils;
-import io.uiza.live.UizaLiveView;
-import io.uiza.live.enums.FilterRender;
-import io.uiza.live.enums.ProfileVideoEncoder;
-import io.uiza.live.enums.RecordStatus;
-import io.uiza.live.enums.Translate;
-import io.uiza.live.interfaces.CCUListener;
-import io.uiza.live.interfaces.CameraChangeListener;
-import io.uiza.live.interfaces.RecordListener;
-import io.uiza.live.interfaces.UizaCameraOpenException;
-import io.uiza.live.interfaces.UizaLiveListener;
+import io.uiza.widget.UizaMediaButton;
+import uizalivestream.enums.FilterRender;
+import uizalivestream.enums.ProfileVideoEncoder;
+import uizalivestream.enums.RecordStatus;
+import uizalivestream.enums.Translate;
+import uizalivestream.interfaces.CCUListener;
+import uizalivestream.interfaces.CameraChangeListener;
+import uizalivestream.interfaces.RecordListener;
+import uizalivestream.interfaces.UizaCameraOpenException;
+import uizalivestream.interfaces.UizaLiveListener;
+import uizalivestream.view.UizaLiveView;
 import timber.log.Timber;
 
 public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListener,

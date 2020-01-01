@@ -1,6 +1,7 @@
-package io.uiza.live.interfaces;
+package uizalivestream.interfaces;
 
-import io.uiza.live.enums.RecordStatus;
+
+import uizalivestream.enums.RecordStatus;
 
 public interface RecordListener {
 

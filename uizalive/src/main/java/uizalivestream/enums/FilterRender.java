@@ -1,9 +1,10 @@
-package io.uiza.live.enums;
+package uizalivestream.enums;
 
 import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
+import com.pedro.encoder.input.gl.render.filters.AnalogTVFilterRender;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
@@ -55,7 +56,7 @@ import java.io.InputStream;
 public enum FilterRender {
 
     None(new NoFilterRender()),
-//    AnalogTV(new AnalogTVFilterRender()),
+    AnalogTV(new AnalogTVFilterRender()),
     AndroidView(new AndroidViewFilterRender()),
     BasicDeformation(new BasicDeformationFilterRender()),
     Beauty(new BeautyFilterRender()),

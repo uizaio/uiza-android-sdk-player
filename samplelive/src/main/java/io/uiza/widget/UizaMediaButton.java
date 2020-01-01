@@ -1,4 +1,4 @@
-package io.uiza.samplelive;
+package io.uiza.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,8 @@ import android.widget.Checkable;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
+
+import io.uiza.samplelive.R;
 
 public class UizaMediaButton extends AppCompatImageButton implements Checkable {
 

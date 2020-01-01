@@ -1,6 +1,5 @@
-package io.uiza.live.interfaces;
+package uizalivestream.interfaces;
 
-import android.util.Size;
 import android.view.MotionEvent;
 
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
@@ -10,8 +9,8 @@ import com.pedro.rtplibrary.base.Camera2Base;
 import java.io.IOException;
 import java.util.List;
 
-import io.uiza.live.UizaSize;
-import io.uiza.live.enums.ProfileVideoEncoder;
+import uizalivestream.enums.ProfileVideoEncoder;
+import uizalivestream.view.UizaSize;
 
 public interface ICameraHelper {
     /**

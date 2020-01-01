@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.tplloi'
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -8,14 +11,18 @@ android {
         targetSdkVersion 28
         versionCode 191217
         versionName "5.0"
-        consumerProguardFiles 'consumer-rules.pro'
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+        //release & debug is in project animators
+        //matchingFallbacks = ['release', 'debug']
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        // from 2.9.0 need turn on Java 8 support https://exoplayer.dev/hello-world.html#turn-on-java-8-support
+        // https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#290
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

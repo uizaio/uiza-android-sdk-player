@@ -1,4 +1,4 @@
-package io.uiza.live.util;
+package uizalivestream.util;
 
 import android.view.View;
 import android.view.animation.AlphaAnimation;

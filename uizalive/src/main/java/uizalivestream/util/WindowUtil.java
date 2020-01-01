@@ -1,4 +1,4 @@
-package io.uiza.live.util;
+package uizalivestream.util;
 
 import android.content.Context;
 import android.graphics.Color;

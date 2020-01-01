@@ -9,7 +9,6 @@ import testlibuiza.BuildConfig;
 import timber.log.Timber;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.utils.EncryptUtil;
 
 public class LSApplication extends MultiDexApplication {
 
@@ -17,6 +16,7 @@ public class LSApplication extends MultiDexApplication {
     public static final String DEFAULT_REGION = "asia-south1";
 
     SharedPreferences preferences;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -28,7 +28,6 @@ public class LSApplication extends MultiDexApplication {
         String host = preferences.getString("api_base_url_key", DEV_HOST);
         String apiToken = preferences.getString("api_token_key", "");
         UZUtil.initWorkspace(this, host, apiToken);
-
     }
 
 }

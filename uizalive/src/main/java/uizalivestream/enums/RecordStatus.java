@@ -1,6 +1,4 @@
-package io.uiza.live.enums;
-
-
+package uizalivestream.enums;
 
 import com.pedro.rtplibrary.util.RecordController;
 

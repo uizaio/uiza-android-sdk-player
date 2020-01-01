@@ -1,4 +1,4 @@
-package io.uiza.live;
+package uizalivestream.view;
 
 import android.annotation.TargetApi;
 import android.hardware.Camera;

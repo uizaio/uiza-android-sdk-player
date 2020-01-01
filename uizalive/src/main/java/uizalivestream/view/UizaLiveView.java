@@ -1,4 +1,4 @@
-package io.uiza.live;
+package uizalivestream.view;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -44,16 +44,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import io.uiza.live.enums.AspectRatio;
-import io.uiza.live.enums.FilterRender;
-import io.uiza.live.enums.ProfileVideoEncoder;
-import io.uiza.live.interfaces.CCUListener;
-import io.uiza.live.interfaces.CameraChangeListener;
-import io.uiza.live.interfaces.ICameraHelper;
-import io.uiza.live.interfaces.RecordListener;
-import io.uiza.live.interfaces.UizaLiveListener;
-import io.uiza.live.util.LiveUtil;
 import timber.log.Timber;
+import uizalivestream.R;
+import uizalivestream.enums.AspectRatio;
+import uizalivestream.enums.FilterRender;
+import uizalivestream.enums.ProfileVideoEncoder;
+import uizalivestream.interfaces.CCUListener;
+import uizalivestream.interfaces.CameraChangeListener;
+import uizalivestream.interfaces.ICameraHelper;
+import uizalivestream.interfaces.RecordListener;
+import uizalivestream.interfaces.UizaLiveListener;
+import uizalivestream.util.LiveUtil;
 import vn.uiza.utils.ScreenUtil;
 
 /**
