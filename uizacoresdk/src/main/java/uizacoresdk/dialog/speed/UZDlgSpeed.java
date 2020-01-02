@@ -37,7 +37,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
 
     private float currentSpeed;
 
-    Handler handler = new Handler();
+    private Handler handler = new Handler();
 
     public UZDlgSpeed(Context context, float currentSpeed, Callback callback) {
         super(context);

@@ -50,8 +50,8 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
     private void onAdEnded() {
         if (!isOnAdEnded && uzVideo != null) {
             isOnAdEnded = true;
-            if (progressCallback != null) {
-                progressCallback.onAdEnded();
+            if (progressListener != null) {
+                progressListener.onAdEnded();
             }
         }
     }
@@ -67,26 +67,20 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
     @Override
     public void setRunnable() {
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
-                    return;
-                }
-                if (uzVideoAdPlayerListener.isEnded()) {
-                    onAdEnded();
-                }
-                if (isPlayingAd()) {
-                    handleAdProgress();
-                } else {
-                    handleVideoProgress();
-                }
-                if (uzVideo.getDebugTextView() != null) {
-                    uzVideo.getDebugTextView().setText(getDebugString());
-                }
-                if (handler != null && runnable != null) {
-                    handler.postDelayed(runnable, 1000);
-                }
+        runnable = () -> {
+            if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
+                return;
+            }
+            if (uzVideoAdPlayerListener.isEnded()) {
+                onAdEnded();
+            }
+            if (isPlayingAd()) {
+                handleAdProgress();
+            } else {
+                handleVideoProgress();
+            }
+            if (handler != null && runnable != null) {
+                handler.postDelayed(runnable, 1000);
             }
         };
         handler.postDelayed(runnable, 0);
@@ -96,14 +90,14 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
         hideProgress();
         isOnAdEnded = false;
         uzVideo.setUseController(false);
-        if (progressCallback != null) {
+        if (progressListener != null) {
             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
             duration = (int) videoProgressUpdate.getDuration();
             s = (int) (videoProgressUpdate.getCurrentTime()) + 1;//add 1 second
             if (duration != 0) {
                 percent = (int) (s * 100 / duration);
             }
-            progressCallback.onAdProgress(s, (int) duration, percent);
+            progressListener.onAdProgress(s, (int) duration, percent);
         }
     }
 
@@ -129,6 +123,7 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
 
         addPlayerListener();
         if (adsLoader != null) {
+            adsLoader.setPlayer(player);
             adsLoader.addCallback(uzVideoAdPlayerListener);
         }
         player.prepare(mediaSourceWithAds);
@@ -161,6 +156,7 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
     public void release() {
         super.release();
         if (adsLoader != null) {
+            adsLoader.setPlayer(null);
             adsLoader.release();
         }
     }

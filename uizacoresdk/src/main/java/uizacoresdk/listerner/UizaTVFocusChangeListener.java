@@ -1,7 +1,7 @@
-package uizacoresdk.interfaces;
+package uizacoresdk.listerner;
 
 import android.view.View;
 
-public interface UZTVCallback {
+public interface UizaTVFocusChangeListener {
     void onFocusChange(View view, boolean isFocus);
 }

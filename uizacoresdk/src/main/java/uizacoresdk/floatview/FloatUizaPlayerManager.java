@@ -34,49 +34,46 @@ public final class FloatUizaPlayerManager extends FloatUizaPlayerManagerAbs impl
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
-        this.videoW = 0;
-        this.videoH = 0;
+        this.videoWidth = 0;
+        this.videoHeight = 0;
         if (urlIMAAd != null && !urlIMAAd.isEmpty()) {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT);
         mediaDataSourceFactory =
-                new DefaultDataSourceFactory(context, Constants.USER_AGENT, new DefaultBandwidthMeter());
+                new DefaultDataSourceFactory(context, Constants.USER_AGENT, new DefaultBandwidthMeter.Builder(context).build());
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (fuzVideo.getPlayerView() != null) {
-                    boolean isPlayingAd = fUZVideoAdPlayerListener.isPlayingAd();
-                    if (isPlayingAd) {
-                        fuzVideo.hideProgress();
-                        if (progressCallback != null) {
-                            VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            int duration = (int) videoProgressUpdate.getDuration();
-                            int s = (int) videoProgressUpdate.getCurrentTime();
+        runnable = () -> {
+            if (fuzVideo.getPlayerView() != null) {
+                boolean isPlayingAd = fUZVideoAdPlayerListener.isPlayingAd();
+                if (isPlayingAd) {
+                    fuzVideo.hideProgress();
+                    if (progressListener != null) {
+                        VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
+                        int duration = (int) videoProgressUpdate.getDuration();
+                        int s = (int) videoProgressUpdate.getCurrentTime();
+                        int percent = 0;
+                        if (duration != 0) {
+                            percent = s * 100 / duration;
+                        }
+                        progressListener.onAdProgress(s, duration, percent);
+                    }
+                } else {
+                    if (progressListener != null) {
+                        if (player != null) {
+                            long mls = player.getCurrentPosition();
+                            long duration = player.getDuration();
                             int percent = 0;
                             if (duration != 0) {
-                                percent = s * 100 / duration;
+                                percent = (int) (mls * 100 / duration);
                             }
-                            progressCallback.onAdProgress(s, duration, percent);
-                        }
-                    } else {
-                        if (progressCallback != null) {
-                            if (player != null) {
-                                long mls = player.getCurrentPosition();
-                                long duration = player.getDuration();
-                                int percent = 0;
-                                if (duration != 0) {
-                                    percent = (int) (mls * 100 / duration);
-                                }
-                                int s = Math.round(mls / 1000);
-                                progressCallback.onVideoProgress(mls, s, duration, percent);
-                            }
+                            int s = Math.round(mls / 1000);
+                            progressListener.onVideoProgress(mls, s, duration, percent);
                         }
                     }
-                    if (handler != null && runnable != null) {
-                        handler.postDelayed(runnable, 1000);
-                    }
+                }
+                if (handler != null && runnable != null) {
+                    handler.postDelayed(runnable, 1000);
                 }
             }
         };
@@ -107,6 +104,7 @@ public final class FloatUizaPlayerManager extends FloatUizaPlayerManagerAbs impl
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
         if (adsLoader != null) {
+            adsLoader.setPlayer(player);
             adsLoader.addCallback(fUZVideoAdPlayerListener);
         }
         player.prepare(mediaSourceWithAds);
@@ -131,6 +129,7 @@ public final class FloatUizaPlayerManager extends FloatUizaPlayerManagerAbs impl
     public void release() {
         super.release();
         if (adsLoader != null) {
+            adsLoader.setPlayer(null);
             adsLoader.release();
         }
     }

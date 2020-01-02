@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import testlibuiza.R;
 import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UizaVideoViewItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UizaPlayerView;
 import uizacoresdk.view.UizaVideoView;
@@ -30,7 +30,7 @@ import vn.uiza.views.LToast;
  * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, VDHView.Callback, UizaPlayerView.OnTouchEvent, UZItemClick,
+public class PlayerActivity extends AppCompatActivity implements UZCallback, VDHView.Callback, UizaPlayerView.OnTouchEvent, UizaVideoViewItemClick,
         UizaPlayerView.ControllerStateCallback {
     private UizaVideoView uzVideo;
     private VDHView vdhv;
@@ -63,11 +63,10 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
         uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUizaVideoViewItemClick(this);
         uzVideo.addControllerStateCallback(this);
         // If linkplay is livestream, it will auto move to live edge when onResume is called
         uzVideo.setAutoMoveToLiveEdge(true);
-        uzVideo.hideDebugTextView(true);
         playbackInfo = getIntent().getParcelableExtra("extra_playback_info");
         if (playbackInfo != null) {
             llBottom.setVisibility(View.GONE);
@@ -188,21 +187,21 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideo.onDestroy();
+        uzVideo.onDestroyView();
         UizaCoreSDK.setUseWithVDHView(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        uzVideo.onResumeView();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         vdhv.onPause();
-        uzVideo.onPause();
+        uzVideo.onPauseView();
     }
 
     @Override
@@ -248,7 +247,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
 
     @Override
     public void onOverScroll(VDHView.State state, VDHView.Part part) {
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         vdhv.dissappear();
     }
 

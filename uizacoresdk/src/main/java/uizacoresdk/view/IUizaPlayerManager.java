@@ -62,19 +62,18 @@ import java.util.UUID;
 
 import timber.log.Timber;
 import uizacoresdk.interfaces.DebugCallback;
-import uizacoresdk.interfaces.UZBufferCallback;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.listerner.UizaBufferListener;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.widget.UizaPreviewTimeBar;
 import uizacoresdk.widget.previewseekbar.PreviewLoader;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaExceptionUtil;
+import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.ImageUtil;
 import vn.uiza.utils.LConnectivityUtil;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.utils.LUIUtil;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.SentryUtils;
 import vn.uiza.views.autosize.UizaImageButton;
 
@@ -100,16 +99,16 @@ abstract class IUizaPlayerManager implements PreviewLoader {
     protected Runnable runnable;
     private boolean isCanAddViewWatchTime;
     private long timestampPlayed;
-    protected ProgressCallback progressCallback;
-    protected UZBufferCallback bufferCallback;
+    protected VideoViewBase.ProgressListener progressListener;
+    protected UizaBufferListener bufferCallback;
     protected long mls = 0;
     protected long duration = 0;
     protected int percent = 0;
     protected int s = 0;
     private long bufferPosition = 0;
     private int bufferPercentage = 0;
-    private int videoW = 0;
-    private int videoH = 0;
+    private int videoWidth = 0;
+    private int videoHeight = 0;
     protected DefaultTrackSelector trackSelector;
     private float volumeToggle;
     private DebugCallback debugCallback;
@@ -122,8 +121,8 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
         this.context = uzVideo.getContext();
-        this.videoW = 0;
-        this.videoH = 0;
+        this.videoWidth = 0;
+        this.videoHeight = 0;
         this.mls = 0;
         this.bufferPosition = 0;
         this.bufferPercentage = 0;
@@ -172,11 +171,11 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         return linkPlay;
     }
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setProgressListener(VideoViewBase.ProgressListener progressListener) {
+        this.progressListener = progressListener;
     }
 
-    public void setBufferCallback(UZBufferCallback bufferCallback) {
+    public void setBufferCallback(UizaBufferListener bufferCallback) {
         this.bufferCallback = bufferCallback;
     }
 
@@ -212,13 +211,13 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         contentPosition = mls;
     }
 
-    protected void resumeVideo() {
+    protected void resume() {
         setPlayWhenReady(true);
         timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
     }
 
-    protected void pauseVideo() {
+    protected void pause() {
         if (!isPlayerValid()) return;
         setPlayWhenReady(false);
         if (isCanAddViewWatchTime) {
@@ -263,12 +262,12 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         return playerHelper != null && playerHelper.isPlayerValid();
     }
 
-    protected int getVideoW() {
-        return videoW;
+    protected int getVideoWidth() {
+        return videoWidth;
     }
 
-    protected int getVideoH() {
-        return videoH;
+    protected int getVideoHeight() {
+        return videoHeight;
     }
 
     protected void toggleVolumeMute(UizaImageButton exoVolume) {
@@ -397,7 +396,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
     }
 
     void handleVideoProgress() {
-        if (progressCallback != null && isPlayerValid()) {
+        if (progressListener != null && isPlayerValid()) {
             mls = getCurrentPosition();
             duration = getDuration();
             if (mls >= duration) {
@@ -407,13 +406,13 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                 percent = (int) (mls * 100 / duration);
             }
             s = Math.round(mls / 1000.0f);
-            progressCallback.onVideoProgress(mls, s, duration, percent);
+            progressListener.onVideoProgress(mls, s, duration, percent);
             //buffer changing
             if (bufferPosition != uzVideo.getBufferedPosition()
                     || bufferPercentage != uzVideo.getBufferedPercentage()) {
                 bufferPosition = uzVideo.getBufferedPosition();
                 bufferPercentage = uzVideo.getBufferedPercentage();
-                progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                progressListener.onBufferProgress(bufferPosition, bufferPercentage, duration);
             }
         }
     }
@@ -522,7 +521,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
             } else {
                 // TextFormat with custom label
                 textFormat = Format.createTextContainerFormat(null, subtitle.getName(), null, sampleMimeType, null,
-                        Format.NO_VALUE, Format.NO_VALUE,Format.NO_VALUE, subtitle.getLanguage());
+                        Format.NO_VALUE, Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
             }
             MediaSource textMediaSource =
                     new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
@@ -606,8 +605,8 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
                                        float pixelWidthHeightRatio) {
-            videoW = width;
-            videoH = height;
+            videoWidth = width;
+            videoHeight = height;
             TmpParamData.getInstance().setEntitySourceWidth(width);
             TmpParamData.getInstance().setEntitySourceHeight(height);
             if (uzVideo != null && uzVideo.videoListener != null) {
@@ -799,8 +798,8 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                     break;
             }
             notifyUpdateButtonVisibility();
-            if (progressCallback != null) {
-                progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
+            if (progressListener != null) {
+                progressListener.onPlayerStateChanged(playWhenReady, playbackState);
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerStateChanged(playWhenReady, playbackState);
@@ -846,7 +845,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
-                uzVideo.pauseVideo();
+                uzVideo.pause();
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerError(error);

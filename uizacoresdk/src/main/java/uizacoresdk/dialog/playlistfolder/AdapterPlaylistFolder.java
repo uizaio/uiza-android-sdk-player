@@ -5,6 +5,7 @@ package uizacoresdk.dialog.playlistfolder;
  */
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,8 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
         //TODO correct this
         playListHolder.tvRate.setText("12+");
-        if (data.getShortDescription() == null || data.getShortDescription().isEmpty()) {
-            if (data.getDescription() == null || data.getDescription().isEmpty()) {
+        if (TextUtils.isEmpty(data.getShortDescription())) {
+            if (TextUtils.isEmpty(data.getDescription())) {
                 playListHolder.tvDescription.setVisibility(View.GONE);
             } else {
                 playListHolder.tvDescription.setText(data.getDescription());

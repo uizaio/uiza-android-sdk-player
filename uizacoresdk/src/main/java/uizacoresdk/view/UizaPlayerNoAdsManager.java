@@ -24,10 +24,6 @@ public final class UizaPlayerNoAdsManager extends IUizaPlayerManager {
                 return;
             }
             handleVideoProgress();
-
-            if (uzVideo.getDebugTextView() != null) {
-                uzVideo.getDebugTextView().setText(getDebugString());
-            }
             if (handler != null && runnable != null) {
                 handler.postDelayed(runnable, 1000);
             }

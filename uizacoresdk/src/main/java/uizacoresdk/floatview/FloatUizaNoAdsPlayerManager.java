@@ -26,8 +26,8 @@ public final class FloatUizaNoAdsPlayerManager extends FloatUizaPlayerManagerAbs
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
-        this.videoW = 0;
-        this.videoH = 0;
+        this.videoWidth = 0;
+        this.videoHeight = 0;
 
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT);
         mediaDataSourceFactory =
@@ -36,7 +36,7 @@ public final class FloatUizaNoAdsPlayerManager extends FloatUizaPlayerManagerAbs
         runnable = () -> {
             if (fuzVideo.getPlayerView() != null) {
 
-                if (progressCallback != null) {
+                if (progressListener != null) {
                     if (player != null) {
                         long mls = player.getCurrentPosition();
                         long duration = player.getDuration();
@@ -45,7 +45,7 @@ public final class FloatUizaNoAdsPlayerManager extends FloatUizaPlayerManagerAbs
                             percent = (int) (mls * 100 / duration);
                         }
                         int s = Math.round(mls / 1000);
-                        progressCallback.onVideoProgress(mls, s, duration, percent);
+                        progressListener.onVideoProgress(mls, s, duration, percent);
                     }
                 }
                 if (handler != null && runnable != null) {

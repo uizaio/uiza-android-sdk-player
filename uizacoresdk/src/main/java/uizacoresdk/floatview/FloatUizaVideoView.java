@@ -8,10 +8,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.google.android.exoplayer2.Player;
@@ -23,17 +24,13 @@ import java.util.List;
 
 import timber.log.Timber;
 import uizacoresdk.R;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
 import vn.uiza.restapi.model.tracking.UizaTracking;
@@ -45,8 +42,12 @@ import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.tracking.UizaTrackingService;
+import vn.uiza.utils.AppUtils;
+import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.LUIUtil;
 
-public class FloatUizaVideoView extends RelativeLayout {
+public class FloatUizaVideoView extends VideoViewBase {
     private static final String M3U8_EXTENSION = ".m3u8";
     private static final String MPD_EXTENSION = ".mpd";
     private static final String PLAY_THROUGH_100 = "100";
@@ -72,38 +73,31 @@ public class FloatUizaVideoView extends RelativeLayout {
     private boolean isTracked50;
     private boolean isTracked75;
     private boolean isTracked100;
-    private ProgressCallback progressCallback;
+    private VideoViewBase.ProgressListener progressListener;
     private boolean isTrackingMuiza;
 
     private Handler handler = new Handler();
 
     public FloatUizaVideoView(Context context) {
         super(context);
-        onCreate();
     }
 
     public FloatUizaVideoView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        onCreate();
     }
 
     public FloatUizaVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        onCreate();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public FloatUizaVideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        onCreate();
     }
 
-    private void onCreate() {
+    @Override
+    public void onCreateView() {
         inflate(getContext(), R.layout.float_uiza_video, this);
-        findViews();
-    }
-
-    private void findViews() {
         progressBar = findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, progressBarColor);
         playerView = findViewById(R.id.player_view);
@@ -117,6 +111,8 @@ public class FloatUizaVideoView extends RelativeLayout {
     }
 
     //=============================================================================================================START CONFIG
+
+    @Override
     public long getCurrentPosition() {
         if (getPlayer() == null) {
             return 0;
@@ -131,7 +127,8 @@ public class FloatUizaVideoView extends RelativeLayout {
         return getPlayer().getContentBufferedPosition();
     }
 
-    protected void seekTo(long position) {
+    @Override
+    public void seekTo(long position) {
         if (fuzUizaPlayerManager != null) {
             fuzUizaPlayerManager.seekTo(position);
         }
@@ -146,38 +143,67 @@ public class FloatUizaVideoView extends RelativeLayout {
         return fuzUizaPlayerManager.togglePauseResume();
     }
 
-    protected void pauseVideo() {
+    @Override
+    public void pause() {
         if (fuzUizaPlayerManager == null) {
             return;
         }
         fuzUizaPlayerManager.pauseVideo();
     }
 
-    protected void resumeVideo() {
+    @Override
+    public void resume() {
         if (fuzUizaPlayerManager == null) {
             return;
         }
         fuzUizaPlayerManager.resumeVideo();
     }
 
-    protected int getVideoW() {
+    @Override
+    public int getVideoWidth() {
         if (fuzUizaPlayerManager == null) {
             return 0;
         }
-        return fuzUizaPlayerManager.getVideoW();
+        return fuzUizaPlayerManager.getVideoWidth();
     }
 
-    protected int getVideoH() {
+    @Override
+    public int getVideoHeight() {
         if (fuzUizaPlayerManager == null) {
             return 0;
         }
-        return fuzUizaPlayerManager.getVideoH();
+        return fuzUizaPlayerManager.getVideoHeight();
+    }
+
+    @Override
+    public SimpleExoPlayer getPlayer() {
+        if (fuzUizaPlayerManager == null) {
+            return null;
+        }
+        return fuzUizaPlayerManager.getPlayer();
     }
 
     private void releasePlayerManager() {
         if (fuzUizaPlayerManager != null) {
             fuzUizaPlayerManager.release();
         }
+    }
+
+    @Override
+    public boolean play(@NonNull PlaybackInfo playback) {
+        init(playback.getLinkPlay(), "", "", playback.isLive(), 0, false, Color.WHITE, null);
+        return true;
+    }
+
+    /**
+     * @param entityId : String
+     * @param isLive:  boolean
+     * @return boolean
+     * @deprecated : Not call PlaybackInfo from entity in this class
+     */
+    @Override
+    public boolean play(@NonNull String entityId, boolean isLive) {
+        return false;
     }
 
     //=============================================================================================================END CONFIG
@@ -191,12 +217,6 @@ public class FloatUizaVideoView extends RelativeLayout {
         return progressBar;
     }
 
-    public SimpleExoPlayer getPlayer() {
-        if (fuzUizaPlayerManager == null) {
-            return null;
-        }
-        return fuzUizaPlayerManager.getPlayer();
-    }
 
     protected void onVideoSizeChanged(int width, int height) {
         if (callback != null) {
@@ -214,7 +234,7 @@ public class FloatUizaVideoView extends RelativeLayout {
     //=============================================================================================================END VIEW
 
     public void init(String linkPlay, String cdnHost, String uuid, boolean isLivestream, long contentPosition, boolean isInitCustomLinkPlay, int progressBarColor, Callback callback) {
-        if (linkPlay == null || linkPlay.isEmpty()) {
+        if (TextUtils.isEmpty(linkPlay)) {
             Timber.e("init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
@@ -255,15 +275,15 @@ public class FloatUizaVideoView extends RelativeLayout {
         if (includeAd) {
             fuzUizaPlayerManager =
                     new FloatUizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-            fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
+            fuzUizaPlayerManager.setProgressListener(new VideoViewBase.ProgressListener() {
                 @Override
                 public void onAdEnded() {
                 }
 
                 @Override
                 public void onAdProgress(int s, int duration, int percent) {
-                    if (progressCallback != null) {
-                        progressCallback.onAdProgress(s, duration, percent);
+                    if (progressListener != null) {
+                        progressListener.onAdProgress(s, duration, percent);
                     }
                 }
 
@@ -272,8 +292,8 @@ public class FloatUizaVideoView extends RelativeLayout {
                     TmpParamData.getInstance().setPlayerPlayheadTime(s);
                     trackProgress(s, percent);
                     callAPITrackMuiza(s);
-                    if (progressCallback != null) {
-                        progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                    if (progressListener != null) {
+                        progressListener.onVideoProgress(currentMls, s, duration, percent);
                     }
                 }
 
@@ -497,7 +517,7 @@ public class FloatUizaVideoView extends RelativeLayout {
         uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setSn(UZData.getInstance().getChannelName()); // stream name
-        uizaTrackingCCU.setDi(UZOsUtil.getDeviceId(getContext()));
+        uizaTrackingCCU.setDi(LDeviceUtil.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         RxBinder.bind(service.trackCCU(uizaTrackingCCU), result -> {
             Timber.d("trackCCU success: %s", UZData.getInstance().getEntityName());
@@ -547,8 +567,8 @@ public class FloatUizaVideoView extends RelativeLayout {
     //================================ END TRACKING
 
     //================================ START CALLBACK
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setProgressListener(VideoViewBase.ProgressListener progressListener) {
+        this.progressListener = progressListener;
     }
 
     public interface Callback {

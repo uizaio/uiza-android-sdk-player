@@ -54,12 +54,7 @@ public class UZDlgListEntityRelation extends Dialog {
         tvMsg = findViewById(R.id.tv_msg);
         recyclerView = findViewById(R.id.recycler_view);
 
-        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        findViewById(R.id.bt_exit).setOnClickListener(v -> dismiss());
 
         getListAllEntityRelation();
     }

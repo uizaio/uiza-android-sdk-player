@@ -755,10 +755,7 @@ public class UZUtil {
         }
     }
 
-    public static void moveTaskToFront(Activity activity, boolean mIsRestoredToTop) {
-        if (activity == null) {
-            return;
-        }
+    public static void moveTaskToFront(@NonNull Activity activity, boolean mIsRestoredToTop) {
         if (android.os.Build.VERSION.SDK_INT >= 19 && !activity.isTaskRoot() && mIsRestoredToTop) {
             // 4.4.2 platform issues for FLAG_ACTIVITY_REORDER_TO_FRONT,
             // reordered activity back press will go to home unexpectedly,

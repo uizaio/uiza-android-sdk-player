@@ -5,5 +5,5 @@ public interface UZLiveContentCallback {
 
     void onUpdateLiveInfoCurrentView(long watchnow);
 
-    void onLivestreamUnAvailable();
+    void onLiveStreamUnAvailable();
 }

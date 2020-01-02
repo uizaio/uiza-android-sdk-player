@@ -26,7 +26,6 @@ import vn.uiza.views.layout.flowlayout.FlowLayout;
 
 public class UZDlgShare extends Dialog {
 
-    private final String TAG = getClass().getSimpleName();
     //TODO correct this
     private static final String SUBJECT = "Uiza Sharing";
     private static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
@@ -55,12 +54,7 @@ public class UZDlgShare extends Dialog {
         ll.setChildSpacingForLastRow(FlowLayout.SPACING_ALIGN);
         ll.setRowSpacing(20f);
 
-        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        findViewById(R.id.bt_exit).setOnClickListener(v -> dismiss());
 
         genUI();
     }
@@ -89,12 +83,7 @@ public class UZDlgShare extends Dialog {
             imageView.setImageDrawable(resolveInfo.loadIcon(activity.getPackageManager()));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setPadding(sizeIv / 10, sizeIv / 10, sizeIv / 10, sizeIv / 10);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    click(resolveInfo);
-                }
-            });
+            imageView.setOnClickListener(v -> click(resolveInfo));
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(sizeIv, sizeIv);
             imageView.setLayoutParams(layoutParams);
             ll.addView(imageView);

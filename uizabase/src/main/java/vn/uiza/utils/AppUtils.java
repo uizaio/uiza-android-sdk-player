@@ -178,13 +178,6 @@ public final class AppUtils {
         }
     }
 
-    public static int getVolumePercentage(@NonNull Context context, int streamType) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int currentVolume = audioManager.getStreamVolume(streamType);
-        int maxVolume = audioManager.getStreamMaxVolume(streamType);
-        return Math.round(currentVolume * 1f / maxVolume * 100);
-    }
-
     public static boolean isAppForeground(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = manager.getRunningAppProcesses();

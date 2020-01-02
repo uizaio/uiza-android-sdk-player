@@ -1,11 +1,11 @@
 package vn.uiza.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.UiModeManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -14,8 +14,13 @@ import android.provider.Settings;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
-import java.util.Random;
+import androidx.annotation.NonNull;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import vn.uiza.core.common.Constants;
 import vn.uiza.views.LToast;
 
 import static android.content.Context.UI_MODE_SERVICE;
@@ -82,5 +87,25 @@ public class LDeviceUtil {
             return false;
         }
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
+    }
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId(@NonNull Context context) {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static int getViewerOsArchitecture() {
+        try {
+            boolean isArm64 = false;
+            BufferedReader localBufferedReader = new BufferedReader(new FileReader(Constants.CPU_INFO_FILENAME));
+            if (localBufferedReader.readLine().contains(Constants.AARCH64)) {
+                isArm64 = true;
+            }
+            localBufferedReader.close();
+            return isArm64 ? 64 : 32;
+        } catch (IOException e) {
+            SentryUtils.captureException(e);
+        }
+        return 0;
     }
 }

@@ -22,9 +22,9 @@ import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.interfaces.UizaAdPlayerCallback;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.view.UizaPlayerView;
 import uizacoresdk.view.UizaVideoView;
+import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.restapi.model.v5.PlaybackInfo;
 import vn.uiza.utils.ScreenUtil;
@@ -68,7 +68,6 @@ public class EventActivity extends AppCompatActivity {
         tvItemClick = findViewById(R.id.tv_item_click);
         tvLiveInfo = findViewById(R.id.tv_live_info);
         uzVideoView.setControllerShowTimeoutMs(5000);
-        uzVideoView.hideDebugTextView(true);
         uzVideoView.addUZCallback(new UZCallback() {
             @Override
             public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, PlaybackInfo playback) {
@@ -98,13 +97,11 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
-        uzVideoView.addItemClick(view -> {
-            switch (view.getId()) {
-                case R.id.exo_back_screen:
-                    if (!uzVideoView.isLandscape()) {
-                        onBackPressed();
-                    }
-                    break;
+        uzVideoView.setUizaVideoViewItemClick(view -> {
+            if (view.getId() == R.id.exo_back_screen) {
+                if (!uzVideoView.isLandscape()) {
+                    onBackPressed();
+                }
             }
             tvItemClick.setText("onItemClick " + view.getId());
         });
@@ -221,7 +218,7 @@ public class EventActivity extends AppCompatActivity {
             }
         });
         uzVideoView.addControllerStateCallback(isShow -> tvController.setText("onVisibilityChange " + isShow));
-        uzVideoView.addProgressCallback(new ProgressCallback() {
+        uzVideoView.setProgressListener(new VideoViewBase.ProgressListener() {
             @Override
             public void onAdProgress(int s, int duration, int percent) {
                 tvProgress.setText("onAdProgress " + s + "/" + duration);
@@ -304,7 +301,7 @@ public class EventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLivestreamUnAvailable() {
+            public void onLiveStreamUnAvailable() {
                 tvLiveInfo.setText(R.string.err_live_is_stopped);
             }
         });
@@ -315,19 +312,19 @@ public class EventActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideoView.onDestroy();
+        uzVideoView.onDestroyView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideoView.onResume();
+        uzVideoView.onResumeView();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uzVideoView.onPause();
+        uzVideoView.onPauseView();
     }
 
     @Override

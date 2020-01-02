@@ -289,12 +289,7 @@ public class UZTrackSelectionView extends LinearLayout {
             if (sv == null) {
                 return;
             }
-            sv.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    sv.scrollTo(0, checkedTextView.getTop());
-                }
-            }, 100);
+            sv.postDelayed(() -> sv.scrollTo(0, checkedTextView.getTop()), 100);
         }
     }
 

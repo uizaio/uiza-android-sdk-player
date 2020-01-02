@@ -35,8 +35,8 @@ import com.google.android.exoplayer2.video.VideoListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
+import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaExceptionUtil;
 import vn.uiza.restapi.model.v2.listallentity.Subtitle;
@@ -55,13 +55,13 @@ abstract class FloatUizaPlayerManagerAbs {
     protected Runnable runnable;
     protected boolean isCanAddViewWatchTime;
     protected long timestampPlayed;
-    protected ProgressCallback progressCallback;
-    protected int videoW;
-    protected int videoH;
+    protected VideoViewBase.ProgressListener progressListener;
+    protected int videoWidth;
+    protected int videoHeight;
     protected DefaultTrackSelector trackSelector;
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setProgressListener(VideoViewBase.ProgressListener progressListener) {
+        this.progressListener = progressListener;
     }
 
     public DefaultTrackSelector getTrackSelector() {
@@ -98,12 +98,11 @@ abstract class FloatUizaPlayerManagerAbs {
                 continue;
             }
 
-            DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
             DefaultDataSourceFactory dataSourceFactory =
                     new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter);
 
             String subLink = subtitle.getUrl();
-            // String type = subtitle.getMine().toUpperCase(); //for future need to get type from Mime.
             String type = subLink.substring(subLink.lastIndexOf(".")).toUpperCase();
             String sampleMimeType = null;
             switch (type) {
@@ -265,20 +264,20 @@ abstract class FloatUizaPlayerManagerAbs {
         }
     }
 
-    protected int getVideoW() {
-        return videoW;
+    protected int getVideoWidth() {
+        return videoWidth;
     }
 
-    protected int getVideoH() {
-        return videoH;
+    protected int getVideoHeight() {
+        return videoHeight;
     }
 
     class FUZVideoListener implements VideoListener {
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
+        public void onVideoSizeChanged(int width, int height, int unAppliedRotationDegrees,
                                        float pixelWidthHeightRatio) {
-            videoW = width;
-            videoH = height;
+            videoWidth = width;
+            videoHeight = height;
             if (fuzVideo != null) {
                 fuzVideo.onVideoSizeChanged(width, height);
             }

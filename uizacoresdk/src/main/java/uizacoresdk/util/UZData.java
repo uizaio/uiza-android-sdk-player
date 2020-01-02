@@ -27,6 +27,7 @@ import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.utils.AppUtils;
 import vn.uiza.utils.LDateUtils;
+import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.Utils;
 
 /**
@@ -267,10 +268,10 @@ public class UZData {
         }
         UizaTracking uizaTracking = new UizaTracking();
         uizaTracking.setPageType(PAGE_TYPE);
-        uizaTracking.setViewerUserId(UZOsUtil.getDeviceId(context));
+        uizaTracking.setViewerUserId(LDeviceUtil.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
-        uizaTracking.setDeviceId(UZOsUtil.getDeviceId(context));
+        uizaTracking.setDeviceId(LDeviceUtil.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
@@ -375,18 +376,18 @@ public class UZData {
         muiza.setSessionId(TmpParamData.getInstance().getSessionId());
         muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
-        muiza.setViewId(UZOsUtil.getDeviceId(context));
+        muiza.setViewId(LDeviceUtil.getDeviceId(context));
         muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
         muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
         muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
         muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
         muiza.setViewerDeviceName(android.os.Build.MODEL);
-        muiza.setViewerOsArchitecture(UZOsUtil.getViewerOsArchitecture());
+        muiza.setViewerOsArchitecture(LDeviceUtil.getViewerOsArchitecture());
         muiza.setViewerOsFamily(ANDROID + Build.VERSION.RELEASE);
         muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
-        muiza.setViewerUserId(UZOsUtil.getDeviceId(context));
+        muiza.setViewerUserId(LDeviceUtil.getDeviceId(context));
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
         muiza.setPlayerId(String.valueOf(currentPlayerId));

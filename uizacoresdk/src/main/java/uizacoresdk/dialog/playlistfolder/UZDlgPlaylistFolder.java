@@ -5,12 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.androidanimations.library.Techniques;
 
@@ -18,8 +18,8 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.utils.LAnimationUtil;
 import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.utils.LAnimationUtil;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
@@ -54,23 +54,15 @@ public class UZDlgPlaylistFolder extends Dialog {
         setContentView(R.layout.v3_dialog_list_playlist_folder);
         recyclerView = findViewById(R.id.recycler_view);
         final ImageButton btExit = findViewById(R.id.bt_exit);
-        btExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        btExit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean isFocus) {
-                if (isFocus) {
-                    LAnimationUtil.play(view, Techniques.Pulse);
-                    btExit.setColorFilter(Color.WHITE);
-                    btExit.setBackgroundColor(Color.BLACK);
-                } else {
-                    btExit.setBackgroundColor(Color.TRANSPARENT);
-                    btExit.setColorFilter(Color.BLACK);
-                }
+        btExit.setOnClickListener(v -> dismiss());
+        btExit.setOnFocusChangeListener((view, isFocus) -> {
+            if (isFocus) {
+                LAnimationUtil.play(view, Techniques.Pulse);
+                btExit.setColorFilter(Color.WHITE);
+                btExit.setBackgroundColor(Color.BLACK);
+            } else {
+                btExit.setBackgroundColor(Color.TRANSPARENT);
+                btExit.setColorFilter(Color.BLACK);
             }
         });
         setupUI();
@@ -111,17 +103,12 @@ public class UZDlgPlaylistFolder extends Dialog {
         recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
 
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (recyclerView == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList) == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView == null) {
-                    return;
-                }
-                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList);
-                if (holder != null) {
-                    holder.itemView.requestFocus();
-                }
+        recyclerView.postDelayed(() -> {
+            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList);
+            if (holder == null) {
+                return;
             }
+            holder.itemView.requestFocus();
         }, 50);
     }
 }

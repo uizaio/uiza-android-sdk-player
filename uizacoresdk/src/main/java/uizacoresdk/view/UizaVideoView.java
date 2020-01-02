@@ -9,19 +9,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.ContentObserver;
 import android.graphics.Color;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.Gravity;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,7 +30,6 @@ import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -43,10 +38,8 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioListener;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -61,7 +54,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -76,19 +68,16 @@ import uizacoresdk.dialog.playlistfolder.CallbackPlaylistFolder;
 import uizacoresdk.dialog.playlistfolder.UZDlgPlaylistFolder;
 import uizacoresdk.dialog.speed.UZDlgSpeed;
 import uizacoresdk.floatview.FloatUizaVideoService;
-import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZLiveContentCallback;
-import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.interfaces.UizaAdPlayerCallback;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UizaVideoViewItemClick;
+import uizacoresdk.listerner.UizaTVFocusChangeListener;
 import uizacoresdk.util.SensorOrientationChangeNotifier;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZInput;
-import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.widget.UizaPreviewTimeBar;
@@ -139,7 +128,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by loitp on 2/27/2019.
  */
 
-public class UizaVideoView extends RelativeLayout
+public class UizaVideoView extends VideoViewBase
         implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener,
         UizaPlayerView.ControllerStateCallback, SensorOrientationChangeNotifier.Listener {
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
@@ -171,8 +160,7 @@ public class UizaVideoView extends RelativeLayout
     private UizaImageButton ibFullscreenIcon, ibPauseIcon, ibPlayIcon, ibReplayIcon, ibRewIcon, ibFfwdIcon, ibBackScreenIcon, ibVolumeIcon,
             ibSettingIcon, ibCcIcon, ibPlaylistFolderIcon//danh sach playlist folder
             , ibHearingIcon, ibPictureInPictureIcon, ibSkipPreviousIcon, ibSkipNextIcon, ibSpeedIcon, ivLiveTime, ivLiveView, ibsCast;
-    private TextView debugTextView, tvEndScreenMsg;
-    private boolean hideDebugTextView = !BuildConfig.DEBUG;
+    private TextView tvEndScreenMsg;
     private UizaPlayerView uzPlayerView;
 
     //    private ResultGetLinkPlay mResultGetLinkPlay;
@@ -211,25 +199,20 @@ public class UizaVideoView extends RelativeLayout
         initView(attrs, defStyleAttr);
     }
 
+    /**
+     * Call twice time
+     * Node: Don't call inflate in this method
+     */
     private void initView(AttributeSet attrs, int defStyleAttr) {
         // todo
     }
 
     /**
-     * Call twice time
-     * Node: Don't call inflate in this method
-     */
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        onCreateView();
-    }
-
-    /**
-     * Call one time
+     * Call one time from {@link #onAttachedToWindow}
      * Note: you must call inflate in this method
      */
-    private void onCreateView() {
+    @Override
+    public void onCreateView() {
         EventBus.getDefault().register(this);
         startConectifyService();
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
@@ -255,7 +238,7 @@ public class UizaVideoView extends RelativeLayout
 
     private void resizeContainerView() {
         if (!isFreeSize) {
-            setSize(getVideoW(), getVideoH());
+            setSize(getVideoWidth(), getVideoHeight());
         } else {
             setSize(this.getWidth(), this.getHeight());
         }
@@ -342,19 +325,6 @@ public class UizaVideoView extends RelativeLayout
         return 0;
     }
 
-    public int getVideoW() {
-        if (uzPlayerManager == null) {
-            return 0;
-        }
-        return uzPlayerManager.getVideoW();
-    }
-
-    public int getVideoH() {
-        if (uzPlayerManager == null) {
-            return 0;
-        }
-        return uzPlayerManager.getVideoH();
-    }
 
     //return pixel
     public int getHeightUZTimeBar() {
@@ -362,6 +332,7 @@ public class UizaVideoView extends RelativeLayout
     }
 
     //The current position of playing. the window means playable region, which is all of the content if vod, and some portion of the content if live.
+    @Override
     public long getCurrentPosition() {
         if (uzPlayerManager == null) {
             return Constants.NOT_FOUND;
@@ -548,6 +519,21 @@ public class UizaVideoView extends RelativeLayout
         }
     }
 
+    @Override
+    public SimpleExoPlayer getPlayer() {
+        if (uzPlayerManager == null) {
+            return null;
+        }
+        return uzPlayerManager.getPlayer();
+    }
+
+    @Override
+    public void seekTo(long positionMs) {
+        if (uzPlayerManager != null) {
+            uzPlayerManager.seekTo(positionMs);
+        }
+    }
+
     /**
      * init player with entity id, ad, seekbar thumnail
      */
@@ -561,6 +547,7 @@ public class UizaVideoView extends RelativeLayout
      * @param playback PlaybackInfo nonnull
      * @return true if not error
      */
+    @Override
     public boolean play(@NonNull PlaybackInfo playback) {
         Context context = getContext();
         UZUtil.setClickedPip(context, false);
@@ -600,6 +587,7 @@ public class UizaVideoView extends RelativeLayout
      * @param isLive:   true if live
      * @return true if not error
      */
+    @Override
     public boolean play(@NonNull String entityId, boolean isLive) {
         return play(entityId, true, isLive);
     }
@@ -624,6 +612,58 @@ public class UizaVideoView extends RelativeLayout
         UZUtil.setIsInitPlaylistFolder(context, false);
         UZDataCLP.getInstance().clearData();
         return true;
+    }
+
+    @Override
+    public void resume() {
+        TmpParamData.getInstance().setPlayerIsPaused(false);
+        addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().play();
+        } else {
+            if (uzPlayerManager != null) {
+                uzPlayerManager.resume();
+            }
+        }
+        ViewUtil.goneViews(ibPlayIcon);
+        if (ibPauseIcon != null) {
+            ViewUtil.visibleViews(ibPauseIcon);
+            ibPauseIcon.requestFocus();
+        }
+    }
+
+    @Override
+    public void pause() {
+        TmpParamData.getInstance().setPlayerIsPaused(true);
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().pause();
+        } else {
+            if (uzPlayerManager != null) {
+                uzPlayerManager.pause();
+            }
+        }
+        ViewUtil.goneViews(ibPauseIcon);
+        if (ibPlayIcon != null) {
+            ViewUtil.visibleViews(ibPlayIcon);
+            ibPlayIcon.requestFocus();
+        }
+        addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+    }
+
+    @Override
+    public int getVideoWidth() {
+        if (uzPlayerManager == null) {
+            return 0;
+        }
+        return uzPlayerManager.getVideoWidth();
+    }
+
+    @Override
+    public int getVideoHeight() {
+        if (uzPlayerManager == null) {
+            return 0;
+        }
+        return uzPlayerManager.getVideoHeight();
     }
 
     private boolean isInitCustomLinkPlay;//user pass any link (not use entityId or metadataId)
@@ -700,7 +740,7 @@ public class UizaVideoView extends RelativeLayout
             // try to play 5 times
             if (countTryLinkPlayError >= 5) {
                 if (uzLiveContentCallback != null) {
-                    uzLiveContentCallback.onLivestreamUnAvailable();
+                    uzLiveContentCallback.onLiveStreamUnAvailable();
                 }
                 return;
             }
@@ -735,7 +775,7 @@ public class UizaVideoView extends RelativeLayout
         countTryLinkPlayError = 0;
     }
 
-    public void onDestroy() {
+    public void onDestroyView() {
         //cannot use isGetClickedPip (global variable), must use UZUtil.getClickedPip(activity)
         if (UZUtil.getClickedPip(getContext())) {
             UZUtil.stopMiniPlayer(getContext());
@@ -755,9 +795,8 @@ public class UizaVideoView extends RelativeLayout
 
     private void releasePlayerAnalytic() {
         if (getPlayer() != null) {
-            getPlayer().removeAnalyticsListener(nerdAnalyticsListener);
+            getPlayer().removeAnalyticsListener(statsForNerdsView);
         }
-        getContext().getContentResolver().unregisterContentObserver(volumeObserver);
     }
 
     private void releaseUzPlayerManager() {
@@ -766,7 +805,7 @@ public class UizaVideoView extends RelativeLayout
         }
     }
 
-    public void onResume() {
+    public void onResumeView() {
         SensorOrientationChangeNotifier.getInstance(getContext()).addListener(this);
         if (isCastingChromecast) {
             return;
@@ -774,7 +813,7 @@ public class UizaVideoView extends RelativeLayout
         activityIsPausing = false;
         if (uzPlayerManager != null) {
             if (ibPlayIcon == null || ibPlayIcon.getVisibility() != VISIBLE) {
-                uzPlayerManager.resumeVideo();
+                uzPlayerManager.resume();
             }
         }
         // try to move to the edge of livestream video
@@ -810,18 +849,15 @@ public class UizaVideoView extends RelativeLayout
 
     private boolean activityIsPausing = false;
 
-    public void onPause() {
+    public void onPauseView() {
         activityIsPausing = true;
         SensorOrientationChangeNotifier.getInstance(getContext()).remove(this);
         if (uzPlayerManager != null) {
-            uzPlayerManager.pauseVideo();
+            uzPlayerManager.pause();
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (getContext() == null) {
-            return;
-        }
         if (isCastingChromecast()) {
             Timber.e("Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
@@ -837,8 +873,8 @@ public class UizaVideoView extends RelativeLayout
     public void onStartPreview(PreviewView previewView, int progress) {
         timestampOnStartPreview = System.currentTimeMillis();
         addTrackingMuiza(Constants.MUIZA_EVENT_SEEKING);
-        if (callbackUZTimebar != null) {
-            callbackUZTimebar.onStartPreview(previewView, progress);
+        if (onPreviewChangeListener != null) {
+            onPreviewChangeListener.onStartPreview(previewView, progress);
         }
     }
 
@@ -848,8 +884,8 @@ public class UizaVideoView extends RelativeLayout
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         isOnPreview = true;
         updateUIIbRewIconDependOnProgress(progress, true);
-        if (callbackUZTimebar != null) {
-            callbackUZTimebar.onPreview(previewView, progress, fromUser);
+        if (onPreviewChangeListener != null) {
+            onPreviewChangeListener.onPreview(previewView, progress, fromUser);
         }
     }
 
@@ -869,8 +905,8 @@ public class UizaVideoView extends RelativeLayout
         }
         isOnPreview = false;
         onStopPreview(progress);
-        if (callbackUZTimebar != null) {
-            callbackUZTimebar.onStopPreview(previewView, progress);
+        if (onPreviewChangeListener != null) {
+            onPreviewChangeListener.onStopPreview(previewView, progress);
         }
         addTrackingMuiza(Constants.MUIZA_EVENT_SEEKED);
     }
@@ -878,7 +914,7 @@ public class UizaVideoView extends RelativeLayout
     public void onStopPreview(int progress) {
         if (uzPlayerManager != null && !isCastingChromecast) {
             uzPlayerManager.seekTo(progress);
-            uzPlayerManager.resumeVideo();
+            uzPlayerManager.resume();
             isOnPlayerEnded = false;
             updateUIEndScreen();
         }
@@ -886,8 +922,8 @@ public class UizaVideoView extends RelativeLayout
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        if (uztvCallback != null) {
-            uztvCallback.onFocusChange(view, isFocus);
+        if (uizaTVFocusChangeListener != null) {
+            uizaTVFocusChangeListener.onFocusChange(view, isFocus);
         } else {
             if (firstViewHasFocus == null) {
                 firstViewHasFocus = view;
@@ -922,9 +958,6 @@ public class UizaVideoView extends RelativeLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (getContext() == null) {
-            return;
-        }
         resizeContainerView();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ScreenUtil.hideDefaultControls(getContext());
@@ -997,9 +1030,9 @@ public class UizaVideoView extends RelativeLayout
                 }
             }
         } else if (v == ibPauseIcon) {
-            pauseVideo();
+            pause();
         } else if (v == ibPlayIcon) {
-            resumeVideo();
+            resume();
         } else if (v == ibReplayIcon) {
             replay();
         } else if (v == ibSkipNextIcon) {
@@ -1026,17 +1059,13 @@ public class UizaVideoView extends RelativeLayout
                 }
             }
         }
-        if (uzItemClick != null) {
-            uzItemClick.onItemClick(v);
+        if (uizaVideoViewItemClick != null) {
+            uizaVideoViewItemClick.onItemClick(v);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void handleClickPictureInPicture() {
-        if (getContext() == null) {
-            notifyError(UizaExceptionUtil.getExceptionShowPip());
-            return;
-        }
         if (!isInitMiniPlayerSuccess) {
             //dang init 1 instance mini player roi, khong cho init nua
             notifyError(UizaExceptionUtil.getExceptionShowPip());
@@ -1066,8 +1095,8 @@ public class UizaVideoView extends RelativeLayout
             isInitMiniPlayerSuccess = false;
             uzCallback.onStateMiniPlayer(false);
         }
-        UZUtil.setVideoWidth(getContext(), getVideoW());
-        UZUtil.setVideoHeight(getContext(), getVideoH());
+        UZUtil.setVideoWidth(getContext(), getVideoWidth());
+        UZUtil.setVideoHeight(getContext(), getVideoHeight());
         Intent intent = new Intent(getContext(), FloatUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_CONTENT_POSITION, getCurrentPosition());
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
@@ -1082,18 +1111,6 @@ public class UizaVideoView extends RelativeLayout
         getContext().startService(intent);
     }
 
-    public SimpleExoPlayer getPlayer() {
-        if (uzPlayerManager == null) {
-            return null;
-        }
-        return uzPlayerManager.getPlayer();
-    }
-
-    public void seekTo(long positionMs) {
-        if (uzPlayerManager != null) {
-            uzPlayerManager.seekTo(positionMs);
-        }
-    }
 
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         DEFAULT_VALUE_CONTROLLER_TIMEOUT = controllerShowTimeoutMs;
@@ -1236,7 +1253,7 @@ public class UizaVideoView extends RelativeLayout
             return;
         }
         urlImgThumbnail = null;
-        pauseVideo();
+        pause();
         hideController();
         //update UI for skip next and skip previous button
         if (position == 0) {
@@ -1414,39 +1431,6 @@ public class UizaVideoView extends RelativeLayout
         ViewUtil.performClick(view);
     }
 
-    public void resumeVideo() {
-        TmpParamData.getInstance().setPlayerIsPaused(false);
-        addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().play();
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.resumeVideo();
-            }
-        }
-        ViewUtil.goneViews(ibPlayIcon);
-        if (ibPauseIcon != null) {
-            ViewUtil.visibleViews(ibPauseIcon);
-            ibPauseIcon.requestFocus();
-        }
-    }
-
-    public void pauseVideo() {
-        TmpParamData.getInstance().setPlayerIsPaused(true);
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().pause();
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.pauseVideo();
-            }
-        }
-        ViewUtil.goneViews(ibPauseIcon);
-        if (ibPlayIcon != null) {
-            ViewUtil.visibleViews(ibPlayIcon);
-            ibPlayIcon.requestFocus();
-        }
-        addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
-    }
 
     public void setDefaultValueBackwardForward(int mls) {
         DEFAULT_VALUE_BACKWARD_FORWARD = mls;
@@ -1484,9 +1468,9 @@ public class UizaVideoView extends RelativeLayout
             return;
         }
         if (getPlayer().getPlayWhenReady()) {
-            pauseVideo();
+            pause();
         } else {
-            resumeVideo();
+            resume();
         }
     }
 
@@ -1556,16 +1540,6 @@ public class UizaVideoView extends RelativeLayout
 
     public PlayerView getUzPlayerView() {
         return uzPlayerView;
-    }
-
-    protected TextView getDebugTextView() {
-        return debugTextView;
-    }
-
-    public void hideDebugTextView(boolean hide) {
-        hideDebugTextView = hide;
-        if (debugTextView != null)
-            debugTextView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
     public ProgressBar getProgressBar() {
@@ -1857,15 +1831,10 @@ public class UizaVideoView extends RelativeLayout
         ibSpeedIcon = uzPlayerView.findViewById(R.id.exo_speed);
         LinearLayout debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
-        debugTextView = findViewById(R.id.debug_text_view);
         if (BuildConfig.DEBUG) {
             debugLayout.setVisibility(View.VISIBLE);
-            if (debugTextView != null)
-                debugTextView.setVisibility(hideDebugTextView ? View.GONE : View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
-            if (debugTextView != null)
-                debugTextView.setVisibility(View.GONE);
         }
         rlLiveInfo = uzPlayerView.findViewById(R.id.rl_live_info);
         tvLiveStatus = uzPlayerView.findViewById(R.id.tv_live);
@@ -2216,8 +2185,8 @@ public class UizaVideoView extends RelativeLayout
     private View firstViewHasFocus;
 
     private void handleFirstViewHasFocus() {
-        if (firstViewHasFocus != null && uztvCallback != null) {
-            uztvCallback.onFocusChange(firstViewHasFocus, true);
+        if (firstViewHasFocus != null && uizaTVFocusChangeListener != null) {
+            uizaTVFocusChangeListener.onFocusChange(firstViewHasFocus, true);
             firstViewHasFocus = null;
         }
     }
@@ -2543,11 +2512,11 @@ public class UizaVideoView extends RelativeLayout
      * ======== START EVENT =====
      */
     private UZLiveContentCallback uzLiveContentCallback;
-    private ProgressCallback progressCallback;
-    private CallbackUZTimebar callbackUZTimebar;
-    private UZItemClick uzItemClick;
+    private ProgressListener progressListener;
+    private PreviewView.OnPreviewChangeListener onPreviewChangeListener;
+    private UizaVideoViewItemClick uizaVideoViewItemClick;
     private UZCallback uzCallback;
-    private UZTVCallback uztvCallback;
+    private UizaTVFocusChangeListener uizaTVFocusChangeListener;
     private UizaPlayerView.ControllerStateCallback controllerStateCallback;
     protected AudioListener audioListener;
     protected MetadataOutput metadataOutput;
@@ -2563,21 +2532,21 @@ public class UizaVideoView extends RelativeLayout
         this.uzCallback = uzCallback;
     }
 
-    public void addUZTVCallback(UZTVCallback uztvCallback) {
-        this.uztvCallback = uztvCallback;
+    public void setUizaTVFocusChangeListener(UizaTVFocusChangeListener uizaTVFocusChangeListener) {
+        this.uizaTVFocusChangeListener = uizaTVFocusChangeListener;
         handleFirstViewHasFocus();
     }
 
-    public void addProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setProgressListener(ProgressListener progressListener) {
+        this.progressListener = progressListener;
     }
 
-    public void addCallbackUZTimebar(CallbackUZTimebar callbackUZTimebar) {
-        this.callbackUZTimebar = callbackUZTimebar;
+    public void setOnPreviewChangeListener(PreviewView.OnPreviewChangeListener onPreviewChangeListener) {
+        this.onPreviewChangeListener = onPreviewChangeListener;
     }
 
-    public void addItemClick(UZItemClick uzItemClick) {
-        this.uzItemClick = uzItemClick;
+    public void setUizaVideoViewItemClick(UizaVideoViewItemClick uizaVideoViewItemClick) {
+        this.uizaVideoViewItemClick = uizaVideoViewItemClick;
     }
 
     public void addControllerStateCallback(final UizaPlayerView.ControllerStateCallback controllerStateCallback) {
@@ -3046,19 +3015,19 @@ public class UizaVideoView extends RelativeLayout
             uzTimebar.setEnabled(!disable);
             uzTimebar.setPreviewLoader(uzPlayerManager);
         }
-        uzPlayerManager.setProgressCallback(new ProgressCallback() {
+        uzPlayerManager.setProgressListener(new VideoViewBase.ProgressListener() {
             @Override
             public void onAdEnded() {
                 setDefaultUseController(isDefaultUseController());
-                if (progressCallback != null) {
-                    progressCallback.onAdEnded();
+                if (progressListener != null) {
+                    progressListener.onAdEnded();
                 }
             }
 
             @Override
             public void onAdProgress(int s, int duration, int percent) {
-                if (progressCallback != null) {
-                    progressCallback.onAdProgress(s, duration, percent);
+                if (progressListener != null) {
+                    progressListener.onAdProgress(s, duration, percent);
                 }
             }
 
@@ -3068,28 +3037,28 @@ public class UizaVideoView extends RelativeLayout
                 updateUIIbRewIconDependOnProgress(currentMls, false);
                 trackProgress(s, percent);
                 callAPITrackMuiza(s);
-                if (progressCallback != null) {
-                    progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                if (progressListener != null) {
+                    progressListener.onVideoProgress(currentMls, s, duration, percent);
                 }
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (progressCallback != null) {
-                    progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
+                if (progressListener != null) {
+                    progressListener.onPlayerStateChanged(playWhenReady, playbackState);
                 }
             }
 
             @Override
             public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
-                if (progressCallback != null) {
-                    progressCallback.onBufferProgress(bufferedPosition, bufferedPercentage, duration);
+                if (progressListener != null) {
+                    progressListener.onBufferProgress(bufferedPosition, bufferedPercentage, duration);
                 }
             }
         });
         uzPlayerManager.setDebugCallback(() -> updateUIButtonVisibilities());
 
-        uzPlayerManager.setBufferCallback((bufferedDurationUs, playbackSpeed) -> UizaVideoView.this.bufferedDurationUs = bufferedDurationUs);
+        uzPlayerManager.setBufferCallback((bufferedDurationUs, playbackSpeed) -> statsForNerdsView.setBufferedDurationUs(bufferedDurationUs));
     }
 
     protected void onStateReadyFirst() {
@@ -3334,7 +3303,7 @@ public class UizaVideoView extends RelativeLayout
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setAi("");
         uizaTrackingCCU.setSn(UZData.getInstance().getChannelName()); // stream name
-        uizaTrackingCCU.setDi(UZOsUtil.getDeviceId(getContext()));
+        uizaTrackingCCU.setDi(LDeviceUtil.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         RxBinder.bind(service.trackCCU(uizaTrackingCCU),
                 result -> reTrackUizaCCUForLivestream(),
@@ -3405,7 +3374,7 @@ public class UizaVideoView extends RelativeLayout
                     }
                 }
             }
-            resumeVideo();
+            resume();
         }
     }
 
@@ -3414,13 +3383,13 @@ public class UizaVideoView extends RelativeLayout
     public boolean isInitNewItem(String urlImgThumbnail) {
         if (positionMiniPlayer != 0) {
             seekTo(positionMiniPlayer);
-            resumeVideo();
+            resume();
             sendEventInitSuccess();
             positionMiniPlayer = 0;
             return false;
         } else {
             setUrlImgThumbnail(urlImgThumbnail);
-            pauseVideo();
+            pause();
             showProgress();
             positionMiniPlayer = 0;
             return true;
@@ -3572,7 +3541,7 @@ public class UizaVideoView extends RelativeLayout
             return;
         }
         if (isCastingChromecast) {
-            uzPlayerManager.pauseVideo();
+            uzPlayerManager.pause();
             uzPlayerManager.setVolume(0f);
             ViewUtil.visibleViews(rlChromeCast, ibPlayIcon);
             ViewUtil.goneViews(ibPauseIcon);
@@ -3584,7 +3553,7 @@ public class UizaVideoView extends RelativeLayout
                 uzPlayerView.setControllerShowTimeoutMs(0);
             }
         } else {
-            uzPlayerManager.resumeVideo();
+            uzPlayerManager.resume();
             uzPlayerManager.setVolume(0.99f);
             ViewUtil.goneViews(rlChromeCast, ibPlayIcon);
             ViewUtil.visibleViews(ibPauseIcon);
@@ -3621,221 +3590,10 @@ public class UizaVideoView extends RelativeLayout
     }
 
     private StatsForNerdsView statsForNerdsView;
-    private UiUpdateHandler statsUIHandler = new UiUpdateHandler(this);
-    private SettingsContentObserver volumeObserver = new SettingsContentObserver(UizaVideoView.this, new Handler());
-    private long bufferedDurationUs;
-    private long bitrateEstimate;
-    private long bytesLoaded;
-    private int droppedFrames;
-    private int viewPortWidth, viewPortHeight;
-    private int currentResWidth, currentResHeight;
-    private int optimalResWidth, optimalResHeight;
-    private static final int MSG_UPDATE_STATS = 10005;
-    private static final int MSG_UPDATE_STATS_NW_ONLY = 10006;
-
-    private AnalyticsListener nerdAnalyticsListener = new AnalyticsListener() {
-
-        @Override
-        public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs,
-                                        long totalBytesLoaded, long bitrateEstimate) {
-            UizaVideoView.this.bytesLoaded = totalBytesLoaded;
-            UizaVideoView.this.bitrateEstimate = bitrateEstimate;
-        }
-
-        @Override
-        public void onSurfaceSizeChanged(EventTime eventTime, int width, int height) {
-            viewPortWidth = width;
-            viewPortHeight = height;
-            depictViewPortFrameInfo();
-        }
-
-        @Override
-        public void onLoadCompleted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo,
-                                    MediaSourceEventListener.MediaLoadData mediaLoadData) {
-            Format downloadFormat = mediaLoadData.trackFormat;
-            if (downloadFormat != null && downloadFormat.width != -1 && downloadFormat.height != -1) {
-                if (downloadFormat.width != optimalResWidth && downloadFormat.height != optimalResHeight) {
-                    optimalResWidth = downloadFormat.width;
-                    optimalResHeight = downloadFormat.height;
-                    depictVideoResolution();
-                }
-            }
-        }
-
-        @Override
-        public void onVideoSizeChanged(EventTime eventTime, int width, int height,
-                                       int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            if (width <= 0 || height <= 0) return;
-            if (width != currentResWidth && height != currentResHeight) {
-                currentResWidth = width;
-                currentResHeight = height;
-                depictVideoResolution();
-            }
-        }
-
-        @Override
-        public void onVolumeChanged(EventTime eventTime, float volume) {
-            depictVolumeInfo(Math.round(volume * 100));
-        }
-
-        @Override
-        public void onDecoderInputFormatChanged(EventTime eventTime, int trackType, Format format) {
-            depictVideoDetailInfo(format);
-        }
-
-        @Override
-        public void onDroppedVideoFrames(EventTime eventTime, int droppedFrames, long elapsedMs) {
-            UizaVideoView.this.droppedFrames += droppedFrames;
-            depictViewPortFrameInfo();
-        }
-
-        @Override
-        public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
-            startPlayerStats();
-            getContext().getContentResolver()
-                    .registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, volumeObserver);
-        }
-    };
 
     // ===== Stats For Nerds =====
     private void initStatsForNerds() {
-        getPlayer().addAnalyticsListener(nerdAnalyticsListener);
-    }
-
-    private static class UiUpdateHandler extends Handler {
-        private WeakReference<UizaVideoView> weakUzVideo;
-
-        UiUpdateHandler(UizaVideoView uzVideo) {
-            weakUzVideo = new WeakReference<>(uzVideo);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            UizaVideoView uzVideo = weakUzVideo.get();
-            if (null == uzVideo) return;
-            switch (msg.what) {
-                case MSG_UPDATE_STATS:
-                    uzVideo.depictPlayerStats();
-                    break;
-                case MSG_UPDATE_STATS_NW_ONLY:
-                    uzVideo.depictPlayerNWStats();
-                    break;
-            }
-        }
-    }
-
-    private void startPlayerStats() {
-        statsUIHandler.removeMessages(MSG_UPDATE_STATS);
-        statsUIHandler.removeMessages(MSG_UPDATE_STATS_NW_ONLY);
-        depictVideoInfo();
-        depictDeviceInfo();
-        depictVersionInfo();
-        depictPlayerStats();
-        depictPlayerNWStats();
-        depictViewPortFrameInfo();
-        depictVolumeInfo(AppUtils.getVolumePercentage(getContext(), AudioManager.STREAM_MUSIC));
-    }
-
-    private void depictVolumeInfo(int volumePercentage) {
-        statsForNerdsView.setTextVolume(getResources().getString(R.string.format_volume, volumePercentage));
-    }
-
-    private void depictVideoDetailInfo(Format format) {
-        if (format == null || TextUtils.isEmpty(format.sampleMimeType)) return;
-        if (format.sampleMimeType.startsWith("audio")) {
-            statsForNerdsView.setTextAudioFormat(
-                    getResources().getString(R.string.format_audio_format, format.sampleMimeType, format.sampleRate));
-        } else if (format.sampleMimeType.startsWith("video")) {
-            statsForNerdsView.setTextVideoFormat(
-                    getResources().getString(R.string.format_video_format, format.sampleMimeType, format.width,
-                            format.height, Math.round(format.frameRate)));
-        }
-    }
-
-    private void depictVideoResolution() {
-        statsForNerdsView.setTextResolution(getResources().getString(R.string.format_resolution,
-                currentResWidth, currentResHeight, optimalResWidth, optimalResHeight));
-    }
-
-    private void depictViewPortFrameInfo() {
-        if (viewPortWidth == 0 && viewPortHeight == 0) {
-            // at first time, surface view size or viewport equals to uzVideo size
-            viewPortWidth = this.getWidth();
-            viewPortHeight = this.getHeight();
-        }
-        statsForNerdsView.setTextViewPortFrame(
-                getResources().getString(R.string.format_viewport_frame, viewPortWidth, viewPortHeight, droppedFrames));
-    }
-
-    private void depictVideoInfo() {
-        statsForNerdsView.setEntityInfo(UZData.getInstance().getEntityId());
-        statsForNerdsView.setTextHost(UZData.getInstance().getDomainAPI());
-    }
-
-    private void depictVersionInfo() {
-        statsForNerdsView.setTextVersion(getResources().getString(R.string.format_version,
-                BuildConfig.VERSION_NAME, BuildConfig.EXO_VERSION, Constants.apiVersion));
-    }
-
-    private void depictDeviceInfo() {
-        statsForNerdsView.setTextDeviceInfo(
-                getResources().getString(R.string.format_device_info, Build.MODEL, Build.VERSION.RELEASE));
-    }
-
-    private void depictPlayerStats() {
-        String formattedValue;
-        if (bitrateEstimate < 1e6) {
-            formattedValue = getResources().getString(R.string.format_connection_speed_k,
-                    ConvertUtils.getFormattedDouble((bitrateEstimate / Math.pow(10, 3)), 2));
-        } else {
-            formattedValue = getResources().getString(R.string.format_connection_speed_m,
-                    ConvertUtils.getFormattedDouble((bitrateEstimate / Math.pow(10, 6)), 2));
-        }
-        statsForNerdsView.setTextConnectionSpeed(formattedValue);
-
-        // Re-update after 0.5 second
-        statsUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_STATS, 500);
-    }
-
-    private void depictPlayerNWStats() {
-        statsForNerdsView.setTextNetworkActivity(
-                ConvertUtils.humanReadableByteCount(bytesLoaded, true, false));
-        if (getPlayer() != null) {
-            long remainingUs = (getPlayer().getDuration() - getPlayer().getCurrentPosition()) * 1000;
-            remainingUs = remainingUs >= 0 ? remainingUs : 0;
-            double buffered = bufferedDurationUs >= remainingUs ? remainingUs : bufferedDurationUs;
-            String buffer = ConvertUtils.getFormattedDouble((buffered / Math.pow(10, 6)), 1);
-            statsForNerdsView.setTextBufferHealth(getResources().getString(R.string.format_buffer_health, buffer));
-        }
-
-        // Re-update after 1 second
-        statsUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_STATS_NW_ONLY, 1000);
-    }
-
-    private static class SettingsContentObserver extends ContentObserver {
-        private AudioManager audioManager;
-        private WeakReference<UizaVideoView> weakUZVideo;
-
-        SettingsContentObserver(UizaVideoView uzVideo, Handler handler) {
-            super(handler);
-            audioManager = (AudioManager) uzVideo.getContext().getSystemService(Context.AUDIO_SERVICE);
-            weakUZVideo = new WeakReference<>(uzVideo);
-        }
-
-        @Override
-        public boolean deliverSelfNotifications() {
-            return false;
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            UizaVideoView uzVideo = weakUZVideo.get();
-            if (uzVideo != null && uzVideo.uzPlayerManager != null) {
-                uzVideo.uzPlayerManager.setVolume(currentVolume * 1.0f / maxVolume);
-            }
-        }
+        getPlayer().addAnalyticsListener(statsForNerdsView);
     }
 
 
@@ -3890,4 +3648,6 @@ public class UizaVideoView extends RelativeLayout
     protected void hideTextLiveStreamLatency() {
         statsForNerdsView.hideTextLiveStreamLatency();
     }
+
+
 }

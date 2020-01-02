@@ -63,7 +63,6 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_playback);
         uzVideo = findViewById(R.id.uiza_video);
-        uzVideo.hideDebugTextView(true);
         chatRCV = findViewById(R.id.rv_chat);
         llInput = findViewById(R.id.ll_input);
         mChatInput = findViewById(R.id.et_compose);
@@ -161,19 +160,19 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
 
     @Override
     public void onDestroy() {
-        uzVideo.onDestroy();
+        uzVideo.onDestroyView();
         super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        uzVideo.onResume();
+        uzVideo.onResumeView();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        uzVideo.onPause();
+        uzVideo.onPauseView();
         super.onPause();
     }
 

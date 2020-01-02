@@ -12,6 +12,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.restapi.model.tracking.UizaTracking;
 import vn.uiza.restapi.model.v2.auth.Auth;
+import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.StringUtil;
 
 /**
@@ -116,7 +117,7 @@ public class UizaDataV1 {
         //referrer
         uizaTracking.setReferrer("");
         //device_id
-        uizaTracking.setDeviceId(UZOsUtil.getDeviceId(context));
+        uizaTracking.setDeviceId(LDeviceUtil.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");

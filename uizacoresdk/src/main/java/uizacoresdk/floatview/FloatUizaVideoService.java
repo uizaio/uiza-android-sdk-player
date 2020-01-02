@@ -293,7 +293,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (fuzVideo == null || btPlayPause == null) {
             return;
         }
-        fuzVideo.pauseVideo();
+        fuzVideo.pause();
         btPlayPause.setImageResource(R.drawable.ic_play_circle_outline_white_48);
     }
 
@@ -301,7 +301,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (fuzVideo == null || btPlayPause == null) {
             return;
         }
-        fuzVideo.resumeVideo();
+        fuzVideo.resume();
         btPlayPause.setImageResource(R.drawable.ic_pause_circle_outline_white_48);
     }
 
@@ -396,14 +396,14 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (fuzVideo == null) {
             return 0;
         }
-        return fuzVideo.getVideoW();
+        return fuzVideo.getVideoWidth();
     }
 
     private int getVideoH() {
         if (fuzVideo == null) {
             return 0;
         }
-        return fuzVideo.getVideoH();
+        return fuzVideo.getVideoHeight();
     }
 
     //==================================================================================================END CONFIG
@@ -815,7 +815,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             Timber.d("miniplayer STEP 2 isInitResult true");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
-            updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
+            updateUIVideoSizeOneTime(fuzVideo.getVideoWidth(), fuzVideo.getVideoHeight());
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
@@ -926,8 +926,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (fuzVideo == null || moveView == null || videoW == 0) {
             return;
         }
-        int videoW = fuzVideo.getVideoW();
-        int videoH = fuzVideo.getVideoH();
+        int videoW = fuzVideo.getVideoWidth();
+        int videoH = fuzVideo.getVideoHeight();
         int moveW;
         int moveH;
         if (isAutoSize) {

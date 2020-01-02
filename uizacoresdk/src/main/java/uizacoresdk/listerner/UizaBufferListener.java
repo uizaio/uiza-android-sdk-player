@@ -1,5 +1,5 @@
-package uizacoresdk.interfaces;
+package uizacoresdk.listerner;
 
-public interface UZBufferCallback {
+public interface UizaBufferListener {
     void onBufferChanged(long bufferedDurationUs, float playbackSpeed);
 }
