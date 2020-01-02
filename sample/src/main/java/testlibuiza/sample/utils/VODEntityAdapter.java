@@ -3,6 +3,7 @@ package testlibuiza.sample.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         VODEntity entity = entities.get(position);
         holder.titleView.setText(entity.getName());
-        holder.setThumbnail(position);
+        holder.setThumbnail(entity, position);
         holder.itemView.setOnClickListener(v -> holder.onClick(entity));
         if (listener != null) {
             holder.actionButton.setOnClickListener(v -> listener.onMoreClick(v, entity.getId()));
@@ -111,9 +112,13 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
 
         }
 
-        private void setThumbnail(int position) {
-            String thumbnail = thumbnails[position % thumbnails.length];
-            ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+        private void setThumbnail(VODEntity entity, int position) {
+            if(TextUtils.isEmpty(entity.getThumbnail())) {
+                String thumbnail = thumbnails[position % thumbnails.length];
+                ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+            } else {
+                ImageUtil.load(thumbnailView, entity.getThumbnail(), R.drawable.ic_person_white_48);
+            }
         }
 
 

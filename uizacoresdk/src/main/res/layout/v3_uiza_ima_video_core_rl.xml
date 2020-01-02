@@ -26,7 +26,6 @@
             android:id="@id/stats_for_nerds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_30"
             android:background="@color/black_65"
             android:visibility="gone"
             tools:visibility="visible" />

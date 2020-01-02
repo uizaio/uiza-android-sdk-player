@@ -2895,7 +2895,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     private void checkToSetUpResource() {
-        if (UZData.getInstance().getPlaybackInfo() != null) {
+        if (mPlaybackInfo != null) {
             List<String> listLinkPlay = new ArrayList<>();
             List<String> urlList = mPlaybackInfo.getUrls();
             if (isLivestream) {
@@ -3056,7 +3056,7 @@ public class UizaVideoView extends VideoViewBase
                 }
             }
         });
-        uzPlayerManager.setDebugCallback(() -> updateUIButtonVisibilities());
+        uzPlayerManager.setDebugCallback(this::updateUIButtonVisibilities);
 
         uzPlayerManager.setBufferCallback((bufferedDurationUs, playbackSpeed) -> statsForNerdsView.setBufferedDurationUs(bufferedDurationUs));
     }
