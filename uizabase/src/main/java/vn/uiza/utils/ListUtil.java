@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import vn.uiza.helpers.DateTypeSerializer;
+import vn.uiza.models.PlaybackInfo;
 
 
 public class ListUtil {
@@ -58,6 +59,18 @@ public class ListUtil {
                 if (pre.get(list.get(i)))
                     col.add(list.get(i));
             return col;
+        }
+    }
+
+    public static <T> List<PlaybackInfo> map(List<T> list, Pre<T, PlaybackInfo> pre) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return list.stream().map(pre::get).collect(Collectors.toList());
+        } else {
+            List<PlaybackInfo> cols = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                cols.add(pre.get(list.get(i)));
+            }
+            return cols;
         }
     }
 

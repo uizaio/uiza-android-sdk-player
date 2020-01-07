@@ -1,16 +1,18 @@
 package uizacoresdk.view;
 
 import android.content.Context;
+
 import androidx.annotation.UiThread;
-import android.util.Log;
+
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
+
+import timber.log.Timber;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.SentryUtils;
 import vn.uiza.utils.ViewUtil;
 
 /**
@@ -76,20 +78,14 @@ public class UizaChromeCast {
         try {
             castContext = CastContext.getSharedInstance(context);
         } catch (Exception e) {
-            Log.e(TAG, "Error addUIChromecastLayer: " + e.toString());
-            SentryUtils.captureException(e);
+            Timber.e(e, "Error addUIChromecastLayer:");
         }
         if (castContext == null) {
             ViewUtil.goneViews(uzMediaRouteButton);
             return;
         }
         updateMediaRouteButtonVisibility(castContext.getCastState());
-        castContext.addCastStateListener(new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                updateMediaRouteButtonVisibility(state);
-            }
-        });
+        castContext.addCastStateListener(this::updateMediaRouteButtonVisibility);
         if (listener != null) listener.addUIChromecast();
     }
 
@@ -110,7 +106,9 @@ public class UizaChromeCast {
 
     public interface UZChromeCastListener {
         void onConnected();
+
         void onDisconnected();
+
         void addUIChromecast();
     }
 }

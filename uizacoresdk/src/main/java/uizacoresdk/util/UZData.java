@@ -11,24 +11,22 @@ import com.google.android.gms.cast.MediaTrack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
+import vn.uiza.models.PlaybackInfo;
+import vn.uiza.models.tracking.Muiza;
+import vn.uiza.models.tracking.UizaTracking;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.model.tracking.UizaTracking;
-import vn.uiza.restapi.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.restapi.restclient.UizaClientFactory;
-import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.UizaClientFactory;
+import vn.uiza.restapi.UizaEventService;
 import vn.uiza.utils.AppUtils;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.utils.LDeviceUtil;
-import vn.uiza.utils.Utils;
+import vn.uiza.utils.ListUtil;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -74,7 +72,6 @@ public class UZData {
         this.playerInforId = playerInforId;
     }
 
-    private int mAPIVersion = Constants.apiVersion;
     private String mDomainAPI = "";
     private String mDomainAPITracking = "";
     private String mToken = "";
@@ -101,24 +98,20 @@ public class UZData {
     /**
      * InitSDK
      *
-     * @param apiVersion  One of {@link Constants#API_VERSION_5},
-     *                    {@link Constants#API_VERSION_4}, or {@link Constants#API_VERSION_3}
      * @param domainAPI   Base Url of API
      * @param token       API Token
      * @param environment One if {@link Constants.ENVIRONMENT#DEV},
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      * @return true if success init or false
      */
-    public boolean initSDK(int apiVersion, String domainAPI, String token, int environment) {
+    public boolean initSDK(String domainAPI, String token, int environment) {
         if (TextUtils.isEmpty(domainAPI)) {
             return false;
         }
-        mAPIVersion = apiVersion;
         mToken = token;
         mDomainAPI = domainAPI;
-        Constants.setApiVersion(apiVersion);
         UizaClientFactory.setup(mDomainAPI, token, environment);
-        UZUtil.setToken(Utils.getContext(), token);
+        UZUtil.setToken(token);
         syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT.DEV) {
             mDomainAPITracking = Constants.URL_TRACKING_DEV;
@@ -129,7 +122,7 @@ public class UZData {
         } else {
             return false;
         }
-        UZUtil.setApiTrackEndPoint(Utils.getContext(), mDomainAPITracking);
+        UZUtil.setApiTrackEndPoint(mDomainAPITracking);
         return true;
     }
 
@@ -138,23 +131,19 @@ public class UZData {
      * <a href=http://worldtimeapi.org/api/timezone/Etc/UTC>this free api</a>
      */
     private void syncCurrentUTCTime() {
-        UZService service = UizaClientFactory.getUizaService();
+        UizaEventService service = UizaClientFactory.getEventService();
         final long startAPICallTime = System.currentTimeMillis();
         RxBinder.bind(service.getCurrentUTCTime(), result -> {
             long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;
             long currentTime = result.getCurrentDateTimeMs() + apiTime;
             Timber.i("sync server time success :%d", currentTime);
-            UZUtil.saveLastServerTime(Utils.getContext(), currentTime);
-            UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+            UZUtil.saveLastServerTime(currentTime);
+            UZUtil.saveLastElapsedTime(SystemClock.elapsedRealtime());
         }, throwable -> {
             Timber.e("sync server time failed");
-            UZUtil.saveLastServerTime(Utils.getContext(), System.currentTimeMillis());
-            UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+            UZUtil.saveLastServerTime(System.currentTimeMillis());
+            UZUtil.saveLastElapsedTime(SystemClock.elapsedRealtime());
         });
-    }
-
-    public String getAPIVersion() {
-        return "v" + mAPIVersion;
     }
 
     public String getDomainAPI() {
@@ -238,24 +227,6 @@ public class UZData {
         }
         return uzInput.getPlaybackInfo().getLastFeedId();
     }
-
-//    public ResultGetTokenStreaming getResultGetTokenStreaming() {
-//        if (uzInput == null) {
-//            return null;
-//        }
-//        return uzInput.getResultGetTokenStreaming();
-//    }
-
-//    public ResultGetLinkPlay getResultGetLinkPlay() {
-//        if (uzInput == null) {
-//            return null;
-//        }
-//        return uzInput.getResultGetLinkPlay();
-//    }
-//
-//    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-//        uzInput.setResultGetLinkPlay(resultGetLinkPlay);
-//    }
 
     //==================================================================================================================START TRACKING
     public UizaTracking createTrackingInput(Context context, String eventType) {
@@ -471,43 +442,43 @@ public class UZData {
     }
 
     //start singleton data if play playlist folder
-    private List<Data> dataList;
-    private int currentPositionOfDataList = 0;
+    private List<PlaybackInfo> playList;
+    private int currentPositionOfPlayList = 0;
 
     /**
      * true neu playlist folder
      * tra ve false neu play entity
      */
     public boolean isPlayWithPlaylistFolder() {
-        return dataList != null;
+        return playList != null;
     }
 
-    public void setDataList(List<Data> dataList) {
-        this.dataList = dataList;
+    public void setPlayList(List<PlaybackInfo> playlist) {
+        this.playList = playlist;
     }
 
-    public List<Data> getDataList() {
-        return dataList;
+    public List<PlaybackInfo> getPlayList() {
+        return playList;
     }
 
-    public int getCurrentPositionOfDataList() {
-        return currentPositionOfDataList;
+    public int getCurrentPositionOfPlayList() {
+        return currentPositionOfPlayList;
     }
 
-    public void setCurrentPositionOfDataList(int currentPositionOfDataList) {
-        this.currentPositionOfDataList = currentPositionOfDataList;
+    public void setCurrentPositionOfPlayList(int currentPositionOfPlayList) {
+        this.currentPositionOfPlayList = currentPositionOfPlayList;
     }
 
-    public Data getDataWithPositionOfDataList(int position) {
-        if (dataList == null || dataList.isEmpty() || dataList.get(position) == null) {
+    public PlaybackInfo getDataWithPositionOfPlayList(int position) {
+        if (ListUtil.isEmpty(playList)) {
             return null;
         }
-        return dataList.get(position);
+        return playList.get(position);
     }
 
     public void clearDataForPlaylistFolder() {
-        dataList = null;
-        currentPositionOfDataList = 0;
+        playList = null;
+        currentPositionOfPlayList = 0;
     }
     //end singleton data if play playlist folder
 

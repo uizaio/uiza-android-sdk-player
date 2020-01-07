@@ -13,7 +13,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Locale;
 
 import timber.log.Timber;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.restapi.restclient.UizaRestClient;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -51,10 +51,10 @@ public class SettingsActivity extends AppCompatActivity {
                 frameInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
 
             ListPreference lstPreference = findPreference("api_base_url_key");
-            if(lstPreference != null){
+            if (lstPreference != null) {
                 lstPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
-                    if(newValue instanceof String){
-                        String value = (String)newValue;
+                    if (newValue instanceof String) {
+                        String value = (String) newValue;
                         UizaRestClient.getInstance().changeApiBaseUrl(value);
                     }
                     return true;
@@ -62,9 +62,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             Preference verPref = findPreference("version_key");
-            if(verPref != null){
+            if (verPref != null) {
                 verPref.setDefaultValue(String.valueOf(BuildConfig.VERSION_CODE));
-                verPref.setSummary(String.format(Locale.getDefault(),"%s - %d", BuildConfig.VERSION_NAME  ,BuildConfig.VERSION_CODE));
+                verPref.setSummary(String.format(Locale.getDefault(), "%s - %d", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
             }
         }
     }

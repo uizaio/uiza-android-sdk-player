@@ -20,14 +20,13 @@ import java.util.List;
 
 import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 
 public final class FloatUizaPlayerManager extends FloatUizaPlayerManagerAbs implements AdsMediaSource.MediaSourceFactory {
     private ImaAdsLoader adsLoader = null;
     private FUZVideoAdPlayerListener fUZVideoAdPlayerListener = new FUZVideoAdPlayerListener();
 
-    public FloatUizaPlayerManager(final FloatUizaVideoView fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
-                                  List<Subtitle> subtitleList) {
+    public FloatUizaPlayerManager(final FloatUizaVideoView fuzVideo, String linkPlay, String urlIMAAd, List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
         this.context = fuzVideo.getContext();

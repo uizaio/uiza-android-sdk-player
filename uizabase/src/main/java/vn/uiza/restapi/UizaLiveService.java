@@ -8,12 +8,12 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import vn.uiza.restapi.model.ListWrap;
-import vn.uiza.restapi.model.v5.live.CreateLiveBody;
-import vn.uiza.restapi.model.v5.live.DeleteLiveEntityResponse;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.LiveSession;
-import vn.uiza.restapi.model.v5.live.UpdateLiveBody;
+import vn.uiza.models.ListWrap;
+import vn.uiza.models.live.CreateLiveBody;
+import vn.uiza.models.live.DeleteLiveEntityResponse;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.models.live.LiveSession;
+import vn.uiza.models.live.UpdateLiveBody;
 
 /**
  * Connect UizaLive Service API

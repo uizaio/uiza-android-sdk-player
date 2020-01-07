@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import timber.log.Timber;
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
@@ -19,7 +20,6 @@ import vn.uiza.views.LToast;
  * @author loitp
  */
 public class LSocialUtil {
-    private static String TAG = LSocialUtil.class.getSimpleName();
     private static final String MARKET_URI = "market://details?id=";
     private static final String PLAY_STORE_DETAIL_URI =
             "http://play.google.com/store/apps/details?id=";
@@ -38,7 +38,7 @@ public class LSocialUtil {
         } catch (android.content.ActivityNotFoundException anfe) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
                     PLAY_STORE_DETAIL_URI + packageName)));
-            SentryUtils.captureException(anfe);
+            Timber.e(anfe);
         }
     }
 
@@ -56,7 +56,7 @@ public class LSocialUtil {
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, SHARE_TITLE));
         } catch (Exception e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class LSocialUtil {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
 
         return false;
@@ -107,7 +107,7 @@ public class LSocialUtil {
                 return FB_PAGE_URI + fbFanPageId;
             }
         } catch (PackageManager.NameNotFoundException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             if (fbFanPageUrl != null)
                 return fbFanPageUrl;
             else return fbFanPageId;
@@ -121,7 +121,7 @@ public class LSocialUtil {
             int versionCode = packageManager.getPackageInfo(FB_MESSENGER_PACKAGE, 0).versionCode;
             if (versionCode >= 0) isFBInstalled = true;
         } catch (PackageManager.NameNotFoundException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         if (!isFBInstalled) {
             LDialogUtil.showDialog1(activity, activity.getString(R.string.error), UizaException.ERR_22, activity.getString(R.string.ok), null);
@@ -133,7 +133,7 @@ public class LSocialUtil {
                 activity.startActivity(intent);
             } catch (Exception e) {
                 LDialogUtil.showDialog1(activity, UizaException.ERR_20, UizaException.ERR_22, activity.getString(R.string.ok), null);
-                SentryUtils.captureException(e);
+                Timber.e(e);
             }
         }
     }

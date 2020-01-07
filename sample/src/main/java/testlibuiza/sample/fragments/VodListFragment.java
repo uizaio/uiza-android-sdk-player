@@ -27,9 +27,9 @@ import testlibuiza.sample.utils.VODEntityAdapter;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaVideoService;
-import vn.uiza.restapi.model.ListWrap;
-import vn.uiza.restapi.model.v5.vod.VODEntity;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.models.ListWrap;
+import vn.uiza.models.vod.VODEntity;
+import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 

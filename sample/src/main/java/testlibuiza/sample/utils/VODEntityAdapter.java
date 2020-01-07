@@ -20,9 +20,9 @@ import java.util.Random;
 
 import testlibuiza.R;
 import testlibuiza.sample.PlayerActivity;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.restapi.model.v5.UizaPlayback;
-import vn.uiza.restapi.model.v5.vod.VODEntity;
+import vn.uiza.models.PlaybackInfo;
+import vn.uiza.models.UizaPlayback;
+import vn.uiza.models.vod.VODEntity;
 import vn.uiza.utils.ImageUtil;
 
 public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.ViewHolder> {
@@ -113,7 +113,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
         }
 
         private void setThumbnail(VODEntity entity, int position) {
-            if(TextUtils.isEmpty(entity.getThumbnail())) {
+            if (TextUtils.isEmpty(entity.getThumbnail())) {
                 String thumbnail = thumbnails[position % thumbnails.length];
                 ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
             } else {
@@ -125,7 +125,7 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
         private void onClick(VODEntity entity) {
             Context context = itemView.getContext();
             PlaybackInfo info = entity.getPlaybackInfo();
-            if(!info.canPlay()) {
+            if (!info.canPlay()) {
                 info.setUizaPlayback(new UizaPlayback("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
                         "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8"
                         , "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd"));

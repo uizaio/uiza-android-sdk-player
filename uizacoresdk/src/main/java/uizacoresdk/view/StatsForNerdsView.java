@@ -239,7 +239,7 @@ public class StatsForNerdsView extends RelativeLayout implements AnalyticsListen
 
     private void depictVersionInfo() {
         setTextVersion(getResources().getString(R.string.format_version,
-                BuildConfig.VERSION_NAME, BuildConfig.EXO_VERSION, Constants.apiVersion));
+                BuildConfig.VERSION_NAME, BuildConfig.EXO_VERSION));
     }
 
     private void depictDeviceInfo() {

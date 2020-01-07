@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
 
 public final class ShellUtils {
@@ -70,10 +72,9 @@ public final class ShellUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         } finally {
-            CloseUtils.closeIO(os, successResult, errorResult);
+            AppUtils.closeIO(os, successResult, errorResult);
             if (process != null) {
                 process.destroy();
             }

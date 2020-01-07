@@ -20,8 +20,8 @@ import java.util.Random;
 
 import testlibuiza.R;
 import testlibuiza.sample.LivePlaybackActivity;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.LiveStatus;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.models.live.LiveStatus;
 import vn.uiza.utils.ImageUtil;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ViewHolder> {

@@ -9,7 +9,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by loitp on 14/1/2019.
+ * Created by namnd on 11/12/2019.
  */
 
 public class RxBinder {

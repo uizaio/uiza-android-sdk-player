@@ -14,13 +14,13 @@ import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
 import vn.uiza.restapi.UizaVideoService;
-import vn.uiza.restapi.model.ListWrap;
-import vn.uiza.restapi.model.v5.live.CreateLiveBody;
-import vn.uiza.restapi.model.v5.live.UpdateLiveBody;
-import vn.uiza.restapi.model.v5.vod.CreateVODBody;
-import vn.uiza.restapi.model.v5.vod.UpdateVODBody;
-import vn.uiza.restapi.model.v5.vod.VODInputType;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.models.ListWrap;
+import vn.uiza.models.live.CreateLiveBody;
+import vn.uiza.models.live.UpdateLiveBody;
+import vn.uiza.models.vod.CreateVODBody;
+import vn.uiza.models.vod.UpdateVODBody;
+import vn.uiza.models.vod.VODInputType;
+import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 
@@ -229,12 +229,5 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getIMAAd() {
-    }
-
-    private void createMetadata() {
-    }
-
-    private void getListMetadata() {
-
     }
 }

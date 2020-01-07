@@ -31,17 +31,16 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
+import vn.uiza.models.PlaybackInfo;
+import vn.uiza.models.Subtitle;
+import vn.uiza.models.tracking.Muiza;
+import vn.uiza.models.tracking.UizaTracking;
+import vn.uiza.models.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.heartbeat.UizaHeartBeatService;
-import vn.uiza.restapi.model.tracking.UizaTracking;
-import vn.uiza.restapi.model.tracking.UizaTrackingCCU;
-import vn.uiza.restapi.model.tracking.muiza.Muiza;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.restapi.restclient.UZRestClientTracking;
-import vn.uiza.restapi.restclient.UizaClientFactory;
-import vn.uiza.restapi.tracking.UizaTrackingService;
+import vn.uiza.restapi.UizaClientFactory;
+import vn.uiza.restapi.UizaHeartBeatService;
+import vn.uiza.restapi.UizaTrackingService;
+import vn.uiza.restapi.restclient.UizaTrackingClient;
 import vn.uiza.utils.AppUtils;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.utils.LDeviceUtil;
@@ -267,14 +266,14 @@ public class FloatUizaVideoView extends VideoViewBase {
     }
 
     private void checkToSetUp() {
-        initData(linkPlay, null, null, null, AppUtils.isAdsDependencyAvailable());
+        initData(linkPlay, null, null, AppUtils.isAdsDependencyAvailable());
         onResume();
     }
 
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAd) {
+    public void initData(String linkPlay, String urlIMAAd, List<Subtitle> subtitleList, boolean includeAd) {
         if (includeAd) {
             fuzUizaPlayerManager =
-                    new FloatUizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+                    new FloatUizaPlayerManager(this, linkPlay, urlIMAAd, subtitleList);
             fuzUizaPlayerManager.setProgressListener(new VideoViewBase.ProgressListener() {
                 @Override
                 public void onAdEnded() {
@@ -307,7 +306,7 @@ public class FloatUizaVideoView extends VideoViewBase {
             });
         } else {
             fuzUizaPlayerManager =
-                    new FloatUizaNoAdsPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar,
+                    new FloatUizaNoAdsPlayerManager(this, linkPlay,
                             subtitleList);
         }
     }
@@ -473,13 +472,13 @@ public class FloatUizaVideoView extends VideoViewBase {
     }
 
     private void trackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
-        if (UZRestClientTracking.getInstance().getRetrofit() == null) {
+        if (UizaTrackingClient.getInstance().getRetrofit() == null) {
             String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getContext());
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 Timber.e("trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.iuizacoresdk/view/floatview/FUZVideo.java:419sEmpty()");
                 return;
             }
-            UZRestClientTracking.getInstance().init(currentApiTrackingEndPoint, "");
+            UizaTrackingClient.getInstance().init(currentApiTrackingEndPoint, "");
         }
         UizaTrackingService service = UizaClientFactory.getTrackingService();
         RxBinder.bind(service.track(uizaTracking), tracking -> {
@@ -490,7 +489,7 @@ public class FloatUizaVideoView extends VideoViewBase {
     }
 
     private void pingHeartBeat() {
-        if (fuzUizaPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
+        if (fuzUizaPlayerManager == null || TextUtils.isEmpty(cdnHost)) {
             Timber.e("Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
@@ -639,25 +638,25 @@ public class FloatUizaVideoView extends VideoViewBase {
     }
 
     protected void getLinkPlayOfNextItem(CallbackGetLinkPlay callbackGetLinkPlay) {
-        if (UZData.getInstance().getDataList() == null) {
+        if (UZData.getInstance().getPlayList() == null) {
             Timber.e("playPlaylistPosition error: incorrect position");
             callbackGetLinkPlay.onSuccess(null);
             return;
         }
-        int currentPositionOfDataList = UZData.getInstance().getCurrentPositionOfDataList();
+        int currentPositionOfDataList = UZData.getInstance().getCurrentPositionOfPlayList();
         int position = currentPositionOfDataList + 1;
         if (position < 0) {
             Timber.e("This is the first item");
             callbackGetLinkPlay.onSuccess(null);
             return;
         }
-        if (position > UZData.getInstance().getDataList().size() - 1) {
+        if (position > UZData.getInstance().getPlayList().size() - 1) {
             Timber.e("This is the last item");
             callbackGetLinkPlay.onSuccess(null);
             return;
         }
-        UZData.getInstance().setCurrentPositionOfDataList(position);
-        Data data = UZData.getInstance().getDataWithPositionOfDataList(position);
+        UZData.getInstance().setCurrentPositionOfPlayList(position);
+        PlaybackInfo data = UZData.getInstance().getDataWithPositionOfPlayList(position);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
             Timber.e("playPlaylistPosition error: data null or cannot get id");
             callbackGetLinkPlay.onSuccess(null);

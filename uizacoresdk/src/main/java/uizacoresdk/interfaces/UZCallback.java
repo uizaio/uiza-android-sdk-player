@@ -1,7 +1,7 @@
 package uizacoresdk.interfaces;
 
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.models.PlaybackInfo;
 
 public interface UZCallback {
     //when video init done with result

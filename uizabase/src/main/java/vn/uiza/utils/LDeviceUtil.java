@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
 import vn.uiza.views.LToast;
 
@@ -104,7 +105,7 @@ public class LDeviceUtil {
             localBufferedReader.close();
             return isArm64 ? 64 : 32;
         } catch (IOException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         return 0;
     }

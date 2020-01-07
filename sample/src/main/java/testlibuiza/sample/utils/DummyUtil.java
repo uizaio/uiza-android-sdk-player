@@ -6,7 +6,7 @@ import android.provider.Settings;
 import android.util.Base64;
 
 import testlibuiza.R;
-import vn.uiza.restapi.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.models.drm.LicenseAcquisitionUrl;
 import vn.uiza.utils.EncryptUtil;
 import vn.uiza.utils.StringUtil;
 

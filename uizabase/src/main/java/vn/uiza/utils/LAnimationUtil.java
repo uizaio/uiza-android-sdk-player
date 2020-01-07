@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
+import androidx.annotation.NonNull;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
@@ -34,45 +36,29 @@ public class LAnimationUtil {
         void onStart();
     }
 
-    public static void play(View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final Callback callback) {
-        if (view == null) {
-            return;
-        }
-
+    public static void play(@NonNull View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final Callback callback) {
         view.clearAnimation();
         YoYo.with(techniques)
                 .duration(duration)
                 .repeat(repeatCount)
-                .onCancel(new YoYo.AnimatorCallback() {
-                    @Override
-                    public void call(Animator animator) {
-                        if (callback != null) {
-                            callback.onCancel();
-                        }
+                .onCancel(animator -> {
+                    if (callback != null) {
+                        callback.onCancel();
                     }
                 })
-                .onEnd(new YoYo.AnimatorCallback() {
-                    @Override
-                    public void call(Animator animator) {
-                        if (callback != null) {
-                            callback.onEnd();
-                        }
+                .onEnd(animator -> {
+                    if (callback != null) {
+                        callback.onEnd();
                     }
                 })
-                .onRepeat(new YoYo.AnimatorCallback() {
-                    @Override
-                    public void call(Animator animator) {
-                        if (callback != null) {
-                            callback.onRepeat();
-                        }
+                .onRepeat(animator -> {
+                    if (callback != null) {
+                        callback.onRepeat();
                     }
                 })
-                .onStart(new YoYo.AnimatorCallback() {
-                    @Override
-                    public void call(Animator animator) {
-                        if (callback != null) {
-                            callback.onStart();
-                        }
+                .onStart(animator -> {
+                    if (callback != null) {
+                        callback.onStart();
                     }
                 })
                 .delay(delayInMls)
@@ -124,10 +110,7 @@ public class LAnimationUtil {
     }
 
     //This will make your View pulsate up to 1.2 its size and back, repeatedly.
-    public static void pulse(View view) {
-        if (view == null) {
-            return;
-        }
+    public static void pulse(@NonNull View view) {
         view.clearAnimation();
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 view,
@@ -141,10 +124,7 @@ public class LAnimationUtil {
     }
 
     //https://stackoverflow.com/questions/14156837/animation-fade-in-and-out
-    public static void fade(View v) {
-        if (v == null) {
-            return;
-        }
+    public static void fade(@NonNull View v) {
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(v, View.ALPHA, 1f, .3f);
         fadeOut.setDuration(1000);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(v, View.ALPHA, .3f, 1f);
@@ -161,10 +141,7 @@ public class LAnimationUtil {
         mAnimationSet.start();
     }
 
-    public static void blinking(View view) {
-        if (view == null) {
-            return;
-        }
+    public static void blinking(@NonNull View view) {
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(1000);
         anim.setStartOffset(20);

@@ -42,7 +42,7 @@ public class ImageUtil {
      * @param resPlaceHolder: placeholder
      * @param progressBar     : ProgressBar
      */
-    public static void load(ImageView imageView, String url, int resPlaceHolder, final ProgressBar progressBar) {
+    public static void load(@NonNull ImageView imageView, String url, int resPlaceHolder, final ProgressBar progressBar) {
         Glide.with(imageView.getContext()).load(url)
                 .apply(new RequestOptions().placeholder(resPlaceHolder))
                 .listener(new RequestListener<Drawable>() {
@@ -70,7 +70,7 @@ public class ImageUtil {
      * @param url         : image url
      * @param progressBar : ProgressBar
      */
-    public static void load(ImageView imageView, String url, final ProgressBar progressBar) {
+    public static void load(@NonNull ImageView imageView, String url, final ProgressBar progressBar) {
         load(imageView, url, Color.TRANSPARENT, progressBar);
     }
 

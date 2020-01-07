@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
 
 /**
@@ -21,7 +22,6 @@ import vn.uiza.core.common.Constants;
  * @since 6/4/2015
  */
 public class LDateUtils {
-    private static final String TAG = LDateUtils.class.getSimpleName();
     public final static String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String FORMAT_2 = "dd/MM/yyyy";
     public final static String FORMAT_3 = "dd/MM/yyyy HH:mm:ss";
@@ -52,7 +52,7 @@ public class LDateUtils {
         try {
             return dateFormat.parse(text);
         } catch (ParseException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class LDateUtils {
         try {
             return dateFormat.format(date);
         } catch (Exception e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -133,8 +133,7 @@ public class LDateUtils {
         try {
             value = formatter.parse(dateString);
         } catch (ParseException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         SimpleDateFormat dateFormatter = new SimpleDateFormat(format, Locale.ENGLISH);
         dateFormatter.setTimeZone(TimeZone.getDefault());
@@ -149,7 +148,7 @@ public class LDateUtils {
             date = formatter.parse(d);
             return date.getTime() / 1000;
         } catch (ParseException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return Constants.NOT_FOUND;
         }
     }
@@ -182,7 +181,7 @@ public class LDateUtils {
             return date.getTime() / 1000;
         } catch (ParseException e) {
             e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return 0;
         }
     }
@@ -193,10 +192,9 @@ public class LDateUtils {
         Date date;
         try {
             date = dateFormat.parse(datetime);
-            long time = date.getTime();
-            return time;
+            return date.getTime();
         } catch (ParseException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return Constants.NOT_FOUND;
         }
     }
@@ -214,8 +212,7 @@ public class LDateUtils {
             date = df.parse(yyyymmdd);
             cal.setTime(date);
         } catch (ParseException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         return cal;
     }
@@ -228,8 +225,7 @@ public class LDateUtils {
             date = df.parse(yyyymmdd);
             cal.setTime(date);
         } catch (ParseException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         return cal;
     }
@@ -266,7 +262,7 @@ public class LDateUtils {
             Date date = dateFormat.parse(timeStr);
             return date == null ? -1 : date.getTime();
         } catch (ParseException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return -1;
         }
     }

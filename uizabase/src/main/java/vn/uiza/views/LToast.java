@@ -13,7 +13,6 @@ import java.util.List;
 
 import timber.log.Timber;
 import vn.uiza.R;
-import vn.uiza.utils.SentryUtils;
 
 public class LToast {
     private final static String TAG = LToast.class.getSimpleName();
@@ -49,8 +48,7 @@ public class LToast {
             toast.show();
             toastList.add(toast);
         } catch (Exception e) {
-            Timber.d(e, "LToast");
-            SentryUtils.captureException(e);
+            Timber.e(e, "LToast");
         }
     }
 

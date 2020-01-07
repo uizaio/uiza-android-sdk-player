@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Created by www.muathu@gmail.com on 6/1/2017.
  */
@@ -30,7 +32,7 @@ public class LSoundUtil {
                 mediaPlayer1.release();
             });
         } catch (IOException e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
     }
 }

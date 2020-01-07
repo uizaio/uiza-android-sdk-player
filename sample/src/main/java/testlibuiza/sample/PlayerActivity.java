@@ -21,7 +21,7 @@ import uizacoresdk.view.UizaPlayerView;
 import uizacoresdk.view.UizaVideoView;
 import uizacoresdk.view.VDHView;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.models.PlaybackInfo;
 import vn.uiza.utils.LUIUtil;
 import vn.uiza.utils.ScreenUtil;
 import vn.uiza.views.LToast;

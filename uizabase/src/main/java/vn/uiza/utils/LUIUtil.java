@@ -84,8 +84,7 @@ public class LUIUtil {
         try {
             view.setBackgroundDrawable(createGradientDrawableWithColor(colorMain, colorStroke));
         } catch (Exception e) {
-            Timber.d(e, "setCircleViewWithColor setBkgColor:");
-            SentryUtils.captureException(e);
+            Timber.e(e, "setCircleViewWithColor setBkgColor:");
         }
     }
 
@@ -128,16 +127,14 @@ public class LUIUtil {
                     imageView.setImageDrawable(drawable);
                 }
             } catch (Exception e) {
-                Timber.d(e, "setImageFromAsset:");
-                SentryUtils.captureException(e);
+                Timber.e(e, "setImageFromAsset:");
             } finally {
                 try {
                     if (stream != null) {
                         stream.close();
                     }
                 } catch (Exception e) {
-                    Timber.d(e, "setImageFromAsset:");
-                    SentryUtils.captureException(e);
+                    Timber.e(e, "setImageFromAsset:");
                 }
             }
         }

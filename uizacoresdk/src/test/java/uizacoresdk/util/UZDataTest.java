@@ -14,7 +14,6 @@ import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.restclient.UizaRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.model.tracking.UizaTracking;
-import vn.uiza.utils.Utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

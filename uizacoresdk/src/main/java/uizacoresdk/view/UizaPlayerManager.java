@@ -19,7 +19,7 @@ import timber.log.Timber;
 import uizacoresdk.interfaces.UizaAdPlayerCallback;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.

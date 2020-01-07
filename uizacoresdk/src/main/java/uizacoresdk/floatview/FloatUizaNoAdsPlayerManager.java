@@ -14,12 +14,11 @@ import java.util.List;
 
 import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 
 public final class FloatUizaNoAdsPlayerManager extends FloatUizaPlayerManagerAbs {
 
-    public FloatUizaNoAdsPlayerManager(final FloatUizaVideoView fuzVideo, String linkPlay, String urlIMAAd,
-                                       String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public FloatUizaNoAdsPlayerManager(final FloatUizaVideoView fuzVideo, String linkPlay, List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
         this.context = fuzVideo.getContext();

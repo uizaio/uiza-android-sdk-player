@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import timber.log.Timber;
 import vn.uiza.utils.constant.MemoryConstants;
 import vn.uiza.utils.constant.TimeConstants;
 
@@ -163,11 +164,10 @@ public final class ConvertUtils {
             }
             return os;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         } finally {
-            CloseUtils.closeIO(is);
+            AppUtils.closeIO(is);
         }
     }
 
@@ -199,11 +199,10 @@ public final class ConvertUtils {
             os.write(bytes);
             return os;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         } finally {
-            CloseUtils.closeIO(os);
+            AppUtils.closeIO(os);
         }
     }
 
@@ -212,8 +211,7 @@ public final class ConvertUtils {
         try {
             return new String(inputStream2Bytes(is), charsetName);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -224,7 +222,7 @@ public final class ConvertUtils {
             return new ByteArrayInputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -234,8 +232,7 @@ public final class ConvertUtils {
         try {
             return new String(outputStream2Bytes(out), charsetName);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -245,8 +242,7 @@ public final class ConvertUtils {
         try {
             return bytes2OutputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }

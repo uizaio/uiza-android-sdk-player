@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import testlibuiza.R;
 import testlibuiza.sample.utils.DummyUtil;
-import vn.uiza.restapi.model.v3.drm.LicenseAcquisitionUrl;
+import vn.uiza.models.drm.LicenseAcquisitionUrl;
 
 public class DummyActivity extends AppCompatActivity {
-    private final String TAG = "TAG" + getClass().getSimpleName();
     private TextView tvIn;
     private TextView tvOut;
     private Button bt;

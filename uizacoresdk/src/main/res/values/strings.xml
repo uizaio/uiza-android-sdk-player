@@ -28,7 +28,7 @@
     <string name="format_audio_format">%1$s %2$dHz ch: %3$d</string>
     <string name="format_video_format">%1$s %2$dx%3$d@%4$d %5$s</string>
     <string name="format_volume">%1$d%%</string>
-    <string name="format_version">%1$s / %2$s / %3$d</string>
+    <string name="format_version">%1$s / %2$s</string>
     <string name="format_connection_speed_k">%1$s kbps</string>
     <string name="format_connection_speed_m">%1$s mbps</string>
     <string name="format_device_info">%1$s / Android: %2$s</string>

@@ -27,8 +27,8 @@ import testlibuiza.sample.utils.SampleUtils;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.utils.ListUtil;
 import vn.uiza.utils.StringUtil;
 

@@ -1,5 +1,6 @@
 package uizacoresdk.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -35,11 +36,10 @@ import uizacoresdk.dialog.hq.UZItem;
 import uizacoresdk.floatview.FloatUizaVideoService;
 import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.model.v2.auth.Auth;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
+import vn.uiza.models.auth.Auth;
 import vn.uiza.utils.ConvertUtils;
 import vn.uiza.utils.ScreenUtil;
-import vn.uiza.utils.SentryUtils;
 import vn.uiza.utils.SharedPreferenceUtil;
 import vn.uiza.utils.StringUtil;
 
@@ -52,6 +52,23 @@ import static android.content.Context.ACTIVITY_SERVICE;
  */
 
 public class UZUtil {
+
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    private UZUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    public static void init(Context context) {
+        UZUtil.context = context.getApplicationContext();
+    }
+
+    public static Context getContext() {
+        if (context != null) return context;
+        throw new NullPointerException("u should init first");
+    }
+
 
     public static void setUIFullScreenIcon(ImageButton imageButton, boolean isFullScreen) {
         if (imageButton == null) {
@@ -242,7 +259,7 @@ public class UZUtil {
             window.setLayout(width, height);
         } catch (Exception e) {
             //do nothing
-            SentryUtils.captureException(e);
+            Timber.e(e);
         }
         if (isFullScreen) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -261,7 +278,6 @@ public class UZUtil {
         } catch (Exception e) {
             Timber.e(e, "Error setTextDuration");
             textView.setText(" - ");
-            SentryUtils.captureException(e);
         }
     }
 
@@ -345,7 +361,7 @@ public class UZUtil {
                         w = Integer.parseInt(s0);
                         h = Integer.parseInt(s1);
                     } catch (Exception e) {
-                        SentryUtils.captureException(e);
+                        Timber.e(e);
                         return new UZItem.Format();
                     }
                     if (w < h) {
@@ -468,7 +484,7 @@ public class UZUtil {
         return (String) SharedPreferenceUtil.get(getPrivatePreference(context), API_TRACK_END_POINT, "");
     }
 
-    public static void setApiTrackEndPoint(Context context, String value) {
+    public static void setApiTrackEndPoint(String value) {
         SharedPreferenceUtil.put(getPrivatePreference(context), API_TRACK_END_POINT, value);
     }
 
@@ -476,7 +492,7 @@ public class UZUtil {
         return (String) SharedPreferenceUtil.get(getPrivatePreference(context), TOKEN, "");
     }
 
-    public static void setToken(Context context, String value) {
+    public static void setToken(String value) {
         SharedPreferenceUtil.put(getPrivatePreference(context), TOKEN, value);
     }
 
@@ -760,26 +776,26 @@ public class UZUtil {
             // 4.4.2 platform issues for FLAG_ACTIVITY_REORDER_TO_FRONT,
             // reordered activity back press will go to home unexpectedly,
             // Workaround: move reordered activity current task to front when it's finished.
-            ActivityManager tasksManager = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+            ActivityManager tasksManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
             tasksManager.moveTaskToFront(activity.getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
         }
     }
 
     //===================================================================================
-    public static void saveLastServerTime(Context context, long currentTimeMillis) {
+    public static void saveLastServerTime(long currentTimeMillis) {
         SharedPreferenceUtil.put(getPrivatePreference(context), LAST_SYNCED_SERVER_TIME, currentTimeMillis);
     }
 
-    public static long getLastServerTime(Context context) {
+    public static long getLastServerTime() {
         return (long) SharedPreferenceUtil.get(getPrivatePreference(context), LAST_SYNCED_SERVER_TIME,
                 System.currentTimeMillis());
     }
 
-    public static void saveLastElapsedTime(Context context, long elapsedTime) {
+    public static void saveLastElapsedTime(long elapsedTime) {
         SharedPreferenceUtil.put(getPrivatePreference(context), LAST_ELAPSED_TIME, elapsedTime);
     }
 
-    public static long getLastElapsedTime(Context context) {
+    public static long getLastElapsedTime() {
         return (long) SharedPreferenceUtil.get(getPrivatePreference(context), LAST_ELAPSED_TIME,
                 SystemClock.elapsedRealtime());
     }

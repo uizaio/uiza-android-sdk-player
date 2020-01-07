@@ -33,7 +33,6 @@ import java.io.IOException;
 
 import timber.log.Timber;
 import uizacoresdk.R;
-import vn.uiza.utils.SentryUtils;
 
 /**
  * Core class of Casty. It manages buttons/widgets and gives access to the media player.
@@ -202,12 +201,9 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
 
     @NonNull
     private CastStateListener createCastStateListener() {
-        return new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                if (state != CastState.NO_DEVICES_AVAILABLE && introductionOverlay != null) {
-                    showIntroductionOverlay();
-                }
+        return state -> {
+            if (state != CastState.NO_DEVICES_AVAILABLE && introductionOverlay != null) {
+                showIntroductionOverlay();
             }
         };
     }
@@ -376,7 +372,6 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             Timber.e(e, "IOException setVolume");
-            SentryUtils.captureException(e);
         }
     }
 
@@ -390,7 +385,6 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             Timber.e(e, "IOException turnOnVolume");
-            SentryUtils.captureException(e);
         }
     }
 
@@ -411,7 +405,6 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             Timber.e(e, "IOException setMute");
-            SentryUtils.captureException(e);
             return false;
         }
     }

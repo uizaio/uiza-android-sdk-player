@@ -23,13 +23,13 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.models.PlaybackInfo;
 import vn.uiza.utils.ImageUtil;
 import vn.uiza.utils.LAnimationUtil;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
-    private List<Data> dataList;
+    private List<PlaybackInfo> playList;
     private int currentPositionOfDataList;
     private Context context;
     private CallbackPlaylistFolder callbackPlaylistFolder;
@@ -59,9 +59,9 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         }
     }
 
-    public AdapterPlaylistFolder(Context context, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public AdapterPlaylistFolder(Context context, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         this.context = context;
-        this.dataList = dataList;
+        this.playList = playList;
         this.currentPositionOfDataList = currentPositionOfDataList;
         this.callbackPlaylistFolder = callbackPlaylistFolder;
     }
@@ -75,26 +75,23 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public void onBindViewHolder(@NonNull final PlayListHolder playListHolder, final int position) {
-        final Data data = dataList.get(position);
-        UZUtil.setTextDuration(playListHolder.tvDuration, data.getDuration());
+        final PlaybackInfo data = playList.get(position);
+        UZUtil.setTextDuration(playListHolder.tvDuration, String.valueOf(data.getDuration()));
         playListHolder.tvName.setText(data.getName());
 
         //TODO correct this
         playListHolder.tvYear.setText("2018");
-        UZUtil.setTextDuration(playListHolder.tvDuration2, data.getDuration());
+        UZUtil.setTextDuration(playListHolder.tvDuration2, String.valueOf(data.getDuration()));
 
         //TODO correct this
         playListHolder.tvRate.setText("12+");
-        if (TextUtils.isEmpty(data.getShortDescription())) {
-            if (TextUtils.isEmpty(data.getDescription())) {
-                playListHolder.tvDescription.setVisibility(View.GONE);
-            } else {
-                playListHolder.tvDescription.setText(data.getDescription());
-                playListHolder.tvDescription.setVisibility(View.VISIBLE);
-            }
+        if (TextUtils.isEmpty(data.getDescription())) {
+            playListHolder.tvDescription.setVisibility(View.GONE);
         } else {
-            playListHolder.tvDescription.setText(data.getShortDescription());
+            playListHolder.tvDescription.setText(data.getDescription());
+            playListHolder.tvDescription.setVisibility(View.VISIBLE);
         }
+
         ImageUtil.load(playListHolder.ivCover, data.getThumbnail());
 
         playListHolder.rootView.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
@@ -136,6 +133,6 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public int getItemCount() {
-        return dataList == null ? 0 : dataList.size();
+        return playList == null ? 0 : playList.size();
     }
 }

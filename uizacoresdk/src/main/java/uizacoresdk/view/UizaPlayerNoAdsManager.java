@@ -1,12 +1,15 @@
 package uizacoresdk.view;
 
 import android.os.Handler;
+
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.source.MediaSource;
+
 import java.util.List;
+
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 
 public final class UizaPlayerNoAdsManager extends IUizaPlayerManager {
 

@@ -18,9 +18,9 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.LiveStatus;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.models.live.LiveStatus;
+import vn.uiza.restapi.UizaClientFactory;
 
 public class CheckLiveActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import timber.log.Timber;
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.constant.MemoryConstants;
 
@@ -95,8 +96,7 @@ public final class FileUtils {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return false;
         }
     }
@@ -112,8 +112,7 @@ public final class FileUtils {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return false;
         }
     }
@@ -154,8 +153,7 @@ public final class FileUtils {
             return writeFileFromIS(destFile, new FileInputStream(srcFile), false)
                     && !(isMove && !deleteFile(srcFile));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return false;
         }
     }
@@ -406,11 +404,10 @@ public final class FileUtils {
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return false;
         } finally {
-            CloseUtils.closeIO(is, os);
+            AppUtils.closeIO(is, os);
         }
     }
 
@@ -427,11 +424,10 @@ public final class FileUtils {
             bw.write(content);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return false;
         } finally {
-            CloseUtils.closeIO(bw);
+            AppUtils.closeIO(bw);
         }
     }
 
@@ -470,11 +466,10 @@ public final class FileUtils {
             }
             return list;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         } finally {
-            CloseUtils.closeIO(reader);
+            AppUtils.closeIO(reader);
         }
     }
 
@@ -498,11 +493,10 @@ public final class FileUtils {
             }
             return sb.delete(sb.length() - 2, sb.length()).toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         } finally {
-            CloseUtils.closeIO(reader);
+            AppUtils.closeIO(reader);
         }
     }
 
@@ -515,8 +509,7 @@ public final class FileUtils {
         try {
             return inputStream2Bytes(new FileInputStream(file));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         }
     }
@@ -542,10 +535,9 @@ public final class FileUtils {
             is = new BufferedInputStream(new FileInputStream(file));
             p = (is.read() << 8) + is.read();
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         } finally {
-            CloseUtils.closeIO(is);
+            AppUtils.closeIO(is);
         }
         switch (p) {
             case 0xefbb:
@@ -576,10 +568,9 @@ public final class FileUtils {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         } finally {
-            CloseUtils.closeIO(is);
+            AppUtils.closeIO(is);
         }
         return count;
     }
@@ -658,10 +649,9 @@ public final class FileUtils {
             md = dis.getMessageDigest();
             return md.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
         } finally {
-            CloseUtils.closeIO(dis);
+            AppUtils.closeIO(dis);
         }
         return null;
     }
@@ -739,11 +729,10 @@ public final class FileUtils {
             }
             return os;
         } catch (IOException e) {
-            e.printStackTrace();
-            SentryUtils.captureException(e);
+            Timber.e(e);
             return null;
         } finally {
-            CloseUtils.closeIO(is);
+            AppUtils.closeIO(is);
         }
     }
 

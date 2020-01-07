@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.util.Base64;
 
 import java.nio.charset.Charset;
@@ -71,7 +72,13 @@ public final class EncryptUtil {
         PackageInfo info;
         try {
             info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
+            Signature[] signatures;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                signatures = info.signingInfo.getApkContentsSigners();
+            } else {
+                signatures = info.signatures;
+            }
+            for (Signature signature : signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 return base64Encode(md.digest());
@@ -134,8 +141,7 @@ public final class EncryptUtil {
             byte[] encrypted = cipher.doFinal(value.getBytes());
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            SentryUtils.captureException(ex);
+            Timber.e(ex);
         }
         return null;
     }
@@ -149,8 +155,7 @@ public final class EncryptUtil {
             byte[] original = cipher.doFinal(Base64.decode(encrypted, Base64.DEFAULT));
             return new String(original);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            SentryUtils.captureException(ex);
+            Timber.e(ex);
         }
         return null;
     }

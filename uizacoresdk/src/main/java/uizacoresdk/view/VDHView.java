@@ -16,7 +16,6 @@ import androidx.customview.widget.ViewDragHelper;
 import timber.log.Timber;
 import uizacoresdk.R;
 import vn.uiza.utils.ScreenUtil;
-import vn.uiza.utils.SentryUtils;
 
 public class VDHView extends LinearLayout {
     private View headerView;
@@ -630,8 +629,7 @@ public class VDHView extends LinearLayout {
                     }
                 }
             } catch (Exception exception) {
-                exception.printStackTrace();
-                SentryUtils.captureException(exception);
+                Timber.e(exception);
             }
             return true;
         }

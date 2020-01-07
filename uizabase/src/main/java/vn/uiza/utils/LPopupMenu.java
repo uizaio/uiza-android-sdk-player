@@ -17,13 +17,11 @@ public class LPopupMenu {
     public static void show(final Activity activity, View showOnView, int menuRes, final CallBack callBack) {
         PopupMenu popup = new PopupMenu(activity, showOnView);
         popup.getMenuInflater().inflate(menuRes, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if (callBack != null) {
-                    callBack.clickOnItem(menuItem);
-                }
-                return true;
+        popup.setOnMenuItemClickListener(menuItem -> {
+            if (callBack != null) {
+                callBack.clickOnItem(menuItem);
             }
+            return true;
         });
         popup.show();
     }

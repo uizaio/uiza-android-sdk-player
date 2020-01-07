@@ -16,7 +16,6 @@ import vn.uiza.data.ActivityData;
  */
 
 public class LActivityUtil {
-    private final static String TAG = LActivityUtil.class.getSimpleName();
 
     // This snippet hides the system bars.
     public static void hideSystemUI(View mDecorView) {

@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * <pre>
  *     author: Blankj
@@ -73,8 +75,7 @@ public final class ProcessUtils {
                     }
                     return recentStats == null ? null : recentStats.getPackageName();
                 } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                    SentryUtils.captureException(e);
+                    Timber.e(e);
                 }
             } else {
             }

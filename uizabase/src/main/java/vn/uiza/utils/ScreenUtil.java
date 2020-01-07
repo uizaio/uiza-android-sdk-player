@@ -338,7 +338,6 @@ public class ScreenUtil {
             return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
             Timber.e(e, "getCurrentBrightness");
-            SentryUtils.captureException(e);
             return Constants.NOT_FOUND;
         }
     }

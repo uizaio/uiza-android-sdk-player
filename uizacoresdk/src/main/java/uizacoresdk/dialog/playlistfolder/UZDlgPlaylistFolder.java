@@ -18,7 +18,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
-import vn.uiza.restapi.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.models.PlaybackInfo;
 import vn.uiza.utils.LAnimationUtil;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
@@ -28,22 +28,21 @@ import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager
  */
 
 public class UZDlgPlaylistFolder extends Dialog {
-    private final String TAG = getClass().getSimpleName();
     private Context context;
     private AlertDialog dialog;
     private boolean isLandscape;
     private RecyclerView recyclerView;
     private AdapterPlaylistFolder adapterPlaylistFolder;
-    private List<Data> dataList;
+    private List<PlaybackInfo> playList;
     private int currentPositionOfDataList;
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
-    public UZDlgPlaylistFolder(Context context, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public UZDlgPlaylistFolder(Context context, boolean isLandscape, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;
         this.isLandscape = isLandscape;
-        this.dataList = dataList;
+        this.playList = playList;
         this.currentPositionOfDataList = currentPositionOfDataList;
         this.callbackPlaylistFolder = callbackPlaylistFolder;
     }
@@ -73,9 +72,9 @@ public class UZDlgPlaylistFolder extends Dialog {
         layoutManager.setSnapType(SnapType.CENTER);
         layoutManager.setSnapInterpolator(new DecelerateInterpolator());
         recyclerView.setLayoutManager(layoutManager);
-        adapterPlaylistFolder = new AdapterPlaylistFolder(context, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
+        adapterPlaylistFolder = new AdapterPlaylistFolder(context, playList, currentPositionOfDataList, new CallbackPlaylistFolder() {
             @Override
-            public void onClickItem(Data data, int position) {
+            public void onClickItem(PlaybackInfo data, int position) {
                 if (UZData.getInstance().isSettingPlayer()) {
                     return;
                 }
@@ -86,7 +85,7 @@ public class UZDlgPlaylistFolder extends Dialog {
             }
 
             @Override
-            public void onFocusChange(Data data, int position) {
+            public void onFocusChange(PlaybackInfo data, int position) {
                 if (recyclerView != null) {
                     recyclerView.smoothScrollToPosition(position);
                 }

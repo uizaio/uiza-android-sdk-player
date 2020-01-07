@@ -40,8 +40,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -49,11 +47,14 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.core.view.ViewCompat;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import timber.log.Timber;
 import vn.uiza.R;
-import vn.uiza.utils.SentryUtils;
 
 public class UZVerticalSeekBar extends AppCompatSeekBar {
     public static final int ROTATION_ANGLE_CW_90 = 90;
@@ -293,19 +294,19 @@ public class UZVerticalSeekBar extends AppCompatSeekBar {
                 m.setAccessible(true);
                 mMethodSetProgressFromUser = m;
             } catch (NoSuchMethodException e) {
-                SentryUtils.captureException(e);
+                Timber.e(e);
             }
         }
 
         if (mMethodSetProgressFromUser != null) {
             try {
                 mMethodSetProgressFromUser.invoke(this, progress, fromUser);
-            } catch (IllegalArgumentException e) {
-                SentryUtils.captureException(e);
-            } catch (IllegalAccessException e) {
-                SentryUtils.captureException(e);
-            } catch (InvocationTargetException e) {
-                SentryUtils.captureException(e);
+            } catch (IllegalArgumentException e1) {
+                Timber.e(e1);
+            } catch (IllegalAccessException e2) {
+                Timber.e(e2);
+            } catch (InvocationTargetException e3) {
+                Timber.e(e3);
             }
         } else {
             super.setProgress(progress);

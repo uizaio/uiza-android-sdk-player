@@ -22,8 +22,8 @@ import io.uiza.samplelive.CheckLiveActivity;
 import io.uiza.samplelive.R;
 import io.uiza.samplelive.SampleLiveApplication;
 import io.uiza.samplelive.UizaLiveActivity;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.LiveStatus;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.models.live.LiveStatus;
 import vn.uiza.utils.ImageUtil;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ItemViewHolder> {

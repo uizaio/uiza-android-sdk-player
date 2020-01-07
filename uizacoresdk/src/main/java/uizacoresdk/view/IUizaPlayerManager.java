@@ -69,12 +69,11 @@ import uizacoresdk.widget.UizaPreviewTimeBar;
 import uizacoresdk.widget.previewseekbar.PreviewLoader;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaExceptionUtil;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 import vn.uiza.utils.ImageUtil;
 import vn.uiza.utils.LConnectivityUtil;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.utils.LUIUtil;
-import vn.uiza.utils.SentryUtils;
 import vn.uiza.views.autosize.UizaImageButton;
 
 abstract class IUizaPlayerManager implements PreviewLoader {
@@ -464,7 +463,6 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                                     multiSession);
                 } catch (UnsupportedDrmException e) {
                     Timber.e(e, "UnsupportedDrmException");
-                    SentryUtils.captureException(e);
                 }
             }
             if (drmSessionManager == null) {
@@ -674,8 +672,8 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                     return;
                 }
 
-                long elapsedTime = SystemClock.elapsedRealtime() - UZUtil.getLastElapsedTime(context);
-                long currentTime = UZUtil.getLastServerTime(context) + elapsedTime;
+                long elapsedTime = SystemClock.elapsedRealtime() - UZUtil.getLastElapsedTime();
+                long currentTime = UZUtil.getLastServerTime() + elapsedTime;
 
                 long latency = currentTime - extProgramDateTime;
                 uzVideo.updateLiveStreamLatency(latency);

@@ -9,9 +9,9 @@ import java.util.List;
 import timber.log.Timber;
 import uizacoresdk.R;
 import vn.uiza.core.common.Constants;
+import vn.uiza.models.auth.Auth;
+import vn.uiza.models.tracking.UizaTracking;
 import vn.uiza.utils.LDateUtils;
-import vn.uiza.restapi.model.tracking.UizaTracking;
-import vn.uiza.restapi.model.v2.auth.Auth;
 import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.StringUtil;
 
@@ -107,7 +107,7 @@ public class UizaDataV1 {
         //app_id
         Auth auth = UZUtil.getAuth(context);
         if (auth != null) {
-            uizaTracking.setAppId(auth.getData().getAppId());
+            uizaTracking.setAppId(auth.getAppId());
         }
         //page_type
         uizaTracking.setPageType("app");

@@ -31,13 +31,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.uiza.adapters.LiveEntityAdapter;
 import io.uiza.extensions.SampleUtils;
 import timber.log.Timber;
+import vn.uiza.models.ListWrap;
+import vn.uiza.models.live.CreateLiveBody;
+import vn.uiza.models.live.LiveEntity;
+import vn.uiza.models.live.UpdateLiveBody;
+import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.utils.LUIUtil;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.restapi.model.ListWrap;
-import vn.uiza.restapi.model.v5.live.CreateLiveBody;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
-import vn.uiza.restapi.model.v5.live.UpdateLiveBody;
-import vn.uiza.restapi.restclient.UizaClientFactory;
 import vn.uiza.utils.StringUtil;
 
 public class MainActivity extends AppCompatActivity

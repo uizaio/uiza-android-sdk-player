@@ -16,24 +16,9 @@ public class Constants {
     public static final String PLAYER_NAME = "UZSDK";
     public static final String USER_AGENT = "UizaSDK-Android";
     public static final String PLAYER_SDK_VERSION = "5.0.1";
-    @Deprecated
-    public static final int API_VERSION_3 = 3;
-    @Deprecated
-    public static final int API_VERSION_4 = 4;
-    public static final int API_VERSION_5 = 5;
-
-    public static int apiVersion = API_VERSION_5;
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;
-    }
-
-    public static void setApiVersion(int version) {
-        apiVersion = version;
-    }
-
-    public static boolean isV5AndAbove() {
-        return apiVersion >= API_VERSION_5;
     }
 
     public static final int NOT_FOUND = -404;
@@ -86,10 +71,6 @@ public class Constants {
     public final static String PREFIXS = "https://";
     public final static String PREFIXS_SHORT = "https:";
 
-    public final static String URL_GET_LINK_PLAY_DEV = "https://dev-ucc.uizadev.io/";
-    public final static String URL_GET_LINK_PLAY_STAG = "https://stag-ucc.uizadev.io/";
-    public final static String URL_GET_LINK_PLAY_PROD = "https://ucc.uiza.io/";
-
     public final static String URL_TRACKING_DEV = "https://dev-tracking.uizadev.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
@@ -123,15 +104,11 @@ public class Constants {
     public final static String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video
     public final static String MUIZA_EVENT_ERROR = "error";//là thời điểm player phải ngưng play hoàn toàn do lỗi
 
-    public final static String T = "true";
-    public final static String F = "false";
-
     public final static int PLAYTHROUGH_25 = 25;
     public final static int PLAYTHROUGH_50 = 50;
     public final static int PLAYTHROUGH_75 = 75;
     public final static int PLAYTHROUGH_100 = 98;
 
-    //public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_USER_USE_CUSTOM_LINK_PLAY = "FLOAT_USER_USE_CUSTOM_LINK_PLAY";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
     public final static String FLOAT_CONTENT_POSITION = "FLOAT_CONTENT_POSITION";
@@ -139,7 +116,6 @@ public class Constants {
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public final static String FLOAT_UUID = "FLOAT_UUID";
     public final static String FLOAT_CONTROL_SKIN_ID = "FLOAT_CONTROL_SKIN_ID";
-    //public final static String FLOAT_IS_FREE_SIZE = "FLOAT_IS_FREE_SIZE";
 
     public static final String EVENT_TYPE_DISPLAY = "display";
     public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";
@@ -188,12 +164,6 @@ public class Constants {
     public static final int W_180 = 180;
 
     public static final boolean DF_PLAYER_IS_AUTO_START = true;
-
-    // FIXME: SentryDSN, try to save dsn more securely
-    public static final String SENTRY_ENVIRONMENT_STAG = "STAG";
-    public static final String SENTRY_ENVIRONMENT_GA = "GA";
-    public static final String RELEASE = "release";
-    public static final String SENTRY_DSN = "https://dcc976635e4c4732a16d984e7dfade70@sentry.io/1453020?environment=";
 
     public static final String PACKAGE = "package";
     public static final String CPU_INFO_FILENAME = "/proc/cpuinfo";

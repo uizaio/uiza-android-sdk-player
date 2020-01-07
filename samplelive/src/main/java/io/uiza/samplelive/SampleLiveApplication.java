@@ -6,8 +6,7 @@ import androidx.multidex.MultiDexApplication;
 import androidx.preference.PreferenceManager;
 
 import timber.log.Timber;
-import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.restclient.UizaClientFactory;
+import vn.uiza.restapi.UizaClientFactory;
 
 public class SampleLiveApplication extends MultiDexApplication {
 
@@ -20,6 +19,7 @@ public class SampleLiveApplication extends MultiDexApplication {
     public static final String STREAM_KEY = "live_ljNx4GLp3F";
 
     SharedPreferences preferences;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,8 +27,6 @@ public class SampleLiveApplication extends MultiDexApplication {
             Timber.plant(new Timber.DebugTree());
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Constants.setDebugMode(false);
-        Constants.setApiVersion(Constants.API_VERSION_5);
         String host = preferences.getString("api_base_url_key", DEV_HOST);
         String apiToken = preferences.getString("api_token_key", "");
         UizaClientFactory.setup(host, apiToken);

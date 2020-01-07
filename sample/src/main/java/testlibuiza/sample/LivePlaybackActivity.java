@@ -32,8 +32,8 @@ import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.view.UizaVideoView;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
-import vn.uiza.restapi.model.v5.live.LiveEntity;
+import vn.uiza.models.PlaybackInfo;
+import vn.uiza.models.live.LiveEntity;
 import vn.uiza.utils.LActivityUtil;
 import vn.uiza.utils.ScreenUtil;
 

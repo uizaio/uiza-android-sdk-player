@@ -21,7 +21,6 @@ import java.util.Random;
 import timber.log.Timber;
 
 public class LStoreUtil {
-    private static String TAG = LStoreUtil.class.getSimpleName();
     private static final String SLASH = "/";
     private static String folderPath;
 
@@ -46,7 +45,6 @@ public class LStoreUtil {
                 }
             } catch (Exception e) {
                 Timber.e(e, "if getFolderPath:");
-                SentryUtils.captureException(e);
             }
             folderPath = Environment.getExternalStorageDirectory().getPath() + SLASH + folderName + SLASH;
         } else {
@@ -60,7 +58,6 @@ public class LStoreUtil {
                 }
             } catch (Exception e) {
                 Timber.e(e, "else getFolderPath:");
-                SentryUtils.captureException(e);
             }
         }
         return folderPath;
@@ -109,9 +106,8 @@ public class LStoreUtil {
         } catch (IOException e) {
             Timber.e(e);
             isComplete = false;
-            SentryUtils.captureException(e);
         } finally {
-            CloseUtils.closeIO(fos);
+            AppUtils.closeIO(fos);
         }
         return isComplete;
     }
@@ -154,9 +150,8 @@ public class LStoreUtil {
             reader.close();
         } catch (IOException e) {
             Timber.d(e, "readTxtFromFolder===");
-            SentryUtils.captureException(e);
         } finally {
-            CloseUtils.closeIO(reader);
+            AppUtils.closeIO(reader);
         }
         return text.toString();
     }
@@ -216,9 +211,8 @@ public class LStoreUtil {
                 } catch (IOException e) {
                     runTaskSuccess = false;
                     Timber.d(e, "readTxtFromFolder===");
-                    SentryUtils.captureException(e);
                 } finally {
-                    CloseUtils.closeIO(reader);
+                    AppUtils.closeIO(reader);
                 }
                 return null;
             }
@@ -251,9 +245,8 @@ public class LStoreUtil {
             inputStream.close();
         } catch (Exception e) {
             Timber.e(e);
-            SentryUtils.captureException(e);
         } finally {
-            CloseUtils.closeIO(inputStream);
+            AppUtils.closeIO(inputStream);
         }
         return byteArrayOutputStream.toString();
     }
@@ -298,16 +291,11 @@ public class LStoreUtil {
             writeToFile((Activity) context, folderName, fileName, stringBuilder.toString());
             state = true;
         } catch (Exception e) {
-            SentryUtils.captureException(e);
+            Timber.e(e);
         } finally {
-            CloseUtils.closeIO(br, is);
+            AppUtils.closeIO(br, is);
         }
         return state;
-    }
-
-    public static int getRandomNumber(int length) {
-        Random r = new Random();
-        return r.nextInt(length);
     }
 
     public static int getRandomColor() {

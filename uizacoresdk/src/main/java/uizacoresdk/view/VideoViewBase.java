@@ -10,7 +10,8 @@ import androidx.annotation.RequiresApi;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
-import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.models.PlaybackInfo;
+
 
 public abstract class VideoViewBase extends RelativeLayout {
 

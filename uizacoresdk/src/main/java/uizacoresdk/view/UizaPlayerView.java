@@ -11,9 +11,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.List;
 
+import timber.log.Timber;
 import uizacoresdk.util.UZData;
 import vn.uiza.utils.LUIUtil;
-import vn.uiza.utils.SentryUtils;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -23,7 +23,6 @@ import vn.uiza.utils.SentryUtils;
 //I want to to show playback controls only when onTouch event is fired.
 // How to prevent control buttons being showed up when on long pressing, dragging etc.?
 public final class UizaPlayerView extends PlayerView implements PlayerControlView.VisibilityListener {
-    private final String TAG = getClass().getSimpleName();
 
     private boolean controllerVisible;
 
@@ -199,8 +198,7 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                     }
                 }
             } catch (Exception exception) {
-                exception.printStackTrace();
-                SentryUtils.captureException(exception);
+                Timber.e(exception);
             }
             return true;
         }

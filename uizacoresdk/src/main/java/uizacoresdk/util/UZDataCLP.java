@@ -1,6 +1,7 @@
 package uizacoresdk.util;
 
-import vn.uiza.restapi.model.v5.PlaybackInfo;
+
+import vn.uiza.models.PlaybackInfo;
 
 public class UZDataCLP {
     private static final UZDataCLP ourInstance = new UZDataCLP();

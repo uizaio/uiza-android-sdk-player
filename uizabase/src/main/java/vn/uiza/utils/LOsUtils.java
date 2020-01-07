@@ -49,7 +49,7 @@ public class LOsUtils {
      *
      * @param permission A permission from {@link Manifest.permission}
      */
-    @TargetApi(23)
+    @TargetApi(android.os.Build.VERSION_CODES.M)
     public static boolean hasPermission(Context context, final String permission) {
 
         if (isAtLeastM() && context != null) {

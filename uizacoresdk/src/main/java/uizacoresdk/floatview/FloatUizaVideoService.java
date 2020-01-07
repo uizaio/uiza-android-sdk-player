@@ -41,7 +41,7 @@ import vn.uiza.utils.LConnectivityUtil;
 import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.ScreenUtil;
 import vn.uiza.utils.LUIUtil;
-import vn.uiza.restapi.model.v5.PlaybackInfo;
+import vn.uiza.models.PlaybackInfo;
 
 /**
  * Created by loitp on 1/28/2019.

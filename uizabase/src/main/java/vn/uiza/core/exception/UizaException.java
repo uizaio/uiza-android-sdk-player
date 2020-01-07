@@ -1,6 +1,6 @@
 package vn.uiza.core.exception;
 
-public class UizaException {
+public class UizaException extends Exception {
     public final static int ERR_CODE_0 = 0;
     public final static String ERR_0 = "No internet connection.";
 
@@ -112,15 +112,15 @@ public class UizaException {
     public final static int ERR_CODE_506 = 506;
     public final static String ERR_506 = "IMA ads library is missing";
 
-    private Exception exception;
     private int errorCode;
 
-    public Exception getException() {
-        return exception;
+    public UizaException() {
+        super();
     }
 
-    public void setException(Exception exception) {
-        this.exception = exception;
+    public UizaException(int code, String message) {
+        super(message);
+        this.errorCode = code;
     }
 
     public int getErrorCode() {
@@ -129,15 +129,5 @@ public class UizaException {
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public String getMessage() {
-        return "ErrorCode: " + errorCode + " - Message: " + (exception == null ? "null" : exception.getMessage());
-    }
-
-    public void printStackTrace() {
-        if (exception != null) {
-            exception.printStackTrace();
-        }
     }
 }

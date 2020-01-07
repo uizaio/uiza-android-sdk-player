@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
+
+import androidx.annotation.NonNull;
+
 import vn.uiza.core.common.Constants;
 
 /**
@@ -13,10 +16,7 @@ import vn.uiza.core.common.Constants;
 
 public class LSMSUtil {
     //https://gist.github.com/mustafasevgi/8c6b638ffd5fca90d45d
-    public static void sendSMS(Activity activity, String text) {
-        if (activity == null) {
-            return;
-        }
+    public static void sendSMS(@NonNull Activity activity, String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) // At least KitKat
         {
             String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(activity); // Need to change the build to API 19

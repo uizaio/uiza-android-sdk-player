@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 
-import vn.uiza.restapi.model.v5.live.LiveIngest;
+import vn.uiza.models.live.LiveIngest;
 
 public class InputActivity extends AppCompatActivity implements View.OnClickListener {
 

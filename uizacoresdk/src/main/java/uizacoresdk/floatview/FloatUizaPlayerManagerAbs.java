@@ -39,7 +39,7 @@ import uizacoresdk.util.TmpParamData;
 import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaExceptionUtil;
-import vn.uiza.restapi.model.v2.listallentity.Subtitle;
+import vn.uiza.models.Subtitle;
 
 abstract class FloatUizaPlayerManagerAbs {
     protected final String TAG = getClass().getSimpleName();
