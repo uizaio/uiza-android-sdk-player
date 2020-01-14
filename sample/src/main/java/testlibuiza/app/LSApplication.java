@@ -13,6 +13,7 @@ import vn.uiza.core.common.Constants;
 public class LSApplication extends MultiDexApplication {
 
     private static final String DEV_HOST = "development-api.uizadev.io";
+    private static final String APP_ID = "8e5dddcd6abe4904ac2f996a36fda7ee";
     public static final String DEFAULT_REGION = "asia-south1";
 
     SharedPreferences preferences;

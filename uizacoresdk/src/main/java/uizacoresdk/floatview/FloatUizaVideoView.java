@@ -478,7 +478,7 @@ public class FloatUizaVideoView extends VideoViewBase {
                 Timber.e("trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.iuizacoresdk/view/floatview/FUZVideo.java:419sEmpty()");
                 return;
             }
-            UizaTrackingClient.getInstance().init(currentApiTrackingEndPoint, "");
+            UizaTrackingClient.getInstance().init(currentApiTrackingEndPoint);
         }
         UizaTrackingService service = UizaClientFactory.getTrackingService();
         RxBinder.bind(service.track(uizaTracking), tracking -> {

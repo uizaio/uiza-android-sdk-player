@@ -24,22 +24,22 @@ public class UizaTrackingClient extends RestClient {
     private UizaTrackingClient() {
     }
 
+    public void init(String baseApiUrl) {
+        this.init(baseApiUrl, "", "");
+    }
+
     @Override
-    public void init(String baseApiUrl, String token) {
-        Timber.d("init %s - %s", baseApiUrl, token);
+    public void init(String baseApiUrl, String appId, String sigedKey) {
+        Timber.d("init %s - %s", baseApiUrl, appId);
         if (TextUtils.isEmpty(baseApiUrl)) {
             throw new InvalidParameterException("baseApiUrl cannot null or empty");
         }
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseApiUrl)
-                .client(provideHttpClient())
+                .client(provideHttpClient(false))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(provideGson()))
                 .build();
-
-        if (!TextUtils.isEmpty(token)) {
-            addAccessToken(token);
-        }
     }
 
     public Retrofit getRetrofit() {

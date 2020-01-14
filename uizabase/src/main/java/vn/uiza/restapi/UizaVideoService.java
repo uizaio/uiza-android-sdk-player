@@ -29,6 +29,7 @@ public interface UizaVideoService {
     /**
      * Get an vod entity
      */
+
     @GET("/v1/video_entities/{id}")
     Observable<VODEntity> getEntity(@Path("id") String id);
 

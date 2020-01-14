@@ -14,16 +14,19 @@ import vn.uiza.restapi.interceptors.RestRequestInterceptor;
 
 public abstract class RestClient {
 
-    private static final String AUTHORIZATION = "Authorization";
+
     private static final String ACCESSTOKEN = "AccessToken";
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private RestRequestInterceptor restRequestInterceptor;
+    private String appId;
+    private String signedKey;
 
-    OkHttpClient provideHttpClient() {
+
+    OkHttpClient provideHttpClient(boolean forceRecreate) {
         return new OkHttpClient.Builder()
                 .readTimeout(CONNECT_TIMEOUT_TIME, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIMEOUT_TIME, TimeUnit.SECONDS)
-                .addInterceptor(provideInterceptor())
+                .addInterceptor(provideInterceptor(forceRecreate))
                 .retryOnConnectionFailure(true)
                 .addInterceptor(provideLogging())  // <-- this is the important line!
                 .build();
@@ -36,9 +39,9 @@ public abstract class RestClient {
         return logging;
     }
 
-    RestRequestInterceptor provideInterceptor() {
-        if (restRequestInterceptor == null)
-            restRequestInterceptor = new RestRequestInterceptor();
+    RestRequestInterceptor provideInterceptor(boolean forceRecreate) {
+        if (restRequestInterceptor == null || forceRecreate)
+            restRequestInterceptor = new RestRequestInterceptor(this.appId, this.signedKey);
         return restRequestInterceptor;
     }
 
@@ -48,7 +51,19 @@ public abstract class RestClient {
                 .create();
     }
 
-    public abstract void init(String baseApiUrl, String token);
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setSignedKey(String signedKey) {
+        this.signedKey = signedKey;
+    }
+
+    public abstract void init(String baseApiUrl, String appId, String signedKey);
 
     public abstract <T> T createService(Class<T> serviceClass);
 
@@ -62,27 +77,6 @@ public abstract class RestClient {
         if (restRequestInterceptor != null) {
             restRequestInterceptor.removeHeader(name);
         }
-    }
-
-    public void addAuthorization(String token) {
-        addHeader(AUTHORIZATION, token);
-    }
-
-    public void changeAuthorization(String token) {
-        removeAuthorization();
-        addAuthorization(token);
-    }
-
-    public void removeAuthorization() {
-        removeHeader(AUTHORIZATION);
-    }
-
-    public void addAccessToken(String accessToken) {
-        addHeader(ACCESSTOKEN, accessToken);
-    }
-
-    public void removeAccessToken() {
-        removeHeader(ACCESSTOKEN);
     }
 
     public boolean hasHeader(String name) {

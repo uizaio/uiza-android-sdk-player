@@ -450,7 +450,7 @@ public class UZUtil {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String AUTH = "AUTH";
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
-    private final static String TOKEN = "TOKEN";
+    private final static String APP_ID = "APP_ID";
     private final static String CLICKED_PIP = "CLICKED_PIP";
     //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
@@ -488,12 +488,12 @@ public class UZUtil {
         SharedPreferenceUtil.put(getPrivatePreference(context), API_TRACK_END_POINT, value);
     }
 
-    public static String getToken(Context context) {
-        return (String) SharedPreferenceUtil.get(getPrivatePreference(context), TOKEN, "");
+    public static String getAppId() {
+        return (String) SharedPreferenceUtil.get(getPrivatePreference(context), APP_ID, "");
     }
 
-    public static void setToken(String value) {
-        SharedPreferenceUtil.put(getPrivatePreference(context), TOKEN, value);
+    public static void setAppId(String value) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), APP_ID, value);
     }
 
     /////////////////////////////////BOOLEAN

@@ -28,7 +28,7 @@ public class UizaCoreSDK {
      *
      * @param context         see {@link Context}
      * @param domainAPI       Base Url of API
-     * @param token           API Token
+     * @param appId           App Id
      * @param environment     One if {@link Constants.ENVIRONMENT#DEV},
      *                        {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      * @param currentPlayerId Skin of player
@@ -36,7 +36,7 @@ public class UizaCoreSDK {
      */
     public static boolean initWorkspace(@NonNull Context context,
                                         String domainAPI,
-                                        String token,
+                                        String appId,
                                         int environment,
                                         @LayoutRes int currentPlayerId) {
         if (TextUtils.isEmpty(domainAPI)) {
@@ -47,7 +47,7 @@ public class UizaCoreSDK {
         }
         UZUtil.init(context);
         setCurrentPlayerId(currentPlayerId);
-        return UZData.getInstance().initSDK(domainAPI, token, environment);
+        return UZData.getInstance().initSDK(context, domainAPI, appId, environment);
     }
 
     /**
@@ -57,16 +57,16 @@ public class UizaCoreSDK {
      *
      * @param context   see {@link Context}
      * @param domainAPI Base Url of API
-     * @param token     API Token
+     * @param appId     App Id
      * @return true if success init or false
      */
-    public static void initWorkspace(@NonNull Context context, String domainAPI, String token) {
-        initWorkspace(context, domainAPI, token, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
+    public static void initWorkspace(@NonNull Context context, String domainAPI, String appId) {
+        initWorkspace(context, domainAPI, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
     }
 
-    public static void changeAPIToken(String token) {
-        UZUtil.setToken(token);
-        UizaClientFactory.changeAPIToken(token);
+    public static void changeAppId(String appId) {
+        UZUtil.setAppId(appId);
+        UizaClientFactory.changeAppId(appId);
     }
 
     /**

@@ -19,6 +19,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import timber.log.Timber;
+import vn.uiza.BuildConfig;
 import vn.uiza.core.common.Constants;
 
 public final class EncryptUtil {
@@ -48,6 +49,18 @@ public final class EncryptUtil {
         return result.toString();
     }
 
+    public static String hmacSHA256(String key, byte[] data) {
+        try {
+            Mac sha = Mac.getInstance(ALGORITHM);
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), ALGORITHM);
+            sha.init(secretKey);
+            return bytesToHex(sha.doFinal(data));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            Timber.e(e);
+        }
+        return null;
+    }
+
     public static String hmacSHA256(String key, String data) {
         try {
             Mac sha = Mac.getInstance(ALGORITHM);
@@ -62,26 +75,24 @@ public final class EncryptUtil {
 
     /**
      * Use cmd:
-     * keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl base64
+     * keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl md5
      *
      * @param context
      * @return
      */
     @SuppressLint("PackageManagerGetSignatures")
     public static String getAppSigned(Context context) {
+        if(BuildConfig.DEBUG){
+            return "ad7a96899ac";
+        }
         PackageInfo info;
         try {
             info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-            Signature[] signatures;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                signatures = info.signingInfo.getApkContentsSigners();
-            } else {
-                signatures = info.signatures;
-            }
+            Signature[] signatures = info.signatures;
             for (Signature signature : signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                return base64Encode(md.digest());
+                return md5(md.digest());
             }
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             Timber.e(e);

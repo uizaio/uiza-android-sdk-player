@@ -3,8 +3,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.tplloi'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
+    buildToolsVersion = '29.0.2'
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
@@ -63,7 +63,7 @@ dependencies {
     api 'org.greenrobot:eventbus:3.1.1'
     //
     api 'com.daimajia.easing:library:2.1@aar'
-    api 'com.daimajia.androidanimations:library:2.2@aar'
+    api 'com.daimajia.androidanimations:library:2.3@aar'
     api 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
@@ -73,7 +73,7 @@ dependencies {
 
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-core:2.23.0"
     testImplementation "org.mockito:mockito-inline:2.23.0"
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'

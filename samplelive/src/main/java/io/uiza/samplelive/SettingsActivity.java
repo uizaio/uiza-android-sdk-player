@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
                 apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     if (newValue instanceof String) {
                         String value = (String) newValue;
-                        UizaClientFactory.changeAPIToken(value);
+                        UizaClientFactory.changeAppId(value);
                         Timber.e(value);
                     }
                     return true;

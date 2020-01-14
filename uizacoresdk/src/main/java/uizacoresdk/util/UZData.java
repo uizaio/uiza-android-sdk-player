@@ -74,7 +74,7 @@ public class UZData {
 
     private String mDomainAPI = "";
     private String mDomainAPITracking = "";
-    private String mToken = "";
+    private String mAppId = "";
 
     private Casty casty;
 
@@ -98,20 +98,21 @@ public class UZData {
     /**
      * InitSDK
      *
+     * @param context     Context
      * @param domainAPI   Base Url of API
-     * @param token       API Token
+     * @param appId       App Id
      * @param environment One if {@link Constants.ENVIRONMENT#DEV},
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      * @return true if success init or false
      */
-    public boolean initSDK(String domainAPI, String token, int environment) {
+    public boolean initSDK(Context context, String domainAPI, String appId, int environment) {
         if (TextUtils.isEmpty(domainAPI)) {
             return false;
         }
-        mToken = token;
+        mAppId = appId;
         mDomainAPI = domainAPI;
-        UizaClientFactory.setup(mDomainAPI, token, environment);
-        UZUtil.setToken(token);
+        UizaClientFactory.setup(context, mDomainAPI, appId, environment);
+        UZUtil.setAppId(appId);
         syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT.DEV) {
             mDomainAPITracking = Constants.URL_TRACKING_DEV;
@@ -154,8 +155,8 @@ public class UZData {
         return mDomainAPITracking;
     }
 
-    public String getToken() {
-        return mToken;
+    public String getAppId() {
+        return mAppId;
     }
 
     private UZInput uzInput;

@@ -3,8 +3,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.tplloi'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
+    buildToolsVersion = '29.0.2'
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
@@ -51,7 +51,7 @@ dependencies {
 
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-core:2.23.0"
     testImplementation "org.mockito:mockito-inline:2.8.9"
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'
