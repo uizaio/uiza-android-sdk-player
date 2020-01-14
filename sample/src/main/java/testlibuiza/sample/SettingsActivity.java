@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preference, rootKey);
-            EditTextPreference apiTokenPref = findPreference("api_token_key");
+            EditTextPreference apiTokenPref = findPreference("app_id_key");
             if (apiTokenPref != null) {
                 apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     if (newValue instanceof String) {

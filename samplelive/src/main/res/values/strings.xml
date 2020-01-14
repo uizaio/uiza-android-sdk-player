@@ -6,7 +6,7 @@
     <string name="force_new_live">Force new live</string>
 
     <string name="source_title">Source</string>
-    <string name="api_token_title">API Key</string>
+    <string name="api_token_title">AppId</string>
     <string name="region_title">Region</string>
     <string name="api_base_title">API Url</string>
     <!-- Video Preferences -->

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String apiToken = preferences.getString("api_token_key", "");
+        String apiToken = preferences.getString("app_id_key", "");
         if (TextUtils.isEmpty(apiToken)) {
             showSourceSettingDialog();
         }
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private void showSourceSettingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("API Config");
-        builder.setMessage("Firstly, you need to set your API Key.");
+        builder.setMessage("Firstly, you need to set your AppId.");
         builder.setPositiveButton(R.string.ok, (dialog, which) -> launchActivity(SettingsActivity.class));
         builder.setNegativeButton("Cancel", (dialog, which) -> {
             dialog.dismiss();

@@ -31,7 +31,7 @@
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:iconSpaceReserved="false"
-            app:key="api_token_key"
+            app:key="app_id_key"
             app:title="@string/api_token_title"
             app:useSimpleSummaryProvider="true" />
         <ListPreference

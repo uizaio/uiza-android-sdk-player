@@ -28,8 +28,8 @@ public class SampleLiveApplication extends MultiDexApplication {
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String host = preferences.getString("api_base_url_key", DEV_HOST);
-        String apiToken = preferences.getString("api_token_key", "");
-        UizaClientFactory.setup(this,host, apiToken);
+        String appId = preferences.getString("app_id_key", "");
+        UizaClientFactory.setup(this,host, appId);
     }
 
     public static String getLiveEndpoint() {

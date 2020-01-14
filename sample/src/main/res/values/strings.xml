@@ -7,7 +7,7 @@
     <string name="video_info">This is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\nThis is a video`s information\n</string>
     <string name="title_activity_settings">Settings</string>
     <string name="source_title">Source</string>
-    <string name="api_token_title">API Key</string>
+    <string name="api_token_title">AppId</string>
     <string name="region_title">Region</string>
     <string name="general_title">General</string>
     <string name="version_title">Build Number</string>
