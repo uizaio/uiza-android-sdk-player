@@ -126,7 +126,9 @@ keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore |
 > with signed for release
 ```sh
 keytool -exportcert -alias <alias_name> -keystore <release.keyfile> | openssl sha1 -binary | openssl md5
-> ```
+```
+>
+
 
 ### Manifest
 
