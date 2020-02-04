@@ -34,7 +34,6 @@ public class UZUtil {
         //UZUtil.setCurrentPlayerId(currentPlayerId);
         //UZData.getInstance().initSDK(domainApi, token, appId, env);
         String signedKey = EncryptUtils.getAppSigned(context);
-        Log.e("NAMND", "signedKey = "+signedKey);
         UZRestClient.init(Constants.PREFIXS + domainApi, appId, signedKey);
         //UZUtil.setToken(Utils.getContext(), token);
         UZLivestreamData.getInstance().setAppId(appId);
