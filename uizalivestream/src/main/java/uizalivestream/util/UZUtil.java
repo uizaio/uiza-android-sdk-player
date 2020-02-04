@@ -1,10 +1,13 @@
 package uizalivestream.util;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import uizalivestream.data.UZLivestreamData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.utils.util.EncryptUtils;
 import vn.uiza.utils.util.Utils;
 
 /**
@@ -18,20 +21,21 @@ public class UZUtil {
         if (context == null) {
             throw new NullPointerException("Error: Context cannot be null");
         }
-        if (domainApi == null || domainApi.isEmpty()) {
+        if (TextUtils.isEmpty(domainApi)) {
             throw new NullPointerException("Domain api cannot be null or empty");
         }
-        if (token == null || token.isEmpty()) {
+        if (TextUtils.isEmpty(token)) {
             throw new NullPointerException("Token cannot be null or empty");
         }
-        if (appId == null || appId.isEmpty()) {
+        if (TextUtils.isEmpty(appId)) {
             throw new NullPointerException("App id be null or empty");
         }
         Utils.init(context.getApplicationContext());
         //UZUtil.setCurrentPlayerId(currentPlayerId);
-
         //UZData.getInstance().initSDK(domainApi, token, appId, env);
-        UZRestClient.init(Constants.PREFIXS + domainApi, token);
+        String signedKey = EncryptUtils.getAppSigned(context);
+        Log.e("NAMND", "signedKey = "+signedKey);
+        UZRestClient.init(Constants.PREFIXS + domainApi, appId, signedKey);
         //UZUtil.setToken(Utils.getContext(), token);
         UZLivestreamData.getInstance().setAppId(appId);
         UZLivestreamData.getInstance().setAPIVersion(apiVersion);

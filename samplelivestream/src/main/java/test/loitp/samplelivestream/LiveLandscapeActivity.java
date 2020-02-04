@@ -370,7 +370,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
             bStartStopStore.setEnabled(true);
             btSwitchCamera.setEnabled(true);
             btFilter.setEnabled(true);
-            uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+            uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
             //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
         } else {
             LToast.show(activity, "Cannot use this feature because user does not allow our permissions");

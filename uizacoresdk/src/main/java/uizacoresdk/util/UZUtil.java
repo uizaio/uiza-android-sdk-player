@@ -23,10 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.Arrays;
 import java.util.List;
+
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
@@ -45,6 +48,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
+import vn.uiza.utils.util.EncryptUtils;
 import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.utils.util.SharedPreferenceUtil;
 import vn.uiza.utils.util.Utils;
@@ -489,7 +493,8 @@ public class UZUtil {
 
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
-        return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);
+        String signed = EncryptUtils.getAppSigned(context);
+        return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, signed, env);
     }
 
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {

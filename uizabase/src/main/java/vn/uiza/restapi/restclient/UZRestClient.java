@@ -26,7 +26,37 @@ public class UZRestClient {
         init(baseApiUrl, "");
     }
 
-    public static void init(String baseApiUrl, String token) {
+    public static void init(String baseApiUrl, String appId, String signedKey) {
+        if (TextUtils.isEmpty(baseApiUrl)) {
+            throw new InvalidParameterException("baseApiUrl cannot null or empty");
+        }
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        restRequestInterceptor = new RestRequestInterceptor(appId, signedKey);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(CONNECT_TIMEOUT_TIME, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIMEOUT_TIME, TimeUnit.SECONDS)
+                .addInterceptor(restRequestInterceptor)
+                .retryOnConnectionFailure(true)
+                .addInterceptor(logging)  // <-- this is the important line!
+                .build();
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeDeserializer())
+                .create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseApiUrl)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+    }
+
+    @Deprecated
+    private static void init(String baseApiUrl, String token) {
         if (TextUtils.isEmpty(baseApiUrl)) {
             throw new InvalidParameterException("baseApiUrl cannot null or empty");
         }

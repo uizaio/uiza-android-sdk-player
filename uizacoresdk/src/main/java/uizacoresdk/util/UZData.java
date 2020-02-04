@@ -3,6 +3,7 @@ package uizacoresdk.util;
 import android.content.Context;
 import android.os.Build;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import com.google.android.gms.cast.MediaTrack;
 import java.util.ArrayList;
@@ -96,17 +97,18 @@ public class UZData {
         return casty;
     }
 
-    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, int environment) {
-        if (domainAPI == null || domainAPI.isEmpty() || domainAPI.contains(" ")
-                || token == null || token.isEmpty() || token.contains(" ")
-                || appId == null || appId.isEmpty() || appId.contains(" ")) {
+    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, String signedKey, int environment) {
+        if (TextUtils.isEmpty(domainAPI) || domainAPI.contains(" ")
+                || TextUtils.isEmpty(token) || token.contains(" ")
+                || TextUtils.isEmpty(appId) || appId.contains(" ")
+                || TextUtils.isEmpty(signedKey)) {
             return false;
         }
         mAPIVersion = apiVersion;
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
-        UZRestClient.init(Constants.PREFIXS + domainAPI, token);
+        UZRestClient.init(Constants.PREFIXS + domainAPI, appId, signedKey);
         UZUtil.setToken(Utils.getContext(), token);
         syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT_DEV) {

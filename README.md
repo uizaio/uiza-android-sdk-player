@@ -331,18 +331,32 @@ This sample help you know how to use all Uiza SDK for livestream, please refer t
  2. Right on the `Scheme`, select the setting icon > **Import Scheme** > **Intellij IDEA code style XML**
  3. Select the `uiza_style.xml` file path
  4. Click **Apply** > **OK**, then ready to go
- 
- For apply check style, install [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea), then 
- 
+
+ For apply check style, install [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea), then
+
  1. **File** > **Settings** > **Other Settings** > **Checkstyle**
  2. In Configuration file, select the **`+`** icon
  3. Check `Use local checkstyle file` & select path to `uiza_check.xml` file
  4. Select **OK** & you're ready to go
 
  To run checkstyle for project
- 
+
  1. Right click on project
- 2. Select **Analyze** > **Inspect Code**     
+ 2. Select **Analyze** > **Inspect Code**
+
+## How to get signing of apk
+
+ - with signed for debug
+
+```bash
+keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl md5
+```
+- with signed for release
+
+```bash
+keytool -exportcert -alias <alias_name> -keystore <release.keyfile> | openssl sha1 -binary | openssl md5
+```
+
 
 
 ## Docs
@@ -351,7 +365,7 @@ This sample help you know how to use all Uiza SDK for livestream, please refer t
 ## Supported devices
 
 Support all devices which have ***Android 4.4 (API level 19) above.***
-For a given use case, we aim to support UizaSDK on all Android devices that satisfy the minimum version requirement. 
+For a given use case, we aim to support UizaSDK on all Android devices that satisfy the minimum version requirement.
 
 **Note:** Some Android emulators do not properly implement components of Android’s media stack, and as a result do not support UizaSDK. This is an issue with the emulator, not with UizaSDK. Android’s official emulator (“Virtual Devices” in Android Studio) supports UizaSDK provided the system image has an API level of at least 23. System images with earlier API levels do not support UizaSDK. The level of support provided by third party emulators varies. Issues running UizaSDK on third party emulators should be reported to the developer of the emulator rather than to the UizaSDK team. Where possible, we recommend testing media applications on physical devices rather than emulators.
 
