@@ -22,7 +22,8 @@ public class UZRestClient {
     private static Retrofit retrofit;
     private static RestRequestInterceptor restRequestInterceptor;
 
-    public static void init(String baseApiUrl) {
+    @Deprecated
+    private static void init(String baseApiUrl) {
         init(baseApiUrl, "");
     }
 
