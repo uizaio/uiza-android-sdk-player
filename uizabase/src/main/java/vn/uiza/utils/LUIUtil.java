@@ -33,8 +33,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -140,14 +138,14 @@ public class LUIUtil {
         }
     }
 
-    public static void fixSizeTabLayout(TabLayout tabLayout, String[] titleList) {
-        if (titleList.length > 3) {
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        } else {
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-            tabLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        }
-    }
+//    public static void fixSizeTabLayout(TabLayout tabLayout, String[] titleList) {
+//        if (titleList.length > 3) {
+//            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        } else {
+//            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+//            tabLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+//        }
+//    }
 
     public static void setTextAppearance(Context context, TextView textView, int resId) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {

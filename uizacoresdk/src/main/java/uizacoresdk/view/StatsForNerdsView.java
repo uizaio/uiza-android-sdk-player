@@ -22,7 +22,7 @@ import uizacoresdk.BuildConfig;
 import uizacoresdk.R;
 import uizacoresdk.observers.AudioVolumeObserver;
 import uizacoresdk.observers.OnAudioVolumeChangedListener;
-import uizacoresdk.util.UZData;
+import uizacoresdk.util.UizaData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.ConvertUtils;
 import vn.uiza.utils.ViewUtil;
@@ -248,8 +248,8 @@ public class StatsForNerdsView extends RelativeLayout implements AnalyticsListen
     }
 
     private void depictVideoInfo() {
-        setEntityInfo(UZData.getInstance().getEntityId());
-        setTextHost(Constants.PREFIXS + UZData.getInstance().getDomainAPI());
+        setEntityInfo(UizaData.getInstance().getEntityId());
+        setTextHost(Constants.PREFIXS + UizaData.getInstance().getDomainAPI());
     }
 
     /**

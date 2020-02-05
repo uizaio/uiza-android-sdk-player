@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import timber.log.Timber;
 import vn.uiza.core.common.Constants;
-import vn.uiza.views.LToast;
 
 import static android.content.Context.UI_MODE_SERVICE;
 
@@ -33,9 +32,9 @@ import static android.content.Context.UI_MODE_SERVICE;
  * @author loitp
  */
 public class LDeviceUtil {
-    private static final String COPY_LABEL = "Copy";
 
-    public static boolean isTablet(Activity activity) {
+
+    public static boolean isTablet(@NonNull Activity activity) {
         return (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
@@ -45,15 +44,7 @@ public class LDeviceUtil {
         return (!(hasBackKey && hasHomeKey));
     }
 
-
-    public static void setClipboard(Context context, String text) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(COPY_LABEL, text);
-        clipboard.setPrimaryClip(clip);
-        LToast.show(context, "Copied!");
-    }
-
-    public static void vibrate(Context context, int length) {
+    public static void vibrate(@NonNull Context context, int length) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(length);
     }
@@ -62,31 +53,25 @@ public class LDeviceUtil {
         vibrate(context, 300);
     }
 
-    public static boolean isTablet(Context context) {
+    public static boolean isTablet(@NonNull Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static boolean isTV(Context context) {
+    public static boolean isTV(@NonNull Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
         return uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
     //return true if device is set auto switch rotation on
     //return false if device is set auto switch rotation off
-    public static boolean isRotationPossible(Context context) {
-        if (context == null) {
-            return false;
-        }
+    public static boolean isRotationPossible(@NonNull Context context) {
         boolean hasAccelerometer = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER);
         return (hasAccelerometer && android.provider.Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
     }
 
-    public static boolean isCanOverlay(Context context) {
-        if (context == null) {
-            return false;
-        }
+    public static boolean isCanOverlay(@NonNull Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
     }
 

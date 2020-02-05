@@ -54,10 +54,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     // database
-    implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
     // Needed to fix a dependency conflict with FirebaseUI'
 //    implementation 'androidx.arch.core:core-runtime:2.1.0'
-    //invites
+    //invitesgit 
 //    api 'com.google.firebase:firebase-invites:16.0.6'
     /*fcm*/
 //    api 'com.google.firebase:firebase-messaging:17.3.4'

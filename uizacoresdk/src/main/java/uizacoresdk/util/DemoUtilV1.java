@@ -20,12 +20,17 @@ import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
 
+import org.jetbrains.annotations.TestOnly;
+
 import java.util.Locale;
 
 /**
  * Utility methods for demo application.
  */
-/* package */ public final class DemoUtilV1 {
+/* package */
+@TestOnly
+@Deprecated
+public final class DemoUtilV1 {
 
     /**
      * Builds a track name for display.

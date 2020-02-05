@@ -82,9 +82,6 @@ public final class EncryptUtil {
      */
     @SuppressLint("PackageManagerGetSignatures")
     public static String getAppSigned(Context context) {
-        if(BuildConfig.DEBUG){
-            return "ad7a96899ac";
-        }
         PackageInfo info;
         try {
             info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -146,9 +143,9 @@ public final class EncryptUtil {
     public static String encrypt(String key, String initVector, String value) {
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
+            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
             Cipher cipher = Cipher.getInstance(Constants.AES_CTR_NO_PADDING);
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, iv);
             byte[] encrypted = cipher.doFinal(value.getBytes());
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
         } catch (Exception ex) {
@@ -160,9 +157,9 @@ public final class EncryptUtil {
     public static String decrypt(String key, String initVector, String encrypted) {
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
+            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
             Cipher cipher = Cipher.getInstance(Constants.AES_CTR_NO_PADDING);
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+            cipher.init(Cipher.DECRYPT_MODE, sKeySpec, iv);
             byte[] original = cipher.doFinal(Base64.decode(encrypted, Base64.DEFAULT));
             return new String(original);
         } catch (Exception ex) {

@@ -22,10 +22,10 @@ import java.util.List;
 
 import timber.log.Timber;
 import uizacoresdk.R;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaUtil;
+import uizacoresdk.widget.LAnimationUtil;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.utils.ImageUtil;
-import vn.uiza.utils.LAnimationUtil;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -76,12 +76,12 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
     @Override
     public void onBindViewHolder(@NonNull final PlayListHolder playListHolder, final int position) {
         final PlaybackInfo data = playList.get(position);
-        UZUtil.setTextDuration(playListHolder.tvDuration, String.valueOf(data.getDuration()));
+        UizaUtil.setTextDuration(playListHolder.tvDuration, String.valueOf(data.getDuration()));
         playListHolder.tvName.setText(data.getName());
 
         //TODO correct this
         playListHolder.tvYear.setText("2018");
-        UZUtil.setTextDuration(playListHolder.tvDuration2, String.valueOf(data.getDuration()));
+        UizaUtil.setTextDuration(playListHolder.tvDuration2, String.valueOf(data.getDuration()));
 
         //TODO correct this
         playListHolder.tvRate.setText("12+");

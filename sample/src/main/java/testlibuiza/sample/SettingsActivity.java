@@ -15,7 +15,6 @@ import testlibuiza.BuildConfig;
 import testlibuiza.R;
 import timber.log.Timber;
 import uizacoresdk.UizaCoreSDK;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.restapi.restclient.UizaRestClient;
 
 public class SettingsActivity extends AppCompatActivity {

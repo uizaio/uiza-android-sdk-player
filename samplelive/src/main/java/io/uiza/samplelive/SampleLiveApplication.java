@@ -18,6 +18,9 @@ public class SampleLiveApplication extends MultiDexApplication {
     public static final String LIVE_URL = "rtmp://679b139b89-in.streamwiz.dev/transcode";
     public static final String STREAM_KEY = "live_ljNx4GLp3F";
 
+    public static final String PREF_API_KEY = "app_id_key";
+    public static final String PREF_API_URL_KEY = "api_base_url_key";
+
     SharedPreferences preferences;
 
     @Override
@@ -27,8 +30,8 @@ public class SampleLiveApplication extends MultiDexApplication {
             Timber.plant(new Timber.DebugTree());
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String host = preferences.getString("api_base_url_key", DEV_HOST);
-        String appId = preferences.getString("app_id_key", "");
+        String host = preferences.getString(PREF_API_URL_KEY, DEV_HOST);
+        String appId = preferences.getString(PREF_API_KEY, "");
         UizaClientFactory.setup(this,host, appId);
     }
 

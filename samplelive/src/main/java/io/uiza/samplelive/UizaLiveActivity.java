@@ -61,6 +61,22 @@ import timber.log.Timber;
 public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListener,
         View.OnClickListener, RecordListener, CameraChangeListener, CCUListener, OrientationManager.OrientationListener {
 
+    private static final String PREF_CAMERA_PROFILE = "camera_profile_key";
+    private static final String PREF_FPS = "fps_key";
+    private static final String PREF_FRAME_INTERVAL = "frame_interval_key";
+    private static final String PREF_AUDIO_BITRATE = "audio_bitrate_key";
+    private static final String PREF_SAMPLE_RATE = "sample_rate_key";
+    private static final String PREF_AUDIO_STEREO = "audio_stereo_key";
+
+    //
+    private static final String DEFAULT_CAMERA_PROFILE = "360";
+    private static final String DEFAULT_FPS = "24";
+    private static final String DEFAULT_FRAME_INTERVAL = "2";
+    private static final String DEFAULT_AUDIO_BITRATE = "64";
+    private static final String DEFAULT_SAMPLE_RATE = "32000";
+    private static final boolean DEFAULT_AUDIO_STEREO = true;
+
+
     private static final String TAG = "UizaLiveActivity";
     private static final String RECORD_FOLDER = "uiza-live";
     private UizaMediaButton startButton;
@@ -109,15 +125,14 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
         if (TextUtils.isEmpty(liveStreamUrl)) {
             liveStreamUrl = SampleLiveApplication.getLiveEndpoint();
         }
-        Timber.e("liveStreamUrl = %s", liveStreamUrl);
         liveView.setCcuListener(this);
         liveView.setBackgroundAllowedDuration(10000);
-        int profile = Integer.valueOf(preferences.getString("camera_profile_key", "360"));
-        int fps = Integer.valueOf(preferences.getString("fps_key", "24"));
-        int frameInterval = Integer.valueOf(preferences.getString("frame_interval_key", "2"));
-        int audioBitrate = Integer.valueOf(preferences.getString("audio_bitrate_key", "64"));
-        int audioSampleRate = Integer.valueOf(preferences.getString("sample_rate_key", "32000"));
-        boolean stereo = preferences.getBoolean("audio_stereo_key", true);
+        int profile = Integer.valueOf(preferences.getString(PREF_CAMERA_PROFILE, DEFAULT_CAMERA_PROFILE));
+        int fps = Integer.valueOf(preferences.getString(PREF_FPS, DEFAULT_FPS));
+        int frameInterval = Integer.valueOf(preferences.getString(PREF_FRAME_INTERVAL, DEFAULT_FRAME_INTERVAL));
+        int audioBitrate = Integer.valueOf(preferences.getString(PREF_AUDIO_BITRATE, DEFAULT_AUDIO_BITRATE));
+        int audioSampleRate = Integer.valueOf(preferences.getString(PREF_SAMPLE_RATE, DEFAULT_SAMPLE_RATE));
+        boolean stereo = preferences.getBoolean(PREF_AUDIO_STEREO, DEFAULT_AUDIO_STEREO);
         liveView.setProfile(ProfileVideoEncoder.find(profile));
         liveView.setFps(fps);
         liveView.setFrameInterval(frameInterval);
@@ -460,7 +475,6 @@ public class UizaLiveActivity extends AppCompatActivity implements UizaLiveListe
                 liveView.stopRecord();
             }
         } else if (id == R.id.btn_audio) {
-            Timber.e("audioMuted: %b", liveView.isAudioMuted());
             if (liveView.isAudioMuted()) {
                 liveView.enableAudio();
             } else {

@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            EditTextPreference apiTokenPref = findPreference("app_id_key");
+            EditTextPreference apiTokenPref = findPreference(SampleLiveApplication.PREF_API_KEY);
             if (apiTokenPref != null) {
                 apiTokenPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     if (newValue instanceof String) {
@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (frameInterval != null)
                 frameInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
 
-            ListPreference lstPreference = findPreference("api_base_url_key");
+            ListPreference lstPreference = findPreference(SampleLiveApplication.PREF_API_URL_KEY);
             if (lstPreference != null) {
                 lstPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
                     if (newValue instanceof String) {

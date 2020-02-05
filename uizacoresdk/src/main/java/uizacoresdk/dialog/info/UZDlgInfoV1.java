@@ -20,7 +20,6 @@ import vn.uiza.utils.LUIUtil;
 
 public class UZDlgInfoV1 extends Dialog {
     private final String TAG = getClass().getSimpleName();
-    private Context context;
     private ProgressBar progressBar;
     private String title;
     private String msg;
@@ -29,7 +28,6 @@ public class UZDlgInfoV1 extends Dialog {
     public UZDlgInfoV1(Context context, String title, String msg) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.context = context;
         this.title = title;
         this.msg = msg;
     }
@@ -38,9 +36,8 @@ public class UZDlgInfoV1 extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dlg_info);
-
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(context, R.color.colorPrimary));
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
         TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvContent = findViewById(R.id.tv_content);

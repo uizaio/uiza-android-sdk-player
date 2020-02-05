@@ -8,9 +8,9 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 import uizacoresdk.chromecast.Casty;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZDataCLP;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaUtil;
+import uizacoresdk.util.UizaCLPData;
+import uizacoresdk.util.UizaData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
@@ -45,9 +45,9 @@ public class UizaCoreSDK {
         if (!AppUtils.isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
             throw new NoClassDefFoundError(UizaException.ERR_504);
         }
-        UZUtil.init(context);
+        UizaUtil.init(context);
         setCurrentPlayerId(currentPlayerId);
-        return UZData.getInstance().initSDK(context, domainAPI, appId, environment);
+        return UizaData.getInstance().initSDK(context, domainAPI, appId, environment);
     }
 
     /**
@@ -60,12 +60,12 @@ public class UizaCoreSDK {
      * @param appId     App Id
      * @return true if success init or false
      */
-    public static void initWorkspace(@NonNull Context context, String domainAPI, String appId) {
-        initWorkspace(context, domainAPI, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
+    public static boolean initWorkspace(@NonNull Context context, String domainAPI, String appId) {
+        return initWorkspace(context, domainAPI, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
     }
 
     public static void changeAppId(String appId) {
-        UZUtil.setAppId(appId);
+        UizaUtil.setAppId(appId);
         UizaClientFactory.changeAppId(appId);
     }
 
@@ -81,7 +81,7 @@ public class UizaCoreSDK {
         if (!AppUtils.checkChromeCastAvailable()) {
             throw new NoClassDefFoundError(UizaException.ERR_505);
         }
-        UZData.getInstance().setCasty(Casty.create(activity));
+        UizaData.getInstance().setCasty(Casty.create(activity));
     }
 
     /**
@@ -90,7 +90,7 @@ public class UizaCoreSDK {
      * @param resLayoutMain: id of layout xml
      */
     public static void setCurrentPlayerId(@LayoutRes int resLayoutMain) {
-        UZData.getInstance().setCurrentPlayerId(resLayoutMain);
+        UizaData.getInstance().setCurrentPlayerId(resLayoutMain);
     }
 
     /**
@@ -99,24 +99,24 @@ public class UizaCoreSDK {
      * @param isUseWithVDHView: boolean
      */
     public static void setUseWithVDHView(boolean isUseWithVDHView) {
-        UZData.getInstance().setUseWithVDHView(isUseWithVDHView);
+        UizaData.getInstance().setUseWithVDHView(isUseWithVDHView);
     }
 
     /**
-     * Current player inforId
+     * Current player InfoId
      *
-     * @param playerInforId: string
+     * @param playerInfoId: string
      */
-    public static void setCurrentPlayerInforId(String playerInforId) {
-        UZData.getInstance().setPlayerInforId(playerInforId);
+    public static void setCurrentPlayerInfoId(String playerInfoId) {
+        UizaData.getInstance().setPlayerInfoId(playerInfoId);
     }
 
     /**
-     * set current playbackinfo
+     * set current PlayBackInfo for Custom Link Play
      *
      * @param playback: {@link PlaybackInfo}
      */
     public static void setCurrentPlaybackInfo(PlaybackInfo playback) {
-        UZDataCLP.getInstance().setPlaybackInfo(playback);
+        UizaCLPData.getInstance().setPlaybackInfo(playback);
     }
 }

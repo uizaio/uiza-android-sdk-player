@@ -64,7 +64,7 @@ import timber.log.Timber;
 import uizacoresdk.interfaces.DebugCallback;
 import uizacoresdk.listerner.UizaBufferListener;
 import uizacoresdk.util.TmpParamData;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaUtil;
 import uizacoresdk.widget.UizaPreviewTimeBar;
 import uizacoresdk.widget.previewseekbar.PreviewLoader;
 import vn.uiza.core.common.Constants;
@@ -74,7 +74,7 @@ import vn.uiza.utils.ImageUtil;
 import vn.uiza.utils.LConnectivityUtil;
 import vn.uiza.utils.LDateUtils;
 import vn.uiza.utils.LUIUtil;
-import vn.uiza.views.autosize.UizaImageButton;
+import uizacoresdk.widget.autosize.UizaImageButton;
 
 abstract class IUizaPlayerManager implements PreviewLoader {
     protected final String TAG = "TAG" + getClass().getSimpleName();
@@ -672,8 +672,8 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                     return;
                 }
 
-                long elapsedTime = SystemClock.elapsedRealtime() - UZUtil.getLastElapsedTime();
-                long currentTime = UZUtil.getLastServerTime() + elapsedTime;
+                long elapsedTime = SystemClock.elapsedRealtime() - UizaUtil.getLastElapsedTime();
+                long currentTime = UizaUtil.getLastServerTime() + elapsedTime;
 
                 long latency = currentTime - extProgramDateTime;
                 uzVideo.updateLiveStreamLatency(latency);

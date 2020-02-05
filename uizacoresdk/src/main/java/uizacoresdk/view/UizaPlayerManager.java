@@ -17,7 +17,7 @@ import java.util.List;
 
 import timber.log.Timber;
 import uizacoresdk.interfaces.UizaAdPlayerCallback;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.models.Subtitle;
 
@@ -37,7 +37,7 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
         super(uzVideo, linkPlay, thumbnailsUrl, subtitleList);
 
         if (urlIMAAd != null && !urlIMAAd.isEmpty()) {
-            if (UZUtil.getClickedPip(context)) {
+            if (UizaUtil.getClickedPip(context)) {
                 Timber.e( "UizaPlayerManager don't init urlIMAAd because called from PIP again");
             } else {
                 adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));

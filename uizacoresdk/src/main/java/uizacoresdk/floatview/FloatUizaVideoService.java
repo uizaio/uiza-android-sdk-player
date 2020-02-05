@@ -31,12 +31,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.util.TmpParamData;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaData;
+import uizacoresdk.util.UizaUtil;
 import uizacoresdk.view.ComunicateMng;
+import uizacoresdk.widget.LAnimationUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.utils.LAnimationUtil;
 import vn.uiza.utils.LConnectivityUtil;
 import vn.uiza.utils.LDeviceUtil;
 import vn.uiza.utils.ScreenUtil;
@@ -124,7 +124,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
 //        }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (!isInitCustomLinkplay) {
-            if (UZData.getInstance().getPlaybackInfo() == null) {
+            if (UizaData.getInstance().getPlaybackInfo() == null) {
                 return START_NOT_STICKY;
             }
         }
@@ -164,16 +164,16 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         }));
 
         viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
-        int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
+        int colorViewDestroy = UizaUtil.getMiniPlayerColorViewDestroy(getBaseContext());
         viewDestroy.setBackgroundColor(colorViewDestroy);
-        isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
-        isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
-        isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
+        isEZDestroy = UizaUtil.getMiniPlayerEzDestroy(getBaseContext());
+        isEnableVibration = UizaUtil.getMiniPlayerEnableVibration(getBaseContext());
+        isEnableSmoothSwitch = UizaUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
 
-        isAutoSize = UZUtil.getMiniPlayerAutoSize(getBaseContext());
+        isAutoSize = UizaUtil.getMiniPlayerAutoSize(getBaseContext());
         if (!isAutoSize) {
-            videoWidthFromSettingConfig = UZUtil.getMiniPlayerSizeWidth(getBaseContext());
-            videoHeightFromSettingConfig = UZUtil.getMiniPlayerSizeHeight(getBaseContext());
+            videoWidthFromSettingConfig = UizaUtil.getMiniPlayerSizeWidth(getBaseContext());
+            videoHeightFromSettingConfig = UizaUtil.getMiniPlayerSizeHeight(getBaseContext());
         }
         //Drag and move floating view using user's touch action.
         dragAndMove();
@@ -193,19 +193,19 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        mPlaybackInfo = UZData.getInstance().getPlaybackInfo();
+        mPlaybackInfo = UizaData.getInstance().getPlaybackInfo();
         if (mPlaybackInfo == null) {
             stopSelf();
         }
-        videoW = UZUtil.getVideoWidth(getBaseContext());
-        videoH = UZUtil.getVideoHeight(getBaseContext());
+        videoW = UizaUtil.getVideoWidth(getBaseContext());
+        videoH = UizaUtil.getVideoHeight(getBaseContext());
         screenWidth = ScreenUtil.getScreenWidth();
         screenHeight = ScreenUtil.getScreenHeight();
-        pipTopPosition = UZUtil.getStablePipTopPosition(getBaseContext());
-        marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
-        marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
-        marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
-        marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
+        pipTopPosition = UizaUtil.getStablePipTopPosition(getBaseContext());
+        marginL = UizaUtil.getMiniPlayerMarginL(getBaseContext());
+        marginT = UizaUtil.getMiniPlayerMarginT(getBaseContext());
+        marginR = UizaUtil.getMiniPlayerMarginR(getBaseContext());
+        marginB = UizaUtil.getMiniPlayerMarginB(getBaseContext());
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
         findViews();
         //Add the view to the window.
@@ -333,8 +333,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             fuzVideo.getPlayer().setPlayWhenReady(false);
         }
         //moveView.setOnTouchListener(null);//disabled move view
-        UZUtil.setClickedPip(getApplicationContext(), true);
-        if (UZData.getInstance().getPlaybackInfo() == null) {
+        UizaUtil.setClickedPip(getApplicationContext(), true);
+        if (UizaData.getInstance().getPlaybackInfo() == null) {
             Timber.d("getPlaybackInfo == null");
             return;
         }
@@ -418,8 +418,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             vW = videoWidthFromSettingConfig;
             vH = videoHeightFromSettingConfig;
         }
-        int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
-        int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(getBaseContext());
+        int firstPositionX = UizaUtil.getMiniPlayerFirstPositionX(getBaseContext());
+        int firstPositionY = UizaUtil.getMiniPlayerFirstPositionY(getBaseContext());
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
             firstPositionX = screenWidth - vW;
             firstPositionY = screenHeight - vH - pipTopPosition;
@@ -497,7 +497,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
+            boolean isTapToFullPlayer = UizaUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
             if (isTapToFullPlayer) {
                 setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
                 openApp();
@@ -802,7 +802,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        UZUtil.setClickedPip(getApplicationContext(), false);
+        UizaUtil.setClickedPip(getApplicationContext(), false);
         super.onDestroy();
     }
 
@@ -840,7 +840,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     }
 
     private void onStateEnded() {
-        if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+        if (UizaData.getInstance().isPlayWithPlaylistFolder()) {
             if (fuzVideo == null) {
                 return;
             }

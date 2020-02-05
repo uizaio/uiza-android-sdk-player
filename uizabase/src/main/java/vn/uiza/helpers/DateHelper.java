@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 
 public class DateHelper {
     private DateHelper() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     public static String encodeDate(@Nullable DateTime dateTime) throws UnsupportedEncodingException {

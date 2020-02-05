@@ -50,15 +50,11 @@ dependencies {
     // reactivex
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'io.reactivex.rxjava2:rxjava:2.2.15'
-
     // logger
     api 'com.jakewharton.timber:timber:4.7.1'
-
     // android support lib
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'androidx.appcompat:appcompat:1.1.0'
-    api 'com.google.android.material:material:1.0.0'
-
     //
     api 'org.greenrobot:eventbus:3.1.1'
     //
@@ -66,7 +62,6 @@ dependencies {
     api 'com.daimajia.androidanimations:library:2.3@aar'
     api 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-
     // For Sentry https://docs.sentry.io/clients/java/integrations/#android
 //    api 'io.sentry:sentry-android:1.7.27'
 //    api 'org.slf4j:slf4j-nop:1.7.25'

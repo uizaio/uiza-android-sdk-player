@@ -16,15 +16,15 @@ import testlibuiza.R;
 import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UizaVideoViewItemClick;
-import uizacoresdk.util.UZUtil;
+import uizacoresdk.util.UizaUtil;
 import uizacoresdk.view.UizaPlayerView;
 import uizacoresdk.view.UizaVideoView;
 import uizacoresdk.view.VDHView;
+import uizacoresdk.widget.LToast;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.utils.LUIUtil;
 import vn.uiza.utils.ScreenUtil;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -137,7 +137,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
                 LToast.show(this, "Init failed");
             }
         }
-        if (UZUtil.getClickedPip(this)) {
+        if (UizaUtil.getClickedPip(this)) {
             btPlay.performClick();
         }
     }

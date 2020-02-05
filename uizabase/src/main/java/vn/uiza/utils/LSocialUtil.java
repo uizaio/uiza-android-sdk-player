@@ -11,7 +11,6 @@ import timber.log.Timber;
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.views.LToast;
 
 
 /**
@@ -71,7 +70,7 @@ public class LSocialUtil {
             intent.setPackage(application);
             activity.startActivity(intent);
         } else {
-            LToast.show(activity, activity.getString(R.string.can_not_find_share_app));
+            Timber.e(activity.getString(R.string.can_not_find_share_app));
         }
     }
 

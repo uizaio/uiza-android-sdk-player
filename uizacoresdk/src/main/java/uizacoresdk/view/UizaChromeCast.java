@@ -10,7 +10,7 @@ import com.google.android.gms.cast.framework.CastStateListener;
 
 import timber.log.Timber;
 import uizacoresdk.chromecast.Casty;
-import uizacoresdk.util.UZData;
+import uizacoresdk.util.UizaData;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.utils.AppUtils;
 import vn.uiza.utils.ViewUtil;
@@ -48,8 +48,8 @@ public class UizaChromeCast {
         if (isTV) {
             return;
         }
-        UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
-        UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
+        UizaData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
+        UizaData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
                 if (listener != null) listener.onConnected();

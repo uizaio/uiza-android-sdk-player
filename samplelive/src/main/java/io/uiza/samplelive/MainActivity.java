@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        String apiToken = preferences.getString("app_id_key", "");
+        String apiToken = preferences.getString(SampleLiveApplication.PREF_API_KEY, "");
         if(TextUtils.isEmpty(apiToken)){
             showSourceSettingDialog();
         }

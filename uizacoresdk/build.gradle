@@ -10,7 +10,6 @@ android {
         targetSdkVersion 28
         versionCode 200107
         versionName "5.0.1"
-
         def EXO_VERSION = "2.10.8"
         buildConfigField "String", "EXO_VERSION", "\"${EXO_VERSION}\""
     }
@@ -45,15 +44,15 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-ima:2.10.8'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
-
     // android support lib
+    implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.mediarouter:mediarouter:1.1.0'
-
+    api 'com.google.android.material:material:1.1.0'
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
     testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-core:2.23.0"
-    testImplementation "org.mockito:mockito-inline:2.8.9"
+    testImplementation "org.mockito:mockito-inline:2.23.0"
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'
     testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.7.4'
     testImplementation 'org.powermock:powermock-module-junit4-rule:1.7.4'

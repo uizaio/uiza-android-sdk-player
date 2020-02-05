@@ -12,7 +12,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.util.List;
 
 import timber.log.Timber;
-import uizacoresdk.util.UZData;
+import uizacoresdk.util.UizaData;
 import vn.uiza.utils.LUIUtil;
 
 /**
@@ -77,14 +77,14 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
 
     @Override
     public void showController() {
-        if (!UZData.getInstance().isSettingPlayer()) {
+        if (!UizaData.getInstance().isSettingPlayer()) {
             super.showController();
         }
     }
 
     @Override
     public void hideController() {
-        if (!UZData.getInstance().isSettingPlayer()) {
+        if (!UizaData.getInstance().isSettingPlayer()) {
             super.hideController();
         }
     }
@@ -95,7 +95,7 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (UZData.getInstance().isUseWithVDHView()) {
+        if (UizaData.getInstance().isUseWithVDHView()) {
             return false;
         } else {
             mDetector.onTouchEvent(ev);

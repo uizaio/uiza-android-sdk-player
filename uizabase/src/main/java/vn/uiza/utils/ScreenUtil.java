@@ -224,63 +224,7 @@ public class ScreenUtil {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-    //rotate screen
-    public static void setFullScreen(Context context, boolean isFullScreen) {
-        if (isFullScreen) {
-            ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        } else {
-            ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-    }
-
-    public static void replaceFragment(Fragment baseFragment,
-                                       int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
-        FragmentTransaction transaction = baseFragment.getChildFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
-        transaction.replace(containerFrameLayoutIdRes, fragment);
-        if (isAddToBackStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
-    }
-
-    public static void replaceFragment(AppCompatActivity activity,
-                                       int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(containerFrameLayoutIdRes, fragment);
-        if (isAddToBackStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
-    }
-
-    public void loadFragment(AppCompatActivity activity, int containerFrameLayoutIdRes,
-                             final Fragment fragment) {
-        final FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(containerFrameLayoutIdRes, fragment);
-        transaction.addToBackStack(fragment.getClass().getName());
-        transaction.commit();
-    }
-
-    public void backToFragment(AppCompatActivity activity, final Fragment fragment) {
-        activity.getSupportFragmentManager().popBackStackImmediate(fragment.getClass().getName(), 0);
-        // use 0 or the below constant as flag parameter
-        // FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-    }
-
-    public static void addFragment(AppCompatActivity activity,
-                                   int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.add(containerFrameLayoutIdRes, fragment);
-        if (isAddToBackStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
-    }
-
-    public static boolean isFullScreen(Context context) {
+    public static boolean isFullScreen(@NonNull Context context) {
         final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch (rotation) {
             case Surface.ROTATION_0:
@@ -294,10 +238,7 @@ public class ScreenUtil {
     }
 
     //0<=value<=255
-    public static void setBrightness(final Context context, int value) {
-        if (context == null) {
-            return;
-        }
+    public static void setBrightness(@NonNull final Context context, int value) {
         boolean isCanWriteSystem = checkSystemWritePermission(context);
         //LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
         if (!isCanWriteSystem) {
@@ -330,10 +271,7 @@ public class ScreenUtil {
     }
 
     //1<=getCurrentBrightness<=255
-    public static int getCurrentBrightness(Context context) {
-        if (context == null) {
-            return Constants.NOT_FOUND;
-        }
+    public static int getCurrentBrightness(@NonNull Context context) {
         try {
             return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
