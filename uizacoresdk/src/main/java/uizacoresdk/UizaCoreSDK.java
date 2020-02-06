@@ -12,6 +12,7 @@ import uizacoresdk.util.UizaUtil;
 import uizacoresdk.util.UizaCLPData;
 import uizacoresdk.util.UizaData;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.common.EnvironmentValues;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.restapi.UizaClientFactory;
@@ -37,7 +38,7 @@ public class UizaCoreSDK {
     public static boolean initWorkspace(@NonNull Context context,
                                         String domainAPI,
                                         String appId,
-                                        int environment,
+                                        @EnvironmentValues int environment,
                                         @LayoutRes int currentPlayerId) {
         if (TextUtils.isEmpty(domainAPI)) {
             throw new NullPointerException(UizaException.ERR_16);

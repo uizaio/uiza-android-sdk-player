@@ -2,6 +2,8 @@ package vn.uiza.restapi;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.common.EnvironmentValues;
 import vn.uiza.restapi.restclient.UizaHeartBeatClient;
@@ -35,7 +37,7 @@ public class UizaClientFactory {
      * @param environment One if {@link Constants.ENVIRONMENT#DEV},
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      */
-    public static void setup(Context context, String baseApiUrl, String appId, @EnvironmentValues int environment) {
+    public static void setup(@NonNull Context context, String baseApiUrl, String appId, @EnvironmentValues int environment) {
         String signed = EncryptUtils.getAppSigned(context);
         UizaRestClient.getInstance().init(baseApiUrl, appId, signed);
         if (environment == Constants.ENVIRONMENT.DEV) {

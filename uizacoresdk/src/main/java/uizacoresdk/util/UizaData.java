@@ -19,6 +19,7 @@ import timber.log.Timber;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.common.EnvironmentValues;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.models.tracking.Muiza;
@@ -113,7 +114,7 @@ public class UizaData {
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      * @return true if success init or false
      */
-    public boolean initSDK(@NonNull Context context, String domainAPI, String appId, int environment) {
+    public boolean initSDK(@NonNull Context context, String domainAPI, String appId, @EnvironmentValues int environment) {
         if (TextUtils.isEmpty(domainAPI)) {
             return false;
         }

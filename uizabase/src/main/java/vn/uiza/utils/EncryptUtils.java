@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.os.Build;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.nio.charset.Charset;
@@ -85,7 +86,7 @@ public final class EncryptUtils {
      * @return
      */
     @SuppressLint("PackageManagerGetSignatures")
-    public static String getAppSigned(Context context) {
+    public static String getAppSigned(@NonNull Context context) {
         PackageInfo info;
         try {
             info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
