@@ -9,10 +9,11 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import uizacoresdk.R;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.UIUtils;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -25,7 +26,7 @@ public class UZDlgInfoV1 extends Dialog {
     private String msg;
     private Handler handler = new Handler();
 
-    public UZDlgInfoV1(Context context, String title, String msg) {
+    public UZDlgInfoV1(@NonNull Context context, String title, String msg) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.title = title;
@@ -37,7 +38,7 @@ public class UZDlgInfoV1 extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dlg_info);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        UIUtils.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
         TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvContent = findViewById(R.id.tv_content);

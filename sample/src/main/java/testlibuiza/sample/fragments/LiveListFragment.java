@@ -29,8 +29,8 @@ import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaLiveService;
 import vn.uiza.models.live.LiveEntity;
 import vn.uiza.restapi.UizaClientFactory;
-import vn.uiza.utils.ListUtil;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.ListUtils;
+import vn.uiza.utils.StringUtils;
 
 
 public class LiveListFragment extends Fragment implements OnMoreActionListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -75,9 +75,16 @@ public class LiveListFragment extends Fragment implements OnMoreActionListener, 
         recyclerView.setAdapter(adapter);
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String apiToken = preferences.getString("api_token_key", "");
-        if(!TextUtils.isEmpty(apiToken))
+        if (!TextUtils.isEmpty(apiToken))
             mSwipeRefreshLayout.post(this::loadLiveEntities);
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null && adapter.getItemCount() == 0)
+            mSwipeRefreshLayout.post(this::loadLiveEntities);
     }
 
     @Override
@@ -100,9 +107,9 @@ public class LiveListFragment extends Fragment implements OnMoreActionListener, 
         isLoading = true;
         UizaLiveService service = UizaClientFactory.getLiveService();
         compositeDisposable.add(RxBinder.bind(service.getEntities()
-                        .map(o -> ListUtil.filter(o.getData(), e -> !e.isInit())),
+                        .map(o -> ListUtils.filter(o.getData(), e -> !e.isInit())),
                 entities -> {
-                    if (!ListUtil.isEmpty(entities)) {
+                    if (!ListUtils.isEmpty(entities)) {
                         adapter.setEntities(entities);
                         textView.setVisibility(View.GONE);
                     } else {
@@ -126,7 +133,7 @@ public class LiveListFragment extends Fragment implements OnMoreActionListener, 
         if (getContext() != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(entity.getName());
-            builder.setMessage(StringUtil.toBeautyJson(entity));
+            builder.setMessage(StringUtils.toBeautyJson(entity));
             builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
             builder.show();
         }

@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +23,9 @@ import java.util.Locale;
 
 import timber.log.Timber;
 import vn.uiza.utils.constant.MemoryConstants;
+import vn.uiza.utils.constant.MemoryUnit;
 import vn.uiza.utils.constant.TimeConstants;
+import vn.uiza.utils.constant.TimeUnit;
 
 
 public final class ConvertUtils {
@@ -90,12 +94,12 @@ public final class ConvertUtils {
         return chars;
     }
 
-    public static long memorySize2Byte(long memorySize, @MemoryConstants.Unit int unit) {
+    public static long memorySize2Byte(long memorySize, @MemoryUnit int unit) {
         if (memorySize < 0) return -1;
         return memorySize * unit;
     }
 
-    public static double byte2MemorySize(long byteNum, @MemoryConstants.Unit int unit) {
+    public static double byte2MemorySize(long byteNum, @MemoryUnit int unit) {
         if (byteNum < 0) return -1;
         return (double) byteNum / unit;
     }
@@ -114,11 +118,11 @@ public final class ConvertUtils {
         }
     }
 
-    public static long timeSpan2Millis(long timeSpan, @TimeConstants.Unit int unit) {
+    public static long timeSpan2Millis(long timeSpan, @TimeUnit int unit) {
         return timeSpan * unit;
     }
 
-    public static long millis2TimeSpan(long millis, @TimeConstants.Unit int unit) {
+    public static long millis2TimeSpan(long millis, @TimeUnit int unit) {
         return millis / unit;
     }
 
@@ -275,8 +279,7 @@ public final class ConvertUtils {
         return res == null ? null : bitmap2Drawable(res, bytes2Bitmap(bytes));
     }
 
-    public static Bitmap view2Bitmap(View view) {
-        if (view == null) return null;
+    public static Bitmap view2Bitmap(@NonNull View view) {
         Bitmap ret = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(ret);
         Drawable bgDrawable = view.getBackground();

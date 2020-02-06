@@ -15,7 +15,7 @@ import androidx.customview.widget.ViewDragHelper;
 
 import timber.log.Timber;
 import uizacoresdk.R;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 
 public class VDHView extends LinearLayout {
     private View headerView;
@@ -97,8 +97,8 @@ public class VDHView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        screenW = ScreenUtil.getScreenWidth();
-        screenH = ScreenUtil.getScreenHeight();
+        screenW = ScreenUtils.getScreenWidth();
+        screenH = ScreenUtils.getScreenHeight();
         headerView = findViewById(R.id.header_view);
         bodyView = findViewById(R.id.body_view);
         headerView.post(() -> {

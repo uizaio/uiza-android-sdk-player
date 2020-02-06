@@ -21,8 +21,8 @@ import vn.uiza.models.vod.CreateVODBody;
 import vn.uiza.models.vod.UpdateVODBody;
 import vn.uiza.models.vod.VODInputType;
 import vn.uiza.restapi.UizaClientFactory;
-import vn.uiza.utils.ListUtil;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.ListUtils;
+import vn.uiza.utils.StringUtils;
 
 public class UizaTestAPIActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -114,7 +114,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaLiveService service = UizaClientFactory.getLiveService();
         compositeDisposable.add(RxBinder.bind(service.getEntities().map(ListWrap::getData),
                 liveEntities ->
-                        showMessage(ListUtil.toBeautyJson(liveEntities))
+                        showMessage(ListUtils.toBeautyJson(liveEntities))
                 , throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -124,7 +124,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
     private void getLiveEntity() {
         UizaLiveService service = UizaClientFactory.getLiveService();
         compositeDisposable.add(RxBinder.bind(service.getEntity("045fbb86-be25-4f72-8351-dc7a72cae1d9"),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -135,7 +135,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaLiveService service = UizaClientFactory.getLiveService();
         CreateLiveBody liveBody = new CreateLiveBody("test_live", "Description of live", LSApplication.DEFAULT_REGION);
         compositeDisposable.add(RxBinder.bind(service.createEntity(liveBody),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -147,7 +147,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         String entityId = "045fbb86-be25-4f72-8351-dc7a72cae1d9";
         UpdateLiveBody liveBody = new UpdateLiveBody("test live again", "Description of live again");
         compositeDisposable.add(RxBinder.bind(service.updateEntity(entityId, liveBody),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -158,7 +158,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaLiveService service = UizaClientFactory.getLiveService();
         String entityId = "";
         compositeDisposable.add(RxBinder.bind(service.deleteEntity(entityId),
-                response -> showMessage(StringUtil.toBeautyJson(response)),
+                response -> showMessage(StringUtils.toBeautyJson(response)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -170,7 +170,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaLiveService service = UizaClientFactory.getLiveService();
         String entityId = "045fbb86-be25-4f72-8351-dc7a72cae1d9";
         compositeDisposable.add(RxBinder.bind(service.getSessions(entityId).map(ListWrap::getData),
-                sessions -> showMessage(StringUtil.toBeautyJson(sessions)),
+                sessions -> showMessage(StringUtils.toBeautyJson(sessions)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -182,7 +182,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaVideoService service = UizaClientFactory.getVideoService();
         compositeDisposable.add(RxBinder.bind(service.getEntities().map(ListWrap::getData),
                 liveEntities ->
-                        showMessage(ListUtil.toBeautyJson(liveEntities))
+                        showMessage(ListUtils.toBeautyJson(liveEntities))
                 , throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -193,7 +193,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         UizaVideoService service = UizaClientFactory.getVideoService();
         CreateVODBody vodBody = new CreateVODBody("test_live", "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd", VODInputType.S3);
         compositeDisposable.add(RxBinder.bind(service.createEntity(vodBody),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -203,7 +203,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
     private void getVODEntity() {
         UizaVideoService service = UizaClientFactory.getVideoService();
         compositeDisposable.add(RxBinder.bind(service.getEntity("4255b949-f967-4d4a-abb5-ebdd8ecb2f69"),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);
@@ -215,7 +215,7 @@ public class UizaTestAPIActivity extends AppCompatActivity implements View.OnCli
         String entityId = "4255b949-f967-4d4a-abb5-ebdd8ecb2f69";
         UpdateVODBody vodBody = new UpdateVODBody("Test vod from NamNd", "Test update VOD");
         compositeDisposable.add(RxBinder.bind(service.updateEntity(entityId, vodBody),
-                entity -> showMessage(StringUtil.toBeautyJson(entity)),
+                entity -> showMessage(StringUtils.toBeautyJson(entity)),
                 throwable -> {
                     showMessage(throwable.getLocalizedMessage());
                     Timber.e(throwable);

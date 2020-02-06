@@ -3,15 +3,11 @@ package vn.uiza.restapi;
 import android.content.Context;
 
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.UizaEventService;
-import vn.uiza.restapi.UizaHeartBeatService;
-import vn.uiza.restapi.UizaLiveService;
-import vn.uiza.restapi.UizaTrackingService;
-import vn.uiza.restapi.UizaVideoService;
+import vn.uiza.core.common.EnvironmentValues;
 import vn.uiza.restapi.restclient.UizaHeartBeatClient;
 import vn.uiza.restapi.restclient.UizaRestClient;
 import vn.uiza.restapi.restclient.UizaTrackingClient;
-import vn.uiza.utils.EncryptUtil;
+import vn.uiza.utils.EncryptUtils;
 
 public class UizaClientFactory {
 
@@ -33,24 +29,24 @@ public class UizaClientFactory {
     /**
      * setup for API_VERSION_5
      *
-     * @param context    Context
+     * @param context     Context
      * @param baseApiUrl  Base Url of API
      * @param appId       App Id
      * @param environment One if {@link Constants.ENVIRONMENT#DEV},
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      */
-    public static void setup(Context context, String baseApiUrl, String appId, @Constants.ENVIRONMENT int environment) {
-        String signed = EncryptUtil.getAppSigned(context);
+    public static void setup(Context context, String baseApiUrl, String appId, @EnvironmentValues int environment) {
+        String signed = EncryptUtils.getAppSigned(context);
         UizaRestClient.getInstance().init(baseApiUrl, appId, signed);
         if (environment == Constants.ENVIRONMENT.DEV) {
             UizaHeartBeatClient.getInstance().init(Constants.URL_HEART_BEAT_DEV);
-            UizaTrackingClient.getInstance().init(Constants.URL_TRACKING_DEV, Constants.TRACKING_ACCESS_TOKEN_DEV,signed);
+            UizaTrackingClient.getInstance().init(Constants.URL_TRACKING_DEV, Constants.TRACKING_ACCESS_TOKEN_DEV, signed);
         } else if (environment == Constants.ENVIRONMENT.STAG) {
             UizaHeartBeatClient.getInstance().init(Constants.URL_HEART_BEAT_STAG);
             UizaTrackingClient.getInstance().init(Constants.URL_TRACKING_STAG, Constants.TRACKING_ACCESS_TOKEN_STAG, signed);
         } else if (environment == Constants.ENVIRONMENT.PROD) {
             UizaHeartBeatClient.getInstance().init(Constants.URL_HEART_BEAT_PROD);
-            UizaTrackingClient.getInstance().init(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD,"");
+            UizaTrackingClient.getInstance().init(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD, "");
         }
     }
 

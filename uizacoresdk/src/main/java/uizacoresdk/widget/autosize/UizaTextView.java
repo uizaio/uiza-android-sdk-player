@@ -75,11 +75,11 @@ public class UizaTextView extends AppCompatTextView {
         updateSize();
     }
 
-    private int textSizeLand = Constants.NOT_FOUND;
-    private int textSizePortrait = Constants.NOT_FOUND;
+    private int textSizeLand = -1;
+    private int textSizePortrait = -1;
 
     public int getTextSizeLand() {
-        return textSizeLand == Constants.NOT_FOUND ? 15 : textSizeLand;
+        return textSizeLand == -1 ? 15 : textSizeLand;
     }
 
     //sp
@@ -88,7 +88,7 @@ public class UizaTextView extends AppCompatTextView {
     }
 
     public int getTextSizePortrait() {
-        return textSizePortrait == Constants.NOT_FOUND ? 10 : textSizePortrait;
+        return textSizePortrait == -1 ? 10 : textSizePortrait;
     }
 
     //sp

@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -39,9 +40,9 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.models.Subtitle;
 import vn.uiza.models.auth.Auth;
 import vn.uiza.utils.ConvertUtils;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 import vn.uiza.utils.SharedPreferenceUtil;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.StringUtils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -87,12 +88,12 @@ public class UizaUtil {
         }
         int widthSurfaceView = 0;
         int heightSurfaceView = 0;
-        boolean isFullScreen = ScreenUtil.isFullScreen(viewGroup.getContext());
+        boolean isFullScreen = ScreenUtils.isFullScreen(viewGroup.getContext());
         if (isFullScreen) {//landscape
-            widthSurfaceView = ScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
-            heightSurfaceView = ScreenUtil.getScreenHeight();
+            widthSurfaceView = ScreenUtils.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
+            heightSurfaceView = ScreenUtils.getScreenHeight();
         } else {//portrait
-            widthSurfaceView = ScreenUtil.getScreenWidth();
+            widthSurfaceView = ScreenUtils.getScreenWidth();
             if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
@@ -145,7 +146,8 @@ public class UizaUtil {
     }
 
     //return button video in debug layout
-    public static View getBtVideo(LinearLayout debugRootView) {
+    @Nullable
+    public static View getBtVideo(@Nullable LinearLayout debugRootView) {
         if (debugRootView == null) {
             return null;
         }
@@ -213,14 +215,14 @@ public class UizaUtil {
                 "                    \"isDefault\": \"0\"\n" +
                 "                }\n" +
                 "            ]";
-        return StringUtil.toList(json);
+        return StringUtils.toList(json);
     }
 
     public static void showUizaDialog(Context context, Dialog dialog) {
         if (context == null || dialog == null) {
             return;
         }
-        boolean isFullScreen = ScreenUtil.isFullScreen(context);
+        boolean isFullScreen = ScreenUtils.isFullScreen(context);
         Window window = dialog.getWindow();
         if (window == null) return;
         if (isFullScreen) {
@@ -579,7 +581,7 @@ public class UizaUtil {
     }
 
     public static int getMiniPlayerFirstPositionX(Context context) {
-        return (Integer) SharedPreferenceUtil.get(getPrivatePreference(context), MINI_PLAYER_FIRST_POSITION_X, Constants.NOT_FOUND);
+        return (Integer) SharedPreferenceUtil.get(getPrivatePreference(context), MINI_PLAYER_FIRST_POSITION_X, -1);
     }
 
     private static void setMiniPlayerFirstPositionX(Context context, int value) {
@@ -587,7 +589,7 @@ public class UizaUtil {
     }
 
     public static int getMiniPlayerFirstPositionY(Context context) {
-        return (Integer) SharedPreferenceUtil.get(getPrivatePreference(context), MINI_PLAYER_FIRST_POSITION_Y, Constants.NOT_FOUND);
+        return (Integer) SharedPreferenceUtil.get(getPrivatePreference(context), MINI_PLAYER_FIRST_POSITION_Y, -1);
     }
 
     private static void setMiniPlayerFirstPositionY(Context context, int value) {
@@ -656,8 +658,8 @@ public class UizaUtil {
     }
 
     public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
-        int screenW = ScreenUtil.getScreenWidth();
-        int screenH = ScreenUtil.getScreenHeight();
+        int screenW = ScreenUtils.getScreenWidth();
+        int screenH = ScreenUtils.getScreenHeight();
         int rangeMarginW = screenW / 5;
         int rangeMarginH = screenH / 5;
         if (marginL < 0 || marginL > rangeMarginW) {
@@ -692,8 +694,8 @@ public class UizaUtil {
             setMiniPlayerSizeHeight(context, Constants.W_180);
             return true;
         }
-        int screenWPx = ScreenUtil.getScreenWidth();
-        int screenHPx = ScreenUtil.getScreenHeight();
+        int screenWPx = ScreenUtils.getScreenWidth();
+        int screenHPx = ScreenUtils.getScreenHeight();
         if (videoWidthPx < 0 || videoWidthPx > screenWPx) {
             throw new IllegalArgumentException("Error: videoWidthPx is invalid, the right value must from 0px to " + screenWPx + "px or 0dp to " + ConvertUtils.px2dp(screenWPx) + "dp");
         }
@@ -718,12 +720,12 @@ public class UizaUtil {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(AUTH, null);
         if (!TextUtils.isEmpty(json))
-            return StringUtil.toObject(json, Auth.class);
+            return StringUtils.toObject(json, Auth.class);
         return null;
     }
 
     public static void setAuth(Context context, Auth auth) {
-        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, StringUtil.toJson(auth));
+        SharedPreferenceUtil.put(getPrivatePreference(context), AUTH, StringUtils.toJson(auth));
     }
 
     //=============================================================================END PREF

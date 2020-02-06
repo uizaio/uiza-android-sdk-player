@@ -23,7 +23,7 @@ import testlibuiza.sample.PlayerActivity;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.models.UizaPlayback;
 import vn.uiza.models.vod.VODEntity;
-import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.ImageUtils;
 
 public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.ViewHolder> {
 
@@ -115,9 +115,9 @@ public class VODEntityAdapter extends RecyclerView.Adapter<VODEntityAdapter.View
         private void setThumbnail(VODEntity entity, int position) {
             if (TextUtils.isEmpty(entity.getThumbnail())) {
                 String thumbnail = thumbnails[position % thumbnails.length];
-                ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+                ImageUtils.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
             } else {
-                ImageUtil.load(thumbnailView, entity.getThumbnail(), R.drawable.ic_person_white_48);
+                ImageUtils.load(thumbnailView, entity.getThumbnail(), R.drawable.ic_person_white_48);
             }
         }
 

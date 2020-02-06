@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class LDialogUtil {
     }
 
 
-    public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
+    public static void showDialog1(@NonNull Context context, String title, String msg, String button1, final Callback1 callback1) {
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {

@@ -16,9 +16,4 @@ public final class TimeConstants {
     public static final int HOUR = 3600000;
 
     public static final int DAY  = 86400000;
-
-    @IntDef({MSEC, SEC, MIN, HOUR, DAY})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface Unit {
-    }
 }

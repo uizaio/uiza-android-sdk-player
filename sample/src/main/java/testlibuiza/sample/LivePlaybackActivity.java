@@ -34,8 +34,8 @@ import uizacoresdk.view.UizaVideoView;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.models.live.LiveEntity;
-import vn.uiza.utils.LActivityUtil;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ActivityUtils;
+import vn.uiza.utils.ScreenUtils;
 
 public class LivePlaybackActivity extends AppCompatActivity implements UZCallback {
 
@@ -70,7 +70,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
         mAdapter = new ChatAdapter();
         chatRCV.setAdapter(mAdapter);
         uzVideo.addUZCallback(this);
-        LActivityUtil.toggleFullScreen(this);
+        ActivityUtils.toggleFullScreen(this);
         uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT); // optional
         setupContent();
         mUsername = SampleUtils.getLocalUsername(this);
@@ -137,7 +137,7 @@ public class LivePlaybackActivity extends AppCompatActivity implements UZCallbac
     @Override
     public void onScreenRotate(boolean isLandscape) {
         if (!isLandscape) {
-            int w = ScreenUtil.getScreenWidth();
+            int w = ScreenUtils.getScreenWidth();
             int h = w * 9 / 16;
             uzVideo.setFreeSize(false);
             uzVideo.setSize(w, h);

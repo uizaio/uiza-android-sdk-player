@@ -4,23 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import vn.uiza.R;
-import vn.uiza.core.common.Constants;
-import vn.uiza.data.ActivityData;
-
 /**
  * Created by www.muathu@gmail.com on 1/3/2018.
  */
 
-public class LActivityUtil {
+public class ActivityUtils {
 
     // This snippet hides the system bars.
-    public static void hideSystemUI(View mDecorView) {
+    public static void hideSystemUI(@NonNull View mDecorView) {
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
@@ -35,7 +32,7 @@ public class LActivityUtil {
 
     // This snippet shows the system bars. It does this by removing all the flags
     // except for the ones that make the content appear under the system bars.
-    public static void showSystemUI(View mDecorView) {
+    public static void showSystemUI(@NonNull View mDecorView) {
         mDecorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -53,8 +50,8 @@ public class LActivityUtil {
      **return true if ORIENTATION_LANDSCAPE->SCREEN_ORIENTATION_SENSOR_PORTRAIT
      **return false if ORIENTATION_PORTRAIT->SCREEN_ORIENTATION_SENSOR_LANDSCAPE
      */
-    public static boolean toggleScreenOritation(final Activity activity) {
-        int s = getScreenOrientation(activity);
+    public static boolean toggleScreenOritation(@NonNull final Activity activity) {
+        int s = getScreenOrientation();
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             return true;
@@ -79,31 +76,22 @@ public class LActivityUtil {
         return false;
     }
 
-    public static void changeScreenPortrait(Activity activity) {
-        if (activity == null) {
-            return;
-        }
-        int s = getScreenOrientation(activity);
+    public static void changeScreenPortrait(@NonNull Activity activity) {
+        int s = getScreenOrientation();
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
     }
 
-    public static void changeScreenLandscape(Activity activity) {
-        if (activity == null) {
-            return;
-        }
-        int s = getScreenOrientation(activity);
+    public static void changeScreenLandscape(@NonNull Activity activity) {
+        int s = getScreenOrientation();
         if (s == Configuration.ORIENTATION_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
     }
 
-    public static void changeScreenLandscape(Activity activity, int orientation) {
-        if (activity == null) {
-            return;
-        }
-        int s = getScreenOrientation(activity);
+    public static void changeScreenLandscape(@NonNull Activity activity, int orientation) {
+        int s = getScreenOrientation();
         if (s == Configuration.ORIENTATION_PORTRAIT) {
             if (orientation == 90) {
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
@@ -114,7 +102,7 @@ public class LActivityUtil {
         }
     }
 
-    public static int getScreenOrientation(Activity activity) {
-        return activity.getResources().getConfiguration().orientation;
+    public static int getScreenOrientation() {
+        return Resources.getSystem().getConfiguration().orientation;
     }
 }

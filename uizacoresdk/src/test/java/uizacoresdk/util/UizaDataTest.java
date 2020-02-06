@@ -19,8 +19,8 @@ import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.restapi.restclient.UizaHeartBeatClient;
 import vn.uiza.restapi.restclient.UizaRestClient;
 import vn.uiza.restapi.restclient.UizaTrackingClient;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.DateUtils;
+import vn.uiza.utils.DeviceUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,8 +33,8 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
         UizaRestClient.class, UizaHeartBeatClient.class,
-        UizaTrackingClient.class, UizaUtil.class, UizaUtil.class, LDeviceUtil.class, TmpParamData.class,
-        LDateUtils.class, RxBinder.class, UizaVideoService.class
+        UizaTrackingClient.class, UizaUtil.class, UizaUtil.class, DeviceUtils.class, TmpParamData.class,
+        DateUtils.class, RxBinder.class, UizaVideoService.class
 })
 public class UizaDataTest {
     private String domain = "domainAPi";
@@ -44,7 +44,7 @@ public class UizaDataTest {
     public void setup() {
         PowerMockito.mockStatic(UizaRestClient.class,
                 UizaHeartBeatClient.class, UizaTrackingClient.class, UizaUtil.class,
-                LDeviceUtil.class, TmpParamData.class, LDateUtils.class, UizaVideoService.class);
+                DeviceUtils.class, TmpParamData.class, DateUtils.class, UizaVideoService.class);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class UizaDataTest {
         String fakeDeviceId = "";
         Context mockContext = mock(Context.class);
 
-        when(LDeviceUtil.getDeviceId(mockContext)).thenReturn(fakeDeviceId);
+        when(DeviceUtils.getDeviceId(mockContext)).thenReturn(fakeDeviceId);
 
         // For verifying that the TmpParamData is set.
         when(TmpParamData.getInstance()).thenReturn(mock(TmpParamData.class));

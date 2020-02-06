@@ -13,7 +13,7 @@ import java.util.List;
 
 import timber.log.Timber;
 import uizacoresdk.util.UizaData;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.UIUtils;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -218,7 +218,7 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         if (playerControlView == null) {
             return null;
         }
-        List<View> viewList = LUIUtil.getAllChildren(playerControlView);
+        List<View> viewList = UIUtils.getAllChildren(playerControlView);
         return viewList.toArray(new View[viewList.size()]);
     }
 }

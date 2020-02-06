@@ -1,4 +1,4 @@
-package uizacoresdk.widget;
+package uizacoresdk.animations;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -10,7 +10,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
@@ -21,10 +20,9 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import uizacoresdk.R;
 import vn.uiza.core.common.Constants;
-import vn.uiza.data.ActivityData;
 
-public class LAnimationUtil {
-    private LAnimationUtil() {
+public class AnimationUtils {
+    private AnimationUtils() {
 
     }
 
@@ -38,7 +36,7 @@ public class LAnimationUtil {
         void onStart();
     }
 
-    public static void play(@NonNull View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final LAnimationUtil.Callback callback) {
+    public static void play(@NonNull View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final AnimationUtils.Callback callback) {
         view.clearAnimation();
         YoYo.with(techniques)
                 .duration(duration)
@@ -67,31 +65,31 @@ public class LAnimationUtil {
                 .playOn(view);
     }
 
-    public static void play(View view, Techniques techniques) {
+    public static void play(@NonNull View view, Techniques techniques) {
         play(view, 200, 1, techniques, 0, null);
     }
 
-    public static void playRepeatCount(View view, Techniques techniques, int count) {
+    public static void playRepeatCount(@NonNull View view, Techniques techniques, int count) {
         play(view, 200, count, techniques, 0, null);
     }
 
-    public static void play(View view, Techniques techniques, int delayInMls) {
+    public static void play(@NonNull View view, Techniques techniques, int delayInMls) {
         play(view, 200, 1, techniques, delayInMls, null);
     }
 
-    public static void play(View view, Techniques techniques, LAnimationUtil.Callback callback) {
+    public static void play(@NonNull View view, Techniques techniques, AnimationUtils.Callback callback) {
         play(view, 200, 1, techniques, 0, callback);
     }
 
-    public static void playDuration(View view, Techniques techniques, int duration) {
+    public static void playDuration(@NonNull View view, Techniques techniques, int duration) {
         play(view, duration, 1, techniques, 0, null);
     }
 
-    public static void playDuration(View view, Techniques techniques, int duration, LAnimationUtil.Callback callback) {
+    public static void playDuration(@NonNull View view, Techniques techniques, int duration, AnimationUtils.Callback callback) {
         play(view, duration, 1, techniques, 0, callback);
     }
 
-    public static void playRotate(View view, Animation.AnimationListener animationListener) {
+    public static void playRotate(@NonNull View view, Animation.AnimationListener animationListener) {
         RotateAnimation anim = new RotateAnimation(0.0f, 90.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         anim.setInterpolator(new LinearInterpolator());
         anim.setFillAfter(true);
@@ -101,13 +99,13 @@ public class LAnimationUtil {
         view.startAnimation(anim);
     }
 
-    public static void slideInDown(@NonNull Context context,@NonNull View view) {
-        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+    public static void slideInDown(@NonNull Context context, @NonNull View view) {
+        Animation slideDown = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.slide_down);
         view.startAnimation(slideDown);
     }
 
     public static void slideInUp(@NonNull Context context, @NonNull View view) {
-        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+        Animation slideDown = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.slide_up);
         view.startAnimation(slideDown);
     }
 
@@ -153,60 +151,84 @@ public class LAnimationUtil {
     }
 
     public static void tranIn(@NonNull Activity activity) {
-        int typeActivityTransition = ActivityData.getInstance().getType();
-        if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_NO_ANIM) {
-            transActivityNoAniamtion(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT) {
-            //do nothing
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT) {
-            slideLeft(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDERIGHT) {
-            slideRight(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEDOWN) {
-            slideDown(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEUP) {
-            slideUp(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_FADE) {
-            fade(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_ZOOM) {
-            zoom(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_WINDMILL) {
-            windmill(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_DIAGONAL) {
-            diagonal(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SPIN) {
-            spin(activity);
+        ActivityData.TransitionType typeActivityTransition = ActivityData.getInstance().getType();
+        switch (typeActivityTransition) {
+            case TYPE_ACTIVITY_TRANSITION_NO_ANIM:
+                transActivityNoAnimation(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_LEFT:
+                slideLeft(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_RIGHT:
+                slideRight(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_DOWN:
+                slideDown(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_UP:
+                slideUp(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_FADE:
+                fade(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_ZOOM:
+                zoom(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_WINDMILL:
+                windmill(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_DIAGONAL:
+                diagonal(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SPIN:
+                spin(activity);
+                break;
+            default: // TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT
+                // nothing todo
+                break;
         }
     }
 
     public static void tranOut(@NonNull Activity activity) {
-        int typeActivityTransition = ActivityData.getInstance().getType();
-        if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_NO_ANIM) {
-            transActivityNoAniamtion(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT) {
-            //do nothing
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT) {
-            slideRight(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDERIGHT) {
-            slideLeft(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEDOWN) {
-            slideUp(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEUP) {
-            slideDown(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_FADE) {
-            fade(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_ZOOM) {
-            zoom(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_WINDMILL) {
-            windmill(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_DIAGONAL) {
-            diagonal(activity);
-        } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SPIN) {
-            spin(activity);
+        ActivityData.TransitionType typeActivityTransition = ActivityData.getInstance().getType();
+        switch (typeActivityTransition) {
+            case TYPE_ACTIVITY_TRANSITION_NO_ANIM:
+                transActivityNoAnimation(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_LEFT:
+                slideRight(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_RIGHT:
+                slideLeft(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_DOWN:
+                slideUp(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SLIDE_UP:
+                slideDown(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_FADE:
+                fade(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_ZOOM:
+                zoom(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_WINDMILL:
+                windmill(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_DIAGONAL:
+                diagonal(activity);
+                break;
+            case TYPE_ACTIVITY_TRANSITION_SPIN:
+                spin(activity);
+            default: //TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT
+                // nothing todo
+                break;
         }
     }
 
-    public static void transActivityNoAniamtion(@NonNull Activity activity) {
+
+    public static void transActivityNoAnimation(@NonNull Activity activity) {
         activity.overridePendingTransition(0, 0);
     }
 

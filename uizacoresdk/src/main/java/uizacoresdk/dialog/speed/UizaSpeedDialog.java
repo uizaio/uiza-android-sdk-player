@@ -9,13 +9,15 @@ import android.view.Window;
 import android.widget.CheckedTextView;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
+
 import uizacoresdk.R;
 
 /**
  * Created by loitp on 13/11/2018.
  */
 
-public class UZDlgSpeed extends Dialog implements View.OnClickListener {
+public class UizaSpeedDialog extends Dialog implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
 
     private static final String SPEED_025 = "0.25";
@@ -39,7 +41,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
 
     private Handler handler = new Handler();
 
-    public UZDlgSpeed(Context context, float currentSpeed, Callback callback) {
+    public UizaSpeedDialog(@NonNull Context context, float currentSpeed, Callback callback) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.currentSpeed = currentSpeed;
@@ -108,12 +110,12 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
         }
     }
 
-    private void scrollTo(final CheckedTextView checkedTextView) {
+    private void scrollTo(@NonNull CheckedTextView checkedTextView) {
         checkedTextView.setChecked(true);
         handler.postDelayed(() -> sv.scrollTo(0, checkedTextView.getTop()), 100);
     }
 
-    private void setEvent(CheckedTextView checkedTextView) {
+    private void setEvent(@NonNull CheckedTextView checkedTextView) {
         checkedTextView.setFocusable(true);
         checkedTextView.setSoundEffectsEnabled(false);
         checkedTextView.setOnClickListener(this);

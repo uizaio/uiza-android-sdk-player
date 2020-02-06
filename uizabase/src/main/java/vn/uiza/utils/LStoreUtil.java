@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StatFs;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,7 +34,7 @@ public class LStoreUtil {
         void onFinish(boolean isSuccess);
     }
 
-    public static String getFolderPath(Context context) {
+    public static String getFolderPath(@NonNull Context context) {
         String folderName = "UZ_Folder";
         if (isSdPresent()) {
             try {
@@ -78,11 +80,11 @@ public class LStoreUtil {
      * save string json to sdcard
      * ex: writeToFile("module.json", strJson);
      */
-    public static boolean writeToFile(Activity activity, String folder, String fileName, String body) {
+    public static boolean writeToFile(@NonNull Context context, String folder, String fileName, String body) {
         boolean isComplete = true;
         FileOutputStream fos = null;
         try {
-            String path = LStoreUtil.getFolderPath(activity);
+            String path = LStoreUtil.getFolderPath(context);
             if (folder != null) {
                 //path = path + "/" + folder;
                 //path = path + folder;
@@ -112,13 +114,13 @@ public class LStoreUtil {
         return isComplete;
     }
 
-    public static void writeToFile(final Activity activity, final String folder, final String fileName, final String body, final CallbackWriteFile callbackWriteFile) {
+    public static void writeToFile(@NonNull Context context, final String folder, final String fileName, final String body, final CallbackWriteFile callbackWriteFile) {
         new AsyncTask<Void, Void, Void>() {
             boolean isSuccess;
 
             @Override
             protected Void doInBackground(Void... params) {
-                isSuccess = writeToFile(activity, folder, fileName, body);
+                isSuccess = writeToFile(context, folder, fileName, body);
                 return null;
             }
 
@@ -135,8 +137,8 @@ public class LStoreUtil {
     /**
      * read text file from folder
      */
-    public static String readTxtFromFolder(Activity activity, String folderName, String fileName) {
-        String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH : (folderName + SLASH)) + fileName;
+    public static String readTxtFromFolder(@NonNull Context context, String folderName, String fileName) {
+        String path = LStoreUtil.getFolderPath(context) + (folderName == null ? SLASH : (folderName + SLASH)) + fileName;
         Timber.d("path: %s", path);
         File txtFile = new File(path);
         StringBuilder text = new StringBuilder();
@@ -156,13 +158,13 @@ public class LStoreUtil {
         return text.toString();
     }
 
-    public static void readTxtFromFolder(final Activity activity, final String folderName, final String fileName, final CallbackReadFile callbackReadFile) {
+    public static void readTxtFromFolder(@NonNull Context context, final String folderName, final String fileName, final CallbackReadFile callbackReadFile) {
         new AsyncTask<Void, Void, Void>() {
             String result = "";
 
             @Override
             protected Void doInBackground(Void... params) {
-                result = readTxtFromFolder(activity, folderName, fileName);
+                result = readTxtFromFolder(context, folderName, fileName);
                 return null;
             }
 
@@ -183,7 +185,7 @@ public class LStoreUtil {
     /**
      * read text file from folder in background
      */
-    public static void readTxtFromFolder(final Activity activity, final String folderName, final String fileName, final EventReadFromFolder eventReadFromFolder) {
+    public static void readTxtFromFolder(@NonNull Context context, final String folderName, final String fileName, final EventReadFromFolder eventReadFromFolder) {
         new AsyncTask<Void, Void, Void>() {
             private StringBuilder text = null;
             private boolean runTaskSuccess = true;
@@ -195,7 +197,7 @@ public class LStoreUtil {
 
             @Override
             protected Void doInBackground(Void... params) {
-                String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH :
+                String path = LStoreUtil.getFolderPath(context) + (folderName == null ? SLASH :
                         (folderName + SLASH)) + fileName;
                 Timber.d("path: %s", path);
                 File txtFile = new File(path);
@@ -232,7 +234,7 @@ public class LStoreUtil {
     /**
      * read text file in raw folder
      */
-    public static String readTxtFromRawFolder(Context context, int nameOfRawFile) {
+    public static String readTxtFromRawFolder(@NonNull Context context, int nameOfRawFile) {
         InputStream inputStream = context.getResources().openRawResource(nameOfRawFile);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         int i;
@@ -255,7 +257,7 @@ public class LStoreUtil {
         void onFinish(String result);
     }
 
-    public static void readTxtFromRawFolder(final Context context, final int nameOfRawFile, final CallbackReadFromRaw callbackReadFromRaw) {
+    public static void readTxtFromRawFolder(@NonNull Context context, final int nameOfRawFile, final CallbackReadFromRaw callbackReadFromRaw) {
         new AsyncTask<Void, Void, Void>() {
             String result;
 
@@ -273,7 +275,7 @@ public class LStoreUtil {
         }.execute();
     }
 
-    public static boolean saveHTMLCodeFromURLToSDCard(Context context, String link, String folderName, String fileName) {
+    public static boolean saveHTMLCodeFromURLToSDCard(@NonNull Context context, String link, String folderName, String fileName) {
         boolean state = false;
         InputStream is = null;
         BufferedReader br = null;

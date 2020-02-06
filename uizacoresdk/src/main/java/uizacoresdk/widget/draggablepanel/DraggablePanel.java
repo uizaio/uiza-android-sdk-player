@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import uizacoresdk.R;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 
 /**
  * Custom view created to handle DraggableView using fragments. With this custom view the client
@@ -279,7 +279,7 @@ public class DraggablePanel extends FrameLayout {
 
         inflate(getContext(), R.layout.view_draggable_panel, this);
         draggableView = findViewById(R.id.draggable_view);
-        draggableView.setScreenSize(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight());
+        draggableView.setScreenSize(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight());
         draggableView.setTopViewHeight(topFragmentHeight);
         draggableView.setFragmentManager(fragmentManager);
         draggableView.attachTopFragment(topFragment);
@@ -316,7 +316,7 @@ public class DraggablePanel extends FrameLayout {
                         return;
                     }
                     int currentHeight = draggableView.getLayoutParams().height;
-                    int screenH = ScreenUtil.getScreenHeight();
+                    int screenH = ScreenUtils.getScreenHeight();
                     if (isViewInTopPart) {
                         if (currentHeight <= screenH) {
                             //LLog.d(TAG, "onPartOfView top");
@@ -325,14 +325,14 @@ public class DraggablePanel extends FrameLayout {
                     } else {
                         if (currentHeight >= screenH) {
                             //LLog.d(TAG, "onPartOfView bottom");
-                            draggableView.getLayoutParams().height = ScreenUtil.getScreenHeight();
+                            draggableView.getLayoutParams().height = ScreenUtils.getScreenHeight();
                             draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
                         }
                     }
                     draggableView.requestLayout();
                 }
             });
-            draggableView.getLayoutParams().height = ScreenUtil.getScreenHeight() + bottomUZTimebar;
+            draggableView.getLayoutParams().height = ScreenUtils.getScreenHeight() + bottomUZTimebar;
             draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
             draggableView.requestLayout();
         }

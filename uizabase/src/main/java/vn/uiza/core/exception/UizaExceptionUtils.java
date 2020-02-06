@@ -1,6 +1,6 @@
 package vn.uiza.core.exception;
 
-public class UizaExceptionUtil {
+public class UizaExceptionUtils {
 
     public static UizaException getExceptionNoConnection() {
         return new UizaException(UizaException.ERR_CODE_0, UizaException.ERR_0);

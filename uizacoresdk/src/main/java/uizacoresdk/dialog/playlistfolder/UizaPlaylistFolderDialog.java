@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,8 +18,8 @@ import com.daimajia.androidanimations.library.Techniques;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.util.UizaData;
-import uizacoresdk.widget.LAnimationUtil;
 import vn.uiza.models.PlaybackInfo;
 import uizacoresdk.widget.recyclerview.SnapType;
 import uizacoresdk.widget.recyclerview.SnappyLinearLayoutManager;
@@ -37,7 +38,7 @@ public class UizaPlaylistFolderDialog extends Dialog {
     private int currentPositionOfDataList;
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
-    public UizaPlaylistFolderDialog(Context context, boolean isLandscape, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public UizaPlaylistFolderDialog(@NonNull Context context, boolean isLandscape, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;
@@ -56,7 +57,7 @@ public class UizaPlaylistFolderDialog extends Dialog {
         btExit.setOnClickListener(v -> dismiss());
         btExit.setOnFocusChangeListener((view, isFocus) -> {
             if (isFocus) {
-                LAnimationUtil.play(view, Techniques.Pulse);
+                AnimationUtils.play(view, Techniques.Pulse);
                 btExit.setColorFilter(Color.WHITE);
                 btExit.setBackgroundColor(Color.BLACK);
             } else {

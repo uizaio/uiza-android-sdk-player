@@ -21,20 +21,8 @@ public class Constants {
         IS_DEBUG = isDebugEnable;
     }
 
-    public static final int NOT_FOUND = -404;
+    //    public static final int NOT_FOUND = -404;
     public static final int UNKNOW = -400;
-
-    public static int TYPE_ACTIVITY_TRANSITION_NO_ANIM = -1;
-    public static int TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT = 0;
-    public static int TYPE_ACTIVITY_TRANSITION_SLIDELEFT = 1;
-    public static int TYPE_ACTIVITY_TRANSITION_SLIDERIGHT = 2;
-    public static int TYPE_ACTIVITY_TRANSITION_SLIDEDOWN = 3;
-    public static int TYPE_ACTIVITY_TRANSITION_SLIDEUP = 4;
-    public static int TYPE_ACTIVITY_TRANSITION_FADE = 5;
-    public static int TYPE_ACTIVITY_TRANSITION_ZOOM = 6;
-    public static int TYPE_ACTIVITY_TRANSITION_WINDMILL = 7;
-    public static int TYPE_ACTIVITY_TRANSITION_DIAGONAL = 8;
-    public static int TYPE_ACTIVITY_TRANSITION_SPIN = 9;
 
     public final static String TEST_0 = "6E0762FF2B272D5BCE89FEBAAB872E34";
     public final static String TEST_1 = "8FA8E91902B43DCB235ED2F6BBA9CAE0";
@@ -193,9 +181,7 @@ public class Constants {
     public static final int BROADCAST_LIMIT_WIDTH = 1920;
     public static final int BROADCAST_LIMIT_HEIGHT = 1080;
 
-    @IntDef({ENVIRONMENT.DEV, ENVIRONMENT.STAG, ENVIRONMENT.PROD})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ENVIRONMENT {
+    public interface ENVIRONMENT {
         int DEV = 1;
         int STAG = 2;
         int PROD = 3;

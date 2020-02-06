@@ -23,8 +23,8 @@ import uizacoresdk.view.VDHView;
 import uizacoresdk.widget.LToast;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
-import vn.uiza.utils.LUIUtil;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.UIUtils;
+import vn.uiza.utils.ScreenUtils;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -99,21 +99,21 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
 
         findViewById(R.id.bt_0).setOnClickListener(view -> {
             etLinkPlay.setText(urls[0]);
-            LUIUtil.setLastCursorEditText(etLinkPlay);
+            UIUtils.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_1).setOnClickListener(view -> {
             etLinkPlay.setText(urls[1]);
             isLive = true;
-            LUIUtil.setLastCursorEditText(etLinkPlay);
+            UIUtils.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_2).setOnClickListener(view -> {
             etLinkPlay.setText(urls[2]);
             isLive = true;
-            LUIUtil.setLastCursorEditText(etLinkPlay);
+            UIUtils.setLastCursorEditText(etLinkPlay);
         });
         findViewById(R.id.bt_3).setOnClickListener(view -> {
             etLinkPlay.setText(urls[3]);
-            LUIUtil.setLastCursorEditText(etLinkPlay);
+            UIUtils.setLastCursorEditText(etLinkPlay);
         });
 
         btPlay.setOnClickListener(view -> {
@@ -172,7 +172,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
     @Override
     public void onScreenRotate(boolean isLandscape) {
         if (!isLandscape) {
-            int w = ScreenUtil.getScreenWidth();
+            int w = ScreenUtils.getScreenWidth();
             int h = w * 9 / 16;
             uzVideo.setFreeSize(false);
             uzVideo.setSize(w, h);

@@ -61,12 +61,13 @@ import java.util.UUID;
 import timber.log.Timber;
 import uizacoresdk.BuildConfig;
 import uizacoresdk.R;
+import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.dialog.hq.UizaItem;
 import uizacoresdk.dialog.hq.UizaTrackSelectionView;
 import uizacoresdk.dialog.info.UZDlgInfoV1;
 import uizacoresdk.dialog.playlistfolder.CallbackPlaylistFolder;
 import uizacoresdk.dialog.playlistfolder.UizaPlaylistFolderDialog;
-import uizacoresdk.dialog.speed.UZDlgSpeed;
+import uizacoresdk.dialog.speed.UizaSpeedDialog;
 import uizacoresdk.floatview.FloatUizaVideoService;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZLiveContentCallback;
@@ -79,12 +80,11 @@ import uizacoresdk.util.UizaTrackingUtil;
 import uizacoresdk.util.UizaUtil;
 import uizacoresdk.util.UizaCLPData;
 import uizacoresdk.util.UizaData;
-import uizacoresdk.widget.LAnimationUtil;
 import uizacoresdk.widget.UizaPreviewTimeBar;
 import uizacoresdk.widget.previewseekbar.PreviewView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.core.exception.UizaExceptionUtil;
+import vn.uiza.core.exception.UizaExceptionUtils;
 import vn.uiza.core.utilities.connection.LConnectifyService;
 import vn.uiza.data.EventBusData;
 import vn.uiza.models.ListWrap;
@@ -104,19 +104,18 @@ import vn.uiza.restapi.UizaHeartBeatService;
 import vn.uiza.restapi.UizaLiveService;
 import vn.uiza.restapi.UizaTrackingService;
 import vn.uiza.restapi.UizaVideoService;
+import vn.uiza.utils.ActivityUtils;
 import vn.uiza.utils.AppUtils;
 import vn.uiza.utils.ConvertUtils;
-import vn.uiza.utils.ImageUtil;
-import vn.uiza.utils.LActivityUtil;
-import vn.uiza.utils.LConnectivityUtil;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.DateUtils;
+import vn.uiza.utils.DeviceUtils;
+import vn.uiza.utils.ImageUtils;
+import vn.uiza.utils.ConnectivityUtils;
 import vn.uiza.utils.LDialogUtil;
 import vn.uiza.utils.LSocialUtil;
-import vn.uiza.utils.LUIUtil;
-import vn.uiza.utils.ListUtil;
-import vn.uiza.utils.ScreenUtil;
-import vn.uiza.utils.ViewUtil;
+import vn.uiza.utils.UIUtils;
+import vn.uiza.utils.ListUtils;
+import vn.uiza.utils.ScreenUtils;
 import uizacoresdk.widget.autosize.UizaImageButton;
 import uizacoresdk.widget.autosize.UizaTextView;
 import uizacoresdk.widget.seekbar.UZVerticalSeekBar;
@@ -229,8 +228,8 @@ public class UizaVideoView extends VideoViewBase
     }
 
     private void checkDevices() {
-        isTablet = LDeviceUtil.isTablet(getContext());
-        isTV = LDeviceUtil.isTV(getContext());
+        isTablet = DeviceUtils.isTablet(getContext());
+        isTV = DeviceUtils.isTV(getContext());
     }
 
     private void resizeContainerView() {
@@ -288,30 +287,21 @@ public class UizaVideoView extends VideoViewBase
     }
 
     public long getDuration() {
-        if (getPlayer() == null) {
-            return Constants.NOT_FOUND;
-        }
-        return getPlayer().getDuration();
+        return (getPlayer() == null) ? -1 : getPlayer().getDuration();
     }
 
     // An estimate of the position in the current window up to which data is buffered.
     // If the length of the content is 100,00 ms, and played 50,000 ms already with extra 50,000 ms~ 60,000 ms buffered,
     // it returns 60,000 ms.
     public long getBufferedPosition() {
-        if (getPlayer() == null) {
-            return Constants.NOT_FOUND;
-        }
-        return getPlayer().getBufferedPosition();
+        return (getPlayer() == null) ? -1 : getPlayer().getBufferedPosition();
     }
 
     // An estimate of the percentage in the current window up to which data is buffered.
     // If the length of the content is 100,00 ms, and played 50,000 ms already with extra 50,000 ms~ 60,000 ms buffered,
     // it returns 60(%).
     public int getBufferedPercentage() {
-        if (getPlayer() == null) {
-            return Constants.NOT_FOUND;
-        }
-        return getPlayer().getBufferedPercentage();
+        return (getPlayer() == null) ? -1 : getPlayer().getBufferedPercentage();
     }
 
     // Lay pixel dung cho custom UI like youtube, uzTimebar bottom of player controller
@@ -325,16 +315,13 @@ public class UizaVideoView extends VideoViewBase
 
     //return pixel
     public int getHeightUZTimeBar() {
-        return LUIUtil.getHeightOfView(uzTimebar);
+        return UIUtils.getHeightOfView(uzTimebar);
     }
 
     //The current position of playing. the window means playable region, which is all of the content if vod, and some portion of the content if live.
     @Override
     public long getCurrentPosition() {
-        if (uzPlayerManager == null) {
-            return Constants.NOT_FOUND;
-        }
-        return uzPlayerManager.getCurrentPosition();
+        return (uzPlayerManager == null) ? -1 : uzPlayerManager.getCurrentPosition();
     }
 
     public Format getVideoFormat() {
@@ -439,14 +426,14 @@ public class UizaVideoView extends VideoViewBase
             Timber.e("init error because entityId == null -> called from PIP");
             try {
                 if (TextUtils.isEmpty(UizaData.getInstance().getPlaybackInfo().getHls())) {
-                    notifyError(UizaExceptionUtil.getExceptionEntityId());
+                    notifyError(UizaExceptionUtils.getExceptionEntityId());
                     Timber.e("init error: entityId null or empty");
                     return;
                 } else {
                     entityId = UizaData.getInstance().getEntityId();
                 }
             } catch (NullPointerException e) {
-                notifyError(UizaExceptionUtil.getExceptionEntityId());
+                notifyError(UizaExceptionUtils.getExceptionEntityId());
                 Timber.e(e, "init NullPointerException");
                 return;
             }
@@ -474,8 +461,8 @@ public class UizaVideoView extends VideoViewBase
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         updateUIEndScreen();
-        if (!LConnectivityUtil.isConnected(getContext())) {
-            notifyError(UizaExceptionUtil.getExceptionNoConnection());
+        if (!ConnectivityUtils.isConnected(getContext())) {
+            notifyError(UizaExceptionUtils.getExceptionNoConnection());
             Timber.d("!isConnected return");
             return;
         }
@@ -490,7 +477,7 @@ public class UizaVideoView extends VideoViewBase
             Timber.e(UizaException.ERR_14);
             return false;
         }
-        if (!LConnectivityUtil.isConnected(context)) {
+        if (!ConnectivityUtils.isConnected(context)) {
             Timber.e(UizaException.ERR_0);
             return false;
         }
@@ -513,10 +500,7 @@ public class UizaVideoView extends VideoViewBase
 
     @Override
     public SimpleExoPlayer getPlayer() {
-        if (uzPlayerManager == null) {
-            return null;
-        }
-        return uzPlayerManager.getPlayer();
+        return (uzPlayerManager == null) ? null : uzPlayerManager.getPlayer();
     }
 
     @Override
@@ -543,7 +527,7 @@ public class UizaVideoView extends VideoViewBase
     public boolean play(@NonNull PlaybackInfo playback) {
         Context context = getContext();
         UizaUtil.setClickedPip(context, false);
-        if (!LConnectivityUtil.isConnected(context)) {
+        if (!ConnectivityUtils.isConnected(context)) {
             Timber.e(UizaException.ERR_0);
             return false;
         }
@@ -590,7 +574,7 @@ public class UizaVideoView extends VideoViewBase
     public boolean play(@NonNull String entityId, boolean isClearDataPlaylistFolder, boolean isLive) {
         Context context = getContext();
         UizaUtil.setClickedPip(context, false);
-        if (!LConnectivityUtil.isConnected(context)) {
+        if (!ConnectivityUtils.isConnected(context)) {
             Timber.e(UizaException.ERR_0);
             return false;
         }
@@ -607,14 +591,12 @@ public class UizaVideoView extends VideoViewBase
         addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
         if (isCastingChromecast) {
             UizaData.getInstance().getCasty().getPlayer().play();
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.resume();
-            }
+        } else if (uzPlayerManager != null) {
+            uzPlayerManager.resume();
         }
-        ViewUtil.goneViews(ibPlayIcon);
+        UIUtils.goneViews(ibPlayIcon);
         if (ibPauseIcon != null) {
-            ViewUtil.visibleViews(ibPauseIcon);
+            UIUtils.visibleViews(ibPauseIcon);
             ibPauseIcon.requestFocus();
         }
     }
@@ -624,14 +606,12 @@ public class UizaVideoView extends VideoViewBase
         TmpParamData.getInstance().setPlayerIsPaused(true);
         if (isCastingChromecast) {
             UizaData.getInstance().getCasty().getPlayer().pause();
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.pause();
-            }
+        } else if (uzPlayerManager != null) {
+            uzPlayerManager.pause();
         }
-        ViewUtil.goneViews(ibPauseIcon);
+        UIUtils.goneViews(ibPauseIcon);
         if (ibPlayIcon != null) {
-            ViewUtil.visibleViews(ibPlayIcon);
+            UIUtils.visibleViews(ibPlayIcon);
             ibPlayIcon.requestFocus();
         }
         addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
@@ -639,18 +619,12 @@ public class UizaVideoView extends VideoViewBase
 
     @Override
     public int getVideoWidth() {
-        if (uzPlayerManager == null) {
-            return 0;
-        }
-        return uzPlayerManager.getVideoWidth();
+        return (uzPlayerManager == null) ? 0 : uzPlayerManager.getVideoWidth();
     }
 
     @Override
     public int getVideoHeight() {
-        if (uzPlayerManager == null) {
-            return 0;
-        }
-        return uzPlayerManager.getVideoHeight();
+        return (uzPlayerManager == null) ? 0 : uzPlayerManager.getVideoHeight();
     }
 
     private boolean isInitCustomLinkPlay;//user pass any link (not use entityId or metadataId)
@@ -686,8 +660,8 @@ public class UizaVideoView extends VideoViewBase
         // TODO: Check how to get subtitle of a custom link play, because we have no idea about entityId or appId
         List<Subtitle> subtitleList = null;
 
-        if (!LConnectivityUtil.isConnected(getContext())) {
-            notifyError(UizaExceptionUtil.getExceptionNoConnection());
+        if (!ConnectivityUtils.isConnected(getContext())) {
+            notifyError(UizaExceptionUtils.getExceptionNoConnection());
             return;
         }
         initDataSource(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumbnailsPreviewSeekBar(), subtitleList, AppUtils.isAdsDependencyAvailable());
@@ -714,9 +688,9 @@ public class UizaVideoView extends VideoViewBase
         boolean isEnableStatsForNerds =
                 statsForNerdsView == null || statsForNerdsView.getVisibility() != View.VISIBLE;
         if (isEnableStatsForNerds) {
-            ViewUtil.visibleViews(statsForNerdsView);
+            UIUtils.visibleViews(statsForNerdsView);
         } else {
-            ViewUtil.goneViews(statsForNerdsView);
+            UIUtils.goneViews(statsForNerdsView);
         }
     }
 
@@ -810,10 +784,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     public boolean isPlaying() {
-        if (getPlayer() == null) {
-            return false;
-        }
-        return getPlayer().getPlayWhenReady();
+        return (getPlayer() != null) && getPlayer().getPlayWhenReady();
     }
 
     /**
@@ -849,7 +820,7 @@ public class UizaVideoView extends VideoViewBase
             Timber.e("Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
-        if (LDeviceUtil.isCanOverlay(getContext())) {
+        if (DeviceUtils.isCanOverlay(getContext())) {
             initializePiP();
         }
     }
@@ -930,14 +901,14 @@ public class UizaVideoView extends VideoViewBase
         //0 portrait duoi
         //90 land phai
         //180 portrait tren
-        boolean isDeviceAutoRotation = LDeviceUtil.isRotationPossible(getContext());
+        boolean isDeviceAutoRotation = DeviceUtils.isRotationPossible(getContext());
         if (orientation == 90 || orientation == 270) {
             if (isDeviceAutoRotation && !isLandscape) {
-                LActivityUtil.changeScreenLandscape((Activity) getContext(), orientation);
+                ActivityUtils.changeScreenLandscape((Activity) getContext(), orientation);
             }
         } else {
             if (isDeviceAutoRotation && isLandscape) {
-                LActivityUtil.changeScreenPortrait((Activity) getContext());
+                ActivityUtils.changeScreenPortrait((Activity) getContext());
             }
         }
     }
@@ -947,16 +918,16 @@ public class UizaVideoView extends VideoViewBase
         super.onConfigurationChanged(newConfig);
         resizeContainerView();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ScreenUtil.hideDefaultControls(getContext());
+            ScreenUtils.hideDefaultControls((Activity) getContext());
             isLandscape = true;
             UizaUtil.setUIFullScreenIcon(ibFullscreenIcon, true);
-            ViewUtil.goneViews(ibPictureInPictureIcon);
+            UIUtils.goneViews(ibPictureInPictureIcon);
         } else {
-            ScreenUtil.showDefaultControls(getContext());
+            ScreenUtils.showDefaultControls((Activity) getContext());
             isLandscape = false;
             UizaUtil.setUIFullScreenIcon(ibFullscreenIcon, false);
             if (!isCastingChromecast()) {
-                ViewUtil.visibleViews(ibPictureInPictureIcon);
+                UIUtils.visibleViews(ibPictureInPictureIcon);
             }
         }
         TmpParamData.getInstance().setPlayerIsFullscreen(isLandscape);
@@ -975,7 +946,7 @@ public class UizaVideoView extends VideoViewBase
     @Override
     public void onClick(View v) {
         if (v == rlMsg) {
-            LAnimationUtil.play(v, Techniques.Pulse);
+            AnimationUtils.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
             toggleFullscreen();
         } else if (v == ibBackScreenIcon) {
@@ -1007,13 +978,11 @@ public class UizaVideoView extends VideoViewBase
         } else if (v == ibRewIcon) {
             if (isCastingChromecast) {
                 UizaData.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    if (isPlaying()) {
-                        isOnPlayerEnded = false;
-                        updateUIEndScreen();
-                    }
+            } else if (uzPlayerManager != null) {
+                uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (isPlaying()) {
+                    isOnPlayerEnded = false;
+                    updateUIEndScreen();
                 }
             }
         } else if (v == ibPauseIcon) {
@@ -1029,9 +998,9 @@ public class UizaVideoView extends VideoViewBase
         } else if (v == ibSpeedIcon) {
             showSpeed();
         } else if (v == tvEndScreenMsg) {
-            LAnimationUtil.play(v, Techniques.Pulse);
+            AnimationUtils.play(v, Techniques.Pulse);
         } else if (v == ivLogo) {
-            LAnimationUtil.play(v, Techniques.Pulse);
+            AnimationUtils.play(v, Techniques.Pulse);
             if (playerInfor == null || playerInfor.getLogo() == null || playerInfor.getLogo().getUrl() == null) {
                 return;
             }
@@ -1055,14 +1024,14 @@ public class UizaVideoView extends VideoViewBase
     private void handleClickPictureInPicture() {
         if (!isInitMiniPlayerSuccess) {
             //dang init 1 instance mini player roi, khong cho init nua
-            notifyError(UizaExceptionUtil.getExceptionShowPip());
+            notifyError(UizaExceptionUtils.getExceptionShowPip());
             return;
         }
         if (isCastingChromecast()) {
-            notifyError(UizaExceptionUtil.getExceptionShowPip());
+            notifyError(UizaExceptionUtils.getExceptionShowPip());
             return;
         }
-        if (LDeviceUtil.isCanOverlay(getContext())) {
+        if (DeviceUtils.isCanOverlay(getContext())) {
             initializePiP();
         } else {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getContext().getPackageName()));
@@ -1073,11 +1042,11 @@ public class UizaVideoView extends VideoViewBase
     private boolean isInitMiniPlayerSuccess = true;
 
     public void initializePiP() {
-        if (uzPlayerManager == null || uzPlayerManager.getLinkPlay() == null) {
-            notifyError(UizaExceptionUtil.getExceptionShowPip());
+        if (uzPlayerManager == null || TextUtils.isEmpty(uzPlayerManager.getLinkPlay())) {
+            notifyError(UizaExceptionUtils.getExceptionShowPip());
             return;
         }
-        ViewUtil.goneViews(ibPictureInPictureIcon);
+        UIUtils.goneViews(ibPictureInPictureIcon);
         if (uzCallback != null) {
             isInitMiniPlayerSuccess = false;
             uzCallback.onStateMiniPlayer(false);
@@ -1105,17 +1074,12 @@ public class UizaVideoView extends VideoViewBase
     }
 
     public int getControllerShowTimeoutMs() {
-        if (uzPlayerView != null) {
-            return uzPlayerView.getControllerShowTimeoutMs();
-        }
-        return Constants.NOT_FOUND;
+        return (uzPlayerView == null) ? -1 : uzPlayerView.getControllerShowTimeoutMs();
     }
 
     public boolean isPlayerControllerShowing() {
-        if (uzPlayerView != null) {
-            return uzPlayerView.isControllerVisible();
-        }
-        return false;
+        return (uzPlayerView != null) && uzPlayerView.isControllerVisible();
+
     }
 
     public void showController() {
@@ -1145,10 +1109,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     public boolean getControllerHideOnTouch() {
-        if (uzPlayerView != null) {
-            return uzPlayerView.getControllerHideOnTouch();
-        }
-        return false;
+        return (uzPlayerView != null) && uzPlayerView.getControllerHideOnTouch();
     }
 
     private boolean isDefaultUseController = true;
@@ -1188,9 +1149,9 @@ public class UizaVideoView extends VideoViewBase
             //metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn, ""
             RxBinder.bind(service.getEntities().map(ListWrap::getData),
                     result -> {
-                        if (ListUtil.isEmpty(result)) {
+                        if (ListUtils.isEmpty(result)) {
                             if (uzCallback != null) {
-                                handleError(UizaExceptionUtil.getExceptionListAllEntity());
+                                handleError(UizaExceptionUtils.getExceptionListAllEntity());
                             }
                             return;
                         }
@@ -1205,17 +1166,17 @@ public class UizaVideoView extends VideoViewBase
                                 pfTotalPage = (int) ratio;
                             }
                         }
-                        List<PlaybackInfo> playlist = ListUtil.map(result, VODEntity::getPlaybackInfo);
+                        List<PlaybackInfo> playlist = ListUtils.map(result, VODEntity::getPlaybackInfo);
                         UizaData.getInstance().setPlayList(playlist);
-                        if (ListUtil.isEmpty(playlist)) {
-                            notifyError(UizaExceptionUtil.getExceptionListAllEntity());
+                        if (ListUtils.isEmpty(playlist)) {
+                            notifyError(UizaExceptionUtils.getExceptionListAllEntity());
                             return;
                         }
                         playPlaylistPosition(UizaData.getInstance().getCurrentPositionOfPlayList());
                         hideProgress();
                     }, throwable -> {
                         Timber.e(throwable, "callAPIGetListAllEntity onFail");
-                        notifyError(UizaExceptionUtil.getExceptionListAllEntity());
+                        notifyError(UizaExceptionUtils.getExceptionListAllEntity());
                         hideProgress();
                     });
         }
@@ -1233,12 +1194,12 @@ public class UizaVideoView extends VideoViewBase
         Timber.d("playPlaylistPosition position: %d", position);
         if (position < 0) {
             Timber.e("This is the first item");
-            notifyError(UizaExceptionUtil.getExceptionPlaylistFolderItemFirst());
+            notifyError(UizaExceptionUtils.getExceptionPlaylistFolderItemFirst());
             return;
         }
         if (position > UizaData.getInstance().getPlayList().size() - 1) {
             Timber.e("This is the last item");
-            notifyError(UizaExceptionUtil.getExceptionPlaylistFolderItemLast());
+            notifyError(UizaExceptionUtils.getExceptionPlaylistFolderItemLast());
             return;
         }
         urlImgThumbnail = null;
@@ -1384,10 +1345,9 @@ public class UizaVideoView extends VideoViewBase
                     ibVolumeIcon.setImageResource(R.drawable.ic_volume_up_white_48);
                 }
             }
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
-            }
+        } else if (uzPlayerManager != null) {
+            uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
+
         }
     }
 
@@ -1399,25 +1359,26 @@ public class UizaVideoView extends VideoViewBase
 
     private void handleClickSetting() {
         View view = UizaUtil.getBtVideo(debugRootView);
-        ViewUtil.performClick(view);
+        if (view != null)
+            view.performClick();
     }
 
     private void handleClickCC() {
-        if (uzPlayerManager.getSubtitleList() == null || uzPlayerManager.getSubtitleList().isEmpty()) {
+        if (ListUtils.isEmpty(uzPlayerManager.getSubtitleList())) {
             UZDlgInfoV1 uzDlgInfoV1 = new UZDlgInfoV1(getContext(), getContext().getString(R.string.text), getContext().getString(R.string.no_caption));
             UizaUtil.showUizaDialog(getContext(), uzDlgInfoV1);
         } else {
             View view = UizaUtil.getBtText(debugRootView);
-            ViewUtil.performClick(view);
-            if (view == null) {
-                Timber.e("error handleClickCC null");
+            if (view != null) {
+                view.performClick();
             }
         }
     }
 
     private void handleClickHearing() {
         View view = UizaUtil.getBtAudio(debugRootView);
-        ViewUtil.performClick(view);
+        if (view != null)
+        view.performClick();
     }
 
 
@@ -1434,7 +1395,7 @@ public class UizaVideoView extends VideoViewBase
      */
     public void seekToForward(int mls) {
         setDefaultValueBackwardForward(mls);
-        ViewUtil.performClick(ibFfwdIcon);
+        ibFfwdIcon.performClick();
     }
 
     /*
@@ -1442,7 +1403,7 @@ public class UizaVideoView extends VideoViewBase
      */
     public void seekToBackward(int mls) {
         setDefaultValueBackwardForward(mls);
-        ViewUtil.performClick(ibRewIcon);
+        ibRewIcon.performClick();
     }
 
     //chi toggle show hide controller khi video da vao dc onStateReadyFirst();
@@ -1464,20 +1425,20 @@ public class UizaVideoView extends VideoViewBase
     }
 
     public void toggleVolume() {
-        ViewUtil.performClick(ibVolumeIcon);
+        ibVolumeIcon.performClick();
     }
 
     public void toggleFullscreen() {
         addTrackingMuiza(Constants.MUIZA_EVENT_FULLSCREENCHANGE);
-        LActivityUtil.toggleScreenOritation((Activity) getContext());
+        ActivityUtils.toggleScreenOritation((Activity) getContext());
     }
 
     public void showCCPopup() {
-        ViewUtil.performClick(ibCcIcon);
+        ibCcIcon.performClick();
     }
 
     public void showHQPopup() {
-        ViewUtil.performClick(ibSettingIcon);
+        ibSettingIcon.performClick();
     }
 
     /*
@@ -1488,10 +1449,10 @@ public class UizaVideoView extends VideoViewBase
     public void showPip() {
         if (isCastingChromecast()) {
             Timber.e(UizaException.ERR_19);
-            notifyError(UizaExceptionUtil.getExceptionShowPip());
+            notifyError(UizaExceptionUtils.getExceptionShowPip());
         } else {
             // [Re-check]: Why use performClick?
-            // ViewUtil.performClick(ibPictureInPictureIcon);
+            // UIUtils.performClick(ibPictureInPictureIcon);
             handleClickPictureInPicture();
         }
     }
@@ -1504,7 +1465,7 @@ public class UizaVideoView extends VideoViewBase
         if (getPlayer() == null) {
             return;
         }
-        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(getContext(), getPlayer().getPlaybackParameters().speed,
+        final UizaSpeedDialog uzDlgSpeed = new UizaSpeedDialog(getContext(), getPlayer().getPlaybackParameters().speed,
                 speed -> {
                     if (speed != null) {
                         setSpeed(speed.getValue());
@@ -1695,7 +1656,7 @@ public class UizaVideoView extends VideoViewBase
         View view = UizaUtil.getBtVideo(debugRootView);
         if (view == null) {
             Timber.e("Error getHQList null");
-            notifyError(UizaExceptionUtil.getExceptionListHQ());
+            notifyError(UizaExceptionUtils.getExceptionListHQ());
             return null;
         }
         return showUZTrackSelectionDialog(view, false);
@@ -1704,25 +1665,21 @@ public class UizaVideoView extends VideoViewBase
     public List<UizaItem> getAudioList() {
         View view = UizaUtil.getBtAudio(debugRootView);
         if (view == null) {
+            notifyError(UizaExceptionUtils.getExceptionListAudio());
             Timber.e("Error audio null");
-            notifyError(UizaExceptionUtil.getExceptionListAudio());
             return null;
         }
         return showUZTrackSelectionDialog(view, false);
     }
 
     public void setVolume(float volume) {
-        if (uzPlayerManager == null) {
-            return;
+        if (uzPlayerManager != null) {
+            uzPlayerManager.setVolume(volume);
         }
-        uzPlayerManager.setVolume(volume);
     }
 
     public float getVolume() {
-        if (uzPlayerManager == null) {
-            return Constants.NOT_FOUND;
-        }
-        return uzPlayerManager.getVolume();
+        return (uzPlayerManager == null) ? -1 : uzPlayerManager.getVolume();
     }
 
     @Override
@@ -1759,12 +1716,12 @@ public class UizaVideoView extends VideoViewBase
         rlMsg.setOnClickListener(this);
         tvMsg = findViewById(R.id.tv_msg);
         if (tvMsg != null) {
-            LUIUtil.setTextShadow(tvMsg);
+            UIUtils.setTextShadow(tvMsg);
         }
         ivVideoCover = findViewById(R.id.iv_cover);
         llTop = findViewById(R.id.ll_top);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, progressBarColor);
+        UIUtils.setColorProgressBar(progressBar, progressBarColor);
         updateUIPositionOfProgressBar();
         uzPlayerView.setControllerStateCallback(this);
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
@@ -1790,7 +1747,7 @@ public class UizaVideoView extends VideoViewBase
         ivThumbnail = uzPlayerView.findViewById(R.id.image_view_thumnail);
         tvPosition = uzPlayerView.findViewById(R.id.uz_position);
         if (tvPosition != null) {
-            tvPosition.setText(LDateUtils.convertMlsecondsToHMmSs(0));
+            tvPosition.setText(DateUtils.convertMlsecondsToHMmSs(0));
         }
         tvDuration = uzPlayerView.findViewById(R.id.uz_duration);
         if (tvDuration != null) {
@@ -1801,7 +1758,7 @@ public class UizaVideoView extends VideoViewBase
         ibPauseIcon = uzPlayerView.findViewById(R.id.exo_pause_uiza);
         ibPlayIcon = uzPlayerView.findViewById(R.id.exo_play_uiza);
         //If auto start true, show button play and gone button pause
-        ViewUtil.goneViews(ibPlayIcon);
+        UIUtils.goneViews(ibPlayIcon);
         ibReplayIcon = uzPlayerView.findViewById(R.id.exo_replay_uiza);
         ibRewIcon = uzPlayerView.findViewById(R.id.exo_rew);
         if (ibRewIcon != null) {
@@ -1831,12 +1788,12 @@ public class UizaVideoView extends VideoViewBase
         tvLiveTime = uzPlayerView.findViewById(R.id.tv_live_time);
         ivLiveView = uzPlayerView.findViewById(R.id.iv_live_view);
         ivLiveTime = uzPlayerView.findViewById(R.id.iv_live_time);
-        ViewUtil.setFocusableViews(false, ivLiveView, ivLiveTime);
+        UIUtils.setFocusableViews(false, ivLiveView, ivLiveTime);
         rlEndScreen = uzPlayerView.findViewById(R.id.rl_end_screen);
-        ViewUtil.goneViews(rlEndScreen);
+        UIUtils.goneViews(rlEndScreen);
         tvEndScreenMsg = uzPlayerView.findViewById(R.id.tv_end_screen_msg);
         if (tvEndScreenMsg != null) {
-            LUIUtil.setTextShadow(tvEndScreenMsg, Color.WHITE);
+            UIUtils.setTextShadow(tvEndScreenMsg, Color.WHITE);
             tvEndScreenMsg.setOnClickListener(this);
         }
         setEventForViews();
@@ -1865,9 +1822,9 @@ public class UizaVideoView extends VideoViewBase
     //if not, gone button play and show button pause
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
         if (isAutoStart) {
-            ViewUtil.goneViews(ibPlayIcon);
+            UIUtils.goneViews(ibPlayIcon);
             if (ibPauseIcon != null) {
-                ViewUtil.visibleViews(ibPauseIcon);
+                UIUtils.visibleViews(ibPauseIcon);
                 if (!isSetFirstRequestFocusDone) {
                     ibPauseIcon.requestFocus();//set first request focus if using player for TV
                     isSetFirstRequestFocusDone = true;
@@ -1875,9 +1832,9 @@ public class UizaVideoView extends VideoViewBase
             }
         } else {
             if (isPlaying()) {
-                ViewUtil.goneViews(ibPlayIcon);
+                UIUtils.goneViews(ibPlayIcon);
                 if (ibPauseIcon != null) {
-                    ViewUtil.visibleViews(ibPauseIcon);
+                    UIUtils.visibleViews(ibPauseIcon);
                     if (!isSetFirstRequestFocusDone) {
                         ibPauseIcon.requestFocus();//set first request focus if using player for TV
                         isSetFirstRequestFocusDone = true;
@@ -1885,13 +1842,13 @@ public class UizaVideoView extends VideoViewBase
                 }
             } else {
                 if (ibPlayIcon != null) {
-                    ViewUtil.visibleViews(ibPlayIcon);
+                    UIUtils.visibleViews(ibPlayIcon);
                     if (!isSetFirstRequestFocusDone) {
                         ibPlayIcon.requestFocus();//set first request focus if using player for TV
                         isSetFirstRequestFocusDone = true;
                     }
                 }
-                ViewUtil.goneViews(ibPauseIcon);
+                UIUtils.goneViews(ibPauseIcon);
             }
         }
     }
@@ -1899,7 +1856,7 @@ public class UizaVideoView extends VideoViewBase
     private String urlImgThumbnail;
 
     public void setUrlImgThumbnail(String urlImgThumbnail) {
-        if (urlImgThumbnail == null || urlImgThumbnail.isEmpty()) {
+        if (TextUtils.isEmpty(urlImgThumbnail)) {
             return;
         }
         this.urlImgThumbnail = urlImgThumbnail;
@@ -1908,7 +1865,7 @@ public class UizaVideoView extends VideoViewBase
         }
         if (ivVideoCover.getVisibility() != VISIBLE) {
             ivVideoCover.setVisibility(VISIBLE);
-            ImageUtil.load(ivVideoCover, urlImgThumbnail, R.drawable.background_black);
+            ImageUtils.load(ivVideoCover, urlImgThumbnail, R.drawable.background_black);
         }
     }
 
@@ -1918,7 +1875,7 @@ public class UizaVideoView extends VideoViewBase
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
             String urlCover;
-            if (urlImgThumbnail == null || urlImgThumbnail.isEmpty()) {
+            if (TextUtils.isEmpty(urlImgThumbnail)) {
                 if (mPlaybackInfo == null) {
                     urlCover = Constants.URL_IMG_THUMBNAIL_BLACK;
                 } else {
@@ -1928,7 +1885,7 @@ public class UizaVideoView extends VideoViewBase
                 urlCover = urlImgThumbnail;
             }
             TmpParamData.getInstance().setEntityPosterUrl(urlCover);
-            ImageUtil.load(ivVideoCover, urlCover, R.drawable.background_black);
+            ImageUtils.load(ivVideoCover, urlCover, R.drawable.background_black);
         }
     }
 
@@ -1980,7 +1937,7 @@ public class UizaVideoView extends VideoViewBase
         uzPlayerView.post(() -> {
             int marginL = uzPlayerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
             int marginT = uzPlayerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-            LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
+            UIUtils.setMarginPx(progressBar, marginL, marginT, 0, 0);
         });
     }
 
@@ -2018,7 +1975,7 @@ public class UizaVideoView extends VideoViewBase
             throw new IllegalArgumentException(getContext().getString(R.string.error_change_skin_with_vdhview));
         }
         if (uzPlayerManager.isPlayingAd()) {
-            notifyError(UizaExceptionUtil.getExceptionChangeSkin());
+            notifyError(UizaExceptionUtils.getExceptionChangeSkin());
             return false;
         }
         UizaData.getInstance().setCurrentPlayerId(skinId);
@@ -2083,9 +2040,9 @@ public class UizaVideoView extends VideoViewBase
     private void updateTvDuration() {
         if (tvDuration != null) {
             if (isLivestream) {
-                tvDuration.setText(LDateUtils.convertMlsecondsToHMmSs(0));
+                tvDuration.setText(DateUtils.convertMlsecondsToHMmSs(0));
             } else {
-                tvDuration.setText(LDateUtils.convertMlsecondsToHMmSs(getDuration()));
+                tvDuration.setText(DateUtils.convertMlsecondsToHMmSs(getDuration()));
             }
         }
     }
@@ -2102,9 +2059,9 @@ public class UizaVideoView extends VideoViewBase
         if (isLivestream) {
             long duration = getDuration();
             long past = duration - currentMls;
-            tvPosition.setText(HYPHEN + LDateUtils.convertMlsecondsToHMmSs(past));
+            tvPosition.setText(HYPHEN + DateUtils.convertMlsecondsToHMmSs(past));
         } else {
-            tvPosition.setText(LDateUtils.convertMlsecondsToHMmSs(currentMls));
+            tvPosition.setText(DateUtils.convertMlsecondsToHMmSs(currentMls));
         }
     }
 
@@ -2146,10 +2103,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     //FOR TV
-    public void updateUIFocusChange(View view, boolean isFocus) {
-        if (view == null) {
-            return;
-        }
+    public void updateUIFocusChange(@NonNull View view, boolean isFocus) {
         if (isFocus) {
             if (view instanceof UizaImageButton) {
                 UizaUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
@@ -2181,7 +2135,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     private void updateUISizeThumbnail() {
-        int screenWidth = ScreenUtil.getScreenWidth();
+        int screenWidth = ScreenUtils.getScreenWidth();
         int widthIv = isLandscape ? screenWidth / 4 : screenWidth / 5;
         if (previewFrameLayout != null) {
             RelativeLayout.LayoutParams layoutParams =
@@ -2196,17 +2150,17 @@ public class UizaVideoView extends VideoViewBase
 
     private void setMarginPreviewTimeBar() {
         if (isLandscape) {
-            LUIUtil.setMarginDimen(uzTimebar, 5, 0, 5, 0);
+            UIUtils.setMarginDimen(uzTimebar, 5, 0, 5, 0);
         } else {
-            LUIUtil.setMarginDimen(uzTimebar, 0, 0, 0, 0);
+            UIUtils.setMarginDimen(uzTimebar, 0, 0, 0, 0);
         }
     }
 
     private void setMarginRlLiveInfo() {
         if (isLandscape) {
-            LUIUtil.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
+            UIUtils.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
         } else {
-            LUIUtil.setMarginDimen(rlLiveInfo, 5, 0, 5, 0);
+            UIUtils.setMarginDimen(rlLiveInfo, 5, 0, 5, 0);
         }
     }
 
@@ -2218,23 +2172,23 @@ public class UizaVideoView extends VideoViewBase
 
     private void updateUIDependOnLivestream() {
         if (isCastingChromecast) {
-            ViewUtil.goneViews(ibPictureInPictureIcon);
+            UIUtils.goneViews(ibPictureInPictureIcon);
         } else {
             if (isTablet && isTV) {//only hide ibPictureInPictureIcon if device is TV
-                ViewUtil.goneViews(ibPictureInPictureIcon);
+                UIUtils.goneViews(ibPictureInPictureIcon);
             }
         }
         if (isLivestream) {
-            ViewUtil.visibleViews(rlLiveInfo);
+            UIUtils.visibleViews(rlLiveInfo);
             //TODO why set gone not work?
             setUIVisible(false, ibSpeedIcon, ibRewIcon, ibFfwdIcon);
         } else {
-            ViewUtil.goneViews(rlLiveInfo);
+            UIUtils.goneViews(rlLiveInfo);
             //TODO why set visible not work?
             setUIVisible(true, ibSpeedIcon, ibRewIcon, ibFfwdIcon);
         }
         if (isTV) {
-            ViewUtil.goneViews(ibFullscreenIcon);
+            UIUtils.goneViews(ibFullscreenIcon);
         }
     }
 
@@ -2291,11 +2245,11 @@ public class UizaVideoView extends VideoViewBase
 
     public void showLayoutMsg() {
         hideController();
-        ViewUtil.visibleViews(rlMsg);
+        UIUtils.visibleViews(rlMsg);
     }
 
     public void hideLayoutMsg() {
-        ViewUtil.goneViews(rlMsg);
+        UIUtils.goneViews(rlMsg);
     }
 
     private void updateLiveInfoTimeStartLive() {
@@ -2304,7 +2258,7 @@ public class UizaVideoView extends VideoViewBase
         }
         long now = System.currentTimeMillis();
         long duration = now - startTime;
-        String s = LDateUtils.convertMlsecondsToHMmSs(duration);
+        String s = DateUtils.convertMlsecondsToHMmSs(duration);
         if (tvLiveTime != null) {
             tvLiveTime.setText(s);
         }
@@ -2337,26 +2291,26 @@ public class UizaVideoView extends VideoViewBase
 
     private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
         if (isShowReplay) {
-            ViewUtil.goneViews(ibPlayIcon, ibPauseIcon);
+            UIUtils.goneViews(ibPlayIcon, ibPauseIcon);
             if (ibReplayIcon != null) {
-                ViewUtil.visibleViews(ibReplayIcon);
+                UIUtils.visibleViews(ibReplayIcon);
                 ibReplayIcon.requestFocus();
             }
         } else {
             updateUIButtonPlayPauseDependOnIsAutoStart();
-            ViewUtil.goneViews(ibReplayIcon);
+            UIUtils.goneViews(ibReplayIcon);
         }
     }
 
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
-        ViewUtil.setVisibilityViews(visibilityOfPlaylistFolderController, ibPlaylistFolderIcon,
+        UIUtils.setVisibilityViews(visibilityOfPlaylistFolderController, ibPlaylistFolderIcon,
                 ibSkipNextIcon, ibSkipPreviousIcon);
         //Có play kiểu gì đi nữa thì cũng phải ibPlayIcon GONE và ibPauseIcon VISIBLE và ibReplayIcon GONE
         setVisibilityOfPlayPauseReplay(false);
     }
 
     public void hideUzTimebar() {
-        ViewUtil.goneViews(previewFrameLayout, ivThumbnail, uzTimebar);
+        UIUtils.goneViews(previewFrameLayout, ivThumbnail, uzTimebar);
     }
 
     private List<UizaItem> showUZTrackSelectionDialog(final View view, boolean showDialog) {
@@ -2401,11 +2355,11 @@ public class UizaVideoView extends VideoViewBase
             return 0;
         }
         if (isSetUZTimebarBottom) {
-            int hRootView = LUIUtil.getHeightOfView(rootView);
+            int hRootView = UIUtils.getHeightOfView(rootView);
             int hUZTimebar = getHeightUZTimeBar();
             return hRootView - hUZTimebar / 2;
         } else {
-            return LUIUtil.getHeightOfView(rootView);
+            return UIUtils.getHeightOfView(rootView);
         }
     }
 
@@ -2428,10 +2382,10 @@ public class UizaVideoView extends VideoViewBase
         }
         int heightUZTimebar;
         if (isLandscape) {
-            LUIUtil.setMarginPx(view, 0, 0, 0, 0);
+            UIUtils.setMarginPx(view, 0, 0, 0, 0);
         } else {
             heightUZTimebar = getHeightUZTimeBar();
-            LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar / 2);
+            UIUtils.setMarginPx(view, 0, 0, 0, heightUZTimebar / 2);
         }
     }
 
@@ -2440,7 +2394,7 @@ public class UizaVideoView extends VideoViewBase
     public void setProgressBarColor(int progressBarColor) {
         if (progressBar != null) {
             this.progressBarColor = progressBarColor;
-            LUIUtil.setColorProgressBar(progressBar, progressBarColor);
+            UIUtils.setColorProgressBar(progressBar, progressBarColor);
         }
     }
 
@@ -2486,7 +2440,7 @@ public class UizaVideoView extends VideoViewBase
                 uzPlayerView.getOverlayFrameLayout().addView(ivLogo, layoutParams);
             }
             ivLogo.setOnClickListener(this);
-            ImageUtil.load(ivLogo, logo.getLogo());
+            ImageUtils.load(ivLogo, logo.getLogo());
         } else {
             ivLogo = null;
         }
@@ -2586,11 +2540,11 @@ public class UizaVideoView extends VideoViewBase
                         handleDetailEntityResponse(data);
                     else {
                         UizaData.getInstance().setSettingPlayer(false);
-                        handleError(UizaExceptionUtil.getExceptionCannotGetDetailEntitity());
+                        handleError(UizaExceptionUtils.getExceptionCannotGetDetailEntitity());
                     }
                 }, throwable -> {
                     UizaData.getInstance().setSettingPlayer(false);
-                    handleError(UizaExceptionUtil.getExceptionCannotGetDetailEntitity());
+                    handleError(UizaExceptionUtils.getExceptionCannotGetDetailEntitity());
                 });
             } else {
                 UizaVideoService vodService = UizaClientFactory.getVideoService();
@@ -2599,11 +2553,11 @@ public class UizaVideoView extends VideoViewBase
                         handleDetailEntityResponse(data);
                     else {
                         UizaData.getInstance().setSettingPlayer(false);
-                        handleError(UizaExceptionUtil.getExceptionCannotGetDetailEntitity());
+                        handleError(UizaExceptionUtils.getExceptionCannotGetDetailEntitity());
                     }
                 }, throwable -> {
                     UizaData.getInstance().setSettingPlayer(false);
-                    handleError(UizaExceptionUtil.getExceptionCannotGetDetailEntitity());
+                    handleError(UizaExceptionUtils.getExceptionCannotGetDetailEntitity());
                 });
             }
         }
@@ -2643,7 +2597,7 @@ public class UizaVideoView extends VideoViewBase
         }
         RxBinder.bind(service.getPlayerInfo(playerInforId),
                 pi -> playerInfor = pi,
-                throwable -> handleError(UizaExceptionUtil.getExceptionPlayerInfor()));
+                throwable -> handleError(UizaExceptionUtils.getExceptionPlayerInfor()));
     }
 
     @Deprecated
@@ -2657,7 +2611,7 @@ public class UizaVideoView extends VideoViewBase
             UizaVideoService service = UizaClientFactory.getVideoService();
             RxBinder.bind(service.getCuePoint(entityId).map(ListWrap::getData), ads -> {
                 isCalledAPIGetUrlIMAAdTag = true;
-                if (ListUtil.isEmpty(ads)) {
+                if (ListUtils.isEmpty(ads)) {
                     urlIMAAd = "";
                 } else {
                     //Hien tai chi co the play ima ad o item thu 0
@@ -2705,7 +2659,7 @@ public class UizaVideoView extends VideoViewBase
         isHasError = false;
         if (UizaData.getInstance().getEntityId() == null || UizaData.getInstance().getEntityId().isEmpty()) {
             Timber.e("checkData getEntityId null or empty -> return");
-            handleError(UizaExceptionUtil.getExceptionEntityId());
+            handleError(UizaExceptionUtils.getExceptionEntityId());
             UizaData.getInstance().setSettingPlayer(false);
             return;
         }
@@ -2755,10 +2709,10 @@ public class UizaVideoView extends VideoViewBase
                 return;
             }
             if (countTryLinkPlayError >= listLinkPlay.size()) {
-                if (LConnectivityUtil.isConnected(getContext())) {
-                    handleError(UizaExceptionUtil.getExceptionTryAllLinkPlay());
+                if (ConnectivityUtils.isConnected(getContext())) {
+                    handleError(UizaExceptionUtils.getExceptionTryAllLinkPlay());
                 } else {
-                    notifyError(UizaExceptionUtil.getExceptionNoConnection());
+                    notifyError(UizaExceptionUtils.getExceptionNoConnection());
                 }
                 return;
             }
@@ -2776,7 +2730,7 @@ public class UizaVideoView extends VideoViewBase
             }
             initUizaPlayerManager();
         } else {
-            handleError(UizaExceptionUtil.getExceptionSetup());
+            handleError(UizaExceptionUtils.getExceptionSetup());
         }
     }
 
@@ -2784,9 +2738,9 @@ public class UizaVideoView extends VideoViewBase
 
     private void initDataSource(String linkPlay, String urlIMAAd, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAds) {
 
-        if (subtitleList == null || subtitleList.isEmpty()) {
+        if (ListUtils.isEmpty(subtitleList)) {
             // hide the cc (subtitle) button
-            ViewUtil.goneViews(ibCcIcon);
+            UIUtils.goneViews(ibCcIcon);
         }
 
         timestampInitDataSource = System.currentTimeMillis();
@@ -2904,7 +2858,7 @@ public class UizaVideoView extends VideoViewBase
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivestream();
         if (isSetUZTimebarBottom) {
-            ViewUtil.visibleViews(uzPlayerView);
+            UIUtils.visibleViews(uzPlayerView);
         }
         resizeContainerView();
         //enable from playPlaylistPosition() prevent double click
@@ -2925,7 +2879,7 @@ public class UizaVideoView extends VideoViewBase
         long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
         TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);
         trackUizaEventVideoStarts();
-        trackUizaCCUForLivestream();
+        trackUizaCCUForLiveStream();
         pingHeartBeat();
         UizaData.getInstance().setSettingPlayer(false);
     }
@@ -2953,7 +2907,7 @@ public class UizaVideoView extends VideoViewBase
     }
 
     //=============================================================================================START TRACKING
-    private int oldPercent = Constants.NOT_FOUND;
+    private int oldPercent = -1;
     private boolean isTracked25;
     private boolean isTracked50;
     private boolean isTracked75;
@@ -3074,7 +3028,7 @@ public class UizaVideoView extends VideoViewBase
     private final int INTERVAL_HEART_BEAT = 10000;
 
     private void pingHeartBeat() {
-        if (getContext() == null || cdnHost == null || cdnHost.isEmpty()) {
+        if (getContext() == null || TextUtils.isEmpty(cdnHost)) {
             Timber.e("Error cannot call API pingHeartBeat() -> cdnHost: %s, entityName: %s -> return", cdnHost, UizaData.getInstance().getEntityName());
             return;
         }
@@ -3100,31 +3054,31 @@ public class UizaVideoView extends VideoViewBase
 
     private final int INTERVAL_TRACK_CCU = 3000;
 
-    private void trackUizaCCUForLivestream() {
+    private void trackUizaCCUForLiveStream() {
         if (!isLivestream || isInitCustomLinkPlay) {
-            Timber.e("Error cannot trackUizaCCUForLivestream() -> return %s", UizaData.getInstance().getEntityName());
+            Timber.e("Error cannot trackUizaCCUForLiveStream() -> return %s", UizaData.getInstance().getEntityName());
             return;
         }
         if (activityIsPausing) {
-            reTrackUizaCCUForLivestream();
-            Timber.e("Error cannot trackUizaCCUForLivestream() because activity is pausing %s", UizaData.getInstance().getEntityName());
+            reTrackUizaCCUForLiveStream();
+            Timber.e("Error cannot trackUizaCCUForLiveStream() because activity is pausing %s", UizaData.getInstance().getEntityName());
             return;
         }
         UizaTrackingService service = UizaClientFactory.getTrackingService();
         UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
-        uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        uizaTrackingCCU.setDt(DateUtils.getCurrent(DateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setAi("");
         uizaTrackingCCU.setSn(UizaData.getInstance().getChannelName()); // stream name
-        uizaTrackingCCU.setDi(LDeviceUtil.getDeviceId(getContext()));
+        uizaTrackingCCU.setDi(DeviceUtils.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         RxBinder.bind(service.trackCCU(uizaTrackingCCU),
-                result -> reTrackUizaCCUForLivestream(),
-                throwable -> reTrackUizaCCUForLivestream());
+                result -> reTrackUizaCCUForLiveStream(),
+                throwable -> reTrackUizaCCUForLiveStream());
     }
 
-    private void reTrackUizaCCUForLivestream() {
-        handler.postDelayed(() -> trackUizaCCUForLivestream(), INTERVAL_TRACK_CCU);
+    private void reTrackUizaCCUForLiveStream() {
+        handler.postDelayed(() -> trackUizaCCUForLiveStream(), INTERVAL_TRACK_CCU);
     }
 
     protected void addTrackingMuizaError(String event, UizaException e) {
@@ -3163,15 +3117,12 @@ public class UizaVideoView extends VideoViewBase
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
-        if (event == null) {
+        if (event == null || uzPlayerManager == null) {
             return;
         }
         if (!event.isConnected()) {
-            notifyError(UizaExceptionUtil.getExceptionNoConnection());
+            notifyError(UizaExceptionUtils.getExceptionNoConnection());
         } else {
-            if (uzPlayerManager == null) {
-                return;
-            }
             LDialogUtil.clearAll();
             if (uzPlayerManager.getExoPlaybackException() == null) {
                 hideController();
@@ -3312,7 +3263,6 @@ public class UizaVideoView extends VideoViewBase
                 hideProgress();
                 isCastPlayerPlayingFirst = true;
             }
-
             if (currentPosition > 0) {
                 uzPlayerManager.seekTo(currentPosition);
             }
@@ -3322,7 +3272,7 @@ public class UizaVideoView extends VideoViewBase
 
     private List<MediaTrack> buildMediaTracks() {
         List<MediaTrack> result = new ArrayList<>();
-        if (subtitleList == null || subtitleList.isEmpty()) return result;
+        if (ListUtils.isEmpty(subtitleList)) return result;
         for (int i = 0; i < subtitleList.size(); i++) {
             Subtitle subtitle = subtitleList.get(i);
             if (subtitle.getStatus() == Subtitle.Status.DISABLE) continue;
@@ -3355,9 +3305,9 @@ public class UizaVideoView extends VideoViewBase
         if (isCastingChromecast) {
             uzPlayerManager.pause();
             uzPlayerManager.setVolume(0f);
-            ViewUtil.visibleViews(rlChromeCast, ibPlayIcon);
-            ViewUtil.goneViews(ibPauseIcon);
-//            ViewUtil.goneViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPlayIcon, ibPauseIcon, ibVolumeIcon);
+            UIUtils.visibleViews(rlChromeCast, ibPlayIcon);
+            UIUtils.goneViews(ibPauseIcon);
+//            UIUtils.goneViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPlayIcon, ibPauseIcon, ibVolumeIcon);
             //casting player luôn play first với volume not mute
             //UizaData.getInstance().getCasty().setVolume(0.99);
 
@@ -3367,9 +3317,9 @@ public class UizaVideoView extends VideoViewBase
         } else {
             uzPlayerManager.resume();
             uzPlayerManager.setVolume(0.99f);
-            ViewUtil.goneViews(rlChromeCast, ibPlayIcon);
-            ViewUtil.visibleViews(ibPauseIcon);
-//            ViewUtil.visibleViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPauseIcon, ibVolumeIcon);
+            UIUtils.goneViews(rlChromeCast, ibPlayIcon);
+            UIUtils.visibleViews(ibPauseIcon);
+//            UIUtils.visibleViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPauseIcon, ibVolumeIcon);
             //TODO iplm volume mute on/off o cast player
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //uzPlayerManager.setVolume(0.99f);

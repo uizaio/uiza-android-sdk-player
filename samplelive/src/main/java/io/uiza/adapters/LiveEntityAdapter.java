@@ -24,7 +24,7 @@ import io.uiza.samplelive.SampleLiveApplication;
 import io.uiza.samplelive.UizaLiveActivity;
 import vn.uiza.models.live.LiveEntity;
 import vn.uiza.models.live.LiveStatus;
-import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.ImageUtils;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ItemViewHolder> {
 
@@ -96,7 +96,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.It
 
         public void setThumbnailView(int position) {
             String thumbnail = thumbnails[position % thumbnails.length];
-            ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+            ImageUtils.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
         private void setStatusView(LiveStatus status) {

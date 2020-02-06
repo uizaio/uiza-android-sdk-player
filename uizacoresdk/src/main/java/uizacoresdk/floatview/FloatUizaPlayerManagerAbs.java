@@ -38,7 +38,7 @@ import java.util.List;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UizaExceptionUtil;
+import vn.uiza.core.exception.UizaExceptionUtils;
 import vn.uiza.models.Subtitle;
 
 abstract class FloatUizaPlayerManagerAbs {
@@ -247,7 +247,7 @@ abstract class FloatUizaPlayerManagerAbs {
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(UizaExceptionUtil.getExceptionPlayback());
+                fuzVideo.onPlayerError(UizaExceptionUtils.getExceptionPlayback());
             }
         }
 
@@ -314,5 +314,5 @@ abstract class FloatUizaPlayerManagerAbs {
         }
     }
 
-    abstract void init(boolean isLivestream, long contentPosition);
+    abstract void init(boolean isLiveStream, long contentPosition);
 }

@@ -68,12 +68,12 @@ import uizacoresdk.util.UizaUtil;
 import uizacoresdk.widget.UizaPreviewTimeBar;
 import uizacoresdk.widget.previewseekbar.PreviewLoader;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.exception.UizaExceptionUtil;
+import vn.uiza.core.exception.UizaExceptionUtils;
 import vn.uiza.models.Subtitle;
-import vn.uiza.utils.ImageUtil;
-import vn.uiza.utils.LConnectivityUtil;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.ConnectivityUtils;
+import vn.uiza.utils.DateUtils;
+import vn.uiza.utils.ImageUtils;
+import vn.uiza.utils.UIUtils;
 import uizacoresdk.widget.autosize.UizaImageButton;
 
 abstract class IUizaPlayerManager implements PreviewLoader {
@@ -192,7 +192,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         }
         setPlayWhenReady(false);
         if (thumbnailsUrl != null) {
-            ImageUtil.loadThumbnail(imageView, thumbnailsUrl, currentPosition);
+            ImageUtils.loadThumbnail(imageView, thumbnailsUrl, currentPosition);
         }
     }
 
@@ -242,11 +242,11 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         if (uzVideo.isCastingChromecast()) {
             return;
         }
-        LUIUtil.hideProgressBar(uzVideo.getProgressBar());
+        UIUtils.hideProgressBar(uzVideo.getProgressBar());
     }
 
     protected void showProgress() {
-        LUIUtil.showProgressBar(uzVideo.getProgressBar());
+        UIUtils.showProgressBar(uzVideo.getProgressBar());
     }
 
     protected SimpleExoPlayer getPlayer() {
@@ -726,7 +726,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
                 return INVALID_PROGRAM_DATE_TIME;
             }
             // int list of frame, we get the EXT_X_PROGRAM_DATE_TIME of current playing frame
-            return LDateUtils.convertUTCMs(playingDateTime);
+            return DateUtils.convertUTCMs(playingDateTime);
         }
 
         //This is called when the available or selected tracks change
@@ -838,9 +838,9 @@ abstract class IUizaPlayerManager implements PreviewLoader {
             if (uzVideo == null) {
                 return;
             }
-            uzVideo.handleError(UizaExceptionUtil.getExceptionPlayback());
-            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
-            if (LConnectivityUtil.isConnected(context)) {
+            uzVideo.handleError(UizaExceptionUtils.getExceptionPlayback());
+            //LLog.d(TAG, "onPlayerError isConnected: " + ConnectivityUtils.isConnected(context));
+            if (ConnectivityUtils.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
                 uzVideo.pause();

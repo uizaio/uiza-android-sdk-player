@@ -45,15 +45,20 @@ import vn.uiza.R;
  *
  * @author loitp
  */
-public class LUIUtil {
+public class UIUtils {
+
+    private UIUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     private static final String IMG_FOLDER = "img/";
 
-    public static void setMarquee(TextView tv, String text) {
+    public static void setMarquee(@NonNull TextView tv, String text) {
         tv.setText(text);
         setMarquee(tv);
     }
 
-    public static void setMarquee(TextView tv) {
+    public static void setMarquee(@NonNull TextView tv) {
         tv.setSelected(true);
         tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tv.setSingleLine(true);
@@ -78,7 +83,7 @@ public class LUIUtil {
     }
 
     @SuppressWarnings("deprecation")
-    public static void setCircleViewWithColor(View view, int colorMain, int colorStroke) {
+    public static void setCircleViewWithColor(@NonNull View view, int colorMain, int colorStroke) {
         try {
             view.setBackgroundDrawable(createGradientDrawableWithColor(colorMain, colorStroke));
         } catch (Exception e) {
@@ -86,7 +91,7 @@ public class LUIUtil {
         }
     }
 
-    public static void setGradientBackground(View v) {
+    public static void setGradientBackground(@NonNull View v) {
         final View view = v;
         Drawable[] layers = new Drawable[1];
 
@@ -106,7 +111,7 @@ public class LUIUtil {
         view.setBackground(composite);
     }
 
-    public static void setTextFromHTML(TextView textView, String bodyData) {
+    public static void setTextFromHTML(@NonNull TextView textView, String bodyData) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.setText(Html.fromHtml(bodyData, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -114,12 +119,12 @@ public class LUIUtil {
         }
     }
 
-    public static void setImageFromAsset(Context context, String fileName, ImageView imageView) {
+    public static void setImageFromAsset(@NonNull ImageView imageView, String fileName) {
         {
             Drawable drawable;
             InputStream stream = null;
             try {
-                stream = context.getAssets().open(IMG_FOLDER + fileName);
+                stream = imageView.getContext().getAssets().open(IMG_FOLDER + fileName);
                 drawable = Drawable.createFromStream(stream, null);
                 if (drawable != null) {
                     imageView.setImageDrawable(drawable);
@@ -147,15 +152,15 @@ public class LUIUtil {
 //        }
 //    }
 
-    public static void setTextAppearance(Context context, TextView textView, int resId) {
+    public static void setTextAppearance(@NonNull TextView textView, int resId) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            textView.setTextAppearance(context, resId);
+            textView.setTextAppearance(textView.getContext(), resId);
         } else {
             textView.setTextAppearance(resId);
         }
     }
 
-    public static void setSoftInputMode(Activity activity, int mode) {
+    public static void setSoftInputMode(@NonNull Activity activity, int mode) {
         activity.getWindow().setSoftInputMode(mode);
     }
 
@@ -165,15 +170,12 @@ public class LUIUtil {
         }
     }
 
-    public static void removeUnderlineOfSearchView(SearchView searchView) {
+    public static void removeUnderlineOfSearchView(@NonNull SearchView searchView) {
         View v = searchView.findViewById(R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    public static void setColorForSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        if (swipeRefreshLayout == null) {
-            return;
-        }
+    public static void setColorForSwipeRefreshLayout(@NonNull SwipeRefreshLayout swipeRefreshLayout) {
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorPrimary,
                 R.color.vip1,
@@ -183,7 +185,7 @@ public class LUIUtil {
                 R.color.vip5);
     }
 
-    public static void setTextShadow(TextView textView) {
+    public static void setTextShadow(@NonNull TextView textView) {
         setTextShadow(textView, Color.BLACK);
     }
 
@@ -196,7 +198,7 @@ public class LUIUtil {
         );
     }
 
-    public static void setTextBold(TextView textBold) {
+    public static void setTextBold(@NonNull TextView textBold) {
         textBold.setTypeface(null, Typeface.BOLD);
     }
 
@@ -216,7 +218,7 @@ public class LUIUtil {
             R.color.light_sky_blue
     };
 
-    public static int getColor(Context context) {
+    public static int getColor(@NonNull Context context) {
         Random random = new Random();
         int c = random.nextInt(colors.length);
         return ContextCompat.getColor(context, colors[c]);
@@ -243,14 +245,14 @@ public class LUIUtil {
         progressBar.getIndeterminateDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY);
     }
 
-    public static void showProgressBar(ProgressBar progressBar) {
-        if (progressBar != null && progressBar.getVisibility() != View.VISIBLE) {
+    public static void showProgressBar(@NonNull ProgressBar progressBar) {
+        if (progressBar.getVisibility() != View.VISIBLE) {
             progressBar.setVisibility(View.VISIBLE);
         }
     }
 
-    public static void hideProgressBar(ProgressBar progressBar) {
-        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
+    public static void hideProgressBar(@NonNull ProgressBar progressBar) {
+        if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -260,7 +262,7 @@ public class LUIUtil {
         seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
-    public static void setTextViewUnderLine(TextView textView) {
+    public static void setTextViewUnderLine(@NonNull TextView textView) {
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
@@ -281,7 +283,7 @@ public class LUIUtil {
         seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
-    public static void setTint(View view, int color) {
+    public static void setTint(@NonNull View view, int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         } else {
@@ -297,7 +299,7 @@ public class LUIUtil {
         return view.getMeasuredHeight();
     }
 
-    public static ArrayList<View> getAllChildren(View v) {
+    public static ArrayList<View> getAllChildren(@NonNull View v) {
         if (!(v instanceof ViewGroup)) {
             ArrayList<View> viewArrayList = new ArrayList<View>();
             viewArrayList.add(v);
@@ -313,5 +315,45 @@ public class LUIUtil {
             result.addAll(viewArrayList);
         }
         return result;
+    }
+
+    public static void visibleViews(View... views) {
+        for (View v : views) {
+            if (v != null && v.getVisibility() != View.VISIBLE) {
+                v.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void goneViews(View... views) {
+        for (View v : views) {
+            if (v != null && v.getVisibility() != View.GONE) {
+                v.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public static void invisibleViews(View... views) {
+        for (View v : views) {
+            if (v != null && v.getVisibility() != View.INVISIBLE) {
+                v.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    public static void setVisibilityViews(int visibility, View... views) {
+        for (View v : views) {
+            if (v != null && v.getVisibility() != visibility) {
+                v.setVisibility(visibility);
+            }
+        }
+    }
+
+    public static void setFocusableViews(boolean focusable, View... views) {
+        for (View v : views) {
+            if (v != null && !v.isFocusable()) {
+                v.setFocusable(focusable);
+            }
+        }
     }
 }

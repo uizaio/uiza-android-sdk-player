@@ -7,14 +7,21 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class EventBusData {
-    private static final EventBusData ourInstance = new EventBusData();
+
+
+    // Bill Pugh Singleton Implementation
+    private static class EventBusDataHelper {
+        private static final EventBusData INSTANCE = new EventBusData();
+    }
 
     public static EventBusData getInstance() {
-        return ourInstance;
+        return EventBusDataHelper.INSTANCE;
     }
 
     private EventBusData() {
     }
+
+    //
 
     public static class ConnectEvent {
         private boolean isConnected;

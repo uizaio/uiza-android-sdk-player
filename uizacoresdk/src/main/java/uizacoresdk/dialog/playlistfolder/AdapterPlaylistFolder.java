@@ -22,10 +22,10 @@ import java.util.List;
 
 import timber.log.Timber;
 import uizacoresdk.R;
+import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.util.UizaUtil;
-import uizacoresdk.widget.LAnimationUtil;
 import vn.uiza.models.PlaybackInfo;
-import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.ImageUtils;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -59,7 +59,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         }
     }
 
-    public AdapterPlaylistFolder(Context context, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public AdapterPlaylistFolder(@NonNull Context context, List<PlaybackInfo> playList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         this.context = context;
         this.playList = playList;
         this.currentPositionOfDataList = currentPositionOfDataList;
@@ -92,9 +92,9 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
             playListHolder.tvDescription.setVisibility(View.VISIBLE);
         }
 
-        ImageUtil.load(playListHolder.ivCover, data.getThumbnail());
+        ImageUtils.load(playListHolder.ivCover, data.getThumbnail());
 
-        playListHolder.rootView.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+        playListHolder.rootView.setOnClickListener(v -> AnimationUtils.play(v, Techniques.Pulse, new AnimationUtils.Callback() {
             @Override
             public void onCancel() {
                 //do nothing

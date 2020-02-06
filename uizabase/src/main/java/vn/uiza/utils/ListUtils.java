@@ -19,9 +19,9 @@ import vn.uiza.helpers.DateTypeSerializer;
 import vn.uiza.models.PlaybackInfo;
 
 
-public class ListUtil {
+public class ListUtils {
     // default constructor is private
-    private ListUtil() {
+    private ListUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
@@ -46,6 +46,12 @@ public class ListUtil {
     }
 
 
+    /**
+     * Returns true if the list is null or 0-length.
+     *
+     * @param list the list to be examined
+     * @return true if list is null or zero length
+     */
     public static <T> boolean isEmpty(@Nullable List<T> list) {
         return list == null || list.isEmpty();
     }

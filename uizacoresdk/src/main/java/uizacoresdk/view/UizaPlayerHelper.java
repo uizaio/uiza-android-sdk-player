@@ -1,10 +1,15 @@
 package uizacoresdk.view;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
+
 import java.util.Locale;
+
 import vn.uiza.core.common.Constants;
 
 final class UizaPlayerHelper {
@@ -38,10 +43,7 @@ final class UizaPlayerHelper {
     }
 
     float getVolume() {
-        if (isPlayerValid()) {
-            return player.getVolume();
-        }
-        return Constants.NOT_FOUND;
+        return isPlayerValid() ? player.getVolume() : -1;
     }
 
     void setVolume(float value) {
@@ -87,36 +89,25 @@ final class UizaPlayerHelper {
     }
 
     long getCurrentPosition() {
-        if (!isPlayerValid()) {
-            return 0;
-        }
-        return player.getCurrentPosition();
+        return isPlayerValid() ? player.getCurrentPosition() : 0;
     }
 
     long getDuration() {
-        if (!isPlayerValid()) {
-            return 0;
-        }
-        return player.getDuration();
+        return isPlayerValid() ? player.getDuration() : 0;
     }
 
     boolean isVOD() {
-        if (!isPlayerValid()) {
-            return false;
-        }
-        return !player.isCurrentWindowDynamic();
+        return isPlayerValid() && !player.isCurrentWindowDynamic();
     }
 
     boolean isLIVE() {
-        if (!isPlayerValid()) {
-            return false;
-        }
-        return player.isCurrentWindowDynamic();
+        return isPlayerValid() && player.isCurrentWindowDynamic();
     }
 
     /**
      * Returns a string containing player state debugging information.
      */
+    @Nullable
     String getPlayerStateString() {
         if (!isPlayerValid()) {
             return null;
@@ -145,6 +136,7 @@ final class UizaPlayerHelper {
     /**
      * Returns a string containing video debugging information.
      */
+    @Nullable
     String getVideoString() {
         if (!isPlayerValid()) {
             return null;
@@ -158,6 +150,7 @@ final class UizaPlayerHelper {
                 + getDecoderCountersBufferCountString(player.getVideoDecoderCounters()) + ")";
     }
 
+    @Nullable
     String getDecoderCountersBufferCountString(DecoderCounters counters) {
         if (counters == null) {
             return "";
@@ -216,10 +209,7 @@ final class UizaPlayerHelper {
     }
 
     long getContentPosition() {
-        if (!isPlayerValid()) {
-            return 0;
-        }
-        return player.getContentPosition();
+        return isPlayerValid() ? player.getContentPosition() : 0;
     }
 
     SimpleExoPlayer getPlayer() {

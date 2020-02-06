@@ -6,14 +6,13 @@ import androidx.annotation.UiThread;
 
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
-import com.google.android.gms.cast.framework.CastStateListener;
 
 import timber.log.Timber;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.util.UizaData;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.ViewUtil;
+import vn.uiza.utils.UIUtils;
 
 /**
  * Created by loitp on 2/27/2019.
@@ -64,9 +63,9 @@ public class UizaChromeCast {
 
     private void updateMediaRouteButtonVisibility(int state) {
         if (state == CastState.NO_DEVICES_AVAILABLE) {
-            ViewUtil.goneViews(uzMediaRouteButton);
+            UIUtils.goneViews(uzMediaRouteButton);
         } else {
-            ViewUtil.visibleViews(uzMediaRouteButton);
+            UIUtils.visibleViews(uzMediaRouteButton);
         }
     }
 
@@ -81,7 +80,7 @@ public class UizaChromeCast {
             Timber.e(e, "Error addUIChromecastLayer:");
         }
         if (castContext == null) {
-            ViewUtil.goneViews(uzMediaRouteButton);
+            UIUtils.goneViews(uzMediaRouteButton);
             return;
         }
         updateMediaRouteButtonVisibility(castContext.getCastState());

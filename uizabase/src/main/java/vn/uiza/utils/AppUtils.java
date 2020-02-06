@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -36,7 +38,7 @@ public final class AppUtils {
     }
 
 
-    public static String getAppName(Context context) {
+    public static String getAppName(@NonNull Context context) {
         return getAppName(context.getPackageManager(), context.getPackageName());
     }
 

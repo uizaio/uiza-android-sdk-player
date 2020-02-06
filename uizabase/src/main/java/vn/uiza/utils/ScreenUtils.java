@@ -35,35 +35,35 @@ import vn.uiza.core.common.Constants;
  * @author loitp
  */
 
-public class ScreenUtil {
+public class ScreenUtils {
     private static final String DIMEN = "dimen";
     private static final String STATUS_BAR_HEIGHT = "status_bar_height";
     private static final String DESIGN_BOTTOM_NAVIGATION_HEIGHT = "design_bottom_navigation_height";
     private static final String ANDROID = "android";
 
-    private ScreenUtil() {
+    private ScreenUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    public static int getStatusBarHeight(Context mContext) {
+    public static int getStatusBarHeight(@NonNull Context context) {
         int result = 0;
-        int resourceId = mContext.getResources().getIdentifier(STATUS_BAR_HEIGHT, DIMEN, ANDROID);
+        int resourceId = context.getResources().getIdentifier(STATUS_BAR_HEIGHT, DIMEN, ANDROID);
         if (resourceId > 0) {
-            result = mContext.getResources().getDimensionPixelSize(resourceId);
+            result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
     }
 
-    public static int getBottomBarHeight(Context mContext) {
-        boolean hasMenuKey = ViewConfiguration.get(mContext).hasPermanentMenuKey();
+    public static int getBottomBarHeight(@NonNull Context context) {
+        boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         if (!hasMenuKey && !hasBackKey) {
             // Do whatever you need to do, this device has a navigation bar
             int result = 0;
-            int resourceId = mContext.getResources().getIdentifier(DESIGN_BOTTOM_NAVIGATION_HEIGHT,
-                    DIMEN, mContext.getPackageName());
+            int resourceId = context.getResources().getIdentifier(DESIGN_BOTTOM_NAVIGATION_HEIGHT,
+                    DIMEN, context.getPackageName());
             if (resourceId > 0) {
-                result = mContext.getResources().getDimensionPixelSize(resourceId);
+                result = context.getResources().getDimensionPixelSize(resourceId);
             }
             return result;
         }
@@ -85,7 +85,7 @@ public class ScreenUtil {
         return Math.max(w, h) / Math.min(w, h);
     }
 
-    public static int getScreenHeightIncludeNavigationBar(Context context) {
+    public static int getScreenHeightIncludeNavigationBar(@NonNull Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         final Display display = windowManager.getDefaultDisplay();
         Point outPoint = new Point();
@@ -114,7 +114,7 @@ public class ScreenUtil {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-    public static void hideStatusBar(Activity activity) {
+    public static void hideStatusBar(@NonNull Activity activity) {
         // Hide Status Bar
         View decorView = activity.getWindow().getDecorView();
         // Hide Status Bar.
@@ -122,13 +122,13 @@ public class ScreenUtil {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-    public static void toggleFullscreen(Activity activity) {
+    public static void toggleFullscreen(@NonNull Activity activity) {
         WindowManager.LayoutParams attrs = activity.getWindow().getAttributes();
         attrs.flags ^= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         activity.getWindow().setAttributes(attrs);
     }
 
-    public static void toggleFullscreen(Activity activity, boolean isFullScreen) {
+    public static void toggleFullscreen(@NonNull Activity activity, boolean isFullScreen) {
         if (isFullScreen) {
             int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
@@ -146,7 +146,7 @@ public class ScreenUtil {
         }
     }
 
-    public static void hideNavigationBar(Activity activity) {
+    public static void hideNavigationBar(@NonNull Activity activity) {
         // This work only for android 4.4+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -168,7 +168,7 @@ public class ScreenUtil {
         }
     }
 
-    public static void showNavigationBar(Activity activity) {
+    public static void showNavigationBar(@NonNull Activity activity) {
         // set navigation bar status, remember to disable "setNavigationBarTintEnabled"
         // This work only for android 4.4+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -190,8 +190,8 @@ public class ScreenUtil {
         }
     }
 
-    public static void hideDefaultControls(@NonNull final Context context) {
-        final Window window = ((Activity) context).getWindow();
+    public static void hideDefaultControls(@NonNull Activity activity) {
+        final Window window = activity.getWindow();
         if (window == null) {
             return;
         }
@@ -207,8 +207,8 @@ public class ScreenUtil {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-    public static void showDefaultControls(@NonNull final Context context) {
-        final Window window = ((Activity) context).getWindow();
+    public static void showDefaultControls(@NonNull Activity activity) {
+        final Window window = activity.getWindow();
         if (window == null) {
             return;
         }
@@ -273,14 +273,14 @@ public class ScreenUtil {
     //1<=getCurrentBrightness<=255
     public static int getCurrentBrightness(@NonNull Context context) {
         try {
-            return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
+            return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, -1);
         } catch (Exception e) {
             Timber.e(e, "getCurrentBrightness");
-            return Constants.NOT_FOUND;
+            return -1;
         }
     }
 
-    private static boolean checkSystemWritePermission(Context context) {
+    private static boolean checkSystemWritePermission(@NonNull Context context) {
         boolean retVal = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             retVal = Settings.System.canWrite(context);
@@ -288,7 +288,7 @@ public class ScreenUtil {
         return retVal;
     }
 
-    public static boolean hasSoftKeys(WindowManager windowManager) {
+    public static boolean hasSoftKeys(@NonNull WindowManager windowManager) {
         Display d = windowManager.getDefaultDisplay();
 
         DisplayMetrics realDisplayMetrics = new DisplayMetrics();

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
 import timber.log.Timber;
@@ -14,7 +16,7 @@ import timber.log.Timber;
 
 public class LSoundUtil {
 
-    public static void startMusicFromAsset(Context context, String fileName) {
+    public static void startMusicFromAsset(@NonNull Context context, String fileName) {
         MediaPlayer mediaPlayer = new MediaPlayer();
         try {
             AssetFileDescriptor assetFileDescriptor = context.getAssets().openFd(fileName);

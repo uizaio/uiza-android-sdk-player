@@ -15,8 +15,4 @@ public final class MemoryConstants {
 
     public static final int GB = 1073741824;
 
-    @IntDef({BYTE, KB, MB, GB})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface Unit {
-    }
 }

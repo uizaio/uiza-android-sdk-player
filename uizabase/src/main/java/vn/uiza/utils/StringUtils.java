@@ -21,7 +21,7 @@ import timber.log.Timber;
 import vn.uiza.helpers.DateTypeDeserializer;
 import vn.uiza.helpers.DateTypeSerializer;
 
-public class StringUtil {
+public class StringUtils {
 
     /**
      * Email validation pattern.
@@ -29,7 +29,7 @@ public class StringUtil {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[_A-Za-z0-9-]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$");
 
     // default constructor
-    private StringUtil() {
+    private StringUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 

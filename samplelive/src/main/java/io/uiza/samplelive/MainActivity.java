@@ -36,9 +36,9 @@ import vn.uiza.models.live.CreateLiveBody;
 import vn.uiza.models.live.LiveEntity;
 import vn.uiza.models.live.UpdateLiveBody;
 import vn.uiza.restapi.UizaClientFactory;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.UIUtils;
 import vn.uiza.restapi.RxBinder;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.StringUtils;
 
 public class MainActivity extends AppCompatActivity
         implements LiveEntityAdapter.OnActionListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity
         final AppCompatEditText streamIp = root.findViewById(R.id.stream_name);
         final AppCompatEditText descIp = root.findViewById(R.id.stream_desc);
         streamIp.setText(entity.getName());
-        LUIUtil.setLastCursorEditText(streamIp);
+        UIUtils.setLastCursorEditText(streamIp);
         descIp.setText(entity.getDescription());
-        LUIUtil.setLastCursorEditText(descIp);
+        UIUtils.setLastCursorEditText(descIp);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             String name = streamIp.getText().toString();
             String desc = descIp.getText().toString();
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
     private void showDetailDialog(final LiveEntity entity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(entity.getName());
-        builder.setMessage(StringUtil.toBeautyJson(entity));
+        builder.setMessage(StringUtils.toBeautyJson(entity));
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             dialog.dismiss();
             MainActivity.this.finish();

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -21,11 +22,11 @@ public final class IntentUtils {
         throw new UnsupportedOperationException("u can't troll me...");
     }
 
-    public static Intent getInstallAppIntent(Context context,String filePath, String authority) {
+    public static Intent getInstallAppIntent(@NonNull Context context, String filePath, String authority) {
         return getInstallAppIntent(context, FileUtils.getFileByPath(filePath), authority);
     }
 
-    public static Intent getInstallAppIntent(Context context, File file, String authority) {
+    public static Intent getInstallAppIntent(@NonNull Context context, File file, String authority) {
         if (file == null) return null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
@@ -46,7 +47,7 @@ public final class IntentUtils {
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    public static Intent getLaunchAppIntent(Context context, String packageName) {
+    public static Intent getLaunchAppIntent(@NonNull Context context, String packageName) {
         return context.getPackageManager().getLaunchIntentForPackage(packageName);
     }
 

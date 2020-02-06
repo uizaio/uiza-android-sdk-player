@@ -1,19 +1,34 @@
 package vn.uiza.utils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 
-public class LConnectivityUtil {
+import androidx.annotation.NonNull;
+
+/**
+ * before API 29
+ *
+ * @deprecated Callers should instead use the {@link ConnectivityManager.NetworkCallback} API to
+ * *             learn about connectivity changes, or switch to use
+ * *             {@link ConnectivityManager#getNetworkCapabilities} or
+ * *             {@link ConnectivityManager#getLinkProperties} to get information synchronously
+ */
+@Deprecated
+public class ConnectivityUtils {
+
+    private ConnectivityUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     /**
      * Get the network info
      */
-    public static NetworkInfo getNetworkInfo(Context context) {
-        if (context == null) {
-            return null;
-        }
+    public static NetworkInfo getNetworkInfo(@NonNull Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
@@ -21,39 +36,41 @@ public class LConnectivityUtil {
     /**
      * Check if there is any connectivity
      */
-    public static boolean isConnected(Context context) {
-        NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
+    public static boolean isConnected(@NonNull Context context) {
+        NetworkInfo info = getNetworkInfo(context);
         return (info != null && info.isConnected());
     }
+
 
     /**
      * Check if there is any connectivity to a Wifi network
      */
-    public static boolean isConnectedWifi(Context context) {
-        NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
+    public static boolean isConnectedWifi(@NonNull Context context) {
+        NetworkInfo info = getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
     /**
      * Check if there is any connectivity to a mobile network
      */
-    public static boolean isConnectedMobile(Context context) {
-        NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
+    public static boolean isConnectedMobile(@NonNull Context context) {
+        NetworkInfo info = getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
 
     /**
      * Check if there is fast connectivity
      */
-    public static boolean isConnectedFast(Context context) {
-        NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
-        return (info != null && info.isConnected() && LConnectivityUtil.isConnectionFast(info.getType(), info.getSubtype()));
+    public static boolean isConnectedFast(@NonNull Context context) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+        NetworkInfo info = getNetworkInfo(context);
+        return (info != null && info.isConnected() && isConnectionFast(info.getType(), info.getSubtype()));
     }
 
     /**
      * Check if the connection is fast
      */
-    public static boolean isConnectionFast(int type, int subType) {
+    private static boolean isConnectionFast(int type, int subType) {
         if (type == ConnectivityManager.TYPE_WIFI) {
             return true;
         } else if (type == ConnectivityManager.TYPE_MOBILE) {
@@ -74,6 +91,8 @@ public class LConnectivityUtil {
                 case TelephonyManager.NETWORK_TYPE_EVDO_B: // API level 9, ~ 5 Mbps
                 case TelephonyManager.NETWORK_TYPE_HSPAP: // API level 13, ~ 10-20 Mbps
                 case TelephonyManager.NETWORK_TYPE_LTE: // API level 11, // ~ 10+ Mbps
+                case TelephonyManager.NETWORK_TYPE_IWLAN:
+                case 19:
                     return true;
                 // Unknown
                 case TelephonyManager.NETWORK_TYPE_UNKNOWN:

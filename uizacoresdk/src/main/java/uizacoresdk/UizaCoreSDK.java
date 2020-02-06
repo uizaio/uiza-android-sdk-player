@@ -16,7 +16,7 @@ import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
 import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.LDeviceUtil;
+import vn.uiza.utils.DeviceUtils;
 
 public class UizaCoreSDK {
     private UizaCoreSDK() {
@@ -64,7 +64,7 @@ public class UizaCoreSDK {
         return initWorkspace(context, domainAPI, appId, Constants.ENVIRONMENT.PROD, R.layout.uz_player_skin_1);
     }
 
-    public static void changeAppId(String appId) {
+    public static void changeAppId(@NonNull String appId) {
         UizaUtil.setAppId(appId);
         UizaClientFactory.changeAppId(appId);
     }
@@ -75,7 +75,7 @@ public class UizaCoreSDK {
      * @param activity: Activity
      */
     public static void setCasty(@NonNull Activity activity) {
-        if (LDeviceUtil.isTV(activity)) {
+        if (DeviceUtils.isTV(activity)) {
             return;
         }
         if (!AppUtils.checkChromeCastAvailable()) {

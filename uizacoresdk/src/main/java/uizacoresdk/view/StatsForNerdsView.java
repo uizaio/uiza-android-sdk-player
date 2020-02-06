@@ -25,7 +25,7 @@ import uizacoresdk.observers.OnAudioVolumeChangedListener;
 import uizacoresdk.util.UizaData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.ConvertUtils;
-import vn.uiza.utils.ViewUtil;
+import vn.uiza.utils.UIUtils;
 
 public class StatsForNerdsView extends RelativeLayout implements AnalyticsListener, OnAudioVolumeChangedListener {
     private TextView textEntityId, textBufferHealth, textNetworkActivity, textVolume, textViewPortFrame,
@@ -75,7 +75,7 @@ public class StatsForNerdsView extends RelativeLayout implements AnalyticsListen
         textLiveStreamLatencyTitle = findViewById(R.id.text_live_stream_latency_title);
 
         // close button
-        findViewById(R.id.btn_close).setOnClickListener(v -> ViewUtil.goneViews(StatsForNerdsView.this));
+        findViewById(R.id.btn_close).setOnClickListener(v -> UIUtils.goneViews(StatsForNerdsView.this));
     }
 
     @Override
@@ -386,13 +386,13 @@ public class StatsForNerdsView extends RelativeLayout implements AnalyticsListen
      * Hide TextView latency of live stream
      */
     public void hideTextLiveStreamLatency() {
-        ViewUtil.goneViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
+        UIUtils.goneViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
     }
 
     /**
      * Show TextView latency of live stream
      */
     public void showTextLiveStreamLatency() {
-        ViewUtil.visibleViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
+        UIUtils.visibleViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
     }
 }

@@ -1,8 +1,11 @@
 package vn.uiza.models;
 
 /**
- * Created by NamNd on 3/21/2018.
+ * Created by NamNd on 1/21/2020.
  */
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.IntDef;
 
@@ -10,8 +13,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Date;
 
-public class Subtitle {
+public class Subtitle implements Parcelable {
 
     @SerializedName("id")
     private String id;
@@ -25,15 +29,59 @@ public class Subtitle {
     private String mine;
     @SerializedName("language")
     private String language;
-    @SerializedName("isDefault")
+    @SerializedName("is_default")
     private int isDefault;
     @SerializedName("status")
-    private @Status
-    int status;
-    @SerializedName("createAt")
-    private String createdAt;
-    @SerializedName("updateAt")
-    private String updatedAt;
+    @Status
+    private int status;
+    @SerializedName("created_at")
+    private Date createdAt;
+    @SerializedName("updated_at")
+    private Date updatedAt;
+
+    protected Subtitle(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        type = in.readString();
+        url = in.readString();
+        mine = in.readString();
+        language = in.readString();
+        isDefault = in.readInt();
+        status = in.readInt();
+        createdAt = new Date(in.readLong());
+        updatedAt = new Date(in.readLong());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeString(url);
+        dest.writeString(mine);
+        dest.writeString(language);
+        dest.writeInt(isDefault);
+        dest.writeInt(status);
+        dest.writeLong(createdAt.getTime());
+        dest.writeLong(updatedAt.getTime());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Subtitle> CREATOR = new Creator<Subtitle>() {
+        @Override
+        public Subtitle createFromParcel(Parcel in) {
+            return new Subtitle(in);
+        }
+
+        @Override
+        public Subtitle[] newArray(int size) {
+            return new Subtitle[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -100,21 +148,22 @@ public class Subtitle {
         this.status = status;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({Status.DISABLE, Status.ENABLE})

@@ -1,5 +1,5 @@
 
-package vn.uiza.model;
+package vn.uiza.models;
 
 
 import com.google.gson.annotations.SerializedName;

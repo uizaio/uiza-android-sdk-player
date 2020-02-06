@@ -31,7 +31,7 @@ import static android.content.Context.UI_MODE_SERVICE;
  *
  * @author loitp
  */
-public class LDeviceUtil {
+public class DeviceUtils {
 
 
     public static boolean isTablet(@NonNull Activity activity) {
@@ -49,7 +49,7 @@ public class LDeviceUtil {
         v.vibrate(length);
     }
 
-    public static void vibrate(Context context) {
+    public static void vibrate(@NonNull Context context) {
         vibrate(context, 300);
     }
 

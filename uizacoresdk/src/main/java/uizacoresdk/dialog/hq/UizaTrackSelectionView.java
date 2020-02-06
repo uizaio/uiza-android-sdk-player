@@ -3,8 +3,11 @@ package uizacoresdk.dialog.hq;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+
 import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -56,14 +59,14 @@ public class UizaTrackSelectionView extends LinearLayout {
     /**
      * Gets a pair consisting of a dialog and the {@link com.google.android.exoplayer2.ui.TrackSelectionView} that will be shown by it.
      *
-     * @param context      The parent activity.
+     * @param context       The parent activity.
      * @param title         The dialog's title.
      * @param trackSelector The track selector.
      * @param rendererIndex The index of the renderer.
      * @return The dialog and the {@link com.google.android.exoplayer2.ui.TrackSelectionView} that will be shown by it.
      */
     public static Pair<AlertDialog, UizaTrackSelectionView> getDialog(
-            Context context,
+            @NonNull Context context,
             CharSequence title,
             DefaultTrackSelector trackSelector,
             int rendererIndex) {
@@ -81,11 +84,11 @@ public class UizaTrackSelectionView extends LinearLayout {
         return Pair.create(dialog, selectionView);
     }
 
-    public UizaTrackSelectionView(Context context) {
+    public UizaTrackSelectionView(@NonNull Context context) {
         this(context, null);
     }
 
-    public UizaTrackSelectionView(Context context, @Nullable AttributeSet attrs) {
+    public UizaTrackSelectionView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -96,7 +99,7 @@ public class UizaTrackSelectionView extends LinearLayout {
     }
 
     @SuppressWarnings("nullness")
-    public UizaTrackSelectionView(Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public UizaTrackSelectionView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
         selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);

@@ -10,14 +10,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
 //import com.google.android.material.appbar.AppBarLayout;
 //import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import vn.uiza.utils.ScreenUtil;
 
 /**
  * After Lollipop use system method.
@@ -33,7 +31,7 @@ class StatusBarCompatLollipop {
      * 2. call setSystemUiVisibility to clear translucentStatusBar's Flag.
      * 3. set FitsSystemWindows to false
      */
-    static void setStatusBarColor(Activity activity, int statusColor) {
+    static void setStatusBarColor(@NonNull Activity activity, int statusColor) {
         Window window = activity.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -57,7 +55,7 @@ class StatusBarCompatLollipop {
      *
      * @param hideStatusBarBackground hide statusBar's shadow
      */
-    static void translucentStatusBar(Activity activity, boolean hideStatusBarBackground) {
+    static void translucentStatusBar(@NonNull Activity activity, boolean hideStatusBarBackground) {
         Window window = activity.getWindow();
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -112,7 +110,7 @@ class StatusBarCompatLollipop {
 //        toolbar.setFitsSystemWindows(false);
 //        if (toolbar.getTag() == null) {
 //            CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-//            int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
+//            int statusBarHeight = ScreenUtils.getStatusBarHeight(activity);
 //            lp.height += statusBarHeight;
 //            toolbar.setLayoutParams(lp);
 //            toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());

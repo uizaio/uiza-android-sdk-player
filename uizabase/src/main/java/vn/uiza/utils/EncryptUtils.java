@@ -8,6 +8,8 @@ import android.content.pm.Signature;
 import android.os.Build;
 import android.util.Base64;
 
+import androidx.annotation.Nullable;
+
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -22,9 +24,9 @@ import timber.log.Timber;
 import vn.uiza.BuildConfig;
 import vn.uiza.core.common.Constants;
 
-public final class EncryptUtil {
+public final class EncryptUtils {
 
-    private EncryptUtil() {
+    private EncryptUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
@@ -49,6 +51,7 @@ public final class EncryptUtil {
         return result.toString();
     }
 
+    @Nullable
     public static String hmacSHA256(String key, byte[] data) {
         try {
             Mac sha = Mac.getInstance(ALGORITHM);
@@ -61,6 +64,7 @@ public final class EncryptUtil {
         return null;
     }
 
+    @Nullable
     public static String hmacSHA256(String key, String data) {
         try {
             Mac sha = Mac.getInstance(ALGORITHM);
@@ -101,6 +105,7 @@ public final class EncryptUtil {
         return new String(Base64.encode(input, Base64.NO_WRAP));
     }
 
+    @Nullable
     public static String md5(byte[] input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -112,6 +117,7 @@ public final class EncryptUtil {
         return null;
     }
 
+    @Nullable
     public static String sha1(byte[] input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -123,6 +129,7 @@ public final class EncryptUtil {
         return null;
     }
 
+    @Nullable
     public static String sha256(byte[] input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -140,6 +147,7 @@ public final class EncryptUtil {
         return result.toString();
     }
 
+    @Nullable
     public static String encrypt(String key, String initVector, String value) {
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));
@@ -154,6 +162,7 @@ public final class EncryptUtil {
         return null;
     }
 
+    @Nullable
     public static String decrypt(String key, String initVector, String encrypted) {
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));

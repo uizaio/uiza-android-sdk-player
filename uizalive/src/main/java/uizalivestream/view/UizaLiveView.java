@@ -55,7 +55,7 @@ import uizalivestream.interfaces.ICameraHelper;
 import uizalivestream.interfaces.RecordListener;
 import uizalivestream.interfaces.UizaLiveListener;
 import uizalivestream.util.LiveUtil;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 
 /**
  * @required: <uses-permission android:name="android.permission.CAMERA"/> and
@@ -213,7 +213,7 @@ public class UizaLiveView extends RelativeLayout {
     public void setAspectRatio(AspectRatio aspectRatio) {
         this.aspectRatio = aspectRatio;
         if (openGlView != null) {
-            int screenWidth = ScreenUtil.getScreenWidth();
+            int screenWidth = ScreenUtils.getScreenWidth();
             openGlView.getLayoutParams().width = screenWidth;
             openGlView.getLayoutParams().height = (int) (screenWidth * aspectRatio.getAspectRatio());
             openGlView.requestLayout();

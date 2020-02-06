@@ -14,13 +14,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 //import com.google.android.material.appbar.AppBarLayout;
 //import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import vn.uiza.utils.ScreenUtil;
+import androidx.annotation.NonNull;
+
+import vn.uiza.utils.ScreenUtils;
 
 /**
  * After kitkat add fake status bar
@@ -36,17 +35,15 @@ class StatusBarCompatKitKat {
      * 1. Add fake statusBarView.
      * 2. set tag to statusBarView.
      */
-    private static View addFakeStatusBarView(Activity activity, int statusBarColor, int statusBarHeight) {
+    private static View addFakeStatusBarView(@NonNull Activity activity, int statusBarColor, int statusBarHeight) {
         Window window = activity.getWindow();
         ViewGroup mDecorView = (ViewGroup) window.getDecorView();
-
         View mStatusBarView = new View(activity);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBarHeight);
         layoutParams.gravity = Gravity.TOP;
         mStatusBarView.setLayoutParams(layoutParams);
         mStatusBarView.setBackgroundColor(statusBarColor);
         mStatusBarView.setTag(TAG_FAKE_STATUS_BAR_VIEW);
-
         mDecorView.addView(mStatusBarView);
         return mStatusBarView;
     }
@@ -54,7 +51,7 @@ class StatusBarCompatKitKat {
     /**
      * use reserved order to remove is more quickly.
      */
-    private static void removeFakeStatusBarViewIfExist(Activity activity) {
+    private static void removeFakeStatusBarViewIfExist(@NonNull Activity activity) {
         Window window = activity.getWindow();
         ViewGroup mDecorView = (ViewGroup) window.getDecorView();
 
@@ -67,10 +64,7 @@ class StatusBarCompatKitKat {
     /**
      * add marginTop to simulate set FitsSystemWindow true
      */
-    private static void addMarginTopToContentChild(View mContentChild, int statusBarHeight) {
-        if (mContentChild == null) {
-            return;
-        }
+    private static void addMarginTopToContentChild(@NonNull View mContentChild, int statusBarHeight) {
         if (!TAG_MARGIN_ADDED.equals(mContentChild.getTag())) {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContentChild.getLayoutParams();
             lp.topMargin += statusBarHeight;
@@ -82,10 +76,7 @@ class StatusBarCompatKitKat {
     /**
      * remove marginTop to simulate set FitsSystemWindow false
      */
-    private static void removeMarginTopOfContentChild(View mContentChild, int statusBarHeight) {
-        if (mContentChild == null) {
-            return;
-        }
+    private static void removeMarginTopOfContentChild(@NonNull View mContentChild, int statusBarHeight) {
         if (TAG_MARGIN_ADDED.equals(mContentChild.getTag())) {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContentChild.getLayoutParams();
             lp.topMargin -= statusBarHeight;
@@ -103,13 +94,13 @@ class StatusBarCompatKitKat {
      * 4. addMarginTopToContentChild
      * 5. cancel ContentChild's fitsSystemWindow
      */
-    static void setStatusBarColor(Activity activity, int statusColor) {
+    static void setStatusBarColor(@NonNull Activity activity, int statusColor) {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mContentChild = mContentView.getChildAt(0);
-        int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
+        int statusBarHeight = ScreenUtils.getStatusBarHeight(activity);
 
         removeFakeStatusBarViewIfExist(activity);
         addFakeStatusBarView(activity, statusColor, statusBarHeight);
@@ -128,7 +119,7 @@ class StatusBarCompatKitKat {
      * 3. removeMarginTopOfContentChild
      * 4. cancel ContentChild's fitsSystemWindow
      */
-    static void translucentStatusBar(Activity activity) {
+    static void translucentStatusBar(@NonNull Activity activity) {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -136,7 +127,7 @@ class StatusBarCompatKitKat {
         View mContentChild = mContentView.getChildAt(0);
 
         removeFakeStatusBarViewIfExist(activity);
-        removeMarginTopOfContentChild(mContentChild, ScreenUtil.getStatusBarHeight(activity));
+        removeMarginTopOfContentChild(mContentChild, ScreenUtils.getStatusBarHeight(activity));
         if (mContentChild != null) {
             mContentChild.setFitsSystemWindows(false);
         }
@@ -168,14 +159,14 @@ class StatusBarCompatKitKat {
 //        toolbar.setFitsSystemWindows(false);
 //        if (toolbar.getTag() == null) {
 //            CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-//            int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
+//            int statusBarHeight = ScreenUtils.getStatusBarHeight(activity);
 //            lp.height += statusBarHeight;
 //            toolbar.setLayoutParams(lp);
 //            toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
 //            toolbar.setTag(true);
 //        }
 //
-//        int statusBarHeight = ScreenUtil.getStatusBarHeight(activity);
+//        int statusBarHeight = ScreenUtils.getStatusBarHeight(activity);
 //        removeFakeStatusBarViewIfExist(activity);
 //        removeMarginTopOfContentChild(mContentChild, statusBarHeight);
 //        final View statusView = addFakeStatusBarView(activity, statusColor, statusBarHeight);

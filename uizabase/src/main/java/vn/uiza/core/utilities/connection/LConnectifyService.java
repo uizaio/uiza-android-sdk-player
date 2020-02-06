@@ -9,7 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 
 import timber.log.Timber;
-import vn.uiza.utils.LConnectivityUtil;
+import vn.uiza.utils.ConnectivityUtils;
 import vn.uiza.data.EventBusData;
 
 /**
@@ -50,13 +50,13 @@ public class LConnectifyService extends JobService implements ConnectivityReceiv
             boolean isConnectedMobile = false;
             boolean isConnectedWifi = false;
             boolean isConnectedFast = false;
-            if (LConnectivityUtil.isConnectedMobile(this)) {
+            if (ConnectivityUtils.isConnectedMobile(this)) {
                 isConnectedMobile = true;
             }
-            if (LConnectivityUtil.isConnectedWifi(this)) {
+            if (ConnectivityUtils.isConnectedWifi(this)) {
                 isConnectedWifi = true;
             }
-            if (LConnectivityUtil.isConnectedFast(this)) {
+            if (ConnectivityUtils.isConnectedFast(this)) {
                 isConnectedFast = true;
             }
             EventBusData.getInstance().sendConnectChange(true, isConnectedFast, isConnectedWifi, isConnectedMobile);

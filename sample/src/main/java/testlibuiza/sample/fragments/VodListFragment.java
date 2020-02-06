@@ -30,8 +30,8 @@ import vn.uiza.restapi.UizaVideoService;
 import vn.uiza.models.ListWrap;
 import vn.uiza.models.vod.VODEntity;
 import vn.uiza.restapi.UizaClientFactory;
-import vn.uiza.utils.ListUtil;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.ListUtils;
+import vn.uiza.utils.StringUtils;
 
 public class VodListFragment extends Fragment implements OnMoreActionListener,
         PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -73,9 +73,16 @@ public class VodListFragment extends Fragment implements OnMoreActionListener,
         recyclerView.setAdapter(adapter);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String apiToken = preferences.getString("api_token_key", "");
-        if(!TextUtils.isEmpty(apiToken))
-        mSwipeRefreshLayout.post(this::loadVODEntities);
+        if (!TextUtils.isEmpty(apiToken))
+            mSwipeRefreshLayout.post(this::loadVODEntities);
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter != null && adapter.getItemCount() == 0)
+        mSwipeRefreshLayout.post(this::loadVODEntities);
     }
 
     @Override
@@ -100,7 +107,7 @@ public class VodListFragment extends Fragment implements OnMoreActionListener,
         compositeDisposable.add(RxBinder.bind(service.getEntities()
                         .map(ListWrap::getData),
                 entities -> {
-                    if (!ListUtil.isEmpty(entities)) {
+                    if (!ListUtils.isEmpty(entities)) {
                         adapter.setEntities(entities);
                         textView.setVisibility(View.GONE);
                     } else {
@@ -123,7 +130,7 @@ public class VodListFragment extends Fragment implements OnMoreActionListener,
         if (getContext() != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(entity.getName());
-            builder.setMessage(StringUtil.toBeautyJson(entity));
+            builder.setMessage(StringUtils.toBeautyJson(entity));
             builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
             builder.show();
         }

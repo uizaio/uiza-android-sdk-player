@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import testlibuiza.R;
 import testlibuiza.sample.utils.SampleUtils;
 import timber.log.Timber;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.StringUtils;
 
 public class FirebaseAuthActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,7 +61,7 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
                 progressBar.setVisibility(View.VISIBLE);
                 Editable user = etEmail.getText();
                 Editable pwd = etPassword.getText();
-                if (StringUtil.isEmailValid(user) || TextUtils.isEmpty(pwd)) {
+                if (StringUtils.isEmailValid(user) || TextUtils.isEmpty(pwd)) {
                     onFailure(new Throwable("User or password is wrong!"));
                     return;
                 }
@@ -71,7 +71,7 @@ public class FirebaseAuthActivity extends AppCompatActivity implements View.OnCl
                 progressBar.setVisibility(View.VISIBLE);
                 Editable rguser = etEmail.getText();
                 Editable rgpwd = etPassword.getText();
-                if (StringUtil.isEmailValid(rguser) || TextUtils.isEmpty(rgpwd)) {
+                if (StringUtils.isEmailValid(rguser) || TextUtils.isEmpty(rgpwd)) {
                     onFailure(new Throwable("User or password is wrong!"));
                     return;
                 }

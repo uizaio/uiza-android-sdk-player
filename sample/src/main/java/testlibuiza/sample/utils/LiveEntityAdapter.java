@@ -22,7 +22,7 @@ import testlibuiza.R;
 import testlibuiza.sample.LivePlaybackActivity;
 import vn.uiza.models.live.LiveEntity;
 import vn.uiza.models.live.LiveStatus;
-import vn.uiza.utils.ImageUtil;
+import vn.uiza.utils.ImageUtils;
 
 public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.ViewHolder> {
 
@@ -106,7 +106,7 @@ public class LiveEntityAdapter extends RecyclerView.Adapter<LiveEntityAdapter.Vi
 
         public void setThumbnailView(int position) {
             String thumbnail = VODEntityAdapter.thumbnails[position % VODEntityAdapter.thumbnails.length];
-            ImageUtil.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
+            ImageUtils.load(thumbnailView, thumbnail, R.drawable.ic_person_white_48);
         }
 
         private void setStatusView(LiveStatus status) {

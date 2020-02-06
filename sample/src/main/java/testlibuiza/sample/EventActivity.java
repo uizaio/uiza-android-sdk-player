@@ -27,7 +27,7 @@ import uizacoresdk.view.UizaVideoView;
 import uizacoresdk.view.VideoViewBase;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.models.PlaybackInfo;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 
 /**
  * Created by loitp on 1/9/2019.
@@ -335,7 +335,7 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (ScreenUtil.isFullScreen(this)) {
+        if (ScreenUtils.isFullScreen(this)) {
             uzVideoView.toggleFullscreen();
         } else {
             super.onBackPressed();

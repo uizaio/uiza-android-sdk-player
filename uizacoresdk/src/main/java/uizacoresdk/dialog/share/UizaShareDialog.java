@@ -6,17 +6,18 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.util.UizaData;
 import uizacoresdk.widget.WidgetUtils;
-import vn.uiza.utils.ScreenUtil;
+import vn.uiza.utils.ScreenUtils;
 import vn.uiza.utils.LSocialUtil;
 import uizacoresdk.widget.flowlayout.FlowLayout;
 
@@ -37,7 +38,7 @@ public class UizaShareDialog extends Dialog {
     private FlowLayout ll;
     private boolean isLandscape;
 
-    public UizaShareDialog(Activity activity, boolean isLandscape) {
+    public UizaShareDialog(@NonNull Activity activity, boolean isLandscape) {
         super(activity);
         this.activity = activity;
         this.isLandscape = isLandscape;
@@ -60,7 +61,7 @@ public class UizaShareDialog extends Dialog {
     }
 
     private void genUI() {
-        int screenW = ScreenUtil.getScreenWidth();
+        int screenW = ScreenUtils.getScreenWidth();
         int sizeIv;
         if (isLandscape) {
             sizeIv = screenW / 12;

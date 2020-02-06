@@ -8,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,17 +31,17 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import timber.log.Timber;
 import uizacoresdk.R;
+import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UizaData;
 import uizacoresdk.util.UizaUtil;
 import uizacoresdk.view.ComunicateMng;
-import uizacoresdk.widget.LAnimationUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
-import vn.uiza.utils.LConnectivityUtil;
-import vn.uiza.utils.LDeviceUtil;
-import vn.uiza.utils.ScreenUtil;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.ConnectivityUtils;
+import vn.uiza.utils.DeviceUtils;
+import vn.uiza.utils.ScreenUtils;
+import vn.uiza.utils.UIUtils;
 import vn.uiza.models.PlaybackInfo;
 
 /**
@@ -82,7 +83,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     private int marginR;
     private int marginB;
     private int progressBarColor;
-//    private ResultGetLinkPlay mResultGetLinkPlay;
+    //    private ResultGetLinkPlay mResultGetLinkPlay;
     private PlaybackInfo mPlaybackInfo;
     private int positionBeforeDisappearX = Constants.UNKNOW;
     private int positionBeforeDisappearY = Constants.UNKNOW;
@@ -143,8 +144,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         controlStub = mFloatingView.findViewById(R.id.control_stub);
 
         tvMsg = mFloatingView.findViewById(R.id.tv_msg);
-        LUIUtil.setTextShadow(tvMsg);
-        tvMsg.setOnClickListener(v -> LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+        UIUtils.setTextShadow(tvMsg);
+        tvMsg.setOnClickListener(v -> AnimationUtils.play(v, Techniques.Pulse, new AnimationUtils.Callback() {
             @Override
             public void onCancel() {
             }
@@ -199,8 +200,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         }
         videoW = UizaUtil.getVideoWidth(getBaseContext());
         videoH = UizaUtil.getVideoHeight(getBaseContext());
-        screenWidth = ScreenUtil.getScreenWidth();
-        screenHeight = ScreenUtil.getScreenHeight();
+        screenWidth = ScreenUtils.getScreenWidth();
+        screenHeight = ScreenUtils.getScreenHeight();
         pipTopPosition = UizaUtil.getStablePipTopPosition(getBaseContext());
         marginL = UizaUtil.getMiniPlayerMarginL(getBaseContext());
         marginT = UizaUtil.getMiniPlayerMarginT(getBaseContext());
@@ -344,10 +345,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     }
 
     private boolean isControllerShowing() {
-        if (rlControl == null) {
-            return false;
-        }
-        return rlControl.getVisibility() == View.VISIBLE;
+        return (rlControl != null) && (rlControl.getVisibility() == View.VISIBLE);
     }
 
     private void showController() {
@@ -379,31 +377,19 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     }
 
     private int getMoveViewWidth() {
-        if (moveView == null) {
-            return 0;
-        }
-        return moveView.getLayoutParams().width;
+        return (moveView == null) ? 0 : moveView.getLayoutParams().width;
     }
 
     private int getMoveViewHeight() {
-        if (moveView == null) {
-            return 0;
-        }
-        return moveView.getLayoutParams().height;
+        return (moveView == null) ? 0 : moveView.getLayoutParams().height;
     }
 
     private int getVideoW() {
-        if (fuzVideo == null) {
-            return 0;
-        }
-        return fuzVideo.getVideoWidth();
+        return (fuzVideo == null) ? 0 : fuzVideo.getVideoWidth();
     }
 
     private int getVideoH() {
-        if (fuzVideo == null) {
-            return 0;
-        }
-        return fuzVideo.getVideoHeight();
+        return (fuzVideo == null) ? 0 : fuzVideo.getVideoHeight();
     }
 
     //==================================================================================================END CONFIG
@@ -420,7 +406,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         }
         int firstPositionX = UizaUtil.getMiniPlayerFirstPositionX(getBaseContext());
         int firstPositionY = UizaUtil.getMiniPlayerFirstPositionY(getBaseContext());
-        if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
+        if (firstPositionX == -1 || firstPositionY == -1) {
             firstPositionX = screenWidth - vW;
             firstPositionY = screenHeight - vH - pipTopPosition;
         }
@@ -563,7 +549,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
                     case CENTER_TOP:
                     case CENTER_BOTTOM:
                         if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
+                            DeviceUtils.vibrate(getBaseContext());
                         }
                         viewDestroy.setVisibility(View.VISIBLE);
                         break;
@@ -580,7 +566,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
                     case BOTTOM_LEFT:
                     case BOTTOM_RIGHT:
                         if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
+                            DeviceUtils.vibrate(getBaseContext());
                         }
                         viewDestroy.setVisibility(View.VISIBLE);
                         break;
@@ -872,13 +858,13 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
     private boolean isSendMsgToActivity;
 
     private void setupVideo() {
-        if (linkPlay == null || linkPlay.isEmpty()) {
+        if (TextUtils.isEmpty(linkPlay)) {
             Timber.e("setupVideo linkPlay == null || linkPlay.isEmpty() -> stopSelf");
             stopSelf();
             return;
         }
         Timber.d("setupVideo linkPlay: %s, isLivestream: %s", linkPlay, isLivestream);
-        if (LConnectivityUtil.isConnected(this)) {
+        if (ConnectivityUtils.isConnected(this)) {
             fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, progressBarColor, this);
             tvMsg.setVisibility(View.GONE);
         } else {

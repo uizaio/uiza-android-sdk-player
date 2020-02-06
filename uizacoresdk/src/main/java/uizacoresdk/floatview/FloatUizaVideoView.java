@@ -42,9 +42,9 @@ import vn.uiza.restapi.UizaHeartBeatService;
 import vn.uiza.restapi.UizaTrackingService;
 import vn.uiza.restapi.restclient.UizaTrackingClient;
 import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LDeviceUtil;
-import vn.uiza.utils.LUIUtil;
+import vn.uiza.utils.DateUtils;
+import vn.uiza.utils.DeviceUtils;
+import vn.uiza.utils.UIUtils;
 
 public class FloatUizaVideoView extends VideoViewBase {
     private static final String M3U8_EXTENSION = ".m3u8";
@@ -67,7 +67,7 @@ public class FloatUizaVideoView extends VideoViewBase {
     private boolean isInitCustomLinkPlay;
     private int progressBarColor = Color.WHITE;
     private long timestampRebufferStart;
-    private int oldPercent = Constants.NOT_FOUND;
+    private int oldPercent = -1;
     private boolean isTracked25;
     private boolean isTracked50;
     private boolean isTracked75;
@@ -98,14 +98,14 @@ public class FloatUizaVideoView extends VideoViewBase {
     public void onCreateView() {
         inflate(getContext(), R.layout.float_uiza_video, this);
         progressBar = findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, progressBarColor);
+        UIUtils.setColorProgressBar(progressBar, progressBarColor);
         playerView = findViewById(R.id.player_view);
     }
 
     public void setProgressBarColor(int progressBarColor) {
         if (progressBar != null) {
             this.progressBarColor = progressBarColor;
-            LUIUtil.setColorProgressBar(progressBar, progressBarColor);
+            UIUtils.setColorProgressBar(progressBar, progressBarColor);
         }
     }
 
@@ -113,17 +113,11 @@ public class FloatUizaVideoView extends VideoViewBase {
 
     @Override
     public long getCurrentPosition() {
-        if (getPlayer() == null) {
-            return 0;
-        }
-        return getPlayer().getCurrentPosition();
+        return (getPlayer() == null) ? 0 : getPlayer().getCurrentPosition();
     }
 
     public long getContentBufferedPosition() {
-        if (getPlayer() == null) {
-            return 0;
-        }
-        return getPlayer().getContentBufferedPosition();
+        return (getPlayer() == null) ? 0 : getPlayer().getContentBufferedPosition();
     }
 
     @Override
@@ -136,50 +130,36 @@ public class FloatUizaVideoView extends VideoViewBase {
     //return true if toggleResume
     //return false if togglePause
     protected boolean togglePauseResume() {
-        if (fuzUizaPlayerManager == null) {
-            return false;
-        }
-        return fuzUizaPlayerManager.togglePauseResume();
+        return (fuzUizaPlayerManager != null) && fuzUizaPlayerManager.togglePauseResume();
     }
 
     @Override
     public void pause() {
-        if (fuzUizaPlayerManager == null) {
-            return;
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.pauseVideo();
         }
-        fuzUizaPlayerManager.pauseVideo();
     }
 
     @Override
     public void resume() {
-        if (fuzUizaPlayerManager == null) {
-            return;
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.resumeVideo();
         }
-        fuzUizaPlayerManager.resumeVideo();
     }
 
     @Override
     public int getVideoWidth() {
-        if (fuzUizaPlayerManager == null) {
-            return 0;
-        }
-        return fuzUizaPlayerManager.getVideoWidth();
+        return (fuzUizaPlayerManager == null) ? 0 : fuzUizaPlayerManager.getVideoWidth();
     }
 
     @Override
     public int getVideoHeight() {
-        if (fuzUizaPlayerManager == null) {
-            return 0;
-        }
-        return fuzUizaPlayerManager.getVideoHeight();
+        return (fuzUizaPlayerManager == null) ? 0 : fuzUizaPlayerManager.getVideoHeight();
     }
 
     @Override
     public SimpleExoPlayer getPlayer() {
-        if (fuzUizaPlayerManager == null) {
-            return null;
-        }
-        return fuzUizaPlayerManager.getPlayer();
+        return (fuzUizaPlayerManager == null) ? null : fuzUizaPlayerManager.getPlayer();
     }
 
     private void releasePlayerManager() {
@@ -224,11 +204,11 @@ public class FloatUizaVideoView extends VideoViewBase {
     }
 
     protected void hideProgress() {
-        LUIUtil.hideProgressBar(progressBar);
+        UIUtils.hideProgressBar(progressBar);
     }
 
     protected void showProgress() {
-        LUIUtil.showProgressBar(progressBar);
+        UIUtils.showProgressBar(progressBar);
     }
     //=============================================================================================================END VIEW
 
@@ -245,7 +225,7 @@ public class FloatUizaVideoView extends VideoViewBase {
         this.contentPosition = contentPosition;
         this.isInitCustomLinkPlay = isInitCustomLinkPlay;
         this.progressBarColor = progressBarColor;
-        LUIUtil.setColorProgressBar(progressBar, this.progressBarColor);
+        UIUtils.setColorProgressBar(progressBar, this.progressBarColor);
         isOnStateReadyFirst = false;
         Timber.d("init linkPlay: %s, isLivestream: %s, isInitCustomLinkPlay: %s", linkPlay, isLivestream, isInitCustomLinkPlay);
         this.callback = callback;
@@ -513,10 +493,10 @@ public class FloatUizaVideoView extends VideoViewBase {
         }
         UizaTrackingService service = UizaClientFactory.getTrackingService();
         UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
-        uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        uizaTrackingCCU.setDt(DateUtils.getCurrent(DateUtils.FORMAT_1));
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setSn(UizaData.getInstance().getChannelName()); // stream name
-        uizaTrackingCCU.setDi(LDeviceUtil.getDeviceId(getContext()));
+        uizaTrackingCCU.setDi(DeviceUtils.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         RxBinder.bind(service.trackCCU(uizaTrackingCCU), result -> {
             Timber.d("trackCCU success: %s", UizaData.getInstance().getEntityName());

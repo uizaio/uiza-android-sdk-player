@@ -13,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 
 import java.util.Arrays;
@@ -37,7 +38,8 @@ public final class ProcessUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    public static String getForegroundProcessName(Context context) {
+    @Nullable
+    public static String getForegroundProcessName(@NonNull Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> pInfo = manager.getRunningAppProcesses();
         if (pInfo != null && pInfo.size() != 0) {
@@ -77,13 +79,12 @@ public final class ProcessUtils {
                 } catch (PackageManager.NameNotFoundException e) {
                     Timber.e(e);
                 }
-            } else {
             }
         }
         return null;
     }
 
-    public static Set<String> getAllBackgroundProcesses(Context context) {
+    public static Set<String> getAllBackgroundProcesses(@NonNull Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         Set<String> set = new HashSet<>();
@@ -94,7 +95,7 @@ public final class ProcessUtils {
     }
 
     @RequiresPermission(Manifest.permission.KILL_BACKGROUND_PROCESSES)
-    public static Set<String> killAllBackgroundProcesses(Context context) {
+    public static Set<String> killAllBackgroundProcesses(@NonNull Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         Set<String> set = new HashSet<>();
@@ -114,7 +115,7 @@ public final class ProcessUtils {
     }
 
     @RequiresPermission(Manifest.permission.KILL_BACKGROUND_PROCESSES)
-    public static boolean killBackgroundProcesses(Context context, @NonNull String packageName) {
+    public static boolean killBackgroundProcesses(@NonNull Context context, @NonNull String packageName) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         if (info == null || info.size() == 0) return true;

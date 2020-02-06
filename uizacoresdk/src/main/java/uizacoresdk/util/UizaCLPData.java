@@ -7,14 +7,21 @@ import vn.uiza.models.PlaybackInfo;
  * Uiza Custom link play Data
  */
 public class UizaCLPData {
-    private static final UizaCLPData ourInstance = new UizaCLPData();
+
+    // Bill Pugh Singleton Implementation
+
+    private static class UizaCLPDataHelper {
+        private static final UizaCLPData INSTANCE = new UizaCLPData();
+    }
 
     public static UizaCLPData getInstance() {
-        return ourInstance;
+        return UizaCLPDataHelper.INSTANCE;
     }
 
     private UizaCLPData() {
     }
+
+    //
 
     private PlaybackInfo playbackInfo;
 

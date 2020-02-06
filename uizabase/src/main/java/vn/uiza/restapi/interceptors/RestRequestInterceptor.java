@@ -1,22 +1,17 @@
 package vn.uiza.restapi.interceptors;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
-import java.util.Timer;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
-import timber.log.Timber;
-import vn.uiza.restapi.restclient.RestClient;
-import vn.uiza.utils.EncryptUtil;
+import vn.uiza.utils.EncryptUtils;
 
 public class RestRequestInterceptor implements Interceptor {
 
@@ -52,9 +47,9 @@ public class RestRequestInterceptor implements Interceptor {
             if (request.body() != null) {
                 final Buffer buffer = new Buffer();
                 request.body().writeTo(buffer);
-                token = EncryptUtil.hmacSHA256(hmacKey, buffer.readByteArray());
+                token = EncryptUtils.hmacSHA256(hmacKey, buffer.readByteArray());
             } else {
-                token = EncryptUtil.hmacSHA256(hmacKey, "");
+                token = EncryptUtils.hmacSHA256(hmacKey, "");
             }
             String authorization = String.format(Locale.getDefault(), "hmac %s:%s", this.appId, token);
             headers.remove(AUTHORIZATION);

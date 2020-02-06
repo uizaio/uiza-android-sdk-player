@@ -31,8 +31,8 @@ import vn.uiza.utils.glide.GlideThumbnailTransformationPB;
  * Created by namdinh@uiza.io on 11/12/2019.
  */
 
-public class ImageUtil {
-    private ImageUtil() {
+public class ImageUtils {
+    private ImageUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 

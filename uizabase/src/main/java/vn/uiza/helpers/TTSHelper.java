@@ -1,4 +1,4 @@
-package vn.uiza.utils;
+package vn.uiza.helpers;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,16 +12,21 @@ import timber.log.Timber;
  * Created by Loitp on 5/6/2017.
  */
 
-public class LTextToSpeechUtil implements TextToSpeech.OnInitListener {
+public class TTSHelper implements TextToSpeech.OnInitListener {
     private final String TAG = getClass().getSimpleName();
     private TextToSpeech tts;
-    private static final LTextToSpeechUtil ourInstance = new LTextToSpeechUtil();
+    private static final TTSHelper ourInstance = new TTSHelper();
 
-    public static LTextToSpeechUtil getInstance() {
-        return ourInstance;
+    // Bill Pugh Singleton Implementation
+    private static class TTSPrivateHelper {
+        private static final TTSHelper INSTANCE = new TTSHelper();
     }
 
-    private LTextToSpeechUtil() {
+    public static TTSHelper getInstance() {
+        return TTSPrivateHelper.INSTANCE;
+    }
+
+    private TTSHelper() {
     }
 
     public void setupTTS(Context context) {
@@ -41,13 +46,12 @@ public class LTextToSpeechUtil implements TextToSpeech.OnInitListener {
     }
 
     public void speakOut(String text) {
-        if (tts == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        } else {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        if (tts != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            } else {
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+            }
         }
     }
 

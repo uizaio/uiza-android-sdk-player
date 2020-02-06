@@ -7,8 +7,8 @@ import android.util.Base64;
 
 import testlibuiza.R;
 import vn.uiza.models.drm.LicenseAcquisitionUrl;
-import vn.uiza.utils.EncryptUtil;
-import vn.uiza.utils.StringUtil;
+import vn.uiza.utils.EncryptUtils;
+import vn.uiza.utils.StringUtils;
 
 public class DummyUtil {
 
@@ -21,10 +21,10 @@ public class DummyUtil {
         input = input.trim();
         String hexIv = input.substring(0, 16);
         String hexText = input.substring(16);
-        byte[] decodedHex = EncryptUtil.decodeHex(hexText.toCharArray());
+        byte[] decodedHex = EncryptUtils.decodeHex(hexText.toCharArray());
         String base64 = Base64.encodeToString(decodedHex, Base64.NO_WRAP);
-        String decrypt = EncryptUtil.decrypt(key, hexIv, base64);
-        return StringUtil.toObject(decrypt, LicenseAcquisitionUrl.class);
+        String decrypt = EncryptUtils.decrypt(key, hexIv, base64);
+        return StringUtils.toObject(decrypt, LicenseAcquisitionUrl.class);
     }
 
 

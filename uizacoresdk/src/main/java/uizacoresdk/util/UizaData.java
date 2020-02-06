@@ -7,6 +7,8 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.cast.MediaTrack;
 
@@ -25,9 +27,9 @@ import vn.uiza.restapi.RxBinder;
 import vn.uiza.restapi.UizaClientFactory;
 import vn.uiza.restapi.UizaEventService;
 import vn.uiza.utils.AppUtils;
-import vn.uiza.utils.LDateUtils;
-import vn.uiza.utils.LDeviceUtil;
-import vn.uiza.utils.ListUtil;
+import vn.uiza.utils.DateUtils;
+import vn.uiza.utils.DeviceUtils;
+import vn.uiza.utils.ListUtils;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -44,6 +46,7 @@ public class UizaData {
     private static final String CAPTIONS = "captions";
     private static final String SUBTITLE = "subtitle";
 
+    // Bill Pugh Singleton Implementation
     private static class UizaDataHelper {
         private static final UizaData INSTANCE = new UizaData();
     }
@@ -55,6 +58,7 @@ public class UizaData {
     private UizaData() {
     }
 
+    //
     @LayoutRes
     private int currentPlayerId = R.layout.uz_player_skin_1;//id of layout xml
     private String playerInfoId;//player id from workspace uiza
@@ -109,7 +113,7 @@ public class UizaData {
      *                    {@link Constants.ENVIRONMENT#STAG} or {@link Constants.ENVIRONMENT#PROD}
      * @return true if success init or false
      */
-    public boolean initSDK(Context context, String domainAPI, String appId, int environment) {
+    public boolean initSDK(@NonNull Context context, String domainAPI, String appId, int environment) {
         if (TextUtils.isEmpty(domainAPI)) {
             return false;
         }
@@ -198,6 +202,7 @@ public class UizaData {
         this.urlThumbnailsPreviewSeekBar = null;
     }
 
+    @Nullable
     public String getEntityId() {
         return (playbackInfo == null) ? null : playbackInfo.getId();
     }
@@ -206,32 +211,30 @@ public class UizaData {
         return (playbackInfo != null) && playbackInfo.isLive();
     }
 
-
+    @Nullable
     public String getEntityName() {
         return (playbackInfo == null) ? null : playbackInfo.getName();
     }
 
+    @Nullable
     public String getChannelName() {
         return (playbackInfo == null) ? null : playbackInfo.getChannelName();
     }
 
     //==================================================================================================================START TRACKING
-    public UizaTracking createTrackingInput(Context context, String eventType) {
+    public UizaTracking createTrackingInput(@NonNull Context context, String eventType) {
         return createTrackingInput(context, "0", eventType);
     }
 
-    public UizaTracking createTrackingInput(Context context, String playThrough, String eventType) {
-        if (context == null) {
-            return null;
-        }
+    public UizaTracking createTrackingInput(@NonNull Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         uizaTracking.setPageType(PAGE_TYPE);
-        uizaTracking.setViewerUserId(LDeviceUtil.getDeviceId(context));
+        uizaTracking.setViewerUserId(DeviceUtils.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
-        uizaTracking.setDeviceId(LDeviceUtil.getDeviceId(context));
+        uizaTracking.setDeviceId(DeviceUtils.getDeviceId(context));
         //timestamp
-        uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        uizaTracking.setTimestamp(DateUtils.getCurrent(DateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
         uizaTracking.setPlayerId(currentPlayerId + "");
         uizaTracking.setPlayerName(Constants.PLAYER_NAME);
@@ -277,12 +280,12 @@ public class UizaData {
         this.muizaList.addAll(muizas);
     }
 
-    public void addTrackingMuiza(Context context, String event) {
+    public void addTrackingMuiza(@NonNull Context context, String event) {
         addTrackingMuiza(context, event, null);
     }
 
-    public void addTrackingMuiza(Context context, String event, UizaException e) {
-        if (context == null || event == null || event.isEmpty()) {
+    public void addTrackingMuiza(@NonNull Context context, String event, UizaException e) {
+        if (TextUtils.isEmpty(event)) {
             return;
         }
         TmpParamData.getInstance().addPlayerSequenceNumber();
@@ -332,20 +335,20 @@ public class UizaData {
         muiza.setPlayerWidth(TmpParamData.getInstance().getPlayerWidth());
         muiza.setSessionExpires(System.currentTimeMillis() + 5 * 60 * 1000);
         muiza.setSessionId(TmpParamData.getInstance().getSessionId());
-        muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        muiza.setTimestamp(DateUtils.getCurrent(DateUtils.FORMAT_1));
         //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
-        muiza.setViewId(LDeviceUtil.getDeviceId(context));
+        muiza.setViewId(DeviceUtils.getDeviceId(context));
         muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
         muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
         muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
         muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
         muiza.setViewerDeviceName(android.os.Build.MODEL);
-        muiza.setViewerOsArchitecture(LDeviceUtil.getViewerOsArchitecture());
+        muiza.setViewerOsArchitecture(DeviceUtils.getViewerOsArchitecture());
         muiza.setViewerOsFamily(ANDROID + Build.VERSION.RELEASE);
         muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
-        muiza.setViewerUserId(LDeviceUtil.getDeviceId(context));
+        muiza.setViewerUserId(DeviceUtils.getDeviceId(context));
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
         muiza.setPlayerId(String.valueOf(currentPlayerId));
@@ -447,7 +450,7 @@ public class UizaData {
     }
 
     public PlaybackInfo getDataWithPositionOfPlayList(int position) {
-        return ListUtil.isEmpty(playList) ? null : playList.get(position);
+        return ListUtils.isEmpty(playList) ? null : playList.get(position);
     }
 
     public void clearDataForPlaylistFolder() {
