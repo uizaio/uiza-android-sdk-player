@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 public class WindowUtil {
-    public static void hideWindowStatusBar(Window window) {
+    public static void hideWindowStatusBar(@NonNull Window window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -20,7 +22,7 @@ public class WindowUtil {
         }
     }
 
-    public static int getSystemStatusBarHeight(Context context) {
+    public static int getSystemStatusBarHeight(@NonNull Context context) {
         int id = context.getResources().getIdentifier(
                 "status_bar_height", "dimen", "android");
         return id > 0 ? context.getResources().getDimensionPixelSize(id) : id;
