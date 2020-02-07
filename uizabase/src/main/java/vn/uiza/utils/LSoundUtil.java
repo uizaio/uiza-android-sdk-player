@@ -14,7 +14,11 @@ import timber.log.Timber;
  * Created by www.muathu@gmail.com on 6/1/2017.
  */
 
-public class LSoundUtil {
+public final class LSoundUtil {
+
+    private LSoundUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     public static void startMusicFromAsset(@NonNull Context context, String fileName) {
         MediaPlayer mediaPlayer = new MediaPlayer();

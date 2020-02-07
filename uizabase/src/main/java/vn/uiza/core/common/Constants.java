@@ -143,7 +143,6 @@ public class Constants {
     public static final float RATIO_12_16 = 12f / 16f;
     public static final float RATIO_16_16 = 1;
 
-    public static final String DRM_SCHEME_NULL = null;
     public static final String DRM_SCHEME_PLAYREADY = "playready";
     public static final String DRM_SCHEME_WIDEVINE = "widevine";
     public static final String DRM_LICENSE_URL = "https://wv.service.expressplay.com/hms/wv/rights/?ExpressPlayToken=BAAaXbkVKbEAAABg_0gifyfSLlqtjYGc9boiYUIudGi445e5xHzay2CzEazC0uj6GWg79k_yexpv7t2GmjWF10ehecUV2kqV5MBWM-7kURuaQcSJ368ocXFpcoT4l2EXQO8_9R67vZC3Y9lDqLE-9_FTTIqg7C-oWLoXZgWAmJQ";
@@ -163,10 +162,6 @@ public class Constants {
     public static final String SMSTO_URI = "smsto:";
     public static final String SMS_BODY = "sms_body";
     public static final String TEL_URI = "tel:";
-
-    public static final String UTF_8_CHARSET = "UTF-8";
-    public static final String AES_ALGORITHM = "AES";
-    public static final String AES_CTR_NO_PADDING = "AES/CTR/NoPadding";
 
     public static final String B_SIZE_FORMAT = "%.3fB";
     public static final String KB_SIZE_FORMAT = "%.3fKB";

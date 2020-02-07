@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
  * Created by Loitp on 4/1/2017.
  */
 
-public class KeyBoardUtils {
+public final class KeyBoardUtils {
     public static void show(@NonNull Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY); // show

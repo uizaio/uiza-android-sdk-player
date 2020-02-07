@@ -15,7 +15,11 @@ import vn.uiza.core.common.Constants;
  * Created by www.muathu@gmail.com on 1/29/2018.
  */
 
-public class LSMSUtil {
+public final class LSMSUtil {
+    private LSMSUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     //https://gist.github.com/mustafasevgi/8c6b638ffd5fca90d45d
     public static void sendSMS(@NonNull Context context, String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) // At least KitKat

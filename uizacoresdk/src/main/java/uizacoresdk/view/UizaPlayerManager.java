@@ -2,6 +2,9 @@ package uizacoresdk.view;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
@@ -32,13 +35,13 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
     private UizaAdPlayerCallback uzAdPlayerCallback;
     private UZVideoAdPlayerListener uzVideoAdPlayerListener = new UZVideoAdPlayerListener();
 
-    public UizaPlayerManager(final UizaVideoView uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
+    public UizaPlayerManager(@NonNull UizaVideoView uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
                              List<Subtitle> subtitleList) {
         super(uzVideo, linkPlay, thumbnailsUrl, subtitleList);
 
-        if (urlIMAAd != null && !urlIMAAd.isEmpty()) {
-            if (UizaUtil.getClickedPip(context)) {
-                Timber.e( "UizaPlayerManager don't init urlIMAAd because called from PIP again");
+        if (!TextUtils.isEmpty(urlIMAAd)) {
+            if (UizaUtil.getClickedPip()) {
+                Timber.e("UizaPlayerManager don't init urlIMAAd because called from PIP again");
             } else {
                 adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
             }
@@ -104,9 +107,8 @@ public final class UizaPlayerManager extends IUizaPlayerManager implements AdsMe
     @Override
     void initSource() {
         isOnAdEnded = false;
-        String drmScheme = Constants.DRM_SCHEME_NULL;
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager = buildDrmSessionManager(drmScheme);
-        if (drmScheme != Constants.DRM_SCHEME_NULL && drmSessionManager == null) return;
+        if (drmScheme != null && drmSessionManager == null) return;
 
         player = buildPlayer(drmSessionManager);
         playerHelper = new UizaPlayerHelper(player);

@@ -1,10 +1,13 @@
 
 package vn.uiza.models.auth;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 
-public class Auth {
+public class Auth implements Parcelable {
 
     @SerializedName("token")
     private String token;
@@ -12,6 +15,24 @@ public class Auth {
     private String expired;
     @SerializedName("appId")
     private String appId;
+
+    public Auth(Parcel in) {
+        token = in.readString();
+        expired = in.readString();
+        appId = in.readString();
+    }
+
+    public static final Creator<Auth> CREATOR = new Creator<Auth>() {
+        @Override
+        public Auth createFromParcel(Parcel in) {
+            return new Auth(in);
+        }
+
+        @Override
+        public Auth[] newArray(int size) {
+            return new Auth[size];
+        }
+    };
 
     public String getToken() {
         return token;
@@ -37,4 +58,16 @@ public class Auth {
         this.appId = appId;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(token);
+        dest.writeString(expired);
+        dest.writeString(appId);
+    }
 }

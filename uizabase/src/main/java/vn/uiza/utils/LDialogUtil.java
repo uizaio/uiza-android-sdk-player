@@ -18,7 +18,7 @@ import vn.uiza.R;
  * Created by www.muathu@gmail.com on 12/29/2017.
  */
 
-public class LDialogUtil {
+public final class LDialogUtil {
     private static List<AlertDialog> alertDialogList = new ArrayList<>();
 
     public static void clearAll() {

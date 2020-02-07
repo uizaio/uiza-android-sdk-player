@@ -137,7 +137,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
                 LToast.show(this, "Init failed");
             }
         }
-        if (UizaUtil.getClickedPip(this)) {
+        if (UizaUtil.getClickedPip()) {
             btPlay.performClick();
         }
     }

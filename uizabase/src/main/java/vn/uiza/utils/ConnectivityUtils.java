@@ -4,22 +4,23 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 
 /**
  * before API 29
- *
- * @deprecated Callers should instead use the {@link ConnectivityManager.NetworkCallback} API to
+ * <p>
+ * Callers should instead use the {@link ConnectivityManager.NetworkCallback} API to
  * *             learn about connectivity changes, or switch to use
  * *             {@link ConnectivityManager#getNetworkCapabilities} or
  * *             {@link ConnectivityManager#getLinkProperties} to get information synchronously
  */
-@Deprecated
-public class ConnectivityUtils {
+public final class ConnectivityUtils {
 
     private ConnectivityUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -28,25 +29,35 @@ public class ConnectivityUtils {
     /**
      * Get the network info
      */
-    public static NetworkInfo getNetworkInfo(@NonNull Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo();
+
+    private static ConnectivityManager getConnectivityManager(@NonNull Context context) {
+        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     /**
      * Check if there is any connectivity
      */
+//    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isConnected(@NonNull Context context) {
-        NetworkInfo info = getNetworkInfo(context);
-        return (info != null && info.isConnected());
+        ConnectivityManager cm = getConnectivityManager(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Network network = cm.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities ncs = cm.getNetworkCapabilities(network);
+                return ncs.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || ncs.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+            }
+            return false;
+        } else {
+            NetworkInfo info = cm.getActiveNetworkInfo();
+            return (info != null && info.isConnected());
+        }
     }
-
 
     /**
      * Check if there is any connectivity to a Wifi network
      */
     public static boolean isConnectedWifi(@NonNull Context context) {
-        NetworkInfo info = getNetworkInfo(context);
+        NetworkInfo info = getConnectivityManager(context).getActiveNetworkInfo();
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
@@ -54,7 +65,7 @@ public class ConnectivityUtils {
      * Check if there is any connectivity to a mobile network
      */
     public static boolean isConnectedMobile(@NonNull Context context) {
-        NetworkInfo info = getNetworkInfo(context);
+        NetworkInfo info = getConnectivityManager(context).getActiveNetworkInfo();
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
 
@@ -63,7 +74,7 @@ public class ConnectivityUtils {
      */
     public static boolean isConnectedFast(@NonNull Context context) {
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-        NetworkInfo info = getNetworkInfo(context);
+        NetworkInfo info = getConnectivityManager(context).getActiveNetworkInfo();
         return (info != null && info.isConnected() && isConnectionFast(info.getType(), info.getSubtype()));
     }
 

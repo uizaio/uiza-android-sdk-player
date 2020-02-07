@@ -19,7 +19,7 @@ import vn.uiza.helpers.DateTypeSerializer;
 import vn.uiza.models.PlaybackInfo;
 
 
-public class ListUtils {
+public final class ListUtils {
     // default constructor is private
     private ListUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");

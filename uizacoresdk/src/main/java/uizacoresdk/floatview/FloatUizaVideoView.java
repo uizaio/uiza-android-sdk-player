@@ -453,7 +453,7 @@ public class FloatUizaVideoView extends VideoViewBase {
 
     private void trackUiza(final UizaTracking uizaTracking, final UizaTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         if (UizaTrackingClient.getInstance().getRetrofit() == null) {
-            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint(getContext());
+            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint();
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 Timber.e("trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.iuizacoresdk/view/floatview/FUZVideo.java:419sEmpty()");
                 return;

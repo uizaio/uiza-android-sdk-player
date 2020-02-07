@@ -20,7 +20,7 @@ import vn.uiza.core.exception.UizaException;
  *
  * @author loitp
  */
-public class LSocialUtil {
+public final class LSocialUtil {
     private static final String MARKET_URI = "market://details?id=";
     private static final String PLAY_STORE_DETAIL_URI =
             "http://play.google.com/store/apps/details?id=";
@@ -32,6 +32,10 @@ public class LSocialUtil {
     private static final String FB_MESSENGER_PACKAGE = "com.facebook.orca";
     private static final String FB_MESSENGER_URI = "fb-messenger://user/";
     private static final String SHARE_TITLE = "Share via";
+
+    private LSocialUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     public static void rateApp(@NonNull Context context, String packageName) {
         try {

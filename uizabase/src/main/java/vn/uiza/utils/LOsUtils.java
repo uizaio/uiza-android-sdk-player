@@ -5,14 +5,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-public class LOsUtils {
+public final class LOsUtils {
     private static boolean sIsAtLeastM;
 
     static {
         final int v = getApiVersion();
         sIsAtLeastM = v >= 23;//android.os.Build.VERSION_CODES.M
     }
-
+    private LOsUtils() { throw new UnsupportedOperationException("u can't instantiate me..."); }
     /**
      * @return The Android API version of the OS that we're currently running on.
      */

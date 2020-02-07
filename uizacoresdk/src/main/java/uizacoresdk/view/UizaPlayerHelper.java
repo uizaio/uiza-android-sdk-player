@@ -67,24 +67,22 @@ final class UizaPlayerHelper {
     }
 
     void seekToForward(long forward) {
-        if (!isPlayerValid()) {
-            return;
-        }
-        if (player.getCurrentPosition() + forward > player.getDuration()) {
-            player.seekTo(player.getDuration());
-        } else {
-            player.seekTo(player.getCurrentPosition() + forward);
+        if (isPlayerValid()) {
+            if (player.getCurrentPosition() + forward > player.getDuration()) {
+                player.seekTo(player.getDuration());
+            } else {
+                player.seekTo(player.getCurrentPosition() + forward);
+            }
         }
     }
 
     void seekToBackward(long backward) {
-        if (!isPlayerValid()) {
-            return;
-        }
-        if (player.getCurrentPosition() - backward > 0) {
-            player.seekTo(player.getCurrentPosition() - backward);
-        } else {
-            player.seekTo(0);
+        if (isPlayerValid()) {
+            if (player.getCurrentPosition() - backward > 0) {
+                player.seekTo(player.getCurrentPosition() - backward);
+            } else {
+                player.seekTo(0);
+            }
         }
     }
 
@@ -170,22 +168,22 @@ final class UizaPlayerHelper {
 
     int getVideoProfileW() {
         if (!isPlayerValid()) {
-            return Constants.UNKNOW;
+            return 0;
         }
         Format format = player.getVideoFormat();
         if (format == null) {
-            return Constants.UNKNOW;
+            return 0;
         }
         return format.width;
     }
 
     int getVideoProfileH() {
         if (!isPlayerValid()) {
-            return Constants.UNKNOW;
+            return 0;
         }
         Format format = player.getVideoFormat();
         if (format == null) {
-            return Constants.UNKNOW;
+            return 0;
         }
         return format.height;
     }

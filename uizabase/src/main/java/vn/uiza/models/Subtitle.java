@@ -32,7 +32,7 @@ public class Subtitle implements Parcelable {
     @SerializedName("is_default")
     private int isDefault;
     @SerializedName("status")
-    @Status
+    @StatusValues
     private int status;
     @SerializedName("created_at")
     private Date createdAt;
@@ -139,12 +139,12 @@ public class Subtitle implements Parcelable {
         this.isDefault = isDefault;
     }
 
-    @Status
+    @StatusValues
     public int getStatus() {
         return status;
     }
 
-    public void setStatus(@Status int status) {
+    public void setStatus(@StatusValues int status) {
         this.status = status;
     }
 
@@ -165,11 +165,14 @@ public class Subtitle implements Parcelable {
     }
 
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({Status.DISABLE, Status.ENABLE})
-    public @interface Status {
+    public interface Status {
         int DISABLE = 0;
         int ENABLE = 1;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({Status.DISABLE, Status.ENABLE})
+    public @interface StatusValues {
     }
 
 }

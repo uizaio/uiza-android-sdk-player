@@ -5,12 +5,16 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.pm.SigningInfo;
 import android.os.Build;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -31,7 +35,24 @@ public final class EncryptUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    private static final String ALGORITHM = "HmacSHA256"; // HmacMD5, HmacSHA1, HmacSHA256, HmacSHA512
+    @StringDef({HMAC_MD5, HMAC_SHA_1, HMAC_SHA_256, HMAC_SHA_512})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AlgorithmValues {
+    }
+
+    public static final String MD5 = "MD5";
+    public static final String SHA_1 = "SHA1";
+    public static final String SHA_256 = "SHA256";
+    public static final String SHA_512 = "SHA512";
+    public static final String HMAC_MD5 = "HmacMD5";
+    public static final String HMAC_SHA_1 = "HmacSHA1";
+    public static final String HMAC_SHA_256 = "HmacSHA256";
+    private static final String HMAC_SHA_512 = "HmacSHA512";
+
+    public static final String UTF_8 = "UTF-8";
+    private static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
+    public static final String AES_ALGORITHM = "AES";
+    public static final String AES_CTR_NO_PADDING = "AES/CTR/NoPadding";
 
     // Function for alternatively merging two strings
     public static String merge(String s1, String s2) {
@@ -52,30 +73,70 @@ public final class EncryptUtils {
         return result.toString();
     }
 
+    /**
+     * @param key       the key material of the secret key. The contents of
+     *                  the array are copied to protect against subsequent modification.
+     * @param data      data in bytes
+     * @param algorithm the name of the secret-key algorithm to be associated
+     *                  with the given key material.
+     *                  See {@link AlgorithmValues}
+     * @return hmac string, null if exception
+     */
     @Nullable
-    public static String hmacSHA256(String key, byte[] data) {
+    public static String hmac(String key, byte[] data, @AlgorithmValues String algorithm) {
         try {
-            Mac sha = Mac.getInstance(ALGORITHM);
-            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), ALGORITHM);
+            Mac sha = Mac.getInstance(algorithm);
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(CHARSET_UTF8), algorithm);
             sha.init(secretKey);
             return bytesToHex(sha.doFinal(data));
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException | IllegalStateException e) {
             Timber.e(e);
         }
         return null;
     }
 
+    /**
+     * @param key       the key material of the secret key. The contents of
+     *                  the array are copied to protect against subsequent modification.
+     * @param data      data in string
+     * @param algorithm the name of the secret-key algorithm to be associated
+     *                  with the given key material.
+     *                  See {@link AlgorithmValues}
+     * @return String of hmac, null if exception
+     */
     @Nullable
-    public static String hmacSHA256(String key, String data) {
+    public static String hmac(String key, String data, @AlgorithmValues String algorithm) {
         try {
-            Mac sha = Mac.getInstance(ALGORITHM);
-            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), ALGORITHM);
+            Mac sha = Mac.getInstance(algorithm);
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(CHARSET_UTF8), algorithm);
             sha.init(secretKey);
-            return bytesToHex(sha.doFinal(data.getBytes(Charset.forName("UTF-8"))));
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            return bytesToHex(sha.doFinal(data.getBytes(CHARSET_UTF8)));
+        } catch (NoSuchAlgorithmException | InvalidKeyException | IllegalStateException e) {
             Timber.e(e);
         }
         return null;
+    }
+
+    /**
+     * @param key  the key material of the secret key. The contents of
+     *             the array are copied to protect against subsequent modification.
+     * @param data data in bytes
+     * @return String of hmac 256, null if exception
+     */
+    @Nullable
+    public static String hmacSHA256(String key, byte[] data) {
+        return hmac(key, data, HMAC_SHA_256);
+    }
+
+    /**
+     * @param key  the key material of the secret key. The contents of
+     *             the array are copied to protect against subsequent modification.
+     * @param data data in string
+     * @return String of hmac 256, null if exception
+     */
+    @Nullable
+    public static String hmacSHA256(String key, String data) {
+        return hmac(key, data, HMAC_SHA_256);
     }
 
     /**
@@ -88,13 +149,21 @@ public final class EncryptUtils {
     @SuppressLint("PackageManagerGetSignatures")
     public static String getAppSigned(@NonNull Context context) {
         PackageInfo info;
+        Signature[] signatures;
         try {
-            info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-            Signature[] signatures = info.signatures;
-            for (Signature signature : signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                return md5(md.digest());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
+                if (info.signingInfo.hasMultipleSigners()) {
+                    signatures = info.signingInfo.getApkContentsSigners();
+                } else {
+                    signatures = info.signingInfo.getSigningCertificateHistory();
+                }
+            } else {
+                info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+                signatures = info.signatures;
+            }
+            if (signatures != null && signatures.length > 0) {
+                return signFromSignature(signatures);
             }
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             Timber.e(e);
@@ -102,15 +171,25 @@ public final class EncryptUtils {
         return null;
     }
 
+    @Nullable
+    private static String signFromSignature(Signature[] signatures) throws NoSuchAlgorithmException {
+        for (Signature signature : signatures) {
+            MessageDigest md = MessageDigest.getInstance(SHA_1);
+            md.update(signature.toByteArray());
+            return md5(md.digest());
+        }
+        return null;
+    }
+
     public static String base64Encode(byte[] input) {
-        return new String(Base64.encode(input, Base64.NO_WRAP));
+        return new String(Base64.encode(input, Base64.NO_WRAP), CHARSET_UTF8);
     }
 
     @Nullable
-    public static String md5(byte[] input) {
+    public static String md5(byte[] sig) {
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(input);
+            MessageDigest md = MessageDigest.getInstance(MD5);
+            md.update(sig);
             return bytesToHex(md.digest());
         } catch (NoSuchAlgorithmException e) {
             Timber.e(e);
@@ -121,7 +200,7 @@ public final class EncryptUtils {
     @Nullable
     public static String sha1(byte[] input) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            MessageDigest md = MessageDigest.getInstance(SHA_1);
             md.update(input);
             return bytesToHex(md.digest());
         } catch (NoSuchAlgorithmException e) {
@@ -133,7 +212,7 @@ public final class EncryptUtils {
     @Nullable
     public static String sha256(byte[] input) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest md = MessageDigest.getInstance(SHA_256);
             md.update(input);
             return bytesToHex(md.digest());
         } catch (NoSuchAlgorithmException e) {
@@ -151,9 +230,9 @@ public final class EncryptUtils {
     @Nullable
     public static String encrypt(String key, String initVector, String value) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));
-            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
-            Cipher cipher = Cipher.getInstance(Constants.AES_CTR_NO_PADDING);
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(CHARSET_UTF8));
+            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(CHARSET_UTF8), AES_ALGORITHM);
+            Cipher cipher = Cipher.getInstance(AES_CTR_NO_PADDING);
             cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, iv);
             byte[] encrypted = cipher.doFinal(value.getBytes());
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
@@ -166,9 +245,9 @@ public final class EncryptUtils {
     @Nullable
     public static String decrypt(String key, String initVector, String encrypted) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(Charset.forName("UTF-8")));
-            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(Charset.forName("UTF-8")), Constants.AES_ALGORITHM);
-            Cipher cipher = Cipher.getInstance(Constants.AES_CTR_NO_PADDING);
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(CHARSET_UTF8));
+            SecretKeySpec sKeySpec = new SecretKeySpec(key.getBytes(CHARSET_UTF8), AES_ALGORITHM);
+            Cipher cipher = Cipher.getInstance(AES_CTR_NO_PADDING);
             cipher.init(Cipher.DECRYPT_MODE, sKeySpec, iv);
             byte[] original = cipher.doFinal(Base64.decode(encrypted, Base64.DEFAULT));
             return new String(original);

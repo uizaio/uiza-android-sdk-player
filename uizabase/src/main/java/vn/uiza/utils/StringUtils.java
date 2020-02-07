@@ -21,7 +21,7 @@ import timber.log.Timber;
 import vn.uiza.helpers.DateTypeDeserializer;
 import vn.uiza.helpers.DateTypeSerializer;
 
-public class StringUtils {
+public final class StringUtils {
 
     /**
      * Email validation pattern.

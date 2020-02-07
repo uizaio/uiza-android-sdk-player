@@ -22,7 +22,7 @@ import java.util.Random;
 
 import timber.log.Timber;
 
-public class LStoreUtil {
+public final class LStoreUtil {
     private static final String SLASH = "/";
     private static String folderPath;
 
@@ -32,6 +32,16 @@ public class LStoreUtil {
 
     public interface CallbackWriteFile {
         void onFinish(boolean isSuccess);
+    }
+
+    public interface EventReadFromFolder {
+        void onSuccess(String data);
+
+        void onError();
+    }
+
+    private LStoreUtil() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     public static String getFolderPath(@NonNull Context context) {
@@ -176,11 +186,6 @@ public class LStoreUtil {
         }.execute();
     }
 
-    public interface EventReadFromFolder {
-        void onSuccess(String data);
-
-        void onError();
-    }
 
     /**
      * read text file from folder in background

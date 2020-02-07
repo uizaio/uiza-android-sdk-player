@@ -31,7 +31,7 @@ import static android.content.Context.UI_MODE_SERVICE;
  *
  * @author loitp
  */
-public class DeviceUtils {
+public final class DeviceUtils {
 
 
     public static boolean isTablet(@NonNull Activity activity) {

@@ -35,7 +35,7 @@ import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UizaData;
 import uizacoresdk.util.UizaUtil;
-import uizacoresdk.view.ComunicateMng;
+import uizacoresdk.view.CommunicateMng;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UizaException;
 import vn.uiza.utils.ConnectivityUtils;
@@ -165,16 +165,16 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         }));
 
         viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
-        int colorViewDestroy = UizaUtil.getMiniPlayerColorViewDestroy(getBaseContext());
+        int colorViewDestroy = UizaUtil.getMiniPlayerColorViewDestroy();
         viewDestroy.setBackgroundColor(colorViewDestroy);
-        isEZDestroy = UizaUtil.getMiniPlayerEzDestroy(getBaseContext());
-        isEnableVibration = UizaUtil.getMiniPlayerEnableVibration(getBaseContext());
-        isEnableSmoothSwitch = UizaUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
+        isEZDestroy = UizaUtil.getMiniPlayerEzDestroy();
+        isEnableVibration = UizaUtil.getMiniPlayerEnableVibration();
+        isEnableSmoothSwitch = UizaUtil.getMiniPlayerEnableSmoothSwitch();
 
-        isAutoSize = UizaUtil.getMiniPlayerAutoSize(getBaseContext());
+        isAutoSize = UizaUtil.getMiniPlayerAutoSize();
         if (!isAutoSize) {
-            videoWidthFromSettingConfig = UizaUtil.getMiniPlayerSizeWidth(getBaseContext());
-            videoHeightFromSettingConfig = UizaUtil.getMiniPlayerSizeHeight(getBaseContext());
+            videoWidthFromSettingConfig = UizaUtil.getMiniPlayerSizeWidth();
+            videoHeightFromSettingConfig = UizaUtil.getMiniPlayerSizeHeight();
         }
         //Drag and move floating view using user's touch action.
         dragAndMove();
@@ -198,15 +198,15 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (mPlaybackInfo == null) {
             stopSelf();
         }
-        videoW = UizaUtil.getVideoWidth(getBaseContext());
-        videoH = UizaUtil.getVideoHeight(getBaseContext());
+        videoW = UizaUtil.getVideoWidth();
+        videoH = UizaUtil.getVideoHeight();
         screenWidth = ScreenUtils.getScreenWidth();
         screenHeight = ScreenUtils.getScreenHeight();
-        pipTopPosition = UizaUtil.getStablePipTopPosition(getBaseContext());
-        marginL = UizaUtil.getMiniPlayerMarginL(getBaseContext());
-        marginT = UizaUtil.getMiniPlayerMarginT(getBaseContext());
-        marginR = UizaUtil.getMiniPlayerMarginR(getBaseContext());
-        marginB = UizaUtil.getMiniPlayerMarginB(getBaseContext());
+        pipTopPosition = UizaUtil.getStablePipTopPosition();
+        marginL = UizaUtil.getMiniPlayerMarginL();
+        marginT = UizaUtil.getMiniPlayerMarginT();
+        marginR = UizaUtil.getMiniPlayerMarginR();
+        marginB = UizaUtil.getMiniPlayerMarginB();
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
         findViews();
         //Add the view to the window.
@@ -334,14 +334,14 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             fuzVideo.getPlayer().setPlayWhenReady(false);
         }
         //moveView.setOnTouchListener(null);//disabled move view
-        UizaUtil.setClickedPip(getApplicationContext(), true);
+        UizaUtil.setClickedPip(true);
         if (UizaData.getInstance().getPlaybackInfo() == null) {
             Timber.d("getPlaybackInfo == null");
             return;
         }
-        ComunicateMng.MsgFromServiceOpenApp msgFromServiceOpenApp = new ComunicateMng.MsgFromServiceOpenApp(null);
+        CommunicateMng.MsgFromServiceOpenApp msgFromServiceOpenApp = new CommunicateMng.MsgFromServiceOpenApp(null);
         msgFromServiceOpenApp.setPositionMiniPlayer(fuzVideo.getCurrentPosition());
-        ComunicateMng.postFromService(msgFromServiceOpenApp);
+        CommunicateMng.postFromService(msgFromServiceOpenApp);
     }
 
     private boolean isControllerShowing() {
@@ -404,8 +404,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             vW = videoWidthFromSettingConfig;
             vH = videoHeightFromSettingConfig;
         }
-        int firstPositionX = UizaUtil.getMiniPlayerFirstPositionX(getBaseContext());
-        int firstPositionY = UizaUtil.getMiniPlayerFirstPositionY(getBaseContext());
+        int firstPositionX = UizaUtil.getMiniPlayerFirstPositionX();
+        int firstPositionY = UizaUtil.getMiniPlayerFirstPositionY();
         if (firstPositionX == -1 || firstPositionY == -1) {
             firstPositionX = screenWidth - vW;
             firstPositionY = screenHeight - vH - pipTopPosition;
@@ -483,7 +483,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            boolean isTapToFullPlayer = UizaUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
+            boolean isTapToFullPlayer = UizaUtil.getMiniPlayerTapToFullPlayer();
             if (isTapToFullPlayer) {
                 setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
                 openApp();
@@ -788,7 +788,7 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        UizaUtil.setClickedPip(getApplicationContext(), false);
+        UizaUtil.setClickedPip(false);
         super.onDestroy();
     }
 
@@ -804,9 +804,9 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
             updateUIVideoSizeOneTime(fuzVideo.getVideoWidth(), fuzVideo.getVideoHeight());
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
-                ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
+                CommunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new CommunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(true);
-                ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
+                CommunicateMng.postFromService(msgFromServiceIsInitSuccess);
                 isSendMsgToActivity = true;
             }
         }
@@ -932,17 +932,17 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
 
     //listen msg from UZVideo
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ComunicateMng.MsgFromActivity msgFromActivity) {
+    public void onMessageEvent(CommunicateMng.MsgFromActivity msgFromActivity) {
         if (msgFromActivity == null || fuzVideo == null) {
             return;
         }
-        if (msgFromActivity instanceof ComunicateMng.MsgFromActivityPosition) {
+        if (msgFromActivity instanceof CommunicateMng.MsgFromActivityPosition) {
             //LLog.d(TAG, "Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
                 Timber.d("miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true -> do nothing");
             } else {
-                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
+                long contentPosition = ((CommunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
                 Timber.d("miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition: %d, position: %d", contentBufferedPosition, contentPosition);
                 if (contentPosition >= contentBufferedPosition) {
@@ -951,8 +951,8 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
                     fuzVideo.seekTo(contentPosition);
                 }
             }
-        } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            Timber.d("miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: %b", ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
+        } else if (msgFromActivity instanceof CommunicateMng.MsgFromActivityIsInitSuccess) {
+            Timber.d("miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: %b", ((CommunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             stopSelf();
         }
         if (msgFromActivity.getMsg() == null) {
@@ -961,34 +961,34 @@ public class FloatUizaVideoService extends Service implements FloatUizaVideoView
         handleMsgFromActivity(msgFromActivity);
     }
 
-    private void handleMsgFromActivity(ComunicateMng.MsgFromActivity msgFromActivity) {
+    private void handleMsgFromActivity(CommunicateMng.MsgFromActivity msgFromActivity) {
         String msg = msgFromActivity.getMsg();
         switch (msg) {
-            case ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER:
+            case CommunicateMng.SHOW_MINI_PLAYER_CONTROLLER:
                 showController();
                 break;
-            case ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER:
+            case CommunicateMng.HIDE_MINI_PLAYER_CONTROLLER:
                 hideController();
                 break;
-            case ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER:
+            case CommunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER:
                 toggleController();
                 break;
-            case ComunicateMng.PAUSE_MINI_PLAYER:
+            case CommunicateMng.PAUSE_MINI_PLAYER:
                 pauseVideo();
                 break;
-            case ComunicateMng.RESUME_MINI_PLAYER:
+            case CommunicateMng.RESUME_MINI_PLAYER:
                 resumeVideo();
                 break;
-            case ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER:
+            case CommunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER:
                 toggleResumePause();
                 break;
-            case ComunicateMng.OPEN_APP_FROM_MINI_PLAYER:
+            case CommunicateMng.OPEN_APP_FROM_MINI_PLAYER:
                 openApp();
                 break;
-            case ComunicateMng.DISAPPEAR:
+            case CommunicateMng.DISAPPEAR:
                 disappear();
                 break;
-            case ComunicateMng.APPEAR:
+            case CommunicateMng.APPEAR:
                 appear();
                 break;
         }

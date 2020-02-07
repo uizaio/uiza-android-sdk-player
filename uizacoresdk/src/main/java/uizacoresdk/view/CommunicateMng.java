@@ -6,7 +6,7 @@ import org.greenrobot.eventbus.EventBus;
  * Created by loitp on 1/4/2019.
  */
 
-public class ComunicateMng {
+public class CommunicateMng {
     //================================== ACTIVITY TO SERVICE
     public final static String SHOW_MINI_PLAYER_CONTROLLER = "SHOW_MINI_PLAYER_CONTROLLER";
     public final static String HIDE_MINI_PLAYER_CONTROLLER = "HIDE_MINI_PLAYER_CONTROLLER";

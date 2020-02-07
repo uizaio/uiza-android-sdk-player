@@ -21,7 +21,7 @@ import vn.uiza.core.common.Constants;
  * @version 1.0.0
  * @since 6/4/2015
  */
-public class DateUtils {
+public final class DateUtils {
     public final static String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String FORMAT_2 = "dd/MM/yyyy";
     public final static String FORMAT_3 = "dd/MM/yyyy HH:mm:ss";

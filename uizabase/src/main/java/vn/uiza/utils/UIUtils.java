@@ -2,10 +2,13 @@ package vn.uiza.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -27,7 +30,9 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -45,7 +50,7 @@ import vn.uiza.R;
  *
  * @author loitp
  */
-public class UIUtils {
+public final class UIUtils {
 
     private UIUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -74,7 +79,7 @@ public class UIUtils {
         return gradientDrawable;
     }
 
-    public static GradientDrawable createGradientDrawableWithColor(int colorMain, int colorStroke) {
+    public static GradientDrawable createGradientDrawableWithColor(@ColorInt int colorMain, @ColorInt int colorStroke) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setColor(colorMain);
         gradientDrawable.setCornerRadius(90f);
@@ -83,7 +88,7 @@ public class UIUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static void setCircleViewWithColor(@NonNull View view, int colorMain, int colorStroke) {
+    public static void setCircleViewWithColor(@NonNull View view, @ColorInt int colorMain, @ColorInt int colorStroke) {
         try {
             view.setBackgroundDrawable(createGradientDrawableWithColor(colorMain, colorStroke));
         } catch (Exception e) {
@@ -152,7 +157,7 @@ public class UIUtils {
 //        }
 //    }
 
-    public static void setTextAppearance(@NonNull TextView textView, int resId) {
+    public static void setTextAppearance(@NonNull TextView textView, @StyleRes int resId) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             textView.setTextAppearance(textView.getContext(), resId);
         } else {
@@ -189,7 +194,7 @@ public class UIUtils {
         setTextShadow(textView, Color.BLACK);
     }
 
-    public static void setTextShadow(@NonNull TextView textView, int color) {
+    public static void setTextShadow(@NonNull TextView textView, @ColorInt int color) {
         textView.setShadowLayer(
                 1f, // radius
                 1f, // dx
@@ -241,8 +246,8 @@ public class UIUtils {
         });
     }
 
-    public static void setColorProgressBar(@NonNull ProgressBar progressBar, int color) {
-        progressBar.getIndeterminateDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY);
+    public static void setColorProgressBar(@NonNull ProgressBar progressBar, @ColorInt int color) {
+        progressBar.getIndeterminateDrawable().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
     }
 
     public static void showProgressBar(@NonNull ProgressBar progressBar) {
@@ -257,9 +262,9 @@ public class UIUtils {
         }
     }
 
-    public static void setColorSeekBar(@NonNull SeekBar seekBar, int color) {
-        seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    public static void setColorSeekBar(@NonNull SeekBar seekBar, @ColorInt int color) {
+        seekBar.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        seekBar.getThumb().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
     }
 
     public static void setTextViewUnderLine(@NonNull TextView textView) {
@@ -278,14 +283,9 @@ public class UIUtils {
         view.requestLayout();
     }
 
-    public static void setTintSeekbar(@NonNull SeekBar seekBar, int color) {
-        seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-    }
-
-    public static void setTint(@NonNull View view, int color) {
+    public static void setTint(@NonNull View view, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            view.getBackground().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
         } else {
             Drawable wrapDrawable = DrawableCompat.wrap(view.getBackground());
             DrawableCompat.setTint(wrapDrawable, color);

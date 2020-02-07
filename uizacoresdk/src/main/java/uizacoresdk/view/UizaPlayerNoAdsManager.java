@@ -2,6 +2,8 @@ package uizacoresdk.view;
 
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -13,7 +15,7 @@ import vn.uiza.models.Subtitle;
 
 public final class UizaPlayerNoAdsManager extends IUizaPlayerManager {
 
-    public UizaPlayerNoAdsManager(final UizaVideoView uzVideo, String linkPlay, String thumbnailsUrl,
+    public UizaPlayerNoAdsManager(@NonNull UizaVideoView uzVideo, String linkPlay, String thumbnailsUrl,
                                   List<Subtitle> subtitleList) {
         super(uzVideo, linkPlay, thumbnailsUrl, subtitleList);
         setRunnable();
@@ -36,9 +38,8 @@ public final class UizaPlayerNoAdsManager extends IUizaPlayerManager {
 
     @Override
     void initSource() {
-        String drmScheme = Constants.DRM_SCHEME_NULL;
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager = buildDrmSessionManager(drmScheme);
-        if (drmScheme != Constants.DRM_SCHEME_NULL && drmSessionManager == null) return;
+        if (drmScheme != null && drmSessionManager == null) return;
 
         player = buildPlayer(drmSessionManager);
         playerHelper = new UizaPlayerHelper(player);

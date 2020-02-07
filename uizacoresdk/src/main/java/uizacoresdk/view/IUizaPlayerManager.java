@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -31,6 +33,7 @@ import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -73,6 +76,7 @@ import vn.uiza.models.Subtitle;
 import vn.uiza.utils.ConnectivityUtils;
 import vn.uiza.utils.DateUtils;
 import vn.uiza.utils.ImageUtils;
+import vn.uiza.utils.ListUtils;
 import vn.uiza.utils.UIUtils;
 import uizacoresdk.widget.autosize.UizaImageButton;
 
@@ -112,14 +116,16 @@ abstract class IUizaPlayerManager implements PreviewLoader {
     private float volumeToggle;
     private DebugCallback debugCallback;
     private ExoPlaybackException exoPlaybackException;
-    private DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+    private DefaultBandwidthMeter bandwidthMeter;
+    protected String drmScheme;
 
-    IUizaPlayerManager(final UizaVideoView uzVideo, String linkPlay, String thumbnailsUrl,
+    IUizaPlayerManager(@NonNull UizaVideoView uzVideo, String linkPlay, String thumbnailsUrl,
                        List<Subtitle> subtitleList) {
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
         this.context = uzVideo.getContext();
+        bandwidthMeter = new DefaultBandwidthMeter.Builder(uzVideo.getContext()).build();
         this.videoWidth = 0;
         this.videoHeight = 0;
         this.mls = 0;
@@ -388,7 +394,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
+                return new ProgressiveMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }
@@ -448,12 +454,12 @@ abstract class IUizaPlayerManager implements PreviewLoader {
 
     DefaultDrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManager(String drmScheme) {
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-        if (drmScheme != Constants.DRM_SCHEME_NULL) {
+        if (!TextUtils.isEmpty(drmScheme)) {
             String drmLicenseUrl = Constants.DRM_LICENSE_URL;
             String[] keyRequestPropertiesArray = null;
             boolean multiSession = false;
             String errorStringId = "An unknown DRM error occurred";
-            if (Util.SDK_INT < 18) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 errorStringId = "Protected content not supported on API levels below 18";
             } else {
                 try {
@@ -481,12 +487,11 @@ abstract class IUizaPlayerManager implements PreviewLoader {
     }
 
     MediaSource createMediaSourceWithSubtitle(MediaSource videoMediaSource) {
-        if (subtitleList == null || subtitleList.isEmpty()) {
+        if (ListUtils.isEmpty(subtitleList)) {
             return videoMediaSource;
         }
         List<MediaSource> mergedMediaSource = new ArrayList<>();
         mergedMediaSource.add(videoMediaSource);
-
         // Try to add text (subtitle) media source
         for (int i = 0; i < subtitleList.size(); i++) {
 
@@ -549,9 +554,9 @@ abstract class IUizaPlayerManager implements PreviewLoader {
 
     private void onFirstStateReady() {
         if (uzVideo == null) return;
-        long durationInS = uzVideo.getDuration() / 1000;
-        TmpParamData.getInstance().setEntityDuration(durationInS + "");
-        TmpParamData.getInstance().setEntitySourceDuration(durationInS + "");
+        long durationInSec = uzVideo.getDuration() / 1000;
+        TmpParamData.getInstance().setEntityDuration(String.valueOf(durationInSec));
+        TmpParamData.getInstance().setEntitySourceDuration(String.valueOf(durationInSec));
         uzVideo.removeVideoCover(false);
     }
 
@@ -683,7 +688,7 @@ abstract class IUizaPlayerManager implements PreviewLoader {
         }
 
         private long getProgramDateTimeValue(HlsMediaPlaylist playlist, long timeToEndChunk) {
-            if (playlist == null || playlist.tags == null || playlist.tags.isEmpty()) {
+            if (playlist == null || ListUtils.isEmpty(playlist.tags)) {
                 return INVALID_PROGRAM_DATE_TIME;
             }
             final String emptyStr = "";

@@ -2,7 +2,7 @@ package vn.uiza.utils;
 
 import android.content.SharedPreferences;
 
-public class SharedPreferenceUtil {
+public final class SharedPreferenceUtil {
 
     public static <T> void put(SharedPreferences preferences, String key, T data) {
         SharedPreferences.Editor editor = preferences.edit();

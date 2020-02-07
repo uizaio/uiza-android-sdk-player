@@ -60,9 +60,9 @@ public final class ShellUtils {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
                 successResult = new BufferedReader(
-                        new InputStreamReader(process.getInputStream(), Constants.UTF_8_CHARSET));
+                        new InputStreamReader(process.getInputStream(), EncryptUtils.UTF_8));
                 errorResult = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream(), Constants.UTF_8_CHARSET));
+                        new InputStreamReader(process.getErrorStream(), EncryptUtils.UTF_8));
                 String s;
                 while ((s = successResult.readLine()) != null) {
                     successMsg.append(s);
