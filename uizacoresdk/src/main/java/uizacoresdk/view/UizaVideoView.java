@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -62,6 +63,7 @@ import java.util.UUID;
 import timber.log.Timber;
 import uizacoresdk.BuildConfig;
 import uizacoresdk.R;
+import uizacoresdk.UizaCoreSDK;
 import uizacoresdk.animations.AnimationUtils;
 import uizacoresdk.dialog.hq.UizaItem;
 import uizacoresdk.dialog.hq.UizaTrackSelectionView;
@@ -120,6 +122,7 @@ import vn.uiza.utils.ScreenUtils;
 import uizacoresdk.widget.autosize.UizaImageButton;
 import uizacoresdk.widget.autosize.UizaTextView;
 import uizacoresdk.widget.seekbar.UZVerticalSeekBar;
+import vn.uiza.utils.constant.TimeUnit;
 
 /**
  * Created by loitp on 2/27/2019.
@@ -210,6 +213,9 @@ public class UizaVideoView extends VideoViewBase
      */
     @Override
     public void onCreateView() {
+        if (AppUtils.checkChromeCastAvailable()) {
+            setupChromeCast();
+        }
         EventBus.getDefault().register(this);
         startConnectifyService();
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
@@ -221,9 +227,6 @@ public class UizaVideoView extends VideoViewBase
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
-        if (AppUtils.checkChromeCastAvailable()) {
-            setupChromeCast();
-        }
         updateUISizeThumbnail();
         scheduleJob();
     }
@@ -243,8 +246,12 @@ public class UizaVideoView extends VideoViewBase
 
     private void startConnectifyService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent startServiceIntent = new Intent(getContext(), LConnectifyService.class);
-            getContext().startService(startServiceIntent);
+            try {
+                Intent startServiceIntent = new Intent(getContext(), LConnectifyService.class);
+                getContext().startService(startServiceIntent);
+            } catch (NoClassDefFoundError e) {
+                Timber.e(e);
+            }
         }
     }
 
@@ -339,7 +346,11 @@ public class UizaVideoView extends VideoViewBase
 
     public void setResizeMode(int resizeMode) {
         if (uzPlayerView != null) {
-            uzPlayerView.setResizeMode(resizeMode);
+            try {
+                uzPlayerView.setResizeMode(resizeMode);
+            } catch (java.lang.IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
@@ -1921,7 +1932,8 @@ public class UizaVideoView extends VideoViewBase
     private void addPlayerView() {
         uzPlayerView = null;
         int skinId = UizaData.getInstance().getCurrentPlayerId();
-        uzPlayerView = (UizaPlayerView) ((Activity) getContext()).getLayoutInflater().inflate(skinId, null);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        uzPlayerView = (UizaPlayerView) inflater.inflate(skinId, null);
         setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -1960,7 +1972,8 @@ public class UizaVideoView extends VideoViewBase
         isCalledFromChangeSkin = true;
         rootView.removeView(uzPlayerView);
         rootView.requestLayout();
-        uzPlayerView = (UizaPlayerView) ((Activity) getContext()).getLayoutInflater().inflate(skinId, null);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        uzPlayerView = (UizaPlayerView) inflater.inflate(skinId, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         uzPlayerView.setLayoutParams(lp);
@@ -2126,19 +2139,21 @@ public class UizaVideoView extends VideoViewBase
     }
 
     private void setMarginPreviewTimeBar() {
-        if (isLandscape) {
-            UIUtils.setMarginDimen(uzTimebar, 5, 0, 5, 0);
-        } else {
-            UIUtils.setMarginDimen(uzTimebar, 0, 0, 0, 0);
-        }
+        if (uzTimebar != null)
+            if (isLandscape) {
+                UIUtils.setMarginDimen(uzTimebar, 5, 0, 5, 0);
+            } else {
+                UIUtils.setMarginDimen(uzTimebar, 0, 0, 0, 0);
+            }
     }
 
     private void setMarginRlLiveInfo() {
-        if (isLandscape) {
-            UIUtils.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
-        } else {
-            UIUtils.setMarginDimen(rlLiveInfo, 5, 0, 5, 0);
-        }
+        if (rlLiveInfo != null)
+            if (isLandscape) {
+                UIUtils.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
+            } else {
+                UIUtils.setMarginDimen(rlLiveInfo, 5, 0, 5, 0);
+            }
     }
 
     private void setTitle() {
@@ -3314,16 +3329,20 @@ public class UizaVideoView extends VideoViewBase
         }
         JobInfo myJob;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myJob = new JobInfo.Builder(0, new ComponentName(getContext(), LConnectifyService.class))
-                    .setRequiresCharging(true)
-                    .setMinimumLatency(1000)
-                    .setOverrideDeadline(2000)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setPersisted(true)
-                    .build();
-            JobScheduler jobScheduler = (JobScheduler) getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            if (jobScheduler != null) {
-                jobScheduler.schedule(myJob);
+            try {
+                myJob = new JobInfo.Builder(0, new ComponentName(getContext(), LConnectifyService.class))
+                        .setRequiresCharging(true)
+                        .setMinimumLatency(1000)
+                        .setOverrideDeadline(2000)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setPersisted(true)
+                        .build();
+                JobScheduler jobScheduler = (JobScheduler) getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                if (jobScheduler != null) {
+                    jobScheduler.schedule(myJob);
+                }
+            } catch (NoClassDefFoundError e) {
+
             }
         }
     }

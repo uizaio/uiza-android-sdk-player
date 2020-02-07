@@ -711,9 +711,7 @@ public class UizaUtil {
     @Nullable
     public static Auth getAuth() {
         String json = getPrivatePreference(context).getString(AUTH, null);
-        if (!TextUtils.isEmpty(json))
-            return StringUtils.toObject(json, Auth.class);
-        return null;
+        return TextUtils.isEmpty(json) ? null : StringUtils.toObject(json, Auth.class);
     }
 
     public static void setAuth(Auth auth) {

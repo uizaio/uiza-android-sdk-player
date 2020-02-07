@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <vn.uiza.views.autosize.UizaImageButton
+        <uizacoresdk.widget.autosize.UizaImageButton
             android:id="@id/exo_back_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

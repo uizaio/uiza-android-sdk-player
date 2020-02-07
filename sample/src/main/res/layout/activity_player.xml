@@ -107,6 +107,7 @@
                     android:id="@+id/bt_play"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/w_15"
                     android:padding="@dimen/padding_5"
                     android:text="Play"
                     android:textSize="@dimen/txt_18" />

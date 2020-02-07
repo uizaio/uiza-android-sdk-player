@@ -99,7 +99,7 @@ public class UizaData {
         }*/
         if (casty == null) {
             Timber.e("getCasty null");
-            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UizaUtil.setCasty(this);' to your onStart() or onCreate()");
+            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UizaCoreSDK.setCasty(this);' to your onStart() or onCreate()");
         }
         return casty;
     }

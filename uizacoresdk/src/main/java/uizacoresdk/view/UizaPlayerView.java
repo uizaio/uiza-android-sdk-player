@@ -40,7 +40,8 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
 
     public UizaPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setControllerVisibilityListener(this);
+        if (!isInEditMode())
+            setControllerVisibilityListener(this);
         mDetector = new GestureDetector(context, new UizaGestureListener());
     }
 

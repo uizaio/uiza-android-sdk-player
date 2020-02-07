@@ -27,17 +27,18 @@ public class AudioVolumeObserver {
         //   will be executed in the main thread
         // To execute in another thread you can use a Looper
         // +info: https://stackoverflow.com/a/35261443/904907
+        if (mAudioManager != null) {
+            mAudioVolumeContentObserver = new AudioVolumeContentObserver(
+                    mHandler,
+                    mAudioManager,
+                    audioStreamType,
+                    listener);
 
-        mAudioVolumeContentObserver = new AudioVolumeContentObserver(
-                mHandler,
-                mAudioManager,
-                audioStreamType,
-                listener);
-
-        mContext.getContentResolver().registerContentObserver(
-                android.provider.Settings.System.CONTENT_URI,
-                true,
-                mAudioVolumeContentObserver);
+            mContext.getContentResolver().registerContentObserver(
+                    android.provider.Settings.System.CONTENT_URI,
+                    true,
+                    mAudioVolumeContentObserver);
+        }
     }
 
     public Handler getHandler() {
