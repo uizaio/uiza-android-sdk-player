@@ -51,7 +51,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, VDH
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UizaCoreSDK.setUseWithVDHView(true);
-        UizaCoreSDK.setCasty(this);
+//        UizaCoreSDK.setCasty(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         uzVideo = findViewById(R.id.uiza_video);

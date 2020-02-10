@@ -47,18 +47,21 @@ public class UizaChromeCast {
         if (isTV) {
             return;
         }
-        UizaData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
-        UizaData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
-            @Override
-            public void onConnected() {
-                if (listener != null) listener.onConnected();
-            }
+        Casty casty = UizaData.getInstance().getCasty();
+        if (casty != null) {
+            casty.setUpMediaRouteButton(uzMediaRouteButton);
+            casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
+                @Override
+                public void onConnected() {
+                    if (listener != null) listener.onConnected();
+                }
 
-            @Override
-            public void onDisconnected() {
-                if (listener != null) listener.onDisconnected();
-            }
-        });
+                @Override
+                public void onDisconnected() {
+                    if (listener != null) listener.onDisconnected();
+                }
+            });
+        }
     }
 
     private void updateMediaRouteButtonVisibility(int state) {

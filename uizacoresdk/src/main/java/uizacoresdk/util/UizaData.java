@@ -91,6 +91,7 @@ public class UizaData {
         this.casty = casty;
     }
 
+    @Nullable
     public Casty getCasty() {
         /*if (casty == null) {
             //TODO bug if use mini controller
@@ -98,8 +99,8 @@ public class UizaData {
             casty = Casty.create(baseActivity);
         }*/
         if (casty == null) {
-            Timber.e("getCasty null");
-            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UizaCoreSDK.setCasty(this);' to your onStart() or onCreate()");
+            Timber.e("You must init Casty with activity before using Chromecast. Tips: put 'UizaCoreSDK.setCasty(this);' to your onStart() or onCreate()");
+//            throw new NullPointerException("You must init Casty with activity before using Chromecast. Tips: put 'UizaCoreSDK.setCasty(this);' to your onStart() or onCreate()");
         }
         return casty;
     }
