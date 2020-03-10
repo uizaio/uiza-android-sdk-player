@@ -1,5 +1,6 @@
 
-## Welcome to UizaSDK
+## Welcome to UizaSDK 
+(Compatible with androidx)
 
 Simple Streaming at scale.
 
@@ -41,7 +42,7 @@ If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will nee
 - Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
 
         // for ChromeCast
-        implementation 'com.android.support:mediarouter-v7:28.0.0'
+        implementation 'androidx.mediarouter:mediarouter:1.0.0'
         implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
 
 - If advertising support should be enabled, also add the following dependencies to your project:
