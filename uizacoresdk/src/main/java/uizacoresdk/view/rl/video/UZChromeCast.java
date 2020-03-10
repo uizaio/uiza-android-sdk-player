@@ -1,7 +1,7 @@
 package uizacoresdk.view.rl.video;
 
 import android.content.Context;
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 import android.util.Log;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
@@ -26,7 +26,7 @@ public class UZChromeCast {
 
     {
         if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
     }

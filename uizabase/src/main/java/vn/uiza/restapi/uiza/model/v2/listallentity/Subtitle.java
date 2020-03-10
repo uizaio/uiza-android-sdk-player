@@ -4,7 +4,7 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
  * Created by LENOVO on 3/21/2018.
  */
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.lang.annotation.Retention;

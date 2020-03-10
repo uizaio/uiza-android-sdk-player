@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -474,7 +474,7 @@ public class UZUtil {
         return false;
     }
 
-    public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
+    public static boolean initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
@@ -494,15 +494,15 @@ public class UZUtil {
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         String signed = EncryptUtils.getAppSigned(context);
-        return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, signed, env);
+        return UZData.getInstance().initSDK(domainApi, token, appId, signed, env);
     }
 
-    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
+    public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
     }
 
     public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
-        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
     }
 
     public static void setCasty(Activity activity) {
@@ -513,7 +513,7 @@ public class UZUtil {
             return;
         }
         if (!isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
         UZData.getInstance().setCasty(Casty.create(activity));

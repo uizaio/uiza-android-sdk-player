@@ -97,14 +97,14 @@ public class UZData {
         return casty;
     }
 
-    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, String signedKey, int environment) {
+    public boolean initSDK(String domainAPI, String token, String appId, String signedKey, int environment) {
         if (TextUtils.isEmpty(domainAPI) || domainAPI.contains(" ")
                 || TextUtils.isEmpty(token) || token.contains(" ")
                 || TextUtils.isEmpty(appId) || appId.contains(" ")
                 || TextUtils.isEmpty(signedKey)) {
             return false;
         }
-        mAPIVersion = apiVersion;
+        mAPIVersion = Constants.API_VERSION_4;
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
@@ -461,7 +461,7 @@ public class UZData {
 
     public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
         if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+                || !UZUtil.isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton")) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
         int trackType = MediaTrack.TYPE_UNKNOWN;

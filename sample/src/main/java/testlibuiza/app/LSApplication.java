@@ -1,7 +1,7 @@
 package testlibuiza.app;
 
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 import com.google.gson.Gson;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
@@ -47,8 +47,8 @@ public class LSApplication extends MultiDexApplication {
     public static String PLAYER_INFOR_ID = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";*/
 
     public static final String DF_DOMAIN_API = "ap-southeast-1-api.uiza.co";
-    public static final String DF_TOKEN = "uap-16d51c83b5894e33bc8fe9418bd94151-3516e4ff";
-    public static final String DF_APP_ID = "16d51c83b5894e33bc8fe9418bd94151";
+    public static final String DF_TOKEN = "uap-f785bc511967473fbe6048ee5fb7ea59-69fefb79";
+    public static final String DF_APP_ID = "f785bc511967473fbe6048ee5fb7ea59";
     public static final String entityIdDefaultVOD = "9940516b-c2d3-42d0-80e1-2340f9265277";
     public static final String entityIdDefaultVOD_21_9 = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
     public static final String entityIdDefaultVODportrait = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
@@ -65,8 +65,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Constants.setDebugMode(true);
-        int apiVersion = Constants.API_VERSION_4;
-        UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_PROD, uizacoresdk.R.layout.uz_player_skin_1);
+        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, uizacoresdk.R.layout.uz_player_skin_1);
         //UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         //UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
     }
