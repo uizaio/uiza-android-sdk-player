@@ -79,7 +79,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, Constants.API_VERSION_4, api, token, appId);
+                UZUtil.initWorkspace(this, api, token, appId);
             }
      }
      ```
@@ -206,22 +206,17 @@ Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://g
 **Step 3:**
 On function `onCreate()` of `Activity`, put this code:
 
+```java
+	UZUtil.setCasty(this);
     UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+```
 
 Ex:
 
-    @Override  
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
-        super.onCreate(savedInstanceState);
-    }
-
-**Note:** If you are using Chromecast, please use UZUtil.setCasty(Activity activity) on function onCreate() of Activity
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+   		UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
         super.onCreate(savedInstanceState);
     }
 
