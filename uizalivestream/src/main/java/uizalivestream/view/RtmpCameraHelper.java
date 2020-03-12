@@ -2,6 +2,7 @@ package uizalivestream.view;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.media.MediaCodecInfo;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -137,7 +138,7 @@ final class RtmpCameraHelper {
 
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
         rtmpCamera1.startPreview(width, height);
-        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
+        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation, MediaCodecInfo.CodecProfileLevel.AVCProfileHigh,  MediaCodecInfo.CodecProfileLevel.AVCLevel4);
     }
 
     /**

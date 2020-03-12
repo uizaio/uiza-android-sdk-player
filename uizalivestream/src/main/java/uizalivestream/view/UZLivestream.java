@@ -367,6 +367,10 @@ public class UZLivestream extends RelativeLayout
     }
 
     @Override
+    public void onNewBitrateRtmp(long bitrate) {
+    }
+
+    @Override
     public void onConnectionSuccessRtmp() {
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
