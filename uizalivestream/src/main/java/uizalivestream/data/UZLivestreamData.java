@@ -13,7 +13,7 @@ public class UZLivestreamData {
     }
 
     private String mAppId;
-    private int mAPIVersion = Constants.API_VERSION_3;
+    private int mAPIVersion = Constants.API_VERSION_4;
 
     public String getAppId() {
         return mAppId;

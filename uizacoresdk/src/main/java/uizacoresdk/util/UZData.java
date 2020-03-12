@@ -97,14 +97,14 @@ public class UZData {
         return casty;
     }
 
-    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, String signedKey, int environment) {
+    public boolean initSDK(String domainAPI, String token, String appId, String signedKey, int environment) {
         if (TextUtils.isEmpty(domainAPI) || domainAPI.contains(" ")
                 || TextUtils.isEmpty(token) || token.contains(" ")
                 || TextUtils.isEmpty(appId) || appId.contains(" ")
                 || TextUtils.isEmpty(signedKey)) {
             return false;
         }
-        mAPIVersion = apiVersion;
+        mAPIVersion = Constants.API_VERSION_4;
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
