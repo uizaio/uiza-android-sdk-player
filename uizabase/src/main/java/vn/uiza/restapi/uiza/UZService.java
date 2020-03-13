@@ -38,6 +38,7 @@ import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.uiza.model.v4.LiveStatusResponse;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
 
@@ -168,6 +169,10 @@ public interface UZService {
     @GET("/api/public/{api_version}/live/entity")
     Observable<ResultRetrieveALive> retrieveALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
                                                        @Query("id") String entityId, @Query("appId") String appId);
+
+    @GET("/api/public/{api_version}/live/entity/feed/status")
+    Observable<LiveStatusResponse> checkLiveStatus(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                   @Query("id") String entityId);
 
     @POST("/api/public/{api_version}/live/entity/feed")
     Observable<Object> startALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
